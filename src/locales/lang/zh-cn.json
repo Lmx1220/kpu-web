@@ -1,0 +1,11 @@
+{
+  "route": {
+    "dashboard": "控制台",
+    "i18n": "国际化",
+    "login": "登录",
+    "personal": {
+      "editpassword": "修改密码",
+      "setting": "个人设置"
+    }
+  }
+}

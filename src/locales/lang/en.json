@@ -1,0 +1,11 @@
+{
+  "route": {
+    "login": "Login",
+    "dashboard": "Dashboard",
+    "personal": {
+      "setting": "Personal Setting",
+      "editpassword": "Edit Password"
+    },
+    "i18n": "I18N"
+  }
+}

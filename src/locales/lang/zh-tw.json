@@ -1,0 +1,11 @@
+{
+  "route": {
+    "dashboard": "歡迎頁",
+    "i18n": "國際化",
+    "login": "登錄",
+    "personal": {
+      "editpassword": "修改密碼",
+      "setting": "我的設置"
+    }
+  }
+}

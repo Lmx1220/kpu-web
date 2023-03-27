@@ -1,0 +1,35 @@
+<script setup lang="ts" name="I18nSelector">
+import { computed, inject } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { getElementLocales } from '@/locales'
+import useSettingsStore from '@/store/modules/mettings'
+import type { App } from '#/global'
+// 切换语言工具
+const { locale } = useI18n()
+const settingsStore = useSettingsStore()
+
+const locales = computed(() => getElementLocales())
+// 生成国际化标题
+const generateI18nTitle = inject('generateI18nTitle') as App.GenerateI18nTitle
+
+const languageCommand = (command: string) => {
+  // 切换语言
+  locale.value = command
+  settingsStore.setDefaultLang(command)
+  // 生成国际化标题
+  generateI18nTitle('route.login', 'Login')
+}
+</script>
+
+<template>
+  <el-dropdown class="language-container" size="defalut" @command="languageCommand">
+    <slot />
+    <template #dropdown>
+      <el-dropdown-menu>
+        <el-dropdown-item v-for="(item, index) in locales" :key="index" :disabled="settingsStore.settings.app.defaultLang === item.name" :command="item.name">
+          {{ item.labelName }}
+        </el-dropdown-item>
+      </el-dropdown-menu>
+    </template>
+  </el-dropdown>
+</template>
