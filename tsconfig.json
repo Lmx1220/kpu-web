@@ -23,6 +23,6 @@
     },
     "types": ["element-plus/global", "@intlify/unplugin-vue-i18n/messages"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "vite/plugins/components.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

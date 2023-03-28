@@ -1,6 +1,4 @@
 import { defaultsDeep } from 'lodash-es'
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
 import type { RecursiveRequired, Settings } from '#/global'
 import settingsCustom from '@/settings'
 import settingsDefault from '@/settings.default'

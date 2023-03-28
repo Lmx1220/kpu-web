@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed, provide } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getElementLocales } from './locales'
-import I18nSelector from '@/components/I18nSelector/index.vue'
+import Home from './views/index.vue'
 import useSettingsStore from '@/store/modules/mettings'
 import type { App } from '#/global'
 const locales = computed(() => getElementLocales())
@@ -19,12 +18,16 @@ provide('generateI18nTitle', generateI18nTitle)
 <template>
   <el-config-provider :locale="locales[settingsStore.settings.app.defaultLang]">
     <I18nSelector>
-      切换语言
+      <div class="item">
+        <el-icon>
+          <svg-icon name="i-ri:translate" />
+        </el-icon>
+      </div>
     </I18nSelector>
-    <el-button>      {{ t('route.login') }}</el-button>
     <h1 class="text-3xl font-bold underline ">
-      Hello world!
+      {{ t('route.login') }}
     </h1>
+    <Home />
   </el-config-provider>
 </template>
 

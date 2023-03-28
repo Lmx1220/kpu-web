@@ -1,5 +1,4 @@
 <script setup lang="ts" name="I18nSelector">
-import { computed, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getElementLocales } from '@/locales'
 import useSettingsStore from '@/store/modules/mettings'

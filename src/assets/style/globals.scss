@@ -3,3 +3,9 @@
 @tailwind base;
 @tailwind components; 
 @tailwind utilities;
+
+:focus,
+.focus-visible:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
