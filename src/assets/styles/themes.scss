@@ -1,0 +1,10 @@
+:root {
+  --g-box-shadow-color: rgb(0 0 0 / 12%);
+
+  /* ----- 应用 ----- */
+ // 应用背景色
+  --g-app-bg: var(--el-bg-color);
+  // 主区域背景色
+  --g-main-bg: var(--el-bg-color-page);
+
+}

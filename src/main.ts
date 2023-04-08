@@ -8,9 +8,11 @@ import icons from '@/iconify/index.json'
 
 import 'uno.css'
 // 全局样式
-import '@/assets/style/globals.scss'
+import '@/assets/styles/globals.scss'
 import pinia from '@/store'
+import router from '@/router'
 
+import './permission'
 import { useI18n } from '@/locales/index'
 
 if (icons.useType === 'offline') {
@@ -20,6 +22,7 @@ if (icons.useType === 'offline') {
 }
 const app = createApp(App)
 app.use(pinia)
+app.use(router)
 useI18n(app)
 app.use(ElemnetPlus)
 app.mount('#app')

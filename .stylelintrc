@@ -21,7 +21,8 @@
           "else",
           "if",
           "use",
-          "forward"
+          "forward",
+          "include"
         ]
       }
     ],
@@ -38,7 +39,8 @@
           "else",
           "if",
           "use",
-          "forward"
+          "forward",
+          "include"
         ]
       }
     ],

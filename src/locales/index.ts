@@ -8,7 +8,7 @@ import elementLocaleZhCN from 'element-plus/lib/locale/lang/zh-cn'
 import elementLocaleZhTW from 'element-plus/lib/locale/lang/zh-tw'
 import elementLocaleEn from 'element-plus/lib/locale/lang/en'
 import type { App } from 'vue'
-import useSettingsStore from '@/store/modules/mettings'
+import useSettingsStore from '@/store/modules/settings'
 
 function useI18n(app: App) {
   const settingsStore = useSettingsStore()

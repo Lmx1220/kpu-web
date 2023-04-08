@@ -9,7 +9,11 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Copyright: typeof import('./../components/Copyright/index.vue')['default']
     I18nSelector: typeof import('./../components/I18nSelector/index.vue')['default']
+    LoginSwitcher: typeof import('./../components/LoginSwitcher/index.vue')['default']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./../components/SvgIcon/index.vue')['default']
   }
 }

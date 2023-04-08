@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { getElementLocales } from './locales'
-import Home from './views/index.vue'
-import useSettingsStore from '@/store/modules/mettings'
+import useSettingsStore from '@/store/modules/settings'
 import type { App } from '#/global'
 const locales = computed(() => getElementLocales())
 const settingsStore = useSettingsStore()
@@ -13,21 +12,34 @@ const generateI18nTitle: App.GenerateI18nTitle = (key, defaultTitle) => {
   return !!key && te(key) ? t(key) : (typeof defaultTitle === 'function' ? defaultTitle() : defaultTitle)
 }
 provide('generateI18nTitle', generateI18nTitle)
+onMounted(() => {
+  settingsStore.setMode(document.documentElement.clientWidth)
+  window.onresize = () => {
+    settingsStore.setMode(document.documentElement.clientWidth)
+  }
+  return () => {
+    window.onresize = null
+  }
+})
 </script>
 
 <template>
-  <el-config-provider :locale="locales[settingsStore.settings.app.defaultLang]">
-    <I18nSelector>
-      <div class="item">
-        <el-icon>
-          <svg-icon name="i-ri:translate" />
-        </el-icon>
-      </div>
-    </I18nSelector>
-    <h1 class="text-3xl font-bold underline ">
-      {{ t('route.login') }}
-    </h1>
-    <Home />
+  <el-config-provider
+    :locale="locales[settingsStore.settings.app.defaultLang]" size="default" :button="{
+      autoInsertSpace: true,
+    }"
+  >
+    <RouterView
+      v-slot="{ Component, route }"
+      :style="{
+        '--g-main-sidebar-actual-width': 0,
+        '--g-sub-sidebar-actual-width': 0,
+      }"
+    >
+      <component
+        :is="Component"
+      />
+    </RouterView>
   </el-config-provider>
 </template>
 

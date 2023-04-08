@@ -11,6 +11,27 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     colorScheme: 'light',
     // 默认语言，留空则跟随系统
     defaultLang: '',
+    enablePermission: false,
+    routeBaseOn: 'frontend',
+  },
+  layout: {
+    enableMobileAdaptation: false,
+  },
+  menu: {
+    // baseOn: 'frontend',
+    menuMode: 'side',
+    switchMainMenuAndPageJump: false,
+    subMenuUniqueOpened: true,
+    subMenuCollapse: false,
+    enableSubMenuCollapseButton: false,
+    enableHotkeys: false,
+  },
+  copyright: {
+    enable: true,
+    dates: '2020-2023',
+    company: 'Fantastic-admin',
+    website: 'https://hooray.gitee.io/fantastic-admin/',
+    beian: '',
   },
 
 }

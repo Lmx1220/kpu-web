@@ -1,7 +1,7 @@
 <script setup lang="ts" name="I18nSelector">
 import { useI18n } from 'vue-i18n'
 import { getElementLocales } from '@/locales'
-import useSettingsStore from '@/store/modules/mettings'
+import useSettingsStore from '@/store/modules/settings.js'
 import type { App } from '#/global'
 // 切换语言工具
 const { locale } = useI18n()
