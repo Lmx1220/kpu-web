@@ -1,0 +1,25 @@
+@use "./resources/variables.scss" as *;
+// 页面布局 CSS 变量
+:root {
+    // 这是一个复合变量
+    // 当页宽模式为 adaption-min-width 时，它代表 最小宽度
+    // 当页宽模式为 center 时，它代表 固定宽度
+    // 当页宽模式为 center-max-width 时，它代表 最大宽度
+    --g-app-width: #{$g-app-width};
+    // 头部宽度（默认自适应宽度，可固定宽度，固定宽度后为居中显示）
+    --g-header-width: #{$g-header-width};
+    // 头部高度
+    --g-header-height: 80px;
+    // 侧边栏宽度
+    --g-main-sidebar-width: 90px;
+    --g-sub-sidebar-width: 220px;
+    --g-sub-sidebar-collapse-width: 64px;
+    // 侧边栏 Logo 区域高度
+    --g-sidebar-logo-height: 50px;
+    // 标签栏高度
+    --g-tabbar-height: 50px;
+    // 工具栏高度
+    --g-toolbar-height: 50px;
+    --g-tabbar-tab-max-width: 150px;
+    --g-tabbar-tab-min-width: 150px;
+}

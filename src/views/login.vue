@@ -148,8 +148,10 @@ function testAccount(account: string) {
         <div class="logo" />
         <img :src="banner" class="banner">
       </div>
-      <el-form v-show="formType === 'login'" ref="loginFormRef" :model="loginForm" :rules="loginRules" class="login-form"
-        autocapitalize="on">
+      <el-form
+        v-show="formType === 'login'" ref="loginFormRef" :model="loginForm" :rules="loginRules" class="login-form"
+        autocapitalize="on"
+      >
         <div class="title-container">
           <h3 class="title">
             欢迎来到 {{ title }} ! 👋🏻
@@ -166,8 +168,10 @@ function testAccount(account: string) {
             </el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input v-model="loginForm.password" type="password" :placeholder="t('app.password')" tabindex="2"
-              autocomplete="on" show-password @keyup.enter="handleLogin">
+            <el-input
+              v-model="loginForm.password" type="password" :placeholder="t('app.password')" tabindex="2"
+              autocomplete="on" show-password @keyup.enter="handleLogin"
+            >
               <template #prefix>
                 <el-icon>
                   <svg-icon name="i-ri:lock-2-fill" />
@@ -203,8 +207,10 @@ function testAccount(account: string) {
           </el-button>
         </div>
       </el-form>
-      <el-form v-show="formType === 'register'" ref="registerFormRef" :model="registerForm" :rules="registerRules"
-        class="login-form" auto-complete="on">
+      <el-form
+        v-show="formType === 'register'" ref="registerFormRef" :model="registerForm" :rules="registerRules"
+        class="login-form" auto-complete="on"
+      >
         <div class="title-container">
           <h3 class="title">
             探索从这里开始! 🚀
@@ -233,8 +239,10 @@ function testAccount(account: string) {
             </el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input v-model="registerForm.password" type="password" placeholder="密码" tabindex="3" autocomplete="on"
-              show-password>
+            <el-input
+              v-model="registerForm.password" type="password" placeholder="密码" tabindex="3" autocomplete="on"
+              show-password
+            >
               <template #prefix>
                 <el-icon>
                   <svg-icon name="ep:lock" />
@@ -243,8 +251,10 @@ function testAccount(account: string) {
             </el-input>
           </el-form-item>
           <el-form-item prop="checkPassword">
-            <el-input v-model="registerForm.checkPassword" type="password" placeholder="确认密码" tabindex="4"
-              autocomplete="on" show-password>
+            <el-input
+              v-model="registerForm.checkPassword" type="password" placeholder="确认密码" tabindex="4"
+              autocomplete="on" show-password
+            >
               <template #prefix>
                 <el-icon>
                   <svg-icon name="ep:lock" />
@@ -253,8 +263,10 @@ function testAccount(account: string) {
             </el-input>
           </el-form-item>
         </div>
-        <el-button :loading="loading" type="primary" size="large" style="width: 100%; margin-top: 20px;"
-          @click.prevent="handleRegister">
+        <el-button
+          :loading="loading" type="primary" size="large" style="width: 100%; margin-top: 20px;"
+          @click.prevent="handleRegister"
+        >
           注册
         </el-button>
         <div class="sub-link">
@@ -264,8 +276,10 @@ function testAccount(account: string) {
           </el-link>
         </div>
       </el-form>
-      <el-form v-show="formType === 'reset'" ref="resetFormRef" :model="resetForm" :rules="resetRules" class="login-form"
-        auto-complete="on">
+      <el-form
+        v-show="formType === 'reset'" ref="resetFormRef" :model="resetForm" :rules="resetRules" class="login-form"
+        auto-complete="on"
+      >
         <div class="title-container">
           <h3 class="title">
             忘记密码了? 🔒
@@ -294,8 +308,10 @@ function testAccount(account: string) {
             </el-input>
           </el-form-item>
           <el-form-item prop="newPassword">
-            <el-input v-model="resetForm.newPassword" type="password" placeholder="新密码" tabindex="3" autocomplete="on"
-              show-password>
+            <el-input
+              v-model="resetForm.newPassword" type="password" placeholder="新密码" tabindex="3" autocomplete="on"
+              show-password
+            >
               <template #prefix>
                 <el-icon>
                   <svg-icon name="ep:lock" />
@@ -304,8 +320,10 @@ function testAccount(account: string) {
             </el-input>
           </el-form-item>
         </div>
-        <el-button :loading="loading" type="primary" size="large" style="width: 100%; margin-top: 20px;"
-          @click.prevent="handleReset">
+        <el-button
+          :loading="loading" type="primary" size="large" style="width: 100%; margin-top: 20px;"
+          @click.prevent="handleReset"
+        >
           确认
         </el-button>
         <div class="sub-link">
@@ -454,6 +472,7 @@ function testAccount(account: string) {
       input {
         height: 48px;
       }
+
 
       .el-input__prefix,
       .el-input__suffix {

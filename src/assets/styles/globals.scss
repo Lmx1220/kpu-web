@@ -1,10 +1,43 @@
-@use "./tailwind.scss";
-@use "./themes.scss";
-@use "./element-plus/index.scss"; 
+@use "./tailwind.scss" as *;
+@use "./layout.scss" as *;
+@use "./element.plus.system.override.scss" as *;
+@use "./element.plus.customized.scss" as *;
+@use "./element.plus.customized.dark.scss" as *;
+@use "./element.plus.override.scss" as *; 
 
+// 全局样式
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(0 0 0 / 40%);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(0 0 0 / 50%);
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+:root {
+  --g-box-shadow-color: rgb(0 0 0 / 12%);
+
+  &.dark {
+      --g-box-shadow-color: rgb(0 0 0 / 72%);
+  }
+
+  @include set-themes-css-var;
+  // 顶栏高度
+  --g-topbar-height: 50px;
+}
  
-
-
 html,body{ 
   height: 100%;
 }
@@ -24,7 +57,7 @@ body {
   } 
 }
 
-*{
+* {
   box-sizing: inherit;
 }
 
@@ -36,4 +69,60 @@ body {
 
 :is(.el-dropdown,.el-tooltip__trigger):focus-visible {
   outline: unset;
+}
+
+// input:-internal-autofill-selected{
+//   background-color: #fff !important;
+// }
+
+:root input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  box-shadow: 0 0 50px 50px #fff inset;
+  background: none !important;
+
+  /* 阴影大小等于input框宽度一半 利用内阴影覆盖原背景色 */
+
+  // -webkit-text-fill-color: #666; /* 利用文本填充属性覆盖原有文本颜色 */
+}
+// 右侧内容区针对fixed元素，有横向铺满的需求，可在fixed元素上设置 [data-fixed-calc-width]
+[data-fixed-calc-width] {
+  position: fixed;
+  left: 50%;
+  right: 0;
+}
+
+[data-app-width-mode="adaption"],
+[data-app-width-mode="adaption-min-width"] {
+  [data-fixed-calc-width] {
+      width: calc(100% - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
+      transform: translateX(-50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2));
+  }
+} 
+
+[data-app-width-mode="center"],
+[data-app-width-mode="center-max-width"] {
+  [data-fixed-calc-width] {
+      width: calc(var(--g-app-width) - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
+      transform: translateX(-50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2));
+  }
+
+  @media screen and (max-width: $g-app-width) {
+      [data-fixed-calc-width] {
+          width: calc(100% - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
+          transform: translateX(-50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2));
+      }
+  }
+}
+
+[data-mode="mobile"] {
+  [data-fixed-calc-width] {
+      width: 100% !important;
+      transform: translateX(-50%) !important;
+  }
+}
+
+// textarea 字体跟随系统
+textarea {
+  font-family: inherit;
 }

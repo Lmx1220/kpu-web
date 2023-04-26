@@ -6,7 +6,8 @@ const settings = {
 const storage = {
   local: {
     has: (key: string) => {
-      return !!localStorage.getItem(`${settings.app.storagePrefix}${key}`)
+      // eslint-disable-next-line no-prototype-builtins
+      return localStorage.hasOwnProperty(`${settings.app.storagePrefix}${key}`)
     },
     get: (key: string) => {
       return localStorage.getItem(`${settings.app.storagePrefix}${key}`)

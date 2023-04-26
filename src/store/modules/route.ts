@@ -6,7 +6,7 @@ import useUserStore from './user'
 import { resolveRoutePath } from '@/util'
 import type { HttpRequest, Route } from '#/global'
 import api from '@/api'
-import { systemRoutes } from '@/router/routes'
+import systemRoutes from '@/router/modules/systemRoutes'
 const useRouteStore = defineStore(
   'route',
   () => {
@@ -23,6 +23,8 @@ const useRouteStore = defineStore(
         route.children = flatAsyncRoutesRecursive(route.children, [{
           path: route.path,
           title: route.meta?.title,
+          icon: route.meta?.icon,
+          activeIcon: route.meta?.activeIcon,
           hide: !route.meta?.breadcrumb && route.meta?.breadcrumb === false,
         }], route.path, route.meta?.auth)
       }
@@ -38,6 +40,8 @@ const useRouteStore = defineStore(
           tmpBreadcrumb.push({
             path: childrenBaseUrl,
             title: route.meta?.title,
+            icon: route.meta?.icon,
+            activeIcon: route.meta?.activeIcon,
             hide: !route.meta?.breadcrumb && route.meta?.breadcrumb === false,
           })
           const tmpRoute = cloneDeep(route)
@@ -72,6 +76,8 @@ const useRouteStore = defineStore(
           tmpBreadcrumb.push({
             path: tmpRoute.path,
             title: tmpRoute.meta?.title,
+            icon: tmpRoute.meta?.icon,
+            activeIcon: tmpRoute.meta?.activeIcon,
             hide: !tmpRoute.meta?.breadcrumb && tmpRoute.meta?.breadcrumb === false,
           })
           if (!tmpRoute.meta) {
@@ -104,7 +110,7 @@ const useRouteStore = defineStore(
           returnRoutes.forEach(item => flatAsyncRoutes(item))
         }
         else {
-          returnRoutes.push(...cloneDeep(filesystemRoutesRaw.value))
+          returnRoutes.push(...cloneDeep(filesystemRoutesRaw.value) as RouteRecordRaw[])
         }
       }
       return returnRoutes
@@ -114,6 +120,57 @@ const useRouteStore = defineStore(
       routes.forEach(item => flatAsyncRoutes(item))
       return routes
     })
+
+    // 判断是否有权限
+    function hasPermission(permissions: string[], route: Route.recordMainRaw | RouteRecordRaw) {
+      let isAuth = false
+      if (route.meta?.auth) {
+        isAuth = permissions.some((auth) => {
+          if (typeof route.meta?.auth === 'string') {
+            return route.meta.auth !== '' ? route.meta.auth === auth : true
+          }
+          else if (typeof route.meta?.auth === 'object') {
+            return route.meta.auth.length > 0 ? route.meta.auth.includes(auth) : true
+          }
+          else {
+            return false
+          }
+        })
+      }
+      else {
+        isAuth = true
+      }
+      return isAuth
+    }
+    // 根据权限过滤路由
+    function filterAsyncRoutes<T extends Route.recordMainRaw[] | RouteRecordRaw[]>(routes: T, permissions: string[]): T {
+      const res: any = []
+      routes.forEach((route) => {
+        if (hasPermission(permissions, route)) {
+          const tmpRoute = cloneDeep(route)
+          if (tmpRoute.children) {
+            tmpRoute.children = filterAsyncRoutes(tmpRoute.children, permissions)
+            tmpRoute.children.length && res.push(tmpRoute)
+          }
+          else {
+            res.push(tmpRoute)
+          }
+        }
+      })
+      return res
+    }
+    const routes = computed(() => {
+      let returnRoutes: Route.recordMainRaw[]
+      // 如果权限功能开启，则需要对路由数据进行筛选过滤
+      if (settingsStore.settings.app.enablePermission) {
+        returnRoutes = filterAsyncRoutes(routesRaw.value as any, userStore.permissions)
+      }
+      else {
+        returnRoutes = cloneDeep(routesRaw.value) as any
+      }
+      return returnRoutes
+    })
+
     // 根据权限动态生成路由（后端获取）
     async function generateRoutesAtFront(asyncRoutes: Route.recordMainRaw[]) {
       routesRaw.value = cloneDeep(asyncRoutes) as any
@@ -147,7 +204,7 @@ const useRouteStore = defineStore(
         showLoading: false,
       }).then(async (res) => {
         // 设置 routes 数据
-        routesRaw.value = formatBackRoutes(res.data)
+        routesRaw.value = formatBackRoutes(res.data) as any
         // if (settingsStore.settings.app.enablePermission) {
         //   userStore.getPermissions()
         // }
@@ -169,6 +226,7 @@ const useRouteStore = defineStore(
     }
     return {
       isGenerate,
+      routes,
       routesRaw,
       currentRemoveRoutes,
       flatRoutes,

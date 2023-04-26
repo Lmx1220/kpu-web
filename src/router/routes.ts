@@ -34,6 +34,7 @@ const systemRoutes: RouteRecordRaw[] = [
     path: '/',
     name: 'home',
     component: () => Laout,
+    redirect: '/',
     meta: {
       title: '首页',
     },
@@ -44,18 +45,11 @@ const systemRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/index.vue'),
         meta: {
           title: '首页',
+          i18n: 'route.home',
           breadcrumb: false,
         },
       },
-      {
-        path: 'reload',
-        name: 'reload',
-        component: () => import('@/views/reload.vue'),
-        meta: {
-          title: '重新加载',
-          breadcrumb: false,
-        },
-      },
+
     ],
   },
 ]
@@ -78,7 +72,8 @@ const systemExample: RouteRecordRaw[] = [
         component: () => import('@/views/system/user/index.vue'),
         meta: {
           title: '用户管理',
-          icon: 'user',
+          icon: 'system',
+          badge: 10,
           roles: ['admin'],
         },
       },
@@ -89,6 +84,7 @@ const systemExample: RouteRecordRaw[] = [
         meta: {
           title: '角色管理',
           icon: 'role',
+          badge: '热门',
           roles: ['admin'],
         },
       },
@@ -99,6 +95,7 @@ const systemExample: RouteRecordRaw[] = [
         meta: {
           title: '菜单管理',
           icon: 'menu',
+          badge: 'PRO',
           roles: ['admin'],
         },
       },
@@ -109,6 +106,7 @@ const systemExample: RouteRecordRaw[] = [
         meta: {
           title: '部门管理',
           icon: 'dept',
+          badge: false,
           roles: ['admin'],
         },
       },
@@ -119,6 +117,7 @@ const systemExample: RouteRecordRaw[] = [
         meta: {
           title: '字典管理',
           icon: 'dict',
+          badge: () => true,
           roles: ['admin'],
         },
       },
@@ -217,6 +216,15 @@ const asyncRoutes: Route.recordMainRaw[] = [
     },
     children: [
       ...systemExample,
+    ],
+  },
+  {
+    meta: {
+      title: '页面',
+      icon: 'sidebar-default',
+    },
+    children: [
+      ...systemRoutes,
     ],
   },
 ]

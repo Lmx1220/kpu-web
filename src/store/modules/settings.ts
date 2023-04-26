@@ -1,4 +1,5 @@
 import { defaultsDeep } from 'lodash-es'
+import type { RouteMeta } from 'vue-router'
 import type { RecursiveRequired, Settings } from '#/global'
 import settingsCustom from '@/settings'
 import settingsDefault from '@/settings.default'
@@ -40,6 +41,22 @@ const useSettingsStore = defineStore(
         subMenuCollapseLastStatus.value = !subMenuCollapseLastStatus.value
       }
     }
+
+    watch(() => settings.value.app.colorScheme, (val) => {
+      if (val === '') {
+        val = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      }
+      switch (val) {
+        case 'dark':
+          document.documentElement.classList.add('dark')
+          break
+        case 'light':
+          document.documentElement.classList.remove('dark')
+          break
+      }
+    }, {
+      immediate: true,
+    })
     watch(mode, (val) => {
       switch (val) {
         case 'pc':
@@ -53,7 +70,44 @@ const useSettingsStore = defineStore(
     }, {
       immediate: true,
     })
-
+    watch(() => settings.value.app.theme, (val) => {
+      document.body.setAttribute('data-theme', val)
+    }, {
+      immediate: true,
+    })
+    watch(() => settings.value.menu.menuMode, (val) => {
+      document.body.setAttribute('data-menu-mode', val)
+    }, {
+      immediate: true,
+    })
+    watch(() => settings.value.layout.widthMode, (val) => {
+      document.body.setAttribute('data-app-width-mode', val)
+    }, {
+      immediate: true,
+    })
+    // 操作系统
+    const os = ref<'mac' | 'windows' | 'linux' | 'other'>('other')
+    const agent = navigator.userAgent.toLowerCase()
+    switch (true) {
+      case agent.includes('mac os'):
+        os.value = 'mac'
+        break
+      case agent.includes('windows'):
+        os.value = 'windows'
+        break
+      case agent.includes('linux'):
+        os.value = 'linux'
+        break
+    }
+    // 页面标题
+    const title = ref<RouteMeta['title']>()
+    // 当同时设置了 i18n 时，页面标题的展示优先级，默认为 i18n
+    const titleFirst = ref(false)
+    // 设置网页标题
+    function setTitle(_title: RouteMeta['title'], _titleFirst: boolean) {
+      title.value = _title
+      titleFirst.value = _titleFirst
+    }
     // 更新应用配置
     function updateSettings(data: Settings.all) {
       settings.value = defaultsDeep(data, settings.value)
@@ -62,14 +116,29 @@ const useSettingsStore = defineStore(
     function setDefaultLang(lang: string) {
       settings.value.app.defaultLang = lang
     }
+    const mainPageMaximizeStatus = ref(false)
+    //
+    function setColorScheme(colorScheme: '' | 'light' | 'dark') {
+      settings.value.app.colorScheme = colorScheme
+    }
+    function setMainPageMaximize(status: boolean | undefined) {
+      mainPageMaximizeStatus.value = status ?? !mainPageMaximizeStatus.value
+    }
     return {
       settings,
+      os,
+      title,
+      titleFirst,
+      setTitle,
       mode,
       setMode,
       subMenuCollapseLastStatus,
       toggleSidebarCollapse,
       updateSettings,
       setDefaultLang,
+      mainPageMaximizeStatus,
+      setColorScheme,
+      setMainPageMaximize,
     }
   },
 )

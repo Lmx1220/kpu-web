@@ -3,13 +3,16 @@ import router from './router'
 import { asyncRoutes } from './router/routes'
 import useRouteStore from './store/modules/route'
 import useSettingsStore from './store/modules/settings'
+import useMenuStore from './store/modules/menu'
 import useUserStore from './store/modules/user'
+import useTabbarStore from './store/modules/tabbar'
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   const settingsStore = useSettingsStore()
   const routeStore = useRouteStore()
-  console.log('to', to)
-  const homeEnable = localStorage.homeEnable as string | undefined
+  const menuStore = useMenuStore()
+  const tabbarStore = useTabbarStore()
+  // console.log('to', to)
   if (userStore.isLogin) {
     // 否已根据权限动态生成并注册路由
     if (routeStore.isGenerate) {
@@ -20,14 +23,22 @@ router.beforeEach(async (to, from, next) => {
         next({ name: 'home', replace: true })
       }
       // 如果未开启主页，但进入的是主页，则会进入侧边栏导航第一个模块
-      else if (homeEnable && to.name === 'home') {
+      else if (!settingsStore.settings.home.enable && to.name === 'home') {
         // TODO: 待开发
+        const tabbar = tabbarStore.list.find(item => item.isPin)
+        if (settingsStore.settings.tabbar.enable && tabbar) {
+          next({ path: tabbar.fullPath, replace: true })
+        }
+        else {
+          menuStore.sidebarMenus.length > 0 ? next({ path: menuStore.sidebarMenusFirstDeepestPath, replace: true }) : next()
+        }
       }
       else {
         next()
       }
     }
     else {
+      settingsStore.settings.tabbar.enable && await tabbarStore.recoveryStorage()
       switch (settingsStore.settings.app.routeBaseOn) {
         case 'frontend':
           await routeStore.generateRoutesAtFront(asyncRoutes)
@@ -72,6 +83,12 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 })
-router.afterEach(() => {
-
+router.afterEach((to, from) => {
+  const settingsStore = useSettingsStore()
+  if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
+    settingsStore.setTitle(to.meta.breadcrumbNeste?.at(-1)?.title ?? to.meta.title, false)
+  }
+  else {
+    settingsStore.setTitle(to.meta.title, false)
+  }
 })

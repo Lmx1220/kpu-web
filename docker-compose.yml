@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+        - api-server
+    container_name: frontend
+    ports:
+      - "80:80"
+    restart: always
+networks:
+  api-server:
+    external: true

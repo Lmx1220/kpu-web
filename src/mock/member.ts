@@ -18,7 +18,6 @@ export default [
     url: '/mock/member/permission',
     method: 'get',
     response: (option: any) => {
-      debugger
       let permissions: string[] = []
       if (option.query.account === 'admin') {
         permissions = [

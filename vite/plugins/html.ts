@@ -13,9 +13,9 @@ export default function createHtml(env, isBuild) {
     copyrightScript += `
 <script>
 if ((navigator.language || navigator.browserLanguage).toLowerCase() === 'zh-cn') {
-  console.info('%c由%cFantastic-admin%c驱动', '${copyright_sub_style}', '${copyright_main_style}', '${copyright_sub_style}', '\\nhttps://gitee.com/hooray/fantastic-admin');
+  console.info('%c由%cadmin%c驱动', '${copyright_sub_style}', '${copyright_main_style}', '${copyright_sub_style}', '\\nhttps://gitee.com/hooray/admin');
 } else {
-  console.info('%cPowered by%cFantastic-admin', '${copyright_sub_style}', '${copyright_main_style}', '\\nhttps://github.com/hooray/fantastic-admin');
+  console.info('%cPowered by%cadmin', '${copyright_sub_style}', '${copyright_main_style}', '\\nhttps://github.com/hooray/admin');
 }
 </script>
     `

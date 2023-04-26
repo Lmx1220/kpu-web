@@ -20,9 +20,9 @@ export default ({ mode, command }) => {
     }
   })
   return defineConfig({
-    // 开发服务器选项 https://cn.vitejs.dev/config/#server-options
+    // 开发服务器选项 https://cn.vitejs.dev/config/server-options.html
     server: {
-      // base: './',
+      base: './',
       open: true,
       port: 9001,
       proxy: {
@@ -33,7 +33,7 @@ export default ({ mode, command }) => {
         },
       },
     },
-    // 构建选项 https://cn.vitejs.dev/config/#server-fsserve-root
+    // 构建选项 https://cn.vitejs.dev/config/build-options.html
     build: {
       outDir: mode === 'production' ? 'dist' : `dist-${mode}`,
       sourcemap: env.VITE_BUILD_SOURCEMAP === 'true',

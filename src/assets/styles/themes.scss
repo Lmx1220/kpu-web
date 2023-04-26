@@ -1,10 +1,36 @@
-:root {
-  --g-box-shadow-color: rgb(0 0 0 / 12%);
+@use "./theme-default.scss" as *;
+@use "./theme-green.scss" as *;
+@use "./theme-orange.scss" as *;
+@use "./theme-pink.scss" as *;
+@use "./theme-grey.scss" as *;
+@use "./theme-yellow.scss" as *;
 
-  /* ----- 应用 ----- */
- // 应用背景色
-  --g-app-bg: var(--el-bg-color);
-  // 主区域背景色
-  --g-main-bg: var(--el-bg-color-page);
+$themes: (
+    default: $theme-default,
+    sys_green: $theme-green,
+    sys_orange: $theme-orange,
+    sys_pink: $theme-pink,
+    sys_grey: $theme-grey,
+    sys_yellow: $theme-yellow
+);
 
+@mixin set-themes-css-var() {
+    @each $theme-name, $theme-map in $themes {
+        @each $mode, $map in $theme-map {
+            @if  $mode == "" {
+                [data-theme=#{$theme-name}] {
+                    @each $key, $value in $map {
+                        --g-#{$key}: #{$value};
+                    }
+                }
+            } @else if $mode == "dark" {
+                &.dark [data-theme=#{$theme-name}] {
+                    @each $key, $value in $map {
+                        --g-#{$key}: #{$value};
+                    }
+                }
+            }
+        }
+    }
 }
+ 

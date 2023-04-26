@@ -10,7 +10,6 @@ const useUserStore = defineStore(
   () => {
     const routeStore = useRouteStore()
     // const menuStore = useMenuStore()
-    debugger
     const account = ref(storage.local.get('login_account') ?? '')
     const token = ref(storage.local.get('token') ?? '')
     const failure_time = ref(storage.local.get('failure_time') ?? '')

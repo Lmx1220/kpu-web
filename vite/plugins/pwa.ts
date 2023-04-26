@@ -8,8 +8,8 @@ export default function createPwa() {
     },
     // base: './',
     // manifest: {
-    //   name: 'Fantastic-admin 专业版',
-    //   short_name: 'Fantastic-admin 专业版',
+    //   name: 'admin 专业版',
+    //   short_name: 'admin 专业版',
     //   description: '一款开箱即用的 Vue 中后台管理系统框架',
     //   display: 'standalone',
     //   background_color: '#fff',
