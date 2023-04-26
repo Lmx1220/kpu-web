@@ -1,11 +1,14 @@
 import type { RouteRecordRaw } from 'vue-router'
+import { useNProgress } from '@vueuse/integrations/useNProgress'
+import '@/assets/styles/nprogress.scss'
 import router from './router'
 import { asyncRoutes } from './router/routes'
-import useRouteStore from './store/modules/route'
-import useSettingsStore from './store/modules/settings'
-import useMenuStore from './store/modules/menu'
-import useUserStore from './store/modules/user'
-import useTabbarStore from './store/modules/tabbar'
+import useRouteStore from '@/store/modules/route'
+import useSettingsStore from '@/store/modules/settings'
+import useMenuStore from '@/store/modules/menu'
+import useUserStore from '@/store/modules/user'
+import useTabbarStore from '@/store/modules/tabbar'
+const { isLoading } = useNProgress()
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   const settingsStore = useSettingsStore()
@@ -13,6 +16,9 @@ router.beforeEach(async (to, from, next) => {
   const menuStore = useMenuStore()
   const tabbarStore = useTabbarStore()
   // console.log('to', to)
+  // 是否开启进度条
+  settingsStore.settings.app.enableProgress && (isLoading.value = true)
+  // 是否已登录
   if (userStore.isLogin) {
     // 否已根据权限动态生成并注册路由
     if (routeStore.isGenerate) {
@@ -85,6 +91,8 @@ router.beforeEach(async (to, from, next) => {
 })
 router.afterEach((to, from) => {
   const settingsStore = useSettingsStore()
+  settingsStore.settings.app.enableProgress && (isLoading.value = false)
+
   if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
     settingsStore.setTitle(to.meta.breadcrumbNeste?.at(-1)?.title ?? to.meta.title, false)
   }
