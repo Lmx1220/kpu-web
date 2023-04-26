@@ -6,12 +6,15 @@
     "moduleResolution": "Node",
     "strict": true,
     "jsx": "preserve",
+    "sourceMap": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "skipLibCheck": true,
-    "noEmit": true,
     "baseUrl": "./",
     "paths": {
       "@/*": [
@@ -21,8 +24,21 @@
         "src/types/*"
       ]
     },
-    "types": ["element-plus/global", "@intlify/unplugin-vue-i18n/messages"]
+    "types": [
+      "vite/client",
+      "element-plus/global",
+      "@intlify/unplugin-vue-i18n/messages"
+    ]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "vite/plugins/components.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }
