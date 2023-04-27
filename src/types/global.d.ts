@@ -202,13 +202,13 @@ declare namespace Settings {
      * @默认值 `false`
      */
     enableIcon?: boolean
-     /**
-     * 标签页合并规则
-     * @默认值 `''` 不合并
-     * @可选值 `'routeName'` 根据路由名称，相同路由名称的路由合并
-     * @可选值 `'activeMenu'` 根据路由的 `meta.activeMenu` 字段，与指向的目标路由合并
-     */
-     mergeTabsBy?: '' | 'routeName' | 'activeMenu'
+    /**
+    * 标签页合并规则
+    * @默认值 `''` 不合并
+    * @可选值 `'routeName'` 根据路由名称，相同路由名称的路由合并
+    * @可选值 `'activeMenu'` 根据路由的 `meta.activeMenu` 字段，与指向的目标路由合并
+    */
+    mergeTabsBy?: '' | 'routeName' | 'activeMenu'
     /**
      * 是否启用记忆功能
      * @默认值 `false` 
@@ -281,6 +281,20 @@ declare namespace Settings {
      * @默认值 `true`
      */
     enableHotkeys?: boolean
+    /**
+     * 是否开启页面切换动画
+     * @默认值 `true`
+     */
+    enableTransition?: boolean
+    /**
+     * 页面切换动画
+     * @默认值 `'fade'` 淡入淡出`
+     * @可选值 `'slide-left'` 从左侧滑入
+     * @可选值 `'slide-right'` 从右侧滑入
+     * @可选值 `'slide-top'` 从顶部滑入
+     * @可选值 `'slide-bottom'` 从底部滑入
+     */
+    transitionMode?: "fade" | "slide-left" | "slide-right" | "slide-top" | "slide-bottom"
     /**
      * iframe 页面最大缓存数量
      * @默认值 `3`

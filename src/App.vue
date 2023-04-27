@@ -2,8 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import { getElementLocales } from './locales'
 
-import useTabbar from './util/composables/useTabbar'
-import useTabbarStore from './store/modules/tabbar'
+import useTabbarStore from '@/store/modules/tabbar'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
 import type { App } from '#/global'
@@ -14,6 +13,7 @@ const menuStore = useMenuStore()
 const tabbarStore = useTabbarStore()
 const tabbar = useTabbar()
 const { t, te } = useI18n()
+const { auth } = useAuth()
 const generateI18nTitle: App.GenerateI18nTitle = (key, defaultTitle) => {
   // eslint-disable-next-line no-mixed-operators
   return !!key && te(key) ? t(key) : (typeof defaultTitle === 'function' ? defaultTitle() : defaultTitle)
@@ -83,7 +83,7 @@ onMounted(() => {
       autoInsertSpace: true,
     }"
   >
-    <RouterView
+    <router-view
       v-slot="{ Component, route }"
       :style="{
         '--g-main-sidebar-actual-width': mainSidebarActualWidth,
@@ -91,9 +91,10 @@ onMounted(() => {
       }"
     >
       <component
-        :is="Component"
+        :is="Component" v-if="auth(route.meta.auth ?? '')"
       />
-    </RouterView>
+      <not-allowed v-else />
+    </router-view>
   </el-config-provider>
 </template>
 

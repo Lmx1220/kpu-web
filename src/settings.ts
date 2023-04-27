@@ -63,6 +63,7 @@ const globalSettings: Settings.all = {
   },
   mainPage: {
     enableHotkeys: true,
+    transitionMode: 'slide-right',
   //   iframeCacheMax: 9,
   //   transitionMode: 'slide-right',
   //   enableTransition: true,

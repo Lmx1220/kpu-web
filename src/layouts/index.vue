@@ -7,12 +7,14 @@ import MainSidebar from './components/MainSidebar/index.vue'
 import SubSidebar from './components/SubSidebar/index.vue'
 import Topbar from './components/Topbar/index.vue'
 import useSettingsStore from '@/store/modules/settings'
+import useKeepAliveStore from '@/store/modules/keepAlive'
 import useMenuStore from '@/store/modules/menu'
 import useMainPage from '@/util/composables/useMainPage'
 import useMenu from '@/util/composables/useMenu'
 const mainPage = useMainPage()
 const menu = useMenu()
 const settingsStore = useSettingsStore()
+const keepAliveStore = useKeepAliveStore()
 const menuStore = useMenuStore()
 onMounted(() => {
   hotkeys('alt+`', (e) => {
@@ -67,8 +69,11 @@ onMounted(() => {
               </el-icon>
             </div>
             <RouterView v-slot="{ Component, route }">
-              <transition name="main" mode="out-in" appear>
-                <KeepAlive :include="['/']">
+              <transition
+                :name="settingsStore.settings.mainPage.enableTransition ? settingsStore.settings.mainPage.transitionMode : ''"
+                mode="out-in" appear
+              >
+                <KeepAlive :include="keepAliveStore.list">
                   <component :is="Component" :key="route.fullPath" />
                 </KeepAlive>
               </transition>
@@ -333,21 +338,56 @@ header:not(.header-leave-active)+.wrapper {
 
 // #TODO 未完成 侧边栏动画待查
 // 主内容区动画
-.main-enter-active {
-  transition: 0.2s;
+.fade-enter-active,
+.slide-left-enter-active,
+.slide-right-enter-active,
+.slide-top-enter-active,
+.slide-bottom-enter-active {
+  transition: .2s;
 }
 
-.main-leave-active {
-  transition: 0.15s;
+.fade-leave-active,
+.slide-left-leave-active,
+.slide-right-leave-active,
+.slide-top-leave-active,
+.slide-bottom-leave-active {
+  transition: .15s;
 }
 
-.main-enter-from {
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-left-enter-from {
+  opacity: 0;
+  margin-left: 20px;
+}
+
+.slide-left-leave-to,
+.slide-right-enter-from {
   opacity: 0;
   margin-left: -20px;
 }
 
-.main-leave-to {
+.slide-right-leave-to {
   opacity: 0;
   margin-left: 20px;
+}
+
+.slide-top-enter-from {
+  opacity: 0;
+  margin-top: 20px;
+}
+
+.slide-top-leave-to,
+.slide-bottom-enter-from {
+  opacity: 0;
+  margin-top: -20px;
+}
+
+.slide-bottom-leave-to {
+  opacity: 0;
+  margin-top: 20px;
 }
 </style>

@@ -184,7 +184,7 @@ const useRouteStore = defineStore(
       return routes.map((route: any) => {
         switch (route.component) {
           case 'Layout':
-            route.component = () => import('@/layout/index.vue')
+            route.component = () => import('@/layouts/index.vue')
             break
           default:
             if (route.component) {

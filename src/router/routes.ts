@@ -1,6 +1,8 @@
 import type { RouteRecordRaw } from 'vue-router'
-import Laout from '@/layout/index.vue'
+import KeepAliveExample from './modules/keep.alive.example'
+import Laout from '@/layouts/index.vue'
 import type { Route } from '@/types/global'
+
 // 固定路由
 const constantRoutes: RouteRecordRaw[] = [
   {
@@ -215,6 +217,7 @@ const asyncRoutes: Route.recordMainRaw[] = [
       icon: 'sidebar-default',
     },
     children: [
+      KeepAliveExample,
       ...systemExample,
     ],
   },

@@ -66,6 +66,8 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
   },
   mainPage: {
     enableHotkeys: false,
+    enableTransition: true,
+    transitionMode: 'fade',
     iframeCacheMax: 3,
   },
   copyright: {

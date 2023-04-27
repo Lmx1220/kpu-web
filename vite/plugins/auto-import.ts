@@ -9,7 +9,7 @@ export default function createAutoImport() {
     ],
     dts: './src/types/auto-imports.d.ts',
     dirs: [
-      './src/utils/composables/**',
+      './src/util/composables/**',
     ],
   })
 }

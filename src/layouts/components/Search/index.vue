@@ -84,15 +84,8 @@ watch(() => resultList.value, () => {
 
 onMounted(() => {
   eventBus.on('global-search-toggle', (_switchType: any) => {
-    try {
-      console.log(_switchType)
-
-      isShow.value || toSearch(_switchType as string)
-      isShow.value = !isShow.value
-    }
-    catch (e) {
-      console.log(e)
-    }
+    isShow.value || toSearch(_switchType as string)
+    isShow.value = !isShow.value
   })
   hotkeys('alt+s', (e) => {
     if (settingsStore.settings.navSearch.enable) {
@@ -153,7 +146,7 @@ function getSourceList(arr: RouteRecordRaw[], path?: string, icon?: string, base
           title: item.meta?.title as string,
           i18n: item.meta?.i18n,
         })
-        getSourceList(item.children, item.path, item.meta?.icon as string, breadcrumb)
+        getSourceList(item.children, resolveRoutePath(`${path}`, item.path), item.meta?.icon as string, breadcrumb)
       }
       else {
         const breadcrumb = deepClone(baseBreadcrumb) ?? []
