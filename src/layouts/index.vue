@@ -26,21 +26,18 @@ const isIframe = computed(() => !!route.meta.iframe)
 const isLink = computed(() => !!route.meta.link)
 onMounted(() => {
   hotkeys('f5', (e) => {
-    debugger
     if (settingsStore.settings.toolbar.enablePageReload) {
       e.preventDefault()
       mainPage.reload()
     }
   })
   hotkeys('alt+`', (e) => {
-    debugger
     if (settingsStore.settings.menu.enableHotkeys) {
       e.preventDefault()
       menu.switchTo(menuStore.actived + 1 < menuStore.allMenus.length ? menuStore.actived + 1 : 0)
     }
   })
   hotkeys('alt+up,alt+down', (e, hotkeysEvent) => {
-    debugger
     if (settingsStore.settings.menu.enableHotkeys) {
       e.preventDefault()
       switch (hotkeysEvent.key) {

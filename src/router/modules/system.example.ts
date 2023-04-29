@@ -10,7 +10,7 @@ const routes: RouteRecordRaw = {
   name: 'system',
   meta: {
     title: '系统管理',
-    icon: 'sidebar-keep-alive',
+    icon: 'ri:function-line',
   },
   children: [
     {
@@ -30,7 +30,6 @@ const routes: RouteRecordRaw = {
       component: () => import('@/views/system/role/index.vue'),
       meta: {
         title: '角色管理',
-        icon: 'role',
         badge: '热门',
         roles: ['admin'],
       },
@@ -41,7 +40,6 @@ const routes: RouteRecordRaw = {
       component: () => import('@/views/system/menu/index.vue'),
       meta: {
         title: '菜单管理',
-        icon: 'menu',
         badge: 'PRO',
         roles: ['admin'],
       },
@@ -52,7 +50,6 @@ const routes: RouteRecordRaw = {
       component: () => import('@/views/system/dept/index.vue'),
       meta: {
         title: '部门管理',
-        icon: 'dept',
         badge: false,
         roles: ['admin'],
       },
@@ -63,7 +60,6 @@ const routes: RouteRecordRaw = {
       component: () => import('@/views/system/dict/index.vue'),
       meta: {
         title: '字典管理',
-        icon: 'dict',
         badge: () => true,
         roles: ['admin'],
       },
@@ -74,7 +70,6 @@ const routes: RouteRecordRaw = {
       component: () => import('@/views/system/config/index.vue'),
       meta: {
         title: '配置管理',
-        icon: 'config',
         roles: ['admin'],
       },
     },
@@ -84,7 +79,6 @@ const routes: RouteRecordRaw = {
       component: () => import('@/views/system/log/index.vue'),
       meta: {
         title: '日志管理',
-        icon: 'log',
         roles: ['admin'],
       },
     },

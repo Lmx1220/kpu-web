@@ -105,8 +105,8 @@ const useTabbarStore = defineStore(
             tabbar.title = typeof meta?.title === 'function' ? meta.title() : meta?.title
             tabbar.i18n = meta?.i18n
             tabbar.iframe = meta?.iframe
-            tabbar.icon = meta?.icon ?? meta?.breadcrumbNeste?.[meta?.breadcrumbNeste.length - 1].icon
-            tabbar.activeIcon = meta?.activeIcon ?? meta?.breadcrumbNeste?.[meta?.breadcrumbNeste.length - 1].activeIcon
+            tabbar.icon = meta?.icon ?? meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon
+            tabbar.activeIcon = meta?.activeIcon ?? meta?.breadcrumbNeste?.findLast(item => item.activeIcon)?.activeIcon
           }
           else {
             const tabbar = {
@@ -117,8 +117,8 @@ const useTabbarStore = defineStore(
               title: typeof meta?.title === 'function' ? meta.title() : meta?.title,
               i18n: meta?.i18n,
               iframe: meta?.iframe,
-              icon: meta?.icon ?? meta?.breadcrumbNeste?.[meta?.breadcrumbNeste.length - 1].icon,
-              activeIcon: meta?.activeIcon ?? meta?.breadcrumbNeste?.[meta?.breadcrumbNeste.length - 1].activeIcon,
+              icon: meta?.icon ?? meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon,
+              activeIcon: meta?.activeIcon ?? meta?.breadcrumbNeste?.findLast(item => item.activeIcon)?.activeIcon,
               name: names,
               isPin: false,
               isPermanent: false,
