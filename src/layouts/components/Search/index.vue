@@ -11,6 +11,7 @@ import useTabbarStore from '@/store/modules/tabbar'
 import { deepClone, isExternalLink, resolveRoutePath } from '@/util'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 import eventBus from '@/util/eventBus'
+
 interface SourceRouteMeta {
   icon?: string
   title: string | Function

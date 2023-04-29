@@ -1,29 +1,46 @@
 <script setup lang="ts" name="Layout">
 import hotkeys from 'hotkeys-js'
+import LinkView from './components/views/link.vue'
 import Search from './components/Search/index.vue'
+import HotkeysIntro from './components/HotkeysIntro/index.vue'
 import AppSetting from './components/AppSetting/index.vue'
 import Header from './components/Header/index.vue'
 import MainSidebar from './components/MainSidebar/index.vue'
 import SubSidebar from './components/SubSidebar/index.vue'
 import Topbar from './components/Topbar/index.vue'
+import IframeView from './components/IframeView/index.vue'
+import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
 import useKeepAliveStore from '@/store/modules/keepAlive'
 import useMenuStore from '@/store/modules/menu'
 import useMainPage from '@/util/composables/useMainPage'
 import useMenu from '@/util/composables/useMenu'
+
+const route = useRoute()
 const mainPage = useMainPage()
 const menu = useMenu()
 const settingsStore = useSettingsStore()
 const keepAliveStore = useKeepAliveStore()
 const menuStore = useMenuStore()
+const isIframe = computed(() => !!route.meta.iframe)
+const isLink = computed(() => !!route.meta.link)
 onMounted(() => {
+  hotkeys('f5', (e) => {
+    debugger
+    if (settingsStore.settings.toolbar.enablePageReload) {
+      e.preventDefault()
+      mainPage.reload()
+    }
+  })
   hotkeys('alt+`', (e) => {
+    debugger
     if (settingsStore.settings.menu.enableHotkeys) {
       e.preventDefault()
       menu.switchTo(menuStore.actived + 1 < menuStore.allMenus.length ? menuStore.actived + 1 : 0)
     }
   })
   hotkeys('alt+up,alt+down', (e, hotkeysEvent) => {
+    debugger
     if (settingsStore.settings.menu.enableHotkeys) {
       e.preventDefault()
       switch (hotkeysEvent.key) {
@@ -36,6 +53,11 @@ onMounted(() => {
       }
     }
   })
+})
+onUnmounted(() => {
+  hotkeys.unbind('f5')
+  hotkeys.unbind('alt+`')
+  hotkeys.unbind('alt+up,alt+down')
 })
 </script>
 
@@ -78,6 +100,8 @@ onMounted(() => {
                 </KeepAlive>
               </transition>
             </RouterView>
+            <IframeView v-show="isIframe && !isLink" />
+            <LinkView v-if="isLink" />
           </div>
           <Copyright />
         </div>
@@ -85,7 +109,13 @@ onMounted(() => {
       <el-backtop :right="20" :bottom="20" title="回到顶部" />
     </div>
     <Search />
-    <AppSetting />
+    <HotkeysIntro />
+    <div v-if="settingsStore.settings.app.enableAppSetting">
+      <el-icon class="app-setting" @click="eventBus.emit('global-app-setting-toggle')">
+        <svg-icon name="ep:setting" />
+      </el-icon>
+      <AppSetting />
+    </div>
   </div>
 </template>
 

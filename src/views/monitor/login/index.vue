@@ -1,11 +1,17 @@
-<script setup lang="ts">
+<script setup lang="ts" name="MonitorLogin">
 
 </script>
 
 <template>
-  <div />
+  <div class="monitor-login">
+    <h1>登录日志</h1>
+  </div>
 </template>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.monitor-login {
+  h1 {
+    color: red;
+  }
+}
 </style>

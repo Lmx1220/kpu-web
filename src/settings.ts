@@ -14,7 +14,7 @@ const globalSettings: Settings.all = {
     storagePrefix: 'fa_',
     enableWatermark: false,
     routeBaseOn: 'frontend',
-    // enableUserPreferences: false,
+    enableUserPreferences: false,
   },
   layout: {
     enableMobileAdaptation: true,

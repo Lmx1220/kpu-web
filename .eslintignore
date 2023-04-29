@@ -1,5 +1,2 @@
-dist/
-node_modules/
-babel.config.js
-.eslintrc.js
-src/types/
+dist
+node_modules

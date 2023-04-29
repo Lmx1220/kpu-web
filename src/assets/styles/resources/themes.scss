@@ -13,17 +13,17 @@ $themes: (
     sys_grey: $theme-grey,
     sys_yellow: $theme-yellow
 );
+
 @mixin set-themes-css-var() {
     @each $theme-name, $theme-map in $themes {
         @each $mode, $map in $theme-map {
-            @if ($mode == "") {
+            @if  $mode == "" {
                 [data-theme=#{$theme-name}] {
                     @each $key, $value in $map {
                         --g-#{$key}: #{$value};
                     }
                 }
-            }
-            @else if ($mode == "dark") {
+            } @else if $mode == "dark" {
                 &.dark [data-theme=#{$theme-name}] {
                     @each $key, $value in $map {
                         --g-#{$key}: #{$value};

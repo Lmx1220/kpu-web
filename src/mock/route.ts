@@ -1,4 +1,3 @@
-
 export default [
   {
     url: '/mock/route/list',
@@ -9,7 +8,7 @@ export default [
         status: 1,
         data: [
           {
-            
+
           },
         ],
       }

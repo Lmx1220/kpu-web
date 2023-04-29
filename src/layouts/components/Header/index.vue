@@ -6,6 +6,7 @@ import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
 import type { App } from '@/types/global'
 import useMenu from '@/util/composables/useMenu'
+
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 const { switchTo } = useMenu()
@@ -33,7 +34,7 @@ const generateI18nTitle: App.GenerateI18nTitle = inject('generateI18nTitle') || 
                   <el-icon v-if="item.meta?.icon">
                     <svg-icon :name="item.meta.icon" />
                   </el-icon>
-                  <span>{{ generateI18nTitle(item.meta?.i18n, item.meta?.title ?? '[ 无标题 ]') }}</span>
+                  <span>{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
                 </div>
               </div>
             </template>

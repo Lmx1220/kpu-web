@@ -1,13 +1,14 @@
-<script setup lang="ts">
-
+<script setup lang="ts" name="SystemUser">
+const mes = ref('hello world')
 </script>
 
 <template>
   <div class="user">
     <h1>用户管理</h1>
+    <p>{{ mes }}</p>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>

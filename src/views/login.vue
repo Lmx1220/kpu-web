@@ -473,7 +473,6 @@ function testAccount(account: string) {
         height: 48px;
       }
 
-
       .el-input__prefix,
       .el-input__suffix {
         display: flex;

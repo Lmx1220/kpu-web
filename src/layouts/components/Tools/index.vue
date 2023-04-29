@@ -35,6 +35,12 @@ function userCommand(command: string) {
         name: 'personalSetting',
       })
       break
+    case 'preferences':
+      eventBus.emit('global-preferences-toggle')
+      break
+    case 'hotkeys':
+      eventBus.emit('global-hotkeys-intro-toggle')
+      break
     case 'logout':
       userStore.logout().then(() => {
         router.push({
@@ -88,11 +94,6 @@ function userCommand(command: string) {
           <svg-icon :name="settingsStore.settings.app.colorScheme === 'light' ? 'i-ri:sun-line' : 'i-ri:moon-line'" />
         </el-icon>
       </span>
-      <span v-if="settingsStore.settings.toolbar.enableAppSetting" class="item" @click="eventBus.emit('global-app-setting-toggle')">
-        <el-icon>
-          <svg-icon name="i-uiw:setting-o" />
-        </el-icon>
-      </span>
     </div>
     <el-dropdown class="user-container" size="default" @command="userCommand">
       <div class="user-wrapper">
@@ -113,6 +114,12 @@ function userCommand(command: string) {
           </el-dropdown-item>
           <el-dropdown-item command="setting">
             {{ t('app.profile') }}
+          </el-dropdown-item>
+          <el-dropdown-item v-if="settingsStore.settings.app.enableUserPreferences" command="preferences">
+            {{ t('app.preferences') }}
+          </el-dropdown-item>
+          <el-dropdown-item v-if="settingsStore.mode === 'pc'" divided command="hotkeys">
+            {{ t('app.hotkeys') }}
           </el-dropdown-item>
           <el-dropdown-item divided command="logout">
             {{ t('app.logout') }}

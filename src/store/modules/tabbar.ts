@@ -3,6 +3,7 @@ import useSettingsStore from './settings'
 import useUserStore from './user'
 import useRouteStore from './route'
 import useKeepAliveStore from './keepAlive'
+import useIframeStore from './iframe'
 import storage from '@/util/storage'
 import type { Tabbar } from '@/types/global'
 import api from '@/api'
@@ -15,6 +16,7 @@ const useTabbarStore = defineStore(
     const userStore = useUserStore()
     const routeStore = useRouteStore()
     const keepAliveStore = useKeepAliveStore()
+    const iframeStore = useIframeStore()
     const list = ref<Tabbar.recordRaw[]>([])
     const leaveIndex = ref(-1)
 
@@ -139,12 +141,18 @@ const useTabbarStore = defineStore(
     function remove(tabId: string) {
       let keepName: string[] = []
       let removeName: string[] = []
+      const iframePath: string[] = []
       list.value.forEach((v) => {
         if (v.tabId === tabId) {
-          removeName.push(...v.name ?? [])
+          if (v.iframe) {
+            iframePath.push(v.fullPath)
+          }
+          else {
+            removeName.push(...v.name)
+          }
         }
         else {
-          keepName.push(...v.name ?? [])
+          keepName.push(...v.name)
         }
       })
       keepName = keepName.flat()
@@ -155,24 +163,31 @@ const useTabbarStore = defineStore(
           name.push(v)
         }
       })
+      // 如果是手动点击关闭 tab 标签页，则删除页面缓存
+      keepAliveStore.remove(name)
+      // 删除 iframe
+      iframeStore.close(iframePath)
       list.value = list.value.filter((item) => {
         return item.tabId !== tabId
       })
-      // 如果是手动点击关闭 tab 标签页，则删除页面缓存
-      keepAliveStore.remove(name)
-      //  #TODO: 缺少关闭
       updateStorage()
     }
     // 删除两侧非常驻和固定标签页
     function removeOtherSide(tabId: string) {
       let keepName: string[] = []
       let removeName: string[] = []
+      const iframePath: string[] = []
       list.value.forEach((v) => {
         if (v.tabId !== tabId && !v.isPin) {
-          removeName.push(...v.name ?? [])
+          if (v.iframe) {
+            iframePath.push(v.fullPath)
+          }
+          else {
+            removeName.push(...v.name)
+          }
         }
         else {
-          keepName.push(...v.name ?? [])
+          keepName.push(...v.name)
         }
       })
       keepName = keepName.flat()
@@ -183,11 +198,11 @@ const useTabbarStore = defineStore(
           name.push(v)
         }
       })
+      keepAliveStore.remove(name)
+      iframeStore.close(iframePath)
       list.value = list.value.filter((item) => {
         return item.tabId === tabId || item.isPermanent || item.isPin
       })
-      keepAliveStore.remove(name)
-      // #TODO: 缺少关闭
       updateStorage()
     }
     // 删除左侧非常驻和固定标签页
@@ -196,12 +211,18 @@ const useTabbarStore = defineStore(
       const index = list.value.findIndex(item => item.tabId === tabId)
       let keepName: string[] = []
       let removeName: string[] = []
+      const iframePath: string[] = []
       list.value.forEach((v, i) => {
         if (i < index && !v.isPin) {
-          removeName.push(...v.name ?? [])
+          if (v.iframe) {
+            iframePath.push(v.fullPath)
+          }
+          else {
+            removeName.push(...v.name)
+          }
         }
         else {
-          keepName.push(...v.name ?? [])
+          keepName.push(...v.name)
         }
       })
       keepName = keepName.flat()
@@ -212,11 +233,11 @@ const useTabbarStore = defineStore(
           name.push(v)
         }
       })
+      keepAliveStore.remove(name)
+      iframeStore.close(iframePath)
       list.value = list.value.filter((item, i) => {
         return i >= index || item.isPermanent || item.isPin
       })
-      keepAliveStore.remove(name)
-      // #TODO: 缺少关闭
       updateStorage()
     }
     // 删除右侧非常驻和固定标签页
@@ -225,12 +246,18 @@ const useTabbarStore = defineStore(
       const index = list.value.findIndex(item => item.tabId === tabId)
       let keepName: string[] = []
       let removeName: string[] = []
+      const iframePath: string[] = []
       list.value.forEach((v, i) => {
         if (i > index && !v.isPin) {
-          removeName.push(...v.name ?? [])
+          if (v.iframe) {
+            iframePath.push(v.fullPath)
+          }
+          else {
+            removeName.push(...v.name)
+          }
         }
         else {
-          keepName.push(...v.name ?? [])
+          keepName.push(...v.name)
         }
       })
       keepName = keepName.flat()
@@ -241,11 +268,13 @@ const useTabbarStore = defineStore(
           name.push(v as string)
         }
       })
+
+      keepAliveStore.remove(name)
+      iframeStore.close(iframePath)
       list.value = list.value.filter((item, i) => {
         return i <= index || item.isPermanent || item.isPin
       })
       updateStorage()
-      keepAliveStore.remove(name)
     }
     // 固定标签页（移动到最后一个常驻或固定标签页后面，如果没有则移动至第一个）
     function pin(tabId: string) {

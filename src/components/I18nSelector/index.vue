@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { getElementLocales } from '@/locales'
 import useSettingsStore from '@/store/modules/settings.js'
 import type { App } from '#/global'
+
 // 切换语言工具
 const { locale } = useI18n()
 const settingsStore = useSettingsStore()
@@ -11,7 +12,7 @@ const locales = computed(() => getElementLocales())
 // 生成国际化标题
 const generateI18nTitle = inject('generateI18nTitle') as App.GenerateI18nTitle
 
-const languageCommand = (command: string) => {
+function languageCommand(command: string) {
   // 切换语言
   locale.value = command
   settingsStore.setDefaultLang(command)

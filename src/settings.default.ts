@@ -13,6 +13,8 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     enableDynamicTitle: false,
     storagePrefix: 'fa_',
     enableWatermark: false,
+    enableAppSetting: true,
+    enableUserPreferences: false,
   },
   home: {
     enable: true,
@@ -57,7 +59,6 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     enableFullscreen: true,
     enablePageReload: true,
     enableColorScheme: true,
-    enableAppSetting: true,
   },
   breadcrumb: {
     enable: true,

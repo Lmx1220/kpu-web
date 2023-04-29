@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
 import eventBus from '@/util/eventBus'
+
 const route = useRoute()
 
 const settingsStore = useSettingsStore()

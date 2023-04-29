@@ -3,15 +3,18 @@ import type { RouteMeta, RouteRecordRaw } from 'vue-router'
 import useSettingsStore from './settings'
 
 import useUserStore from './user'
+import useTabbarStore from './tabbar'
 import { resolveRoutePath } from '@/util'
 import type { HttpRequest, Route } from '#/global'
 import api from '@/api'
 import systemRoutes from '@/router/modules/systemRoutes'
+
 const useRouteStore = defineStore(
   'route',
   () => {
     const settingsStore = useSettingsStore()
     const userStore = useUserStore()
+    const tabbarStore = useTabbarStore()
     // 是否已根据权限动态生成并注册路由
     const isGenerate = ref(false)
     const routesRaw = ref<Route.recordMainRaw[]>([])
@@ -178,6 +181,7 @@ const useRouteStore = defineStore(
         await userStore.getPermissions()
       }
       isGenerate.value = true
+      settingsStore.settings.tabbar.enable && tabbarStore.initPermanentTab()
     }
     // 格式化后端路由数据
     function formatBackRoutes(routes: any, views = import.meta.glob('../../views/**/*.vue')): Route.recordMainRaw[] {

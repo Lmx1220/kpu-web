@@ -73,8 +73,8 @@ function pathCompile(path: string) {
           <el-breadcrumb-item v-for="(item, index) in breadcrumbList" :key="item.path" :to="index < breadcrumbList.length - 1 ? pathCompile(item.path) : ''">
             {{
               index < breadcrumbList.length - 1
-                ? generateI18nTitle(item.i18n, item.title ?? ' [ 无标题 ] ')
-                : settingsStore.titleFirst ? settingsStore.title : generateI18nTitle(item.i18n, item.title ?? ' [ 无标题 ] ')
+                ? generateI18nTitle(item.i18n, item.title)
+                : settingsStore.titleFirst ? settingsStore.title : generateI18nTitle(item.i18n, item.title)
             }}
           </el-breadcrumb-item>
         </transition-group>

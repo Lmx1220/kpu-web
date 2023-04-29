@@ -32,13 +32,13 @@ const { switchTo } = useMenu()
             :class="{ active: index === menuStore.actived }"
           >
             <div
-              class="item" :title="generateI18nTitle(item.meta?.i18n, item.meta?.title ?? '[ 无标题 ]')"
+              class="item" :title="generateI18nTitle(item.meta?.i18n, item.meta?.title)"
               @click="switchTo(index)"
             >
               <el-icon v-if="item.meta?.icon">
                 <svg-icon :name="item.meta.icon" />
               </el-icon>
-              <span>{{ generateI18nTitle(item.meta?.i18n, item.meta?.title ?? '[ 无标题 ]') }}</span>
+              <span>{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
             </div>
           </div>
         </template>

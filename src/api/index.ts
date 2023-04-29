@@ -1,4 +1,5 @@
 import HttpRequest from './request'
+
 const request = new HttpRequest({
   baseURL: 'http://',
   timeout: 10000,

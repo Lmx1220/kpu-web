@@ -6,7 +6,7 @@ export default function useI18nTitle() {
   const settingsStore = useSettingsStore()
 
   const { t, te } = useI18n()
-  const generateI18nTitle: App.GenerateI18nTitle = (key, defaultTitle) => {
+  const generateI18nTitle: App.GenerateI18nTitle = (key, defaultTitle = t('route.undefined')) => {
     // eslint-disable-next-line no-mixed-operators
     return settingsStore.settings.toolbar.enableI18n && !!key && te(key) ? t(key) : (typeof defaultTitle === 'function' ? defaultTitle() : defaultTitle)
   }

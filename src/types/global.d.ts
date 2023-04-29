@@ -1,6 +1,5 @@
-import HttpRequest from "@/api/request"
-import type { StyleValue } from "vue"
-import type { RouteRecordRaw, RouteMeta, NavigationGuard, RouteRecordName } from 'vue-router'
+import type { StyleValue } from 'vue'
+import type { RouteRecordRaw } from 'vue-router'
 
 type RecursiveRequired<T> = {
   [P in keyof T]-?: RecursiveRequired<T[P]>
@@ -78,6 +77,17 @@ declare namespace Settings {
      * @可选值 `'filesystem'` 文件系统
      */
     routeBaseOn?: 'frontend' | 'backend' | 'filesystem'
+
+    /**
+     * 是否开启应用配置，强烈建议在生产环境中关闭
+     * @默认值 `false`
+     */
+    enableAppSetting?: boolean
+    /**
+     * 是否开启用户偏好设置，强烈建议在生产环境中关闭
+     * @默认值 `false`
+     */
+    enableUserPreferences?: boolean
 
   }
   interface home {
@@ -177,7 +187,7 @@ declare namespace Settings {
      * @可选值 `'static'` 静态
      * @可选值 `'sticky'` 粘性
      */
-    mode?: 'static' | 'fixed' | 'sticky',
+    mode?: 'static' | 'fixed' | 'sticky'
     /**
      * 是否切换显示标签栏和工具栏的显示位置，设置为 false 标签栏在工具栏上面，设置为 true 工具栏在标签栏上面
      * @默认值 `false`
@@ -211,7 +221,7 @@ declare namespace Settings {
     mergeTabsBy?: '' | 'routeName' | 'activeMenu'
     /**
      * 是否启用记忆功能
-     * @默认值 `false` 
+     * @默认值 `false`
      */
     enableMemory?: boolean
     /**
@@ -251,11 +261,6 @@ declare namespace Settings {
      * @默认值 `false`
      */
     enableColorScheme?: boolean
-    /**
-     * 是否开启应用配置，强烈建议在生产环境中关闭
-     * @默认值 `false`
-     */
-    enableAppSetting?: boolean
   }
   interface breadcrumb {
     /**
@@ -294,7 +299,7 @@ declare namespace Settings {
      * @可选值 `'slide-top'` 从顶部滑入
      * @可选值 `'slide-bottom'` 从底部滑入
      */
-    transitionMode?: "fade" | "slide-left" | "slide-right" | "slide-top" | "slide-bottom"
+    transitionMode?: 'fade' | 'slide-left' | 'slide-right' | 'slide-top' | 'slide-bottom'
     /**
      * iframe 页面最大缓存数量
      * @默认值 `3`
@@ -467,7 +472,7 @@ declare namespace Iframe {
 declare namespace App {
 
   interface GenerateI18nTitle {
-    (key: string | undefined, defaultTitle: string | (() => string) | Function): string
+    (key: string | undefined, defaultTitle: string | undefined | (() => string) | Function): string 
   }
 }
 
@@ -479,7 +484,6 @@ declare namespace HttpRequest {
     data: T
   }
 }
-
 
 // declare global {
 //   interface Window {

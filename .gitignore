@@ -14,8 +14,8 @@ dist-ssr
 .eslintcache
 .stylelintcache
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+# .vscode/*
+# !.vscode/extensions.json
 .idea
 .DS_Store
 *.suo
@@ -23,3 +23,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.eslintrc-auto-import.json

@@ -110,15 +110,6 @@ watch(() => route, (val) => {
   deep: true,
 })
 
-onMounted(() => {
-  tabs.value.addEventListener('DOMMouseScroll', handlerMouserScroll, false)
-  tabs.value.addEventListener('mousewheel', handlerMouserScroll, false)
-})
-onBeforeUnmount(() => {
-  tabs.value.removeEventListener('DOMMouseScroll', handlerMouserScroll)
-  tabs.value.removeEventListener('mousewheel', handlerMouserScroll)
-})
-
 function tabbarScrollTip() {
   if (tabContainer.value.$el.clientWidth > tabs.value.clientWidth && !storage.local.has('tabbarScrollTip')) {
     ElMessageBox.confirm('顶部标签栏数量超过展示区域范围，你可以将鼠标移到标签栏上，然后通过鼠标滚轮滑动浏览', '温馨提示', {
@@ -263,12 +254,12 @@ onMounted(() => {
         case 'alt+q':
           if (tabbarStore.list[0].tabId !== activedTabId.value) {
             const index = tabbarStore.list.findIndex(item => item.tabId === activedTabId.value)
-            router.push(`${tabbarStore.list[index].fullPath}`)
+            router.push(`${tabbarStore.list[index - 1].fullPath}`)
           }
 
           break
         case 'alt+e':
-          if ((tabbarStore.list[0].tabId ?? 0) !== activedTabId.value) {
+          if (tabbarStore.list.at(-1)?.tabId !== activedTabId.value) {
             const index = tabbarStore.list.findIndex(item => item.tabId === activedTabId.value)
             router.push(`${tabbarStore.list[index + 1].fullPath}`)
           }
@@ -321,7 +312,7 @@ onUnmounted(
             'actived': element.tabId === activedTabId,
             'no-drag': element.isPermanent || element.isPin,
           }"
-          :title="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element.title ?? '[ 无标题 ]')"
+          :title="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element.title)"
           @click="$router.push(`${element.fullPath}`)" @dblclick="settingsStore.setMainPageMaximize(undefined)"
           @contextmenu="onTabbarContextmenu($event, element)"
         >
@@ -329,7 +320,7 @@ onUnmounted(
           <div class="tab-background" />
           <div class="tab-content">
             <div
-              :key="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element?.title ?? '[ 无标题 ]')"
+              :key="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element?.title)"
               class="title"
             >
               <el-icon
@@ -339,7 +330,7 @@ onUnmounted(
                 <svg-icon :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)" />
               </el-icon>
               {{ settingsStore.titleFirst && element.tabId === activedTabId ? element.title
-                : generateI18nTitle(element.i18n, element.title ?? '[ 无标题 ]') }}
+                : generateI18nTitle(element.i18n, element.title) }}
             </div>
             <div class="drag-handle" />
             <el-icon
@@ -408,7 +399,7 @@ onUnmounted(
               >
                 <div
                   class="title"
-                  :title="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element.title ?? '[ 无标题 ]')"
+                  :title="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element.title)"
                   @click="$router.push(`${element.fullPath}`)"
                 >
                   <el-icon
@@ -418,7 +409,7 @@ onUnmounted(
                     <svg-icon :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)" />
                   </el-icon>
                   {{ settingsStore.titleFirst && element.tabId === activedTabId ? element.title
-                    : generateI18nTitle(element.i18n, element.title ?? '[ 无标题 ]') }}
+                    : generateI18nTitle(element.i18n, element.title) }}
                 </div>
                 <el-icon class="action-icon" @click.stop="tabbar.closeById(`${element.tabId}`)">
                   <svg-icon name="i-ri:close-fill" />

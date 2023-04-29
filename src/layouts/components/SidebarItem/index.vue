@@ -2,7 +2,7 @@
 import SidebarItem from '../SidebarItem/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import type { Menu } from '@/types/global'
-import { isExternalLink, resolveRoutePath } from '@/util'
+import { resolveRoutePath } from '@/util'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 
 const props = defineProps({
@@ -79,14 +79,14 @@ function badge(badge: number | boolean | string | Function | undefined) {
   <div class="sidebar-item">
     <el-sub-menu
       v-if="settingsStore.settings.app.routeBaseOn !== 'filesystem' && item.path === undefined"
-      :title="generateI18nTitle(item.meta?.i18n, item.meta?.title ?? '[ 无标题 ]')" :index="JSON.stringify(item)"
+      :title="generateI18nTitle(item.meta?.i18n, item.meta?.title)" :index="JSON.stringify(item)"
     >
       <template #title>
         <div class="item">
           <el-icon v-if="item.meta?.icon" class="title-icon">
             <svg-icon :name="item.meta.icon" />
           </el-icon>
-          <span class="title">{{ generateI18nTitle(item.meta?.i18n, item.meta?.title ?? '[ 无标题 ]') }}</span>
+          <span class="title">{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
         </div>
       </template>
       <template v-for="route in item.children">
@@ -97,19 +97,15 @@ function badge(badge: number | boolean | string | Function | undefined) {
       v-else-if="!hasChildren" v-slot="{ href, navigate, isActive, isExactActive }" custom
       :to="resolveRoutePath(basePath, item.path)"
     >
-      <a
-        :href="isExternalLink(resolveRoutePath(basePath, item.path)) ? resolveRoutePath(basePath, item.path) : href"
-        :class="[isActive && 'router-link-active', isExactActive && 'router-link-exact-active']"
-        :target="isExternalLink(resolveRoutePath(basePath, item.path)) ? '_blank' : '_self'" @click="navigate"
-      >
+      <a :href="item.meta?.link ? item.meta.link : href" :class="[isActive && 'router-link-active', isExactActive && 'router-link-exact-active']" :target="item.meta?.link ? '_blank' : '_self'" @click="navigate">
         <el-menu-item
-          :title=" generateI18nTitle(item.meta?.i18n, item.meta?.title ?? '[ 无标题 ]') "
+          :title=" generateI18nTitle(item.meta?.i18n, item.meta?.title) "
           :index="resolveRoutePath(basePath, item.path)"
         >
           <el-icon v-if="iconName(isActive || isExactActive, item.meta?.icon, item.meta?.activeIcon)" class="title-icon">
             <svg-icon :name="iconName(isActive || isExactActive, item.meta?.icon, item.meta?.activeIcon)" />
           </el-icon>
-          <span class="title">{{ generateI18nTitle(item.meta?.i18n, item.meta?.title ?? '[ 无标题 ]') }}</span>
+          <span class="title">{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
           <span
             v-if="badge(item.meta?.badge).visible" class="badge" :class="{
               'badge-dot': badge(item.meta?.badge).type === 'dot',
@@ -120,7 +116,7 @@ function badge(badge: number | boolean | string | Function | undefined) {
       </a>
     </router-link>
     <el-sub-menu
-      v-else :title=" generateI18nTitle(item.meta?.i18n, item.meta?.title ?? '[ 无标题 ]') "
+      v-else :title=" generateI18nTitle(item.meta?.i18n, item.meta?.title) "
       :index="settingsStore.settings.app.routeBaseOn !== 'filesystem' ? resolveRoutePath(basePath, item.path) : JSON.stringify(item)"
     >
       <template #title>
@@ -130,7 +126,7 @@ function badge(badge: number | boolean | string | Function | undefined) {
         <el-icon v-if="item.meta?.activeIcon || item.meta?.icon" class="title-icon active">
           <svg-icon :name="item.meta.activeIcon || item.meta.icon" />
         </el-icon>
-        <span class="title">{{ generateI18nTitle(item.meta?.i18n, item.meta?.title ?? '[ 无标题 ]') }}</span>
+        <span class="title">{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
         <span
           v-if="badge(item.meta?.badge).visible" class="badge" :class="{
             'badge-dot': badge(item.meta?.badge).type === 'dot',

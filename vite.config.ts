@@ -1,7 +1,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { defineConfig, loadEnv } from 'vite'
+import dayjs from 'dayjs'
+import pkg from './package.json'
 import createVitePlugins from './vite/plugins'
+
 // https://vitejs.dev/config/
 export default ({ mode, command }) => {
   const env = loadEnv(mode, process.cwd())
@@ -43,6 +46,15 @@ export default ({ mode, command }) => {
       //     drop_console: env.VITE_BUILD_DROP_CONSOLE === 'true',
       //   },
       // },
+    },
+    define: {
+      __SYSTEM_INFO__: JSON.stringify({
+        pkg: {
+          dependencies: pkg.dependencies,
+          devDependencies: pkg.devDependencies,
+        },
+        lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      }),
     },
     plugins: createVitePlugins(env, command === 'build'),
     resolve: {

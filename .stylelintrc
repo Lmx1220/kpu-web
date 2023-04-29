@@ -2,7 +2,8 @@
   "extends": [
     "stylelint-config-standard",
     "stylelint-config-standard-scss",
-    "stylelint-config-standard-vue/scss"
+    "stylelint-config-standard-vue/scss",
+    "stylelint-stylistic"
   ],
   "plugins": [
     "stylelint-scss"
@@ -22,7 +23,8 @@
           "if",
           "use",
           "forward",
-          "include"
+          "include",
+          "each"
         ]
       }
     ],
@@ -40,7 +42,8 @@
           "if",
           "use",
           "forward",
-          "include"
+          "include",
+          "each"
         ]
       }
     ],

@@ -2,6 +2,7 @@
 import Tabbar from './Tabbar/index.vue'
 import Toolbar from './Toolbar/index.vue'
 import useSettingsStore from '@/store/modules/settings'
+
 const hide = ref(false)
 const settingsStore = useSettingsStore()
 

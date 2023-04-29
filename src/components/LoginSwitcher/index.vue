@@ -2,8 +2,6 @@
 const route = useRoute()
 const router = useRouter()
 function command(name: string) {
-  console.log(name)
-
   router.replace({ name })
 }
 </script>
@@ -30,7 +28,3 @@ function command(name: string) {
     </el-dropdown>
   </div>
 </template>
-
-<style scoped>
-
-</style>

@@ -1,44 +1,47 @@
 {
-    "app": {
-        "account": "account",
-        "captcha": "captcha",
-        "check": "Submit",
-        "goLogin": "go login",
-        "login": "Login",
-        "logout": "Logout",
-        "newPassword": "new password",
-        "password": "password",
-        "profile": "Profile",
-        "sendCaptcha": "send captcha",
-        "search": {
-            "input": "Search page, support title, URL fuzzy query",
-            "alt_s": "Wake up search panel",
-            "up_down": "Switch search results",
-            "enter": "Visit page",
-            "esc": "Exit",
-            "type": {
-                "menu": "Search menu",
-                "tab": "Search tag"
-            }
-        },
-        "tabbar": {
-            "reload": "Reload",
-            "close": "Close",
-            "pin": "Pin",
-            "unpin": "Unpin",
-            "maximize": "Maximize",
-            "closeOtherSide": "Close Otherside Tabs",
-            "closeLeftSide": "Close Leftside Tabs",
-            "closeRightSide": "Close Rightside Tabs"
-        }
+  "app": {
+    "account": "account",
+    "captcha": "captcha",
+    "check": "Submit",
+    "goLogin": "go login",
+    "hotkeys": "Hotkeys Introduction",
+    "login": "Login",
+    "logout": "Logout",
+    "newPassword": "new password",
+    "password": "password",
+    "preferences": "Preferences",
+    "profile": "Profile",
+    "search": {
+      "alt_s": "Wake up search panel",
+      "enter": "Visit page",
+      "esc": "Exit",
+      "input": "Search page, support title, URL fuzzy query",
+      "type": {
+        "menu": "Search menu",
+        "tab": "Search tag"
+      },
+      "up_down": "Switch search results"
     },
-    "route": {
-        "login": "Login",
-        "home": "Home",
-        "personal": {
-            "setting": "Personal Setting",
-            "editpassword": "Edit Password"
-        },
-        "i18n": "I18N"
+    "sendCaptcha": "send captcha",
+    "tabbar": {
+      "close": "Close",
+      "closeLeftSide": "Close Leftside Tabs",
+      "closeOtherSide": "Close Otherside Tabs",
+      "closeRightSide": "Close Rightside Tabs",
+      "maximize": "Maximize",
+      "pin": "Pin",
+      "reload": "Reload",
+      "unpin": "Unpin"
     }
+  },
+  "route": {
+    "home": "Home",
+    "i18n": "I18N",
+    "login": "Login",
+    "personal": {
+      "editpassword": "Edit Password",
+      "setting": "Personal Setting"
+    },
+    "undefined": "[ No title ]"
+  }
 }

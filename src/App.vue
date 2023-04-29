@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import hotkeys from 'hotkeys-js'
 import { getElementLocales } from './locales'
 
+import eventBus from '@/util/eventBus'
 import useTabbarStore from '@/store/modules/tabbar'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
 import type { App } from '#/global'
+
 const route = useRoute()
 const locales = computed(() => getElementLocales())
 const settingsStore = useSettingsStore()
@@ -71,6 +74,10 @@ onMounted(() => {
   window.onresize = () => {
     settingsStore.setMode(document.documentElement.clientWidth)
   }
+  hotkeys('alt+i', () => {
+    eventBus.emit('global-system-info-toggle')
+  })
+
   return () => {
     window.onresize = null
   }
@@ -83,18 +90,17 @@ onMounted(() => {
       autoInsertSpace: true,
     }"
   >
-    <router-view
+    <RouterView
       v-slot="{ Component, route }"
       :style="{
         '--g-main-sidebar-actual-width': mainSidebarActualWidth,
         '--g-sub-sidebar-actual-width': subSidebarActualWidth,
       }"
     >
-      <component
-        :is="Component" v-if="auth(route.meta.auth ?? '')"
-      />
+      <component :is="Component" v-if="auth(route.meta.auth ?? '')" />
       <not-allowed v-else />
-    </router-view>
+    </RouterView>
+    <system-info />
   </el-config-provider>
 </template>
 
