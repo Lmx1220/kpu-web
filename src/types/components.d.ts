@@ -10,7 +10,10 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Copyright: typeof import('./../components/Copyright/index.vue')['default']
+    FixedActionBar: typeof import('./../components/FixedActionBar/index.vue')['default']
     I18nSelector: typeof import('./../components/I18nSelector/index.vue')['default']
+    IconPicker: typeof import('./../components/IconPicker/index.vue')['default']
+    LayoutContainer: typeof import('./../components/LayoutContainer/index.vue')['default']
     LoginSwitcher: typeof import('./../components/LoginSwitcher/index.vue')['default']
     NotAllowed: typeof import('./../components/NotAllowed/index.vue')['default']
     PageHeader: typeof import('./../components/PageHeader/index.vue')['default']

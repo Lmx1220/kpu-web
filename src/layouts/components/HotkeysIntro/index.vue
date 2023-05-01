@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" name="HotkeysIntro">
 import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
 

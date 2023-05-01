@@ -441,6 +441,41 @@ declare namespace Menu {
     }
     children: recordRaw[]
   }
+  /** 列表 */
+  interface raw {
+    id: string
+    parentId: string
+    name: string
+    path: string
+    redirect: string
+    component: string
+    auths: auths[]
+    meta: {
+      title?: string
+      icon?: string
+      activeIcon?: string
+      i18n?: string
+      defaultOpened?: boolean
+      permanent?: boolean
+      auth: string[]
+      sidebar?: boolean
+      breadcrumb?: boolean
+      copyright?: boolean
+      cache: boolean| string[]
+      noCache: string[]
+      badge: number | string
+      link?: string
+      iframe?: string
+      paddingBottom?: StyleValue
+      activeMenu?: string
+    }
+    children?: raw[]
+  }
+  interface auths {
+    id: string
+    name: string
+    value: string
+    sort: number
 }
 
 declare namespace Tabbar {
@@ -472,7 +507,7 @@ declare namespace Iframe {
 declare namespace App {
 
   interface GenerateI18nTitle {
-    (key: string | undefined, defaultTitle: string | undefined | (() => string) | Function): string 
+    (key: string | undefined, defaultTitle: string | undefined | (() => string) | Function): string
   }
 }
 

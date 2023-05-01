@@ -37,12 +37,57 @@ const routes: RouteRecordRaw = {
     {
       path: 'menu',
       name: 'menu',
-      component: () => import('@/views/system/menu/index.vue'),
+      redirect: '/system/menu',
       meta: {
         title: '菜单管理',
-        badge: 'PRO',
-        roles: ['admin'],
+        i18n: 'route.general.menu.root',
+        badge: '风格1',
       },
+      children:
+        [
+          {
+            path: '',
+            name: 'menuList',
+            component: () => import('@/views/system/menu/index.vue'),
+            meta: {
+              title: '菜单列表',
+              badge: 'PRO',
+              roles: ['admin'],
+              sidebar: false,
+              cache: ['menuCreate', 'menuEdit'],
+            },
+          },
+          {
+            path: 'detail',
+            name: 'menuCreate',
+            component: () => import('@/views/system/menu/detail.vue'),
+            meta: {
+              title: '新增导航',
+              i18n: 'route.general.menu.create',
+              sidebar: false,
+              activeMenu: '/system/menu',
+              cache: true,
+              noCache: 'menuList',
+              copyright: false,
+              paddingBottom: '80px',
+            },
+          },
+          {
+            path: 'detail/:id',
+            name: 'menuEdit',
+            component: () => import('@/views/system/menu/detail.vue'),
+            meta: {
+              title: '编辑导航',
+              i18n: 'route.general.menu.edit',
+              sidebar: false,
+              activeMenu: '/system/menu',
+              cache: true,
+              noCache: 'menuList',
+              copyright: false,
+              paddingBottom: '80px',
+            },
+          },
+        ],
     },
     {
       path: 'dept',
