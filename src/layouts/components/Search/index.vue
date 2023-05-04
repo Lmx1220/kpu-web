@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import hotkeys from 'hotkeys-js'
 import type { RouteRecordRaw } from 'vue-router'
-import type { Tabbar } from '@/types/global.d.ts'
+import type { Tabbar } from '@/types/global'
 import useSettingsStore from '@/store/modules/settings'
 import useRouteStore from '@/store/modules/route'
 import useTabbarStore from '@/store/modules/tabbar'
@@ -34,7 +34,7 @@ const isShow = ref(false)
 const searchInput = ref('')
 const sourceList: Ref<SourceRouteMeta[]> = ref([])
 const actived = ref(-1)
-const resultList = computed(() => {
+const resultList: Ref<SourceRouteMeta[]> = computed(() => {
   let result = []
   result = sourceList.value.filter((item) => {
     let flag = false

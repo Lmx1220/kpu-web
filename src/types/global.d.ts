@@ -430,6 +430,7 @@ declare namespace Menu {
     }
     children?: recordRaw[]
   }
+
   /** 主导航 */
   interface recordMainRaw {
     meta?: {
@@ -441,6 +442,7 @@ declare namespace Menu {
     }
     children: recordRaw[]
   }
+
   /** 列表 */
   interface raw {
     id: string
@@ -461,7 +463,7 @@ declare namespace Menu {
       sidebar?: boolean
       breadcrumb?: boolean
       copyright?: boolean
-      cache: boolean| string[]
+      cache: boolean | string[]
       noCache: string[]
       badge: number | string
       link?: string
@@ -471,13 +473,14 @@ declare namespace Menu {
     }
     children?: raw[]
   }
+
   interface auths {
     id: string
     name: string
     value: string
     sort: number
+  }
 }
-
 declare namespace Tabbar {
   interface recordRaw {
     tabId: string
@@ -519,10 +522,3 @@ declare namespace HttpRequest {
     data: T
   }
 }
-
-// declare global {
-//   interface Window {
-//     WebKitMutationObserver: typeof MutationObserver;
-//     MozMutationObserver: typeof MutationObserver;
-//   }
-// }
