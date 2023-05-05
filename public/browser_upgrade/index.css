@@ -1,6 +1,7 @@
 #app {
     height: 100%;
 }
+
 .fantastic-admin-home {
     position: absolute;
     z-index: 10000;
@@ -16,6 +17,7 @@
     color: #736477;
     background-color: snow;
 }
+
 .fantastic-admin-home .loading {
     height: 40px;
     width: 40px;
@@ -24,13 +26,15 @@
     justify-content: center;
     flex-wrap: wrap;
 }
-.fantastic-admin-home .square {
+
+.fantastic-admin-home .square { 
     display: flex;
     align-items: center;
     justify-content: center;
     height: 20px;
     width: 20px;
 }
+
 .fantastic-admin-home .square::before {
     content: "";
     width: 10px;
@@ -38,21 +42,27 @@
     border-radius: 15%;
     border: 3px solid #8c858f;
 }
+
 .fantastic-admin-home .loading.animate .square::before {
     animation: square-to-dot-animation 1.2s linear;
 }
+
 .fantastic-admin-home .loading.animate .square:nth-child(1)::before {
     animation-delay: calc(100ms * 1);
 }
+
 .fantastic-admin-home .loading.animate .square:nth-child(2)::before {
     animation-delay: calc(100ms * 2);
 }
+
 .fantastic-admin-home .loading.animate .square:nth-child(3)::before {
     animation-delay: calc(100ms * 3);
 }
+
 .fantastic-admin-home .loading.animate .square:nth-child(4)::before {
     animation-delay: calc(100ms * 4);
 }
+
 @keyframes square-to-dot-animation {
     15%,
     55% {
@@ -62,6 +72,7 @@
         margin: 5px;
         border-width: 5px;
     }
+
     70% {
         border-radius: 15%;
         width: 10px;
@@ -70,10 +81,12 @@
         border-width: 3px;
     }
 }
+
 .fantastic-admin-home .text {
     font-size: 24px;
     margin-top: 20px;
 }
+
 #browser-upgrade {
     position: absolute;
     z-index: 10001;
@@ -86,20 +99,24 @@
     color: #736477;
     background-color: snow;
 }
+
 #browser-upgrade .title {
     margin: 40px 0;
     text-align: center;
     font-size: 24px;
 }
+
 #browser-upgrade .browsers {
     text-align: center;
 }
+
 #browser-upgrade .browsers .browser {
     display: inline-block;
     margin: 0 20px;
     cursor: pointer;
     text-decoration: none;
 }
+
 #browser-upgrade .browsers .browser .browser-icon {
     display: block;
     width: 50px;
@@ -107,6 +124,7 @@
     margin: 0 auto;
     border: none;
 }
+
 #browser-upgrade .browsers .browser .browser-name {
     text-align: center;
     margin-top: 10px;
@@ -114,6 +132,7 @@
     color: #736477;
     border-bottom: 1px solid transparent;
 }
+
 #browser-upgrade .browsers .browser:hover .browser-name {
     border-bottom: 1px solid #736477;
 }

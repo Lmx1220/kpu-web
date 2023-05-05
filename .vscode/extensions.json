@@ -1,10 +1,13 @@
 {
-	"recommendations": [
-		"EditorConfig.EditorConfig",
-		"mikestead.dotenv",
-		"dbaeumer.vscode-eslint",
-		"stylelint.vscode-stylelint",
-    "Vue.volar",
+  "recommendations": [
+    "EditorConfig.EditorConfig",
+    "mikestead.dotenv",
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint",
+    "bradlc.vscode-tailwindcss",
+    "Vue.volar", 
     "Vue.vscode-typescript-vue-plugin",
-	]
+    "Lokalise.i18n-ally"
+  ]
+
 }
