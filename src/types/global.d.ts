@@ -233,7 +233,7 @@ declare namespace Settings {
      *  @默认值 `'local'` 本地
      *  @可选值 `'server'` 服务器
      */
-    storageTo?: 'local'
+    storageTo?: 'local'| 'server'
   }
   interface toolbar {
     /**
@@ -279,6 +279,18 @@ declare namespace Settings {
      * @默认值 `false`
      */
     enableMainMenu?: boolean
+  }
+  interface favorites {
+    /**
+     * 是否开启收藏夹
+     * @默认值 `true`
+     */
+    enable?: boolean
+    /**
+     * @默认值 `'local'` 本地
+     * @可选值 `'server'` 服务器
+     */
+    storageTo?: 'local'|'server'
   }
   interface mainPage {
     /**
@@ -366,6 +378,8 @@ declare namespace Settings {
     mainPage?: mainPage
     /** 导航搜索设置 */
     navSearch?: navSearch
+    /** 收藏夹设置 */
+    favorites?: favorites
     /** 底部版权设置 */
     copyright?: copyright
   }

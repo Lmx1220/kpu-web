@@ -244,7 +244,7 @@ function onTabbarContextmenu(event: MouseEvent, routeItem: Tabbar.recordRaw) {
 }
 function iconName(enableIcon: boolean, icon: string | undefined, activeIcon: string | undefined) {
   // eslint-disable-next-line no-mixed-operators
-  return !enableIcon && icon || enableIcon && activeIcon || icon
+  return !enableIcon && icon || enableIcon && activeIcon || icon || ''
 }
 onMounted(() => {
   hotkeys('alt+q,alt+e,alt+w,alt+1,alt+2,alt+3,alt+4,alt+5,alt+6,alt+7,alt+8,alt+9,alt+0', (keyboardEvent, hotkeysEvent) => {
@@ -332,19 +332,20 @@ onUnmounted(
               {{ settingsStore.titleFirst && element.tabId === activedTabId ? element.title
                 : generateI18nTitle(element.i18n, element.title) }}
             </div>
-            <div class="drag-handle" />
             <el-icon
               v-if="!element.isPermanent && element.isPin" class="action-icon"
               @click.stop="tabbarStore.unPin(`${element.tabId}`)"
             >
               <svg-icon name="i-ri:pushpin-2-fill" />
             </el-icon>
+
             <el-icon
               v-else-if="!element.isPermanent && tabbarStore.list.length > 1" class="action-icon"
               @click.stop="tabbar.closeById(`${element.tabId}`)"
             >
               <svg-icon name="i-ri:close-fill" />
             </el-icon>
+            <div class="drag-handle" />
           </div>
         </div>
       </transition-group>
@@ -747,11 +748,13 @@ onUnmounted(
 
           .drag-handle {
             position: absolute;
+            z-index: 9;
             inset: 0;
           }
 
           .action-icon {
             position: absolute;
+            z-index: 10;
             top: 50%;
             right: 6px;
             margin-top: -9px;
@@ -883,17 +886,14 @@ onUnmounted(
 
           .tab-content {
             .title {
-              left: 20px;
-              right: 36px;
-            }
+              &:has( + .action-icon) {
+                margin-right: 28px
+              }
 
-            .drag-handle {
-              left: 8px;
-              right: 8px;
-            }
+              .el-icon{
+                margin-right: 5px;
+              }
 
-            .action-icon {
-              right: 18px;
             }
           }
         }

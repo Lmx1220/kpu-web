@@ -2,7 +2,7 @@
     height: 100%;
 }
 
-.fantastic-admin-home {
+.vue-ts-admin-home {
     position: absolute;
     z-index: 10000;
     top: 0;
@@ -18,7 +18,7 @@
     background-color: snow;
 }
 
-.fantastic-admin-home .loading {
+.vue-ts-admin-home .loading {
     height: 40px;
     width: 40px;
     display: flex;
@@ -27,7 +27,7 @@
     flex-wrap: wrap;
 }
 
-.fantastic-admin-home .square { 
+.vue-ts-admin-home .square { 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -35,7 +35,7 @@
     width: 20px;
 }
 
-.fantastic-admin-home .square::before {
+.vue-ts-admin-home .square::before {
     content: "";
     width: 10px;
     height: 10px;
@@ -43,23 +43,23 @@
     border: 3px solid #8c858f;
 }
 
-.fantastic-admin-home .loading.animate .square::before {
+.vue-ts-admin-home .loading.animate .square::before {
     animation: square-to-dot-animation 1.2s linear;
 }
 
-.fantastic-admin-home .loading.animate .square:nth-child(1)::before {
+.vue-ts-admin-home .loading.animate .square:nth-child(1)::before {
     animation-delay: calc(100ms * 1);
 }
 
-.fantastic-admin-home .loading.animate .square:nth-child(2)::before {
+.vue-ts-admin-home .loading.animate .square:nth-child(2)::before {
     animation-delay: calc(100ms * 2);
 }
 
-.fantastic-admin-home .loading.animate .square:nth-child(3)::before {
+.vue-ts-admin-home .loading.animate .square:nth-child(3)::before {
     animation-delay: calc(100ms * 3);
 }
 
-.fantastic-admin-home .loading.animate .square:nth-child(4)::before {
+.vue-ts-admin-home .loading.animate .square:nth-child(4)::before {
     animation-delay: calc(100ms * 4);
 }
 
@@ -82,7 +82,7 @@
     }
 }
 
-.fantastic-admin-home .text {
+.vue-ts-admin-home .text {
     font-size: 24px;
     margin-top: 20px;
 }

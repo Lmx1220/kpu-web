@@ -52,10 +52,10 @@ const globalSettings: Settings.all = {
     enablePageReload: true,
     enableColorScheme: true,
   },
-  // favorites: {
-  //   enable: true,
-  //   storageTo: 'local',
-  // },
+  favorites: {
+    enable: true,
+    storageTo: 'local',
+  },
   breadcrumb: {
     style: 'modern',
     enableMainMenu: true,
@@ -69,7 +69,7 @@ const globalSettings: Settings.all = {
   //   enableTransition: true,
   },
   home: {
-    enable: false,
+    enable: true,
     title: '主页',
   },
   navSearch: {
