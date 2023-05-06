@@ -72,7 +72,7 @@ const routes: RouteRecordRaw = {
       name: 'linkExampleWindowGitee',
       meta: {
         title: 'Gitee 仓库',
-        link: 'https://gitee.com/hooray/fantastic-admin',
+        link: 'https://gitee.com/muxian/vue3-ts',
       },
     }, {
       path: 'github',
@@ -80,7 +80,7 @@ const routes: RouteRecordRaw = {
       name: 'linkExampleWindowGithub',
       meta: {
         title: 'Github 仓库',
-        link: 'https://github.com/hooray/fantastic-admin',
+        link: 'https://github.com/muxian/vue3-ts',
       },
     }],
   }],

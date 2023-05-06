@@ -314,13 +314,7 @@ function TableSortable() {
           </el-row>
           <page-header title="扩展配置" content="标准路由配置，包含 path/redirect/name/component">
             <template #content>
-              框架扩展配置，详细配置介绍请查看 <ElLink
-                type="primary"
-                href="https://hooray.gitee.io/fantastic-admin/guide/router.html#%E5%AF%BC%E8%88%AA%E9%85%8D%E7%BD%AE"
-                target="_blank"
-              >
-                框架文档
-              </ElLink>
+              框架扩展配置，详细配置介绍请查看
             </template>
           </page-header>
           <el-row :gutter="30" style="padding: 20px;">
