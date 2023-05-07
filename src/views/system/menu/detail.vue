@@ -25,35 +25,33 @@ function handleBack() {
 
 const formRef = ref<FormInstance>()
 
-const form = ref<Menu.raw>(
-  {
-    id: '',
-    parentId: '',
-    name: '',
-    path: '',
-    redirect: '',
-    component: '',
-    auths: [],
-    meta: {
-      title: '',
-      icon: '',
-      activeIcon: '',
-      i18n: '',
-      defaultOpened: false,
-      permanent: false,
-      auth: [],
-      sidebar: true,
-      breadcrumb: true,
-      copyright: false,
-      cache: [],
-      noCache: [],
-      badge: '',
-      link: '',
-      iframe: '',
-      paddingBottom: '',
-      activeMenu: '',
-    },
+const form = ref<Menu.raw>({
+  id: String(route.params.id) ?? '',
+  parentId: String(route.query.parentId) ?? '',
+  path: '',
+  redirect: '',
+  name: '',
+  component: '',
+  meta: {
+    title: '',
+    icon: '',
+    activeIcon: '',
+    defaultOpened: false,
+    permanent: false,
+    auth: [],
+    sidebar: true,
+    breadcrumb: true,
+    activeMenu: '',
+    cache: [],
+    noCache: [],
+    badge: '',
+    link: '',
+    iframe: '',
+    copyright: false,
+    paddingBottom: '0px',
   },
+  auths: [],
+},
 )
 const rules = reactive({
   'name': [
@@ -335,7 +333,7 @@ function TableSortable() {
                 </template>
                 <el-space>
                   <ElTag
-                    v-for="tag in form.meta.auth" :key="tag" class="mx-1" type="large" :disable-transitions="false"
+                    v-for="tag in form.meta.auth" :key="tag" class="mx-1" size="large" :disable-transitions="false"
                     closable @close="handleRemoveAuth(tag)"
                   >
                     {{ tag }}
@@ -405,7 +403,7 @@ function TableSortable() {
 
                 <el-space v-show="typeof form.meta.cache === 'object'">
                   <ElTag
-                    v-for="cache in form.meta.cache" :key="cache" class="mx-1" type="large"
+                    v-for="cache in form.meta.cache" :key="cache" class="mx-1" size="large"
                     :disable-transitions="false" closable @close="handleRemoveCache(cache as string)"
                   >
                     {{ cache }}
@@ -436,7 +434,7 @@ function TableSortable() {
                 </template>
                 <el-space>
                   <ElTag
-                    v-for="noCache in form.meta.noCache" :key="noCache" class="mx-1" type="large"
+                    v-for="noCache in form.meta.noCache" :key="noCache" class="mx-1" size="large"
                     :disable-transitions="false" closable @close="handleRemoveNoCache(noCache)"
                   >
                     {{ noCache }}

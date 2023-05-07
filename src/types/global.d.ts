@@ -430,6 +430,8 @@ declare namespace Route {
 declare namespace Menu {
   /** 原始 */
   interface recordRaw {
+    id: string
+    parentId: string
     path?: string
     meta?: {
       title?: string

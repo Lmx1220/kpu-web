@@ -4,11 +4,23 @@ import useSettingsStore from '@/store/modules/settings'
 const router = useRouter()
 const tabbar = useTabbar()
 const dataList: Ref<any[]> = ref([])
+const data = ref(
+  {
+    dataList: [],
+    loading: false,
+    tableAutoHeight: true,
+  },
+)
 const settingsStore = useSettingsStore()
-for (let index = 0; index < 20; index++) {
-  dataList.value.push({
-    id: index,
-  })
+
+onMounted(() => {
+  init()
+})
+function init() {
+  loading.value = true
+  setTimeout(() => {
+    loading.value = false
+  }, 1000)
 }
 function handleAdd(row: any) {
   if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
