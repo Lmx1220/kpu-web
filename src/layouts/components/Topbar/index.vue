@@ -47,8 +47,8 @@ watch(scrollTop, (value, oldValue) => {
       'switch-tabbar-toolbar': settingsStore.settings.topbar.switchTabbarAndToolbar,
     }" data-fixed-calc-width
   >
-    <Tabbar v-if="settingsStore.settings.tabbar.enable" key="0" />
-    <Toolbar v-if="toolbar" key="1" />
+    <Tabbar v-if="settingsStore.settings.tabbar.enable" />
+    <Toolbar v-if="toolbar" />
   </div>
 </template>
 
