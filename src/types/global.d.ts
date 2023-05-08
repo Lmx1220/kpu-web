@@ -484,7 +484,7 @@ declare namespace Menu {
       badge: number | string
       link?: string
       iframe?: string
-      paddingBottom?: StyleValue
+      paddingBottom?: string
       activeMenu?: string
     }
     children?: raw[]

@@ -3,8 +3,9 @@ import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { uniqueId } from 'lodash-es'
 import Sortable from 'sortablejs'
-import useSettingsStore from '@/store/modules/settings'
 import type { Menu } from '@/types/global'
+import useSettingsStore from '@/store/modules/settings'
+import crudMenu from '@/api/modules/system/menu'
 
 const route = useRoute()
 const router = useRouter()
@@ -24,10 +25,11 @@ function handleBack() {
 }
 
 const formRef = ref<FormInstance>()
+const loading = ref(false)
 
 const form = ref<Menu.raw>({
-  id: String(route.params.id) ?? '',
-  parentId: String(route.query.parentId) ?? '',
+  id: route.params.id as any ?? '',
+  parentId: route.query.parentId as any ?? '',
   path: '',
   redirect: '',
   name: '',
@@ -69,7 +71,27 @@ const rules = reactive({
     trigger: 'blur',
   }],
 })
-
+onMounted(() => {
+  if (form.value.id !== '') {
+    getInfo()
+  }
+})
+function getInfo() {
+  loading.value = true
+  crudMenu.detail<any>(form.value.id).then((res) => {
+    loading.value = false
+    form.value.id = res.data.id
+    form.value.parentId = res.data.parentId
+    form.value.path = res.data.path
+    form.value.redirect = res.data.redirect
+    form.value.name = res.data.name
+    form.value.component = res.data.component
+    Object.assign(form.value.meta, res.data.meta)
+    form.value.auths = res.data.auths
+  }).catch(() => {
+    loading.value = false
+  })
+}
 function hanleSubmit() {
   if (form.value.id === '') {
     formRef.value && formRef.value.validate((valid) => {
@@ -272,8 +294,8 @@ function TableSortable() {
               </el-table-column>
             </ElTable>
           </template>
-          <page-header title="基础配置" content="标准路由配置，包含 path/redirect/name/component" />
-          <el-row :gutter="30" style="padding: 20px;">
+          <page-header v-if="form.parentId" title="基础配置" content="标准路由配置，包含 path/redirect/name/component" />
+          <el-row v-if="form.parentId" :gutter="30" style="padding: 20px;">
             <el-col :xl="12" :lg="24">
               <el-form-item prop="path" label="路由地址">
                 <el-input v-model="form.path" clearable placeholder="请输入路由地址" />
@@ -358,12 +380,12 @@ function TableSortable() {
                 <IconPicker v-model="form.meta.activeIcon" />
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.defaultOpened" label="默认展开">
                 <el-switch v-model="form.meta.defaultOpened" inline-prompt active-text="是" inactive-text="否" />
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.permanent" label="常驻标签页">
                 <template #label>
                   常驻标签页
@@ -372,17 +394,17 @@ function TableSortable() {
                 <el-switch v-model="form.meta.permanent" inline-prompt active-text="是" inactive-text="否" />
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.sidebar" label="在导航显示">
                 <el-switch v-model="form.meta.sidebar" inline-prompt active-text="显示" inactive-text="隐藏" />
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.breadcrumb" label="在面包屑显示">
                 <el-switch v-model="form.meta.breadcrumb" inline-prompt active-text="显示" inactive-text="隐藏" />
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.cache" label="缓存规则">
                 <template #label>
                   缓存规则
@@ -421,7 +443,7 @@ function TableSortable() {
                 </div>
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.noCache" label="不缓存规则">
                 <template #label>
                   不缓存规则
@@ -449,7 +471,7 @@ function TableSortable() {
                 </el-space>
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.activeMenu" label="高亮导航">
                 <template #label>
                   高亮导航
@@ -458,7 +480,7 @@ function TableSortable() {
                 <el-input v-model="form.meta.activeMenu" clearable placeholder="请输入高亮导航的完整路由地址" />
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.badge" label="徽标">
                 <template #label>
                   徽标
@@ -467,7 +489,7 @@ function TableSortable() {
                 <el-input v-model="form.meta.badge" clearable placeholder="请输入徽标显示内容" />
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.link" label="访问外链">
                 <template #label>
                   访问外链
@@ -476,7 +498,7 @@ function TableSortable() {
                 <el-input v-model="form.meta.link" clearable placeholder="请输入网址" />
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.iframe" label="内嵌网页">
                 <template #label>
                   内嵌网页
@@ -485,12 +507,12 @@ function TableSortable() {
                 <el-input v-model="form.meta.iframe" clearable placeholder="请输入网址" />
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.copyright" label="底部版权">
                 <el-switch v-model="form.meta.copyright" inline-prompt active-text="显示" inactive-text="隐藏" />
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.paddingBottom" label="底部填充高度">
                 <template #label>
                   底部填充高度
