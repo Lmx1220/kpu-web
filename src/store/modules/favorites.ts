@@ -1,6 +1,6 @@
 import type { RouteLocationNormalizedLoaded, RouteRecordRaw, RouteRecordRedirectOption } from 'vue-router'
 import useSettingsStore from './settings'
-import userouteStore from './route'
+import useRouteStore from './route'
 import useUserStore from './user'
 import { resolveRoutePath } from '@/util'
 import storage from '@/util/storage'
@@ -18,7 +18,7 @@ const useFavoritesStore = defineStore(
   () => {
     const settingsStore = useSettingsStore()
     const userStore = useUserStore()
-    const routeStore = userouteStore()
+    const routeStore = useRouteStore()
     // const menuStore = useMenuStore()
     const list = ref<Favorite[]>([])
     function hasChildren(route: RouteRecordRaw) {
@@ -80,8 +80,8 @@ const useFavoritesStore = defineStore(
       list.value = list.value.filter(item => item.fullPath !== path)
       updateStorage()
     }
-    function sort(newIndex: number, oldIdex: number) {
-      list.value.splice(newIndex, 0, list.value.splice(oldIdex, 1)[0])
+    function sort(newIndex: number, oldIndex: number) {
+      list.value.splice(newIndex, 0, list.value.splice(oldIndex, 1)[0])
       updateStorage()
     }
 
@@ -96,7 +96,7 @@ const useFavoritesStore = defineStore(
         settingsStore.settings.tabbar.storageTo === 'server' && await api.post({
           url: 'member/favorites/edit',
           data: {
-            tabbar: JSON.stringify(list.value),
+              tabbar: JSON.stringify(list.value),
           },
           baseURL: '/mock/',
         })
