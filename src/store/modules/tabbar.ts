@@ -124,7 +124,7 @@ const useTabbarStore = defineStore(
               isPermanent: false,
             }
             if (leaveIndex.value >= 0) {
-              list.value.splice(leaveIndex.value, 1, tabbar)
+              list.value.splice(leaveIndex.value + 1, 0, tabbar)
               leaveIndex.value = -1
             }
             else {
