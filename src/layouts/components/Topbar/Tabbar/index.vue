@@ -300,7 +300,7 @@ onUnmounted(
       ref="tabs" class="tabs" :class="{
         'tabs-ontop': settingsStore.settings.topbar.switchTabbarAndToolbar,
         [`tabs-${settingsStore.settings.tabbar.style}`]: settingsStore.settings.tabbar.style,
-      }" @mousewheel.prevent
+      }" @mousewheel.prevent="handlerMouserScroll"
     >
       <transition-group
         ref="tabContainer" :name="!isDragging ? 'tabbar' : undefined" tag="div" class="tab-container"
