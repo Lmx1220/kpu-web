@@ -1,6 +1,7 @@
 <script setup lang="ts" name="Toolbar">
 import { compile } from 'path-to-regexp'
 import Favorites from '../.././Favorites/index.vue'
+import Tools from '../.././Tools/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
 import useI18nTitle from '@/util/composables/useI18nTitle'
@@ -87,7 +88,7 @@ function pathCompile(path: string) {
       >
         <transition-group name="breadcrumb">
           <el-breadcrumb-item
-            v-for="(item, index) in breadcrumbList" :key="item.path"
+            v-for="(item, index) in breadcrumbList" :key="JSON.stringify(item)"
             :to="index < breadcrumbList.length - 1 ? pathCompile(item.path) : ''"
           >
             {{
