@@ -71,6 +71,10 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     transitionMode: 'fade',
     iframeCacheMax: 3,
   },
+  favorites: {
+    enable: true,
+    storageTo: 'local',
+  },
   copyright: {
     enable: true,
     dates: '2020-2023',
