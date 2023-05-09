@@ -402,7 +402,7 @@ declare module 'vue-router' {
     iframe?: string
     link?: string
     copyright?: boolean
-    paddingBottom?: StyleValue
+    paddingBottom?: string
     whiteList?: boolean
     breadcrumbNeste?: Route.breadcrumb[]
   }
@@ -430,8 +430,8 @@ declare namespace Route {
 declare namespace Menu {
   /** 原始 */
   interface recordRaw {
-    id: string
-    parentId: string
+    id?: string
+    parentId?: string
     path?: string
     meta?: {
       title?: string

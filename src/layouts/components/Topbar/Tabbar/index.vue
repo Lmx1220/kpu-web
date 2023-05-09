@@ -313,7 +313,7 @@ onUnmounted(
             'no-drag': element.isPermanent || element.isPin,
           }"
           :title="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element.title)"
-          @click="$router.push(`${element.fullPath}`)" @dblclick="settingsStore.setMainPageMaximize(undefined)"
+          @click="router.push(`${element.fullPath}`)" @dblclick="settingsStore.setMainPageMaximize(undefined)"
           @contextmenu="onTabbarContextmenu($event, element)"
         >
           <div class="tab-dividers" />
@@ -401,7 +401,7 @@ onUnmounted(
                 <div
                   class="title"
                   :title="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element.title)"
-                  @click="$router.push(`${element.fullPath}`)"
+                  @click="router.push(`${element.fullPath}`)"
                 >
                   <el-icon
                     v-if="settingsStore.settings.tabbar.enableIcon && iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
@@ -806,11 +806,6 @@ onUnmounted(
 
           &:last-child {
             margin-right: 0;
-          }
-
-          .tab-dividers {
-            left: 8px;
-            right: 8px;
           }
 
           &.tab-ontop .tab-background {

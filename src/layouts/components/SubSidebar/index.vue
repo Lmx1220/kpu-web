@@ -4,6 +4,7 @@ import SidebarItem from '../SidebarItem/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
 
+const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 
@@ -42,7 +43,7 @@ const enableSidebar = computed(() => {
     <!-- 侧边栏模式（无主导航）或侧边栏精简模式 -->
     <el-menu
       :unique-opened="settingsStore.settings.menu.subMenuUniqueOpened"
-      :default-openeds="menuStore.defaultOpenedPaths" :default-active="$route.meta.activeMenu || $route.path"
+      :default-openeds="menuStore.defaultOpenedPaths" :default-active="route.meta.activeMenu || route.path"
       :collapse="settingsStore.mode === 'pc' && settingsStore.settings.menu.subMenuCollapse" :collapse-transition="false"
       :class="{
         'is-collapse-without-logo': settingsStore.settings.menu.menuMode !== 'single' && settingsStore.settings.menu.subMenuCollapse,

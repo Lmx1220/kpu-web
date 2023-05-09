@@ -25,10 +25,12 @@ class HttpRequest {
 
     this.instance.interceptors.request.use(
       (config) => {
+        // eslint-disable-next-line no-console
         console.log('所有的实例都有的拦截器: 请求拦截成功')
         return config
       },
       (err) => {
+        // eslint-disable-next-line no-console
         console.log('所有的实例都有的拦截器: 请求拦截失败')
 
         return err
@@ -37,14 +39,17 @@ class HttpRequest {
 
     this.instance.interceptors.response.use(
       (res) => {
+        // eslint-disable-next-line no-console
         console.log('所有的实例都有的拦截器: 响应拦截成功')
 
         return res.data
       },
       (err) => {
+        // eslint-disable-next-line no-console
         console.log('所有的实例都有的拦截器: 响应拦截失败')
         // 例子:判断不同httpErrorCode显示不同错误信息
         if (err.response.status === 404) {
+          // eslint-disable-next-line no-console
           console.log('404错误~')
         }
 
@@ -72,7 +77,7 @@ class HttpRequest {
           if (config.interceptors?.responseInterceptor) {
             res = config.interceptors.responseInterceptor(res)
           }
-
+          // eslint-disable-next-line no-console
           console.log(res)
 
           // 将结果返回出去

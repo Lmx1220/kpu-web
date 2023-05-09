@@ -6,6 +6,7 @@ import useMenuStore from '@/store/modules/menu'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 import useMenu from '@/util/composables/useMenu'
 
+const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 const { generateI18nTitle } = useI18nTitle()
@@ -45,7 +46,7 @@ const { switchTo } = useMenu()
       </div>
       <!-- 侧边栏精简模式 -->
       <el-menu
-        v-else-if="settingsStore.settings.menu.menuMode === 'only-side'" collapse :default-active="$route.meta.activeMenu || $route.path" class="fa-menu" :class="{
+        v-else-if="settingsStore.settings.menu.menuMode === 'only-side'" collapse :default-active="route.meta.activeMenu || route.path" class="fa-menu" :class="{
           [`nav-fill-${settingsStore.settings.menu.menuFillStyle}`]: settingsStore.settings.menu.menuFillStyle !== '',
           [`nav-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
         }"

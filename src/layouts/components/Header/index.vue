@@ -7,6 +7,7 @@ import useSettingsStore from '@/store/modules/settings'
 import type { App } from '@/types/global'
 import useMenu from '@/util/composables/useMenu'
 
+const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 const { switchTo } = useMenu()
@@ -41,7 +42,7 @@ const generateI18nTitle: App.GenerateI18nTitle = inject('generateI18nTitle') || 
           </div>
           <!-- 顶部精简模式 -->
           <el-menu
-            v-else-if="settingsStore.settings.menu.menuMode === 'only-head'" mode="horizontal" :default-active="$route.meta.activeMenu || $route.path" class="el-menu-nav" :class="{
+            v-else-if="settingsStore.settings.menu.menuMode === 'only-head'" mode="horizontal" :default-active="route.meta.activeMenu || route.path" class="el-menu-nav" :class="{
               [`nav-fill-${settingsStore.settings.menu.menuFillStyle}`]: settingsStore.settings.menu.menuFillStyle !== '',
               [`nav-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
             }"

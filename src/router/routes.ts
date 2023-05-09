@@ -3,7 +3,6 @@ import KeepAliveExample from './modules/keep.alive.example'
 import SystemExample from './modules/system.example'
 import LinkExample from './modules/link.example'
 import Monitorxample from './modules/monitor.example'
-import Layout from '@/layouts/index.vue'
 import type { Route } from '@/types/global'
 
 // 固定路由
@@ -33,31 +32,6 @@ const constantRoutes: RouteRecordRaw[] = [
     },
   },
 ]
-// 系统路由
-const systemRoutes: RouteRecordRaw[] = [
-  {
-    path: '/home',
-    name: 'home',
-    component: () => Layout,
-    redirect: '/',
-    meta: {
-      title: '首页',
-    },
-    children: [
-      {
-        path: '/home/home',
-        name: 'home',
-        component: () => import('@/views/index.vue'),
-        meta: {
-          title: '首页',
-          i18n: 'route.home',
-          breadcrumb: false,
-        },
-      },
-
-    ],
-  },
-]
 // 动态路由（异步路由、导航栏路由）
 const asyncRoutes: Route.recordMainRaw[] = [
   {
@@ -84,6 +58,6 @@ const asyncRoutes: Route.recordMainRaw[] = [
 ]
 export {
   constantRoutes,
-  systemRoutes,
+  // systemRoutes,
   asyncRoutes,
 }

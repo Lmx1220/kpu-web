@@ -10,5 +10,5 @@ const mes = ref('hello world')
 </template>
 
 <style scoped lang="scss">
-
+// scss
 </style>

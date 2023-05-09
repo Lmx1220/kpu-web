@@ -76,7 +76,7 @@ onUnmounted(() => {
           :class="{ show: settingsStore.mode === 'mobile' && !settingsStore.settings.menu.subMenuCollapse }"
           @click="settingsStore.toggleSidebarCollapse()"
         />
-        <div class="main-container" :style="{ paddingBottom: $route.meta.paddingBottom }">
+        <div class="main-container" :style="{ paddingBottom: route.meta.paddingBottom }">
           <Topbar />
           <div class="main">
             <div

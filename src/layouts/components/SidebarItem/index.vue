@@ -124,7 +124,7 @@ function badge(badge: number | boolean | string | Function | undefined) {
           <svg-icon :name="item.meta.icon" />
         </el-icon>
         <el-icon v-if="item.meta?.activeIcon || item.meta?.icon" class="title-icon active">
-          <svg-icon :name="item.meta.activeIcon || item.meta.icon" />
+          <svg-icon :name="item.meta.activeIcon || item.meta.icon || ''" />
         </el-icon>
         <span class="title">{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
         <span
