@@ -1,10 +1,10 @@
 import './util/baidu'
 
 import ElemnetPlus from 'element-plus'
-import ContextMenu from '@imengyu/vue3-context-menu'
 import App from './App.vue'
 
 // 加载 iconify 图标
+import errorLog from './util/error.log'
 import { downloadAndInstall } from '@/iconify'
 import icons from '@/iconify/index.json'
 
@@ -35,9 +35,9 @@ if (icons.useType === 'offline') {
 
 app.use(pinia)
 app.use(router)
-directive(app)
 useI18n(app)
+directive(app)
+errorLog(app)
 
-app.use(ContextMenu)
 app.use(ElemnetPlus)
 app.mount('#app')
