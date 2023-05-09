@@ -1,4 +1,4 @@
-<script lang="ts" setup name="ImageUpload">
+<script lang="ts" setup name="ImagesUpload">
 import type { UploadProgressEvent, UploadRawFile } from 'element-plus'
 import { ElMessage } from 'element-plus'
 
@@ -9,19 +9,23 @@ const props = defineProps({
   },
   headers: {
     type: Object,
-    default: () => { },
+    default: () => {},
   },
   data: {
     type: Object,
-    default: () => { },
+    default: () => {},
   },
   name: {
     type: String,
     default: 'file',
   },
   url: {
-    type: String,
-    default: '',
+    type: Array<string>,
+    default: () => [],
+  },
+  max: {
+    type: Number,
+    default: 3,
   },
   size: {
     type: Number,
@@ -52,6 +56,7 @@ const props = defineProps({
 const emit = defineEmits(['update:url', 'onSuccess'])
 
 const uploadData = ref({
+  dialogImageIndex: 0,
   imageViewerVisible: false,
   progress: {
     preview: '',
@@ -60,7 +65,8 @@ const uploadData = ref({
 })
 
 // 预览
-function preview() {
+function preview(index: number) {
+  uploadData.value.dialogImageIndex = index
   uploadData.value.imageViewerVisible = true
 }
 // 关闭预览
@@ -68,8 +74,21 @@ function previewClose() {
   uploadData.value.imageViewerVisible = false
 }
 // 移除
-function remove() {
-  emit('update:url', '')
+function remove(index: number) {
+  const url = props.url
+  url.splice(index, 1)
+  emit('update:url', url)
+}
+// 移动
+function move(index: number, type: 'left' | 'right') {
+  const url = props.url
+  if (type === 'left' && index !== 0) {
+    url[index] = url.splice(index - 1, 1, url[index])[0]
+  }
+  if (type === 'right' && index !== url.length - 1) {
+    url[index] = url.splice(index + 1, 1, url[index])[0]
+  }
+  emit('update:url', url)
 }
 function beforeUpload(file: UploadRawFile) {
   const fileName = file.name.split('.')
@@ -99,59 +118,62 @@ function onSuccess(res: any) {
 
 <template>
   <div class="upload-container">
-    <el-upload
-      :show-file-list="false" :headers="headers" :action="action" :data="data" :name="name"
-      :before-upload="beforeUpload" :on-progress="onProgress" :on-success="onSuccess" drag class="image-upload"
-    >
-      <el-image
-        v-if="url === ''" :src="url === '' ? placeholder : url"
-        :style="`width:${width}px;height:${height}px;`" fit="fill"
-      >
-        <template #error>
-          <div class="image-slot" :style="`width:${width}px;height:${height}px;`">
+    <div v-for="(item, index) in url" :key="index" class="images">
+      <el-image v-if="index < max" :src="item" :style="`width:${width}px;height:${height}px;`" fit="cover" />
+      <div class="mask">
+        <div class="actions">
+          <span title="预览" @click="preview(index)">
             <el-icon>
-              <svg-icon name="i-ep:plus" />
+              <svg-icon name="i-ep:zoom-in" />
             </el-icon>
-          </div>
-        </template>
-      </el-image>
-      <div v-else class="image">
-        <el-image :src="url" :style="`width:${width}px;height:${height}px;`" fit="fill" />
-        <div class="mask">
-          <div class="actions">
-            <span title="预览" @click.stop="preview">
-              <el-icon>
-                <svg-icon name="i-ep:zoom-in" />
-              </el-icon>
-            </span>
-            <span title="移除" @click.stop="remove">
-              <el-icon>
-                <svg-icon name="i-ep:delete" />
-              </el-icon>
-            </span>
-          </div>
+          </span>
+          <span title="移除" @click="remove(index)">
+            <el-icon>
+              <svg-icon name="i-ep:delete" />
+            </el-icon>
+          </span>
+          <span v-show="url.length > 1" title="左移" :class="{ disabled: index === 0 }" @click="move(index, 'left')">
+            <el-icon>
+              <svg-icon name="i-ep:back" />
+            </el-icon>
+          </span>
+          <span v-show="url.length > 1" title="右移" :class="{ disabled: index === url.length - 1 }" @click="move(index, 'right')">
+            <el-icon>
+              <svg-icon name="i-ep:right" />
+            </el-icon>
+          </span>
         </div>
       </div>
-      <div
-        v-show="url === '' && uploadData.progress.percent" class="progress"
-        :style="`width:${width}px;height:${height}px;`"
-      >
+    </div>
+    <el-upload
+      v-show="url.length < max"
+      :show-file-list="false"
+      :headers="headers"
+      :action="action"
+      :data="data"
+      :name="name"
+      :before-upload="beforeUpload"
+      :on-progress="onProgress"
+      :on-success="onSuccess"
+      drag
+      class="images-upload"
+    >
+      <div class="image-slot" :style="`width:${width}px;height:${height}px;`">
+        <el-icon>
+          <svg-icon name="i-ep:plus" />
+        </el-icon>
+      </div>
+      <div v-show="uploadData.progress.percent" class="progress" :style="`width:${width}px;height:${height}px;`">
         <el-image :src="uploadData.progress.preview" :style="`width:${width}px;height:${height}px;`" fit="fill" />
-        <el-progress
-          type="circle" :width="Math.min(width, height) * 0.8"
-          :percentage="uploadData.progress.percent"
-        />
+        <el-progress type="circle" :width="Math.min(width, height) * 0.8" :percentage="uploadData.progress.percent" />
       </div>
     </el-upload>
     <div v-if="!notip" class="el-upload__tip">
       <div style="display: inline-block;">
-        <el-alert
-          :title="`上传图片支持 ${ext.join(' / ')} 格式，且图片大小不超过 ${size}MB，建议图片尺寸为 ${width}*${height}`" type="info"
-          show-icon :closable="false"
-        />
+        <el-alert :title="`上传图片支持 ${ext.join(' / ')} 格式，单张图片大小不超过 ${size}MB，建议图片尺寸为 ${width}*${height}，且图片数量不超过 ${max} 张`" type="info" show-icon :closable="false" />
       </div>
     </div>
-    <el-image-viewer v-if="uploadData.imageViewerVisible" :url-list="[url]" @close="previewClose" />
+    <el-image-viewer v-if="uploadData.imageViewerVisible" :url-list="url" :initial-index="uploadData.dialogImageIndex" @close="previewClose" />
   </div>
 </template>
 
@@ -164,8 +186,11 @@ function onSuccess(res: any) {
     display: block;
 }
 
-.image {
+.images {
     position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    border: 1px dashed var(--el-border-color);
     border-radius: 6px;
     overflow: hidden;
 
@@ -195,7 +220,12 @@ function onSuccess(res: any) {
                 color: var(--el-color-white);
                 transition: color 0.1s, transform 0.1s;
 
-                &:hover {
+                &.disabled {
+                    color: var(--el-text-color-disabled);
+                    cursor: not-allowed;
+                }
+
+                &:hover:not(.disabled) {
                     transform: scale(1.5);
                 }
 
@@ -211,7 +241,7 @@ function onSuccess(res: any) {
     }
 }
 
-.image-upload {
+.images-upload {
     display: inline-block;
     vertical-align: top;
 }

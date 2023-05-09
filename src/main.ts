@@ -1,4 +1,5 @@
-import { createApp } from 'vue'
+import './util/baidu'
+
 import ElemnetPlus from 'element-plus'
 import ContextMenu from '@imengyu/vue3-context-menu'
 import App from './App.vue'
@@ -17,6 +18,9 @@ import router from '@/router'
 import './permission'
 import { useI18n } from '@/locales/index'
 
+// 自定义指令
+import directive from '@/util/directive'
+
 // 加载svg图标
 import 'virtual:svg-icons-register'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
@@ -31,6 +35,7 @@ if (icons.useType === 'offline') {
 
 app.use(pinia)
 app.use(router)
+directive(app)
 useI18n(app)
 
 app.use(ContextMenu)

@@ -13,6 +13,8 @@ declare module '@vue/runtime-core' {
     FixedActionBar: typeof import('./../components/FixedActionBar/index.vue')['default']
     I18nSelector: typeof import('./../components/I18nSelector/index.vue')['default']
     IconPicker: typeof import('./../components/IconPicker/index.vue')['default']
+    ImagePreview: typeof import('./../components/ImagePreview/index.vue')['default']
+    ImagesUpload: typeof import('./../components/ImagesUpload/index.vue')['default']
     ImageUpload: typeof import('./../components/ImageUpload/index.vue')['default']
     LayoutContainer: typeof import('./../components/LayoutContainer/index.vue')['default']
     LoginSwitcher: typeof import('./../components/LoginSwitcher/index.vue')['default']
@@ -21,6 +23,7 @@ declare module '@vue/runtime-core' {
     PageMain: typeof import('./../components/PageMain/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchBar: typeof import('./../components/SearchBar/index.vue')['default']
     SvgIcon: typeof import('./../components/SvgIcon/index.vue')['default']
     SystemInfo: typeof import('./../components/SystemInfo/index.vue')['default']
   }

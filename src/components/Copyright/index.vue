@@ -35,7 +35,7 @@ const settingsStore = useSettingsStore()
   color: var(--el-text-color-secondary);
   font-size: 14px;
 
-   span,
+  span,
   a {
     padding: 0 5px
   }
