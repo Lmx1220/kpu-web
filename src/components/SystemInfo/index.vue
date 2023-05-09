@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" name="SystemInfo">
 import eventBus from '@/util/eventBus'
 
 const isShow = ref(false)

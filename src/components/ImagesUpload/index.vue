@@ -1,5 +1,5 @@
 <script lang="ts" setup name="ImagesUpload">
-import type { UploadProgressEvent, UploadRawFile } from 'element-plus'
+import type { UploadProps } from 'element-plus'
 import { ElMessage } from 'element-plus'
 
 const props = defineProps({
@@ -20,7 +20,7 @@ const props = defineProps({
     default: 'file',
   },
   url: {
-    type: Array<string>,
+    type: Array,
     default: () => [],
   },
   max: {
@@ -90,9 +90,10 @@ function move(index: number, type: 'left' | 'right') {
   }
   emit('update:url', url)
 }
-function beforeUpload(file: UploadRawFile) {
+
+const beforeUpload: UploadProps['beforeUpload'] = (file) => {
   const fileName = file.name.split('.')
-  const fileExt = fileName[fileName.length - 1]
+  const fileExt = fileName.at(-1)
   const isTypeOk = props.ext.includes(fileExt)
   const isSizeOk = file.size / 1024 / 1024 < props.size
   if (!isTypeOk) {
@@ -106,10 +107,10 @@ function beforeUpload(file: UploadRawFile) {
   }
   return isTypeOk && isSizeOk
 }
-function onProgress(file: UploadProgressEvent) {
+const onProgress: UploadProps['onProgress'] = (file) => {
   uploadData.value.progress.percent = ~~file.percent
 }
-function onSuccess(res: any) {
+const onSuccess: UploadProps['onSuccess'] = (res) => {
   uploadData.value.progress.preview = ''
   uploadData.value.progress.percent = 0
   emit('onSuccess', res)
@@ -118,28 +119,28 @@ function onSuccess(res: any) {
 
 <template>
   <div class="upload-container">
-    <div v-for="(item, index) in url" :key="index" class="images">
+    <div v-for="(item, index) in (url as string[])" :key="index" class="images">
       <el-image v-if="index < max" :src="item" :style="`width:${width}px;height:${height}px;`" fit="cover" />
       <div class="mask">
         <div class="actions">
           <span title="预览" @click="preview(index)">
             <el-icon>
-              <svg-icon name="i-ep:zoom-in" />
+              <svg-icon name="ep:zoom-in" />
             </el-icon>
           </span>
           <span title="移除" @click="remove(index)">
             <el-icon>
-              <svg-icon name="i-ep:delete" />
+              <svg-icon name="ep:delete" />
             </el-icon>
           </span>
           <span v-show="url.length > 1" title="左移" :class="{ disabled: index === 0 }" @click="move(index, 'left')">
             <el-icon>
-              <svg-icon name="i-ep:back" />
+              <svg-icon name="ep:back" />
             </el-icon>
           </span>
           <span v-show="url.length > 1" title="右移" :class="{ disabled: index === url.length - 1 }" @click="move(index, 'right')">
             <el-icon>
-              <svg-icon name="i-ep:right" />
+              <svg-icon name="ep:right" />
             </el-icon>
           </span>
         </div>
@@ -160,7 +161,7 @@ function onSuccess(res: any) {
     >
       <div class="image-slot" :style="`width:${width}px;height:${height}px;`">
         <el-icon>
-          <svg-icon name="i-ep:plus" />
+          <svg-icon name="ep:plus" />
         </el-icon>
       </div>
       <div v-show="uploadData.progress.percent" class="progress" :style="`width:${width}px;height:${height}px;`">
@@ -173,126 +174,126 @@ function onSuccess(res: any) {
         <el-alert :title="`上传图片支持 ${ext.join(' / ')} 格式，单张图片大小不超过 ${size}MB，建议图片尺寸为 ${width}*${height}，且图片数量不超过 ${max} 张`" type="info" show-icon :closable="false" />
       </div>
     </div>
-    <el-image-viewer v-if="uploadData.imageViewerVisible" :url-list="url" :initial-index="uploadData.dialogImageIndex" @close="previewClose" />
+    <el-image-viewer v-if="uploadData.imageViewerVisible" :url-list="url as string[]" :initial-index="uploadData.dialogImageIndex" teleported @close="previewClose" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .upload-container {
-    line-height: initial;
+  line-height: initial;
 }
 
 .el-image {
-    display: block;
+  display: block;
 }
 
 .images {
-    position: relative;
-    display: inline-block;
-    margin-right: 10px;
-    border: 1px dashed var(--el-border-color);
-    border-radius: 6px;
-    overflow: hidden;
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  overflow: hidden;
 
-    .mask {
-        opacity: 0;
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: var(--el-overlay-color-lighter);
-        transition: opacity 0.3s;
+  .mask {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--el-overlay-color-lighter);
+    transition: opacity 0.3s;
 
-        .actions {
-            width: 100px;
-            height: 100px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
+    .actions {
+      width: 100px;
+      height: 100px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
 
-            @include position-center(xy);
+      @include position-center(xy);
 
-            span {
-                width: 50%;
-                text-align: center;
-                cursor: pointer;
-                color: var(--el-color-white);
-                transition: color 0.1s, transform 0.1s;
+      span {
+        width: 50%;
+        text-align: center;
+        cursor: pointer;
+        color: var(--el-color-white);
+        transition: color 0.1s, transform 0.1s;
 
-                &.disabled {
-                    color: var(--el-text-color-disabled);
-                    cursor: not-allowed;
-                }
-
-                &:hover:not(.disabled) {
-                    transform: scale(1.5);
-                }
-
-                .el-icon {
-                    font-size: 24px;
-                }
-            }
+        &.disabled {
+          color: var(--el-text-color-disabled);
+          cursor: not-allowed;
         }
-    }
 
-    &:hover .mask {
-        opacity: 1;
+        &:hover:not(.disabled) {
+          transform: scale(1.5);
+        }
+
+        .el-icon {
+          font-size: 24px;
+        }
+      }
     }
+  }
+
+  &:hover .mask {
+    opacity: 1;
+  }
 }
 
 .images-upload {
-    display: inline-block;
-    vertical-align: top;
+  display: inline-block;
+  vertical-align: top;
 }
 
 :deep(.el-upload) {
-    .el-upload-dragger {
-        display: inline-block;
-        padding: 0;
+  .el-upload-dragger {
+    display: inline-block;
+    padding: 0;
 
-        &.is-dragover {
-            border-width: 1px;
-        }
-
-        .image-slot {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            color: var(--el-text-color-placeholder);
-            background-color: transparent;
-
-            i {
-                font-size: 30px;
-            }
-        }
-
-        .progress {
-            position: absolute;
-            top: 0;
-
-            &::after {
-                content: "";
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                left: 0;
-                top: 0;
-                background-color: var(--el-overlay-color-lighter);
-            }
-
-            .el-progress {
-                z-index: 1;
-
-                @include position-center(xy);
-
-                .el-progress__text {
-                    color: var(--el-text-color-placeholder);
-                }
-            }
-        }
+    &.is-dragover {
+      border-width: 1px;
     }
+
+    .image-slot {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      color: var(--el-text-color-placeholder);
+      background-color: transparent;
+
+      i {
+        font-size: 30px;
+      }
+    }
+
+    .progress {
+      position: absolute;
+      top: 0;
+
+      &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-color: var(--el-overlay-color-lighter);
+      }
+
+      .el-progress {
+        z-index: 1;
+
+        @include position-center(xy);
+
+        .el-progress__text {
+          color: var(--el-text-color-placeholder);
+        }
+      }
+    }
+  }
 }
 </style>
