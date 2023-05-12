@@ -1,4 +1,5 @@
 import HttpRequest from './request'
+import useUserStore from '@/store/modules/user'
 
 const request = new HttpRequest({
   baseURL: 'http://',
@@ -7,6 +8,14 @@ const request = new HttpRequest({
     requestInterceptor: (config) => {
       // eslint-disable-next-line no-console
       console.log('单个实例的拦截器: 请求拦截成功')
+      const userStore = useUserStore()
+      /**
+       * 全局拦截请求发送前提交的参数
+       * 以下代码为示例，在请求头里带上 token 信息
+       */
+      if (userStore.isLogin && config.headers) {
+        config.headers.Token = userStore.token
+      }
       return config
     },
     requestInterceptorCatch: (err) => {

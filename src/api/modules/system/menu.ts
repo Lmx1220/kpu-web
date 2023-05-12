@@ -6,6 +6,7 @@ export default {
   // 后端获取路由数据
   list: <T>() => api.get<T>({
     url: `${prefix}/list`,
+    // noLoading: true,
     baseURL: '/mock/',
   }),
   // // 基于文件系统路由模式下，后端获取导航菜单数据

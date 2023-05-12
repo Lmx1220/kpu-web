@@ -1,20 +1,29 @@
-import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import type { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
 export interface RequestInterceptors<T = AxiosResponse> {
 
   requestInterceptor?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig
 
-  requestInterceptorCatch?: (error: any) => any
+  requestInterceptorCatch?: (error: AxiosError) => AxiosError
 
   responseInterceptor?: (res: T) => T
 
-  responseInterceptorCatch?: (error: any) => any
+  responseInterceptorCatch?: (error: AxiosError) => AxiosError
 
 }
 
 export interface RequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
 
   interceptors?: RequestInterceptors<T>
-  showLoading?: boolean
+  noLoading?: boolean
 
+}
+// export interface VInternalAxiosRequestConfig<D = any> extends InternalAxiosRequestConfig<D> {
+//   showLoading?: boolean
+// }
+
+declare module 'axios' {
+  interface InternalAxiosRequestConfig {
+    noLoading?: boolean
+  }
 }
