@@ -1,9 +1,9 @@
 import type { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-import { checkStatus } from '../helper/checkStatus'
+import { checkStatus } from '@/api/helper/checkStatus'
 import type { RequestConfig, RequestInterceptors } from './type'
-import { showFullScreenLoading, tryHideFullScreenLoading } from './serviceLoading'
+import { showFullScreenLoading, tryHideFullScreenLoading } from '@/api/request/serviceLoading'
 
 class HttpRequest {
   instance: AxiosInstance
@@ -65,7 +65,7 @@ class HttpRequest {
         const { response } = err
         // eslint-disable-next-line no-console
         console.log('所有的实例都有的拦截器: 响应拦截失败')
-        // tryHideFullScreenLoading()
+        tryHideFullScreenLoading()
         if (err.message.includes('timeout')) {
           ElMessage.error('请求超时！请您稍后重试')
         }
@@ -80,7 +80,7 @@ class HttpRequest {
           const router = useRouter()
           router.replace('/500')
         }
-        return err
+        return Promise.reject(err)
       },
 
     )
@@ -114,8 +114,6 @@ class HttpRequest {
 
         .catch((err) => {
           reject(err)
-
-          return err
         })
     })
   }

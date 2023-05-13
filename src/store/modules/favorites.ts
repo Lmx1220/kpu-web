@@ -98,7 +98,7 @@ const useFavoritesStore = defineStore(
           data: {
               tabbar: JSON.stringify(list.value),
           },
-          baseURL: '/mock/',
+          // baseURL: '/mock/',
         })
       }
     }
@@ -113,7 +113,7 @@ const useFavoritesStore = defineStore(
           data: {
             tabbar: JSON.stringify(list.value),
           },
-          baseURL: '/mock/',
+          // baseURL: '/mock/',
         })
         list.value.push(...JSON.parse(res.data.favorites || '[]'))
       }

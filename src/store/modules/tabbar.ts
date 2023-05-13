@@ -344,7 +344,7 @@ const useTabbarStore = defineStore(
           data: {
             tabbar: JSON.stringify(list.value.filter(item => item.isPin)),
           },
-          baseURL: '/mock/',
+          // baseURL: '/mock/',
         })
       }
       if (settingsStore.settings.tabbar.enableMemory) {
@@ -364,7 +364,7 @@ const useTabbarStore = defineStore(
           data: {
             tabbar: JSON.stringify(list.value.filter(item => item.isPin)),
           },
-          baseURL: '/mock/',
+          // baseURL: '/mock/',
         })
         list.value.push(...JSON.parse(res.data.tabbar || '[]'))
       }

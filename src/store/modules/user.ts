@@ -34,7 +34,7 @@ const useUserStore = defineStore(
       const res = await api.post<HttpRequest.responseData<any>>({
         url: 'member/login',
         data,
-        baseURL: '/mock/',
+        // baseURL: '/mock/',
       })
       storage.local.set('login_account', res.data.account)
       storage.local.set('token', res.data.token)
@@ -59,7 +59,7 @@ const useUserStore = defineStore(
       // 通过 mock 获取权限
       const res = await api.get<HttpRequest.responseData<any>>({
         url: 'member/permission',
-        baseURL: '/mock/',
+        // baseURL: '/mock/',
         params: {
           account: account.value,
         },
@@ -79,7 +79,7 @@ const useUserStore = defineStore(
           password: data.password,
           newpassword: data.newpassword,
         },
-        baseURL: '/mock/',
+        // baseURL: '/mock/',
       })
     }
 
