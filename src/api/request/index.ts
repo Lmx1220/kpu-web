@@ -65,7 +65,7 @@ class HttpRequest {
         const { response } = err
         // eslint-disable-next-line no-console
         console.log('所有的实例都有的拦截器: 响应拦截失败')
-        // tryHideFullScreenLoading()
+        tryHideFullScreenLoading()
         if (err.message.includes('timeout')) {
           ElMessage.error('请求超时！请您稍后重试')
         }

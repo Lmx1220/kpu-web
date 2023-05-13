@@ -4,11 +4,11 @@ export interface RequestInterceptors<T = AxiosResponse> {
 
   requestInterceptor?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig
 
-  requestInterceptorCatch?: (error: AxiosError) => AxiosError
+  requestInterceptorCatch?: (error: AxiosError) => any
 
   responseInterceptor?: (res: T) => T
 
-  responseInterceptorCatch?: (error: AxiosError) => AxiosError
+  responseInterceptorCatch?: (error: AxiosError) => any
 
 }
 

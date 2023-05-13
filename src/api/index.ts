@@ -31,7 +31,7 @@ const request = new HttpRequest({
     responseInterceptorCatch: (err) => {
       // eslint-disable-next-line no-console
       console.log('单个实例的拦截器: 响应拦截失败')
-      return err
+      return Promise.reject(err)
     },
   },
 })
