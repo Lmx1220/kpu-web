@@ -233,7 +233,7 @@ declare namespace Settings {
      *  @默认值 `'local'` 本地
      *  @可选值 `'server'` 服务器
      */
-    storageTo?: 'local'| 'server'
+    storageTo?: 'local' | 'server'
   }
   interface toolbar {
     /**
@@ -290,7 +290,7 @@ declare namespace Settings {
      * @默认值 `'local'` 本地
      * @可选值 `'server'` 服务器
      */
-    storageTo?: 'local'|'server'
+    storageTo?: 'local' | 'server'
   }
   interface mainPage {
     /**
@@ -467,26 +467,27 @@ declare namespace Menu {
     path: string
     redirect: string
     component: string
+    type: number
     auths: auths[]
-    meta: {
-      title?: string
-      icon?: string
-      activeIcon?: string
-      i18n?: string
-      defaultOpened?: boolean
-      permanent?: boolean
-      auth: string[]
-      sidebar?: boolean
-      breadcrumb?: boolean
-      copyright?: boolean
-      cache: boolean | string[]
-      noCache: string[]
-      badge: number | string
-      link?: string
-      iframe?: string
-      paddingBottom?: string
-      activeMenu?: string
-    }
+    // meta: {
+    title?: string
+    icon?: string
+    activeIcon?: string
+    i18n?: string
+    defaultOpened?: boolean
+    permanent?: boolean
+    auth: string[]
+    sidebar?: boolean
+    breadcrumb?: boolean
+    copyright?: boolean
+    cache: boolean | string[]
+    noCache: string[]
+    badge: number | string
+    link?: string
+    iframe?: string
+    paddingBottom?: string
+    activeMenu?: string
+    // }
     children?: raw[]
   }
 
