@@ -1,4 +1,5 @@
 import useRouteStore from './route'
+import useSettingsStore from '@/store/modules/settings'
 import type { HttpRequest } from '@/types/global'
 
 // import useMenuStore from './menu'
@@ -10,6 +11,7 @@ const useUserStore = defineStore(
   'user',
   () => {
     const routeStore = useRouteStore()
+    const settingsStore = useSettingsStore()
     // const menuStore = useMenuStore()
     const account = ref(storage.local.get('login_account') ?? '')
     const token = ref(storage.local.get('token') ?? '')
@@ -82,7 +84,9 @@ const useUserStore = defineStore(
         baseURL: '/mock/',
       })
     }
-
+    async function getPreferences() {
+      settingsStore.updateSettings({})
+    }
     return {
       account,
       token,
@@ -92,6 +96,7 @@ const useUserStore = defineStore(
       logout,
       getPermissions,
       editPassword,
+      getPreferences,
     }
   },
 )
