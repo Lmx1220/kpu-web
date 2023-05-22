@@ -5,6 +5,7 @@ const props = defineProps({
   name: {
     type: String,
     required: true,
+    default: '',
   },
   runtime: {
     type: Boolean,

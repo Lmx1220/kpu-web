@@ -34,24 +34,25 @@ const form = ref<Menu.raw>({
   redirect: '',
   name: '',
   component: '',
-  meta: {
-    title: '',
-    icon: '',
-    activeIcon: '',
-    defaultOpened: false,
-    permanent: false,
-    auth: [],
-    sidebar: true,
-    breadcrumb: true,
-    activeMenu: '',
-    cache: [],
-    noCache: [],
-    badge: '',
-    link: '',
-    iframe: '',
-    copyright: false,
-    paddingBottom: '0px',
-  },
+  type: 0,
+  // meta: {
+  title: '',
+  icon: '',
+  activeIcon: '',
+  defaultOpened: false,
+  permanent: false,
+  auth: [],
+  sidebar: true,
+  breadcrumb: true,
+  activeMenu: '',
+  cache: [],
+  noCache: [],
+  badge: '',
+  link: '',
+  iframe: '',
+  copyright: false,
+  paddingBottom: '0px',
+  // },
   auths: [],
 },
 )
@@ -81,13 +82,13 @@ function getInfo() {
   crudMenu.detail<any>(form.value.id).then((res) => {
     loading.value = false
     form.value.id = res.data.id
-    form.value.parentId = res.data.parentId
+    form.value.auths = res.data.auths
+    form.value.parentId = res.data.pid
     form.value.path = res.data.path
     form.value.redirect = res.data.redirect
     form.value.name = res.data.name
     form.value.component = res.data.component
-    Object.assign(form.value.meta, res.data.meta)
-    form.value.auths = res.data.auths
+    Object.assign(form.value, res.data)
   }).catch(() => {
     loading.value = false
   })
@@ -121,15 +122,15 @@ const auth = ref('')
 const authShow = ref(false)
 const InputAuthRef = ref()
 function handleRemoveAuth(value: string) {
-  form.value.meta.auth.splice(form.value.meta.auth.indexOf(value), 1)
+  form.value.auth.splice(form.value.auth.indexOf(value), 1)
 }
 function handleEnterAuth() {
   if (auth.value) {
-    if (form.value.meta.auth.includes(auth.value)) {
+    if (form.value.auth.includes(auth.value)) {
       ElMessage.warning('标识已存在')
     }
     else {
-      form.value.meta.auth.push(auth.value)
+      form.value.auth.push(auth.value)
     }
   }
   authShow.value = false
@@ -159,15 +160,15 @@ const cache = ref('')
 const cacheShow = ref(false)
 const InputCacheRef = ref()
 function handleRemoveCache(value: string) {
-  typeof form.value.meta.cache == 'object' && form.value.meta.cache.splice(form.value.meta.cache.indexOf(value), 1)
+  typeof form.value.cache == 'object' && form.value.cache.splice(form.value.cache.indexOf(value), 1)
 }
 function handleEnterCache() {
   if (cache.value) {
-    if (typeof form.value.meta.cache == 'object' && form.value.meta.cache.includes(cache.value)) {
+    if (typeof form.value.cache == 'object' && form.value.cache.includes(cache.value)) {
       ElMessage.warning('标识已存在')
     }
     else {
-      typeof form.value.meta.cache == 'object' && form.value.meta.cache.push(cache.value)
+      typeof form.value.cache == 'object' && form.value.cache.push(cache.value)
     }
   }
   cacheShow.value = false
@@ -185,15 +186,15 @@ const noCache = ref('')
 const noCacheShow = ref(false)
 const InputNoCacheRef = ref()
 function handleRemoveNoCache(value: string) {
-  typeof form.value.meta.noCache == 'object' && form.value.meta.noCache.splice(form.value.meta.noCache.indexOf(value), 1)
+  typeof form.value.noCache == 'object' && form.value.noCache.splice(form.value.noCache.indexOf(value), 1)
 }
 function handleEnterNoCache() {
   if (noCache.value) {
-    if (typeof form.value.meta.noCache == 'object' && form.value.meta.noCache.includes(noCache.value)) {
+    if (typeof form.value.noCache == 'object' && form.value.noCache.includes(noCache.value)) {
       ElMessage.warning('标识已存在')
     }
     else {
-      typeof form.value.meta.noCache == 'object' && form.value.meta.noCache.push(noCache.value)
+      typeof form.value.noCache == 'object' && form.value.noCache.push(noCache.value)
     }
   }
   noCacheShow.value = false
@@ -297,6 +298,11 @@ function TableSortable() {
           <page-header v-if="form.parentId" title="基础配置" content="标准路由配置，包含 path/redirect/name/component" />
           <el-row v-if="form.parentId" :gutter="30" style="padding: 20px;">
             <el-col :xl="12" :lg="24">
+              <el-form-item prop="type" label="目录">
+                <el-switch v-model="form.type" inline-prompt active-text="是" inactive-text="否" :active-value="0" :inactive-value="1" />
+              </el-form-item>
+            </el-col>
+            <el-col :xl="12" :lg="24">
               <el-form-item prop="path" label="路由地址">
                 <el-input v-model="form.path" clearable placeholder="请输入路由地址" />
               </el-form-item>
@@ -307,7 +313,7 @@ function TableSortable() {
               </el-form-item>
             </el-col>
             <el-col :xl="12" :lg="24">
-              <el-form-item prop="redirect" label="路由命名">
+              <el-form-item prop="name" label="路由命名">
                 <template #label>
                   路由命名
                   <span class="label-tip"> 即 name ，系统唯一</span>
@@ -340,7 +346,7 @@ function TableSortable() {
           <el-row :gutter="30" style="padding: 20px;">
             <el-col :xl="12" :lg="24">
               <el-form-item prop="meta.title" label="显示名称">
-                <el-input v-model="form.meta.title" clearable placeholder="请输入显示名称" />
+                <el-input v-model="form.title" clearable placeholder="请输入显示名称" />
               </el-form-item>
             </el-col>
             <el-col :xl="12" :lg="24">
@@ -355,7 +361,7 @@ function TableSortable() {
                 </template>
                 <el-space>
                   <ElTag
-                    v-for="tag in form.meta.auth" :key="tag" class="mx-1" size="large" :disable-transitions="false"
+                    v-for="tag in form.auth" :key="tag" class="mx-1" size="large" :disable-transitions="false"
                     closable @close="handleRemoveAuth(tag)"
                   >
                     {{ tag }}
@@ -372,17 +378,17 @@ function TableSortable() {
             </el-col>
             <el-col :xl="12" :lg="24">
               <el-form-item prop="meta.icon" label="默认图标">
-                <IconPicker v-model="form.meta.icon" />
+                <IconPicker v-model="form.icon" />
               </el-form-item>
             </el-col>
             <el-col :xl="12" :lg="24">
               <el-form-item prop="meta.activeIcon" label="激活图标">
-                <IconPicker v-model="form.meta.activeIcon" />
+                <IconPicker v-model="form.activeIcon" />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.defaultOpened" label="默认展开">
-                <el-switch v-model="form.meta.defaultOpened" inline-prompt active-text="是" inactive-text="否" />
+                <el-switch v-model="form.defaultOpened" inline-prompt active-text="是" inactive-text="否" />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
@@ -391,20 +397,20 @@ function TableSortable() {
                   常驻标签页
                   <span class="label-tip"> 请勿在带有参数的路由地址上开启该设置</span>
                 </template>
-                <el-switch v-model="form.meta.permanent" inline-prompt active-text="是" inactive-text="否" />
+                <el-switch v-model="form.permanent" inline-prompt active-text="是" inactive-text="否" />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.sidebar" label="在导航显示">
-                <el-switch v-model="form.meta.sidebar" inline-prompt active-text="显示" inactive-text="隐藏" />
+                <el-switch v-model="form.sidebar" inline-prompt active-text="显示" inactive-text="隐藏" />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="meta.breadcrumb" label="在面包屑显示">
-                <el-switch v-model="form.meta.breadcrumb" inline-prompt active-text="显示" inactive-text="隐藏" />
+                <el-switch v-model="form.breadcrumb" inline-prompt active-text="显示" inactive-text="隐藏" />
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
               <el-form-item prop="meta.cache" label="缓存规则">
                 <template #label>
                   缓存规则
@@ -414,18 +420,18 @@ function TableSortable() {
                     </el-icon>
                   </el-tooltip>
                   <span class="label-tip">切换为
-                    <ElLink v-show="typeof form.meta.cache === 'object'" type="primary" @click="form.meta.cache = true">
+                    <ElLink v-show="typeof form.cache === 'object'" type="primary" @click="form.cache = true">
                       始终缓存
                     </ElLink>
-                    <ElLink v-show="typeof form.meta.cache === 'boolean'" type="primary" @click="form.meta.cache = []">
+                    <ElLink v-show="typeof form.cache === 'boolean'" type="primary" @click="form.cache = []">
                       规则模式
                     </ElLink>
                   </span>
                 </template>
 
-                <el-space v-show="typeof form.meta.cache === 'object'">
+                <el-space v-show="typeof form.cache === 'object'">
                   <ElTag
-                    v-for="cache in form.meta.cache" :key="cache" class="mx-1" size="large"
+                    v-for="cache in form.cache" :key="cache" class="mx-1" size="large"
                     :disable-transitions="false" closable @close="handleRemoveCache(cache as string)"
                   >
                     {{ cache }}
@@ -438,12 +444,12 @@ function TableSortable() {
                     新增
                   </el-button>
                 </el-space>
-                <div v-show="typeof form.meta.cache === 'boolean'">
+                <div v-show="typeof form.cache === 'boolean'">
                   始终缓存
                 </div>
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
               <el-form-item prop="meta.noCache" label="不缓存规则">
                 <template #label>
                   不缓存规则
@@ -456,7 +462,7 @@ function TableSortable() {
                 </template>
                 <el-space>
                   <ElTag
-                    v-for="noCache in form.meta.noCache" :key="noCache" class="mx-1" size="large"
+                    v-for="noCache in form.noCache" :key="noCache" class="mx-1" size="large"
                     :disable-transitions="false" closable @close="handleRemoveNoCache(noCache)"
                   >
                     {{ noCache }}
@@ -471,13 +477,13 @@ function TableSortable() {
                 </el-space>
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
               <el-form-item prop="meta.activeMenu" label="高亮导航">
                 <template #label>
                   高亮导航
                   <span class="label-tip">如果子路由不在导航显示，则需要设置高亮的上级路由地址</span>
                 </template>
-                <el-input v-model="form.meta.activeMenu" clearable placeholder="请输入高亮导航的完整路由地址" />
+                <el-input v-model="form.activeMenu" clearable placeholder="请输入高亮导航的完整路由地址" />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
@@ -486,39 +492,39 @@ function TableSortable() {
                   徽标
                   <span class="label-tip">不宜设置太长，建议控制在4个字符内</span>
                 </template>
-                <el-input v-model="form.meta.badge" clearable placeholder="请输入徽标显示内容" />
+                <el-input v-model="form.badge" clearable placeholder="请输入徽标显示内容" />
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
               <el-form-item prop="meta.link" label="访问外链">
                 <template #label>
                   访问外链
                   <span class="label-tip">请设置 http/https 开头的完整外链地址</span>
                 </template>
-                <el-input v-model="form.meta.link" clearable placeholder="请输入网址" />
+                <el-input v-model="form.link" clearable placeholder="请输入网址" />
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
               <el-form-item prop="meta.iframe" label="内嵌网页">
                 <template #label>
                   内嵌网页
                   <span class="label-tip">请勿与外链同时设置，同时设置时，本设置会失效</span>
                 </template>
-                <el-input v-model="form.meta.iframe" clearable placeholder="请输入网址" />
+                <el-input v-model="form.iframe" clearable placeholder="请输入网址" />
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
               <el-form-item prop="meta.copyright" label="底部版权">
-                <el-switch v-model="form.meta.copyright" inline-prompt active-text="显示" inactive-text="隐藏" />
+                <el-switch v-model="form.copyright" inline-prompt active-text="显示" inactive-text="隐藏" />
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
               <el-form-item prop="meta.paddingBottom" label="底部填充高度">
                 <template #label>
                   底部填充高度
                   <span class="label-tip">请设置有效的长度单位，例如：px/em/rem等</span>
                 </template>
-                <el-input v-model="form.meta.paddingBottom" clearable placeholder="请输入底部填充高度" />
+                <el-input v-model="form.paddingBottom" clearable placeholder="请输入底部填充高度" />
               </el-form-item>
             </el-col>
           </el-row>

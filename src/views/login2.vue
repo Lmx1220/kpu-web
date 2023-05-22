@@ -35,7 +35,7 @@ function handleLogin() {
   loginFormRef.value && loginFormRef.value.validate((valid) => {
     if (valid) {
       loading.value = true
-      userStore.login({ account: loginForm.value.account, password: loginForm.value.password }).then(() => {
+      userStore.login({ username: loginForm.value.account, password: loginForm.value.password }).then(() => {
         loading.value = false
         if (loginForm.value.remember) {
           storage.local.set('login_account', loginForm.value.account ?? '')

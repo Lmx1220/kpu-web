@@ -1,4 +1,5 @@
 import useRouteStore from './route'
+import useSettingsStore from '@/store/modules/settings'
 import type { HttpRequest } from '@/types/global'
 
 // import useMenuStore from './menu'
@@ -10,7 +11,9 @@ const useUserStore = defineStore(
   'user',
   () => {
     const routeStore = useRouteStore()
+    const settingsStore = useSettingsStore()
     // const menuStore = useMenuStore()
+
     const account = ref(storage.local.get('login_account') ?? '')
     const token = ref(storage.local.get('token') ?? '')
     const failure_time = ref(storage.local.get('failure_time') ?? '')
@@ -27,21 +30,23 @@ const useUserStore = defineStore(
 
     // 登录
     async function login(data: {
-      account: string
+      username: string
       password: string
     }) {
       // 通过 mock 进行登录
       const res = await api.post<HttpRequest.responseData<any>>({
-        url: 'member/login',
+        url: 'auth/login',
         data,
         // baseURL: '/mock/',
       })
-      storage.local.set('login_account', res.data.account)
-      storage.local.set('token', res.data.token)
-      storage.local.set('failure_time', res.data.failure_time)
-      account.value = res.data.account
-      token.value = res.data.token
-      failure_time.value = res.data.failure_time
+      // storage.local.set('login_account', res.data.account)
+      storage.local.set('token', res.data)
+      // storage.local.set('failure_time', res.data.failure_time)
+      storage.local.set('failure_time', String(new Date().getTime() + 2592000))
+      // account.value = res.data.account
+      token.value = res.data
+      // failure_time.value = res.data.failure_time
+      failure_time.value = String(new Date().getTime() + 2592000)
     }
     // 登出
     async function logout() {
@@ -57,14 +62,19 @@ const useUserStore = defineStore(
     // 获取我的权限
     async function getPermissions() {
       // 通过 mock 获取权限
-      const res = await api.get<HttpRequest.responseData<any>>({
-        url: 'member/permission',
-        // baseURL: '/mock/',
-        params: {
-          account: account.value,
-        },
-      })
-      permissions.value = res.data.permissions
+      try {
+        const res = await api.get<HttpRequest.responseData<string[]>>({
+          url: 'auth/permission',
+          // baseURL: '/mock/',
+          params: {
+            // account: account.value,
+          },
+        })
+        permissions.value = res.data
+      }
+      catch (e) {
+        console.log(e)
+      }
       return permissions.value
     }
     // 修改密码
@@ -82,7 +92,9 @@ const useUserStore = defineStore(
         // baseURL: '/mock/',
       })
     }
-
+    async function getPreferences() {
+      settingsStore.updateSettings({})
+    }
     return {
       account,
       token,
@@ -92,6 +104,7 @@ const useUserStore = defineStore(
       logout,
       getPermissions,
       editPassword,
+      getPreferences,
     }
   },
 )

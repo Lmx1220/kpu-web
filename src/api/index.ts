@@ -14,7 +14,7 @@ const request = new HttpRequest({
        * 以下代码为示例，在请求头里带上 token 信息
        */
       if (userStore.isLogin && config.headers) {
-        config.headers.Token = userStore.token
+        config.headers.Authorization = userStore.token
       }
       return config
     },

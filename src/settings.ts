@@ -13,7 +13,7 @@ const globalSettings: Settings.all = {
     enableProgress: true,
     storagePrefix: 'fa_',
     enableWatermark: false,
-    routeBaseOn: 'frontend',
+    routeBaseOn: 'backend',
     enableUserPreferences: false,
   },
   layout: {
@@ -42,7 +42,7 @@ const globalSettings: Settings.all = {
     enableMemory: true,
     enableHotkeys: true,
     style: 'fashion',
-    mergeTabsBy: '',
+    mergeTabsBy: 'activeMenu',
     storageTo: 'local',
   },
   toolbar: {

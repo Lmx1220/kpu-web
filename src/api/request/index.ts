@@ -1,8 +1,8 @@
 import type { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-import { checkStatus } from '@/api/helper/checkStatus'
 import type { RequestConfig, RequestInterceptors } from './type'
+import { checkStatus } from '@/api/helper/checkStatus'
 import { showFullScreenLoading, tryHideFullScreenLoading } from '@/api/request/serviceLoading'
 
 class HttpRequest {

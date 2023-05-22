@@ -31,22 +31,28 @@ const loginRules = ref<FormRules>({
     { min: 6, max: 18, trigger: 'blur', message: '密码长度为6到18位' },
   ],
 })
+
 function handleLogin() {
   loginFormRef.value && loginFormRef.value.validate((valid) => {
     if (valid) {
       loading.value = true
-      userStore.login({ account: loginForm.value.account, password: loginForm.value.password }).then(() => {
-        loading.value = false
-        if (loginForm.value.remember) {
-          storage.local.set('login_account', loginForm.value.account ?? '')
-        }
-        else {
-          storage.local.remove('login_account')
-        }
-        router.push(redirect.value)
-      }).catch(() => {
-        loading.value = false
-      })
+      try {
+        userStore.login({ username: loginForm.value.account, password: loginForm.value.password }).then(() => {
+          loading.value = false
+          if (loginForm.value.remember) {
+            storage.local.set('login_account', loginForm.value.account ?? '')
+          }
+          else {
+            storage.local.remove('login_account')
+          }
+          router.push(redirect.value)
+        }).catch(() => {
+          loading.value = false
+        })
+      }
+      catch (e) {
+        console.error(e)
+      }
     }
   })
 }

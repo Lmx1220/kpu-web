@@ -165,7 +165,7 @@ const useRouteStore = defineStore(
     const routes = computed(() => {
       let returnRoutes: Route.recordMainRaw[]
       // 如果权限功能开启，则需要对路由数据进行筛选过滤
-      if (settingsStore.settings.app.enablePermission) {
+      if (settingsStore.settings.app.enablePermission && false) {
         returnRoutes = filterAsyncRoutes(routesRaw.value as any, userStore.permissions)
       }
       else {
@@ -203,15 +203,15 @@ const useRouteStore = defineStore(
     }
     async function generateRoutesAtBack() {
       await api.get<HttpRequest.responseData<any>>({
-        url: 'route/list',
-        baseURL: '/mock/',
-        showLoading: false,
+        url: 'menu/menuInit',
+        // baseURL: '/mock/',
+        noLoading: false,
       }).then(async (res) => {
         // 设置 routes 数据
         routesRaw.value = formatBackRoutes(res.data) as any
-        // if (settingsStore.settings.app.enablePermission) {
-        //   userStore.getPermissions()
-        // }
+        if (settingsStore.settings.app.enablePermission) {
+          userStore.getPermissions()
+        }
         isGenerate.value = true
       }).catch(() => {})
     }

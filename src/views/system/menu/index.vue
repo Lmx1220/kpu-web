@@ -2,10 +2,19 @@
 import { ElMessage, ElMessageBox } from 'element-plus'
 import useSettingsStore from '@/store/modules/settings'
 import crudMenu from '@/api/modules/system/menu'
+import type { HttpRequest, Menu } from '@/types/global'
+
+const auth = useAuth()
+interface Data {
+  dataList?: Menu.raw[]
+  loading: boolean
+  tableAutoHeight: boolean
+}
 
 const router = useRouter()
 const tabbar = useTabbar()
-const data = ref(
+
+const data: Ref<Data> = ref(
   {
     dataList: [],
     loading: false,
@@ -19,19 +28,19 @@ onMounted(() => {
 })
 function getDataList() {
   data.value.loading = true
-  crudMenu.list<any>().then((res) => {
+  crudMenu.list<HttpRequest.responseData<Menu.raw[]>>().then((res) => {
     data.value.dataList = res.data
     data.value.loading = false
   }).catch(() => {
     data.value.loading = false
   })
 }
-function onCreate(row: any) {
+function onCreate(row?: Menu.raw) {
   if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
     tabbar.open({
       name: 'menuCreate',
       query: {
-        parentId: row.id,
+        parentId: row?.id,
       },
     })
   }
@@ -39,12 +48,12 @@ function onCreate(row: any) {
     router.push({
       name: 'menuCreate',
       query: {
-        parentId: row.id,
+        parentId: row?.id,
       },
     })
   }
 }
-function onEdit(row: any) {
+function onEdit(row: Menu.raw) {
   if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
     tabbar.open({
       name: 'menuEdit',
@@ -62,7 +71,7 @@ function onEdit(row: any) {
     })
   }
 }
-function onDel(row: any) {
+function onDel(row: Menu.raw) {
   ElMessageBox.confirm(`确认删除「${row.title}」吗？`, '确认信息').then(() => {
     crudMenu.detail(row.id).then(() => {
       getDataList()
@@ -80,7 +89,7 @@ function onDel(row: any) {
     <page-header title="菜单管理" />
     <page-main>
       <el-space>
-        <el-button type="primary" @click="onCreate">
+        <el-button type="primary" @click="onCreate()">
           <template #icon>
             <el-icon>
               <svg-icon name="ep:plus" />
@@ -93,7 +102,7 @@ function onDel(row: any) {
         v-loading="data.loading" class="list-table" :data="data.dataList" row-key="id" default-expand-all border
         stripe highlight-current-row height="100%"
       >
-        <el-table-column prop="meta.title" label="标题" min-width="200" fixed="left" />
+        <el-table-column prop="title" label="标题" min-width="200" fixed="left" />
         <el-table-column prop="path" label="路由" width="200">
           <template #default="scope">
             <span :title="scope.row.path">
@@ -111,45 +120,45 @@ function onDel(row: any) {
             </span>
           </template>
         </el-table-column>
-        <el-table-column prop="meta.icon" label="图标" width="90" align="center">
+        <el-table-column prop="icon" label="图标" width="90" align="center">
           <template #default="scope">
             <div style="display: flex; justify-content: center;">
-              <el-icon v-if="scope.row.meta.icon" style="font-size: 24px;">
-                <svg-icon :name="scope.row.meta.icon" />
+              <el-icon v-if="scope.row.icon" style="font-size: 24px;">
+                <svg-icon :name="scope.row.icon" />
               </el-icon>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="meta.activeIcon" label="激活图标" width="90" align="center">
+        <el-table-column prop="activeIcon" label="激活图标" width="90" align="center">
           <template #default="scope">
-            <el-icon v-if="scope.row.meta.activeIcon" style="font-size: 24px;">
-              <svg-icon :name="scope.row.meta.activeIcon" />
+            <el-icon v-if="scope.row.activeIcon" style="font-size: 24px;">
+              <svg-icon :name="scope.row.activeIcon" />
             </el-icon>
           </template>
         </el-table-column>
         <el-table-column prop="sidebar" label="菜单" width="80" align="center">
           <template #default="scope">
-            <ElTag v-if="typeof scope.row.meta.sidebar === 'boolean'" :type="scope.row.meta.sidebar ? 'success' : 'danger'">
-              {{ scope.row.meta.sidebar ? '显示' : '隐藏' }}
+            <ElTag v-if="typeof scope.row.sidebar === 'boolean'" :type="scope.row.sidebar ? 'success' : 'danger'">
+              {{ scope.row.sidebar ? '显示' : '隐藏' }}
             </ElTag>
           </template>
         </el-table-column>
-        <el-table-column prop="meta.breadcrumb" label="面包屑" width="80" align="center">
+        <el-table-column prop="breadcrumb" label="面包屑" width="80" align="center">
           <template #default="scope">
-            <ElTag v-if="typeof scope.row.meta.breadcrumb === 'boolean'" :type="scope.row.meta.breadcrumb ? 'success' : 'danger'">
-              {{ scope.row.meta.breadcrumb ? '显示' : '隐藏' }}
+            <ElTag v-if="typeof scope.row.breadcrumb === 'boolean'" :type="scope.row.breadcrumb ? 'success' : 'danger'">
+              {{ scope.row.breadcrumb ? '显示' : '隐藏' }}
             </ElTag>
           </template>
         </el-table-column>
-        <el-table-column prop="address" width="250" align="center" fixed="right" label="操作">
+        <el-table-column v-if="auth.auth(['menu:add', 'menu:edit', 'menu:del'])" width="250" align="center" fixed="right" label="操作">
           <template #default="scope">
-            <el-button type="info" plain size="small" @click="onCreate(scope.row)">
+            <el-button v-show="scope.row.type === 0" v-auth="'menu:add'" type="info" plain size="small" @click="onCreate(scope.row)">
               新增导航
             </el-button>
-            <el-button type="primary" size="small" @click="onEdit(scope.row)">
+            <el-button v-auth="'menu:edit'" type="primary" size="small" @click="onEdit(scope.row)">
               编辑
             </el-button>
-            <el-button type="danger" size="small" @click="onDel(scope.row)">
+            <el-button v-auth="'menu:del'" type="danger" size="small" @click="onDel(scope.row)">
               删除
             </el-button>
           </template>

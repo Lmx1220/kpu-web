@@ -368,7 +368,7 @@ const useTabbarStore = defineStore(
         })
         list.value.push(...JSON.parse(res.data.tabbar || '[]'))
       }
-      settingsStore.settings.tabbar.enableMemory && storage.session.has('tabbarTempData') && list.value.push(...JSON.parse(`${storage.session.get('tabbarTempData')}`)[userStore.account] || [])
+      settingsStore.settings.tabbar.enableMemory && storage.session.has('tabbarTempData') && (list.value = JSON.parse(`${storage.session.get('tabbarTempData')}`)[userStore.account] || [])
     }
     return {
       list,

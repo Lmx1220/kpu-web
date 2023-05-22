@@ -6,7 +6,7 @@ export interface RequestInterceptors<T = AxiosResponse> {
 
   requestInterceptorCatch?: (error: AxiosError) => any
 
-  responseInterceptor?: (res: T) => T
+  responseInterceptor?: (res: any) => any
 
   responseInterceptorCatch?: (error: AxiosError) => any
 
