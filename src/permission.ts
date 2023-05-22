@@ -1,3 +1,4 @@
+import useFavoritesStore from '@/store/modules/favorites'
 import type { RouteRecordRaw } from 'vue-router'
 import { useNProgress } from '@vueuse/integrations/useNProgress'
 import '@/assets/styles/nprogress.scss'
@@ -19,6 +20,7 @@ router.beforeEach(async (to, from, next) => {
   const routeStore = useRouteStore()
   const menuStore = useMenuStore()
   const tabbarStore = useTabbarStore()
+  const favoritesStore = useFavoritesStore()
   const iframeStore = useIframeStore()
   // console.log('to', to)
   // 是否开启进度条
@@ -66,7 +68,9 @@ router.beforeEach(async (to, from, next) => {
       }
     }
     else {
+      settingsStore.settings.app.enableUserPreferences && await userStore.getPreferences()
       settingsStore.settings.tabbar.enable && await tabbarStore.recoveryStorage()
+      settingsStore.settings.favorites.enable && await favoritesStore.recoveryStorage()
       switch (settingsStore.settings.app.routeBaseOn) {
         case 'frontend':
           await routeStore.generateRoutesAtFront(asyncRoutes)
