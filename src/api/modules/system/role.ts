@@ -1,16 +1,16 @@
 import api from '@/api'
 
 // 前缀 变量
-const prefix = '/menu'
+const prefix = '/system/role'
 export default {
   // 后端获取路由数据
-  list: <T>() => api.get<T>({
+  list: <T>(params: any) => api.get<T>({
     url: `${prefix}/list`,
-    // noLoading: true,
-    // baseURL: '/mock/',
+    baseURL: '/mock/',
+    params,
   }),
   // // 基于文件系统路由模式下，后端获取导航菜单数据
-  detail: <T> (id: string) => api.get<T>({
+  detail: <T> (id: string | number) => api.get<T>({
     url: `${prefix}/detail`,
     params: {
       id,
@@ -32,18 +32,6 @@ export default {
     data: {
       id,
     },
-    // baseURL: '/mock/',
-  }),
-  moveUp: <T> (id: string) => api.post<T>({
-    url: `${prefix}/moveUp/${id}`,
-    // baseURL: '/mock/',
-  }),
-  moveDown: <T> (id: string) => api.post<T>({
-    url: `${prefix}/moveDown/${id}`,
-    // baseURL: '/mock/',
-  }),
-  move: <T> (currentId: number, targetId: number) => api.post<T>({
-    url: `${prefix}/move/${currentId}/${targetId}`,
     // baseURL: '/mock/',
   }),
 

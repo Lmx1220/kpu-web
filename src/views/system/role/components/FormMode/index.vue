@@ -1,0 +1,70 @@
+<script lang="ts" setup>
+import DetailForm from '../DetailForm/index.vue'
+
+const props = defineProps({
+  ...DetailForm.props,
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
+  mode: {
+    type: String,
+    default: 'dialog',
+    validator: (val: string) => ['dialog', 'drawer'].includes(val),
+  },
+})
+
+const emit = defineEmits(['update:modelValue', 'success'])
+
+const myVisible = computed({
+  get() {
+    return props.modelValue
+  },
+  set(val) {
+    emit('update:modelValue', val)
+  },
+})
+
+const form = ref<InstanceType<typeof DetailForm>>()
+
+const title = computed(() => props.id === '' ? '新增Test' : '编辑Test')
+
+function onSubmit() {
+  // submit() 为组件内部方法
+  form.value?.submit(() => {
+    emit('success')
+    onCancel()
+  })
+}
+
+function onCancel() {
+  myVisible.value = false
+}
+</script>
+
+<template>
+  <div>
+    <el-dialog v-if="props.mode === 'dialog'" v-model="myVisible" :title="title" width="600px" :close-on-click-modal="false" append-to-body destroy-on-close>
+      <DetailForm ref="form" v-bind="$props" />
+      <template #footer>
+        <el-button size="large" @click="onCancel">
+          取 消
+        </el-button>
+        <el-button type="primary" size="large" @click="onSubmit">
+          确 定
+        </el-button>
+      </template>
+    </el-dialog>
+    <el-drawer v-else-if="props.mode === 'drawer'" v-model="myVisible" :title="title" size="600px" :close-on-click-modal="false" destroy-on-close>
+      <DetailForm ref="form" v-bind="$props" />
+      <template #footer>
+        <el-button size="large" @click="onCancel">
+          取 消
+        </el-button>
+        <el-button type="primary" size="large" @click="onSubmit">
+          确 定
+        </el-button>
+      </template>
+    </el-drawer>
+  </div>
+</template>

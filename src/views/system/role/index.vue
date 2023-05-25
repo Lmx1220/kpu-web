@@ -1,13 +1,297 @@
-<script setup lang="ts">
+<script lang="ts" setup name="SystemRoleList">
+import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
+import FormMode from '@/views/system/role/components/FormMode/index.vue'
+import usePagination from '@/util/usePagination'
+import eventBus from '@/util/eventBus'
+import crudRole from '@/api/modules/system/role'
 
+const {
+  pagination,
+  getParams,
+  onSizeChange,
+  onCurrentChange,
+  onSortChange,
+} = usePagination()
+const router = useRouter()
+// const route = useRoute()
+
+const data = ref({
+  loading: false,
+  tableAutoHeight: true,
+  /**
+     * 详情展示模式
+     * router 路由跳转
+     * dialog 对话框
+     * drawer 抽屉
+     */
+  formMode: 'router',
+  // 详情
+  formModeProps: {
+    visible: false,
+    id: '',
+  },
+  // 搜索
+  search: {
+    title: '',
+    title2: '',
+    title3: '',
+    title4: '',
+  },
+  searchFold: true,
+  // 批量操作
+  batch: {
+    enable: true,
+    selectionDataList: [],
+  },
+  // 列表数据
+  dataList: [],
+})
+
+const table = ref<InstanceType<typeof ElTable>>()
+
+onMounted(() => {
+  getDataList()
+  if (data.value.formMode === 'router') {
+    eventBus.on('get-data-list', () => {
+      getDataList()
+    })
+  }
+})
+
+onBeforeUnmount(() => {
+  if (data.value.formMode === 'router') {
+    eventBus.off('get-data-list')
+  }
+})
+
+function getDataList() {
+  data.value.loading = true
+  const params = {
+    ...getParams(),
+    ...data.value.search.title && {
+      title: data.value.search.title,
+    },
+  }
+  console.log(params)
+  crudRole.list<any>(params).then((res) => {
+    // data.value.loading = false
+    data.value.dataList = res.data.list
+    pagination.value.total = res.data.total
+  }).finally(() => {
+    data.value.loading = false
+  })
+}
+
+// 每页数量切换
+function sizeChange(size: number) {
+  onSizeChange(size).then(() => getDataList())
+}
+
+// 当前页码切换（翻页）
+function currentChange(page = 1) {
+  onCurrentChange(page).then(() => getDataList())
+}
+
+// 字段排序
+function sortChange({
+  prop,
+  order,
+}: any) {
+  onSortChange(prop, order).then(() => getDataList())
+}
+
+function onCreate() {
+  if (data.value.formMode === 'router') {
+    router.push({
+      name: 'routerName',
+    })
+  }
+  else {
+    data.value.formModeProps.id = ''
+    data.value.formModeProps.visible = true
+  }
+}
+
+function onEdit(row: any) {
+  if (data.value.formMode === 'router') {
+    router.push({
+      name: 'routerName',
+      params: {
+        id: row.id,
+      },
+    })
+  }
+  else {
+    data.value.formModeProps.id = row.id
+    data.value.formModeProps.visible = true
+  }
+}
+
+function onDel(row: any) {
+  ElMessageBox.confirm(`确认删除「${row.title}」吗？`, '确认信息').then(() => {
+    crudRole.delete(row.id).then(() => {
+      getDataList()
+      ElMessage.success({
+        message: '模拟删除成功',
+        center: true,
+      })
+    })
+  }).catch(() => {
+  })
+}
 </script>
 
 <template>
-  <div class="role">
-    <h1>角色管理</h1>
+  <div :class="{ 'absolute-container': data.tableAutoHeight }">
+    <page-header title="角色管理" />
+    <page-main>
+      <search-bar
+        :fold="data.searchFold"
+        :show-toggle="false"
+      >
+        <template #default="{ fold }">
+          <el-form class="search-form" :model="data.search" size="default" inline inline-message label-width="100px" label-suffix="：">
+            <el-form-item label="标题">
+              <el-input
+                v-model="data.search.title" placeholder="请输入标题，支持模糊查询" clearable
+                @keydown.enter="currentChange()" @clear="currentChange()"
+              />
+            </el-form-item>
+            <el-form-item v-show="!fold" label="标题2">
+              <el-input
+                v-model="data.search.title2" placeholder="请输入标题，支持模糊查询" clearable
+                @keydown.enter="currentChange()" @clear="currentChange()"
+              />
+            </el-form-item>
+            <el-form-item v-show="!fold" label="标题3">
+              <el-input
+                v-model="data.search.title3" placeholder="请输入标题，支持模糊查询" clearable
+                @keydown.enter="currentChange()" @clear="currentChange()"
+              />
+            </el-form-item>
+            <el-form-item v-show="!fold" label="标题4">
+              <el-input
+                v-model="data.search.title4" placeholder="请输入标题，支持模糊查询" clearable
+                @keydown.enter="currentChange()" @clear="currentChange()"
+              />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="currentChange()">
+                <template #icon>
+                  <el-icon>
+                    <svg-icon name="ep:search" />
+                  </el-icon>
+                </template>
+                筛选
+              </el-button>
+              <el-button type="primary" link @click="data.searchFold = !fold">
+                <template #icon>
+                  <el-icon>
+                    <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                  </el-icon>
+                </template>
+                {{ fold ? '展开' : '收起' }}
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </template>
+      </search-bar>
+      <el-divider border-style="dashed" />
+      <el-space wrap>
+        <el-button type="primary" size="default" @click="onCreate">
+          <template #icon>
+            <el-icon>
+              <svg-icon name="ep:plus" />
+            </el-icon>
+          </template>
+          新增
+        </el-button>
+        <el-button size="default" :disabled="!data.batch.selectionDataList.length">
+          单个批量操作按钮
+        </el-button>
+        <el-button-group>
+          <el-button size="default" :disabled="!data.batch.selectionDataList.length">
+            批量操作按钮组1
+          </el-button>
+          <el-button size="default" :disabled="!data.batch.selectionDataList.length">
+            批量操作按钮组2
+          </el-button>
+        </el-button-group>
+      </el-space>
+      <ElTable
+        ref="table" v-loading="data.loading" class="list-table" :data="data.dataList" border stripe
+        highlight-current-row
+        height="100%"
+        @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
+      >
+        <el-table-column v-if="data.batch.enable" type="selection" align="center" fixed />
+        <el-table-column prop="title" label="标题" />
+        <el-table-column label="操作" width="250" align="center" fixed="right">
+          <template #default="scope">
+            <el-button type="primary" size="small" plain @click="onEdit(scope.row)">
+              编 辑
+            </el-button>
+            <el-button type="danger" size="small" plain @click="onDel(scope.row)">
+              删 除
+            </el-button>
+          </template>
+        </el-table-column>
+      </ElTable>
+      <el-pagination
+        :current-page="pagination.page" :total="pagination.total" :page-size="pagination.size"
+        :page-sizes="pagination.sizes" :layout="pagination.layout" :hide-on-single-page="false"
+        class="pagination" background @size-change="sizeChange" @current-change="currentChange"
+      />
+    </page-main>
+    <FormMode
+      v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
+      v-model="data.formModeProps.visible" :mode="data.formMode" @success="getDataList"
+    />
   </div>
 </template>
 
 <style lang="scss" scoped>
-// scss
+.el-pagination {
+  margin-top: 20px;
+}
+.absolute-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .page-header {
+    margin-bottom: 0;
+  }
+  .page-main {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    .search-container {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.page-main {
+  .search-form {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: -18px;
+    :deep(.el-form-item) {
+      flex: 1 1 300px;
+      &:last-child {
+        margin-left: auto;
+        .el-form-item__content {
+          justify-content: flex-end;
+        }
+      }
+    }
+
+  }
+  .el-divider {
+    margin-inline:-20px;width: calc(100% + 40px);
+  }
+}
 </style>

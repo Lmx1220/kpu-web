@@ -3,7 +3,7 @@ import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { uniqueId } from 'lodash-es'
 import Sortable from 'sortablejs'
-import type { Menu } from '@/types/global'
+import type { HttpRequest, Menu } from '@/types/global'
 import useSettingsStore from '@/store/modules/settings'
 import crudMenu from '@/api/modules/system/menu'
 
@@ -29,7 +29,9 @@ const loading = ref(false)
 
 const form = ref<Menu.raw>({
   id: route.params.id as any ?? '',
-  parentId: route.query.parentId as any ?? '',
+  parentId: route.query.parentId as string ?? '',
+  pid: route.query.parentId as string ?? '',
+  sort: route.query.sort as unknown as number ?? 0,
   path: '',
   redirect: '',
   name: '',
@@ -57,16 +59,16 @@ const form = ref<Menu.raw>({
 },
 )
 const rules = reactive({
-  'name': [
+  name: [
     { required: true, message: '请输入菜单名称', trigger: 'blur' },
   ],
-  'path': [
-    { required: true, message: '请输入菜单路径', trigger: 'blur' },
-  ],
-  'sort': [
+  // path: [
+  //   { required: true, message: '请输入菜单路径', trigger: 'blur' },
+  // ],
+  sort: [
     { required: true, message: '请输入排序', trigger: 'blur' },
   ],
-  'meta.title': [{
+  title: [{
     required: true,
     message: '请输入显示名称',
     trigger: 'blur',
@@ -93,26 +95,65 @@ function getInfo() {
     loading.value = false
   })
 }
-function hanleSubmit() {
+function handleSubmit() {
   if (form.value.id === '') {
-    formRef.value && formRef.value.validate((valid) => {
+    formRef.value && formRef.value.validate(async (valid) => {
       if (valid) {
-        ElMessage.success({
-          message: '模拟新增成功',
-          center: true,
-        })
-        handleBack()
+        try {
+          const data = JSON.parse(JSON.stringify(form.value))
+          data.auth = data.auth?.join(',')
+          data.noCache = data.noCache?.join(',')
+          data.cache = typeof data.cache === 'object' ? data.cache?.join(',') : data.cache
+          const res = await crudMenu.create<HttpRequest.responseData<any>>(data)
+          if (res.code !== 200) {
+            throw new Error(res)
+          }
+          ElMessage.success({
+            message: '模拟新增成功',
+            center: true,
+          })
+          handleBack()
+        }
+        catch (error: any) {
+          console.log(error)
+          if (error && error.msg) {
+            console.log(error.msg)
+            ElMessage.error({
+              message: error.msg,
+              center: true,
+            })
+          }
+        }
       }
     })
   }
   else {
-    formRef.value && formRef.value.validate((valid) => {
+    formRef.value && formRef.value.validate(async (valid) => {
       if (valid) {
-        ElMessage.success({
-          message: '模拟编辑成功',
-          center: true,
-        })
-        handleBack()
+        try {
+          const data = JSON.parse(JSON.stringify(form.value))
+          data.auth = data.auth?.join(',')
+          data.noCache = data.noCache?.join(',')
+          data.cache = typeof data.cache === 'object' ? data.cache?.join(',') : data.cache
+          const res = await crudMenu.edit<HttpRequest.responseData<any>>(data)
+          if (res.code !== 200) {
+            throw new Error(res)
+          }
+          ElMessage.success({
+            message: '模拟编辑成功',
+            center: true,
+          })
+          handleBack()
+        }
+        catch (error: any) {
+          console.log(error)
+          if (error && error.msg) {
+            ElMessage.error({
+              message: error.msg,
+              center: true,
+            })
+          }
+        }
       }
     },
     )
@@ -345,12 +386,12 @@ function TableSortable() {
           </page-header>
           <el-row :gutter="30" style="padding: 20px;">
             <el-col :xl="12" :lg="24">
-              <el-form-item prop="meta.title" label="显示名称">
+              <el-form-item prop="title" label="显示名称">
                 <el-input v-model="form.title" clearable placeholder="请输入显示名称" />
               </el-form-item>
             </el-col>
             <el-col :xl="12" :lg="24">
-              <el-form-item prop="meta.auth" label="鉴权标识">
+              <el-form-item prop="auth" label="鉴权标识">
                 <template #label>
                   鉴权标识
                   <el-tooltip content="当设置多个标识时，只要命中其中一个则鉴权通过" placement="top">
@@ -377,22 +418,22 @@ function TableSortable() {
               </el-form-item>
             </el-col>
             <el-col :xl="12" :lg="24">
-              <el-form-item prop="meta.icon" label="默认图标">
+              <el-form-item prop="icon" label="默认图标">
                 <IconPicker v-model="form.icon" />
               </el-form-item>
             </el-col>
             <el-col :xl="12" :lg="24">
-              <el-form-item prop="meta.activeIcon" label="激活图标">
+              <el-form-item prop="activeIcon" label="激活图标">
                 <IconPicker v-model="form.activeIcon" />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
-              <el-form-item prop="meta.defaultOpened" label="默认展开">
+              <el-form-item prop="defaultOpened" label="默认展开">
                 <el-switch v-model="form.defaultOpened" inline-prompt active-text="是" inactive-text="否" />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
-              <el-form-item prop="meta.permanent" label="常驻标签页">
+              <el-form-item prop="permanent" label="常驻标签页">
                 <template #label>
                   常驻标签页
                   <span class="label-tip"> 请勿在带有参数的路由地址上开启该设置</span>
@@ -401,17 +442,17 @@ function TableSortable() {
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
-              <el-form-item prop="meta.sidebar" label="在导航显示">
+              <el-form-item prop="sidebar" label="在导航显示">
                 <el-switch v-model="form.sidebar" inline-prompt active-text="显示" inactive-text="隐藏" />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
-              <el-form-item prop="meta.breadcrumb" label="在面包屑显示">
+              <el-form-item prop="breadcrumb" label="在面包屑显示">
                 <el-switch v-model="form.breadcrumb" inline-prompt active-text="显示" inactive-text="隐藏" />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
-              <el-form-item prop="meta.cache" label="缓存规则">
+              <el-form-item prop="cache" label="缓存规则">
                 <template #label>
                   缓存规则
                   <el-tooltip content="当跳转到设置的路由时，则会对当前路由进行缓存" placement="top">
@@ -450,7 +491,7 @@ function TableSortable() {
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
-              <el-form-item prop="meta.noCache" label="不缓存规则">
+              <el-form-item prop="noCache" label="不缓存规则">
                 <template #label>
                   不缓存规则
                   <el-tooltip content="当跳转到设置的路由时，则会对当前路由取消缓存" placement="top">
@@ -478,7 +519,7 @@ function TableSortable() {
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
-              <el-form-item prop="meta.activeMenu" label="高亮导航">
+              <el-form-item prop="activeMenu" label="高亮导航">
                 <template #label>
                   高亮导航
                   <span class="label-tip">如果子路由不在导航显示，则需要设置高亮的上级路由地址</span>
@@ -487,7 +528,7 @@ function TableSortable() {
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
-              <el-form-item prop="meta.badge" label="徽标">
+              <el-form-item prop="badge" label="徽标">
                 <template #label>
                   徽标
                   <span class="label-tip">不宜设置太长，建议控制在4个字符内</span>
@@ -496,7 +537,7 @@ function TableSortable() {
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
-              <el-form-item prop="meta.link" label="访问外链">
+              <el-form-item prop="link" label="访问外链">
                 <template #label>
                   访问外链
                   <span class="label-tip">请设置 http/https 开头的完整外链地址</span>
@@ -505,7 +546,7 @@ function TableSortable() {
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
-              <el-form-item prop="meta.iframe" label="内嵌网页">
+              <el-form-item prop="iframe" label="内嵌网页">
                 <template #label>
                   内嵌网页
                   <span class="label-tip">请勿与外链同时设置，同时设置时，本设置会失效</span>
@@ -514,12 +555,12 @@ function TableSortable() {
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
-              <el-form-item prop="meta.copyright" label="底部版权">
+              <el-form-item prop="copyright" label="底部版权">
                 <el-switch v-model="form.copyright" inline-prompt active-text="显示" inactive-text="隐藏" />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
-              <el-form-item prop="meta.paddingBottom" label="底部填充高度">
+              <el-form-item prop="paddingBottom" label="底部填充高度">
                 <template #label>
                   底部填充高度
                   <span class="label-tip">请设置有效的长度单位，例如：px/em/rem等</span>
@@ -532,7 +573,7 @@ function TableSortable() {
       </el-form>
     </div>
     <FixedActionBar>
-      <el-button type="primary" size="large" @click="hanleSubmit">
+      <el-button type="primary" size="large" @click="handleSubmit">
         提交
       </el-button>
       <el-button size="large" @click="handleBack">

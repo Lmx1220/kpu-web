@@ -41,6 +41,7 @@ function onCreate(row?: Menu.raw) {
       name: 'menuCreate',
       query: {
         parentId: row?.id,
+        sort: row?.pid ? row.children?.length ? row.children.length + 1 : 1 : data.value.dataList ? data.value.dataList.length + 1 : 1,
       },
     })
   }
@@ -49,6 +50,7 @@ function onCreate(row?: Menu.raw) {
       name: 'menuCreate',
       query: {
         parentId: row?.id,
+        sort: row?.pid ? row.children?.length ? row.children.length + 1 : 1 : data.value.dataList ? data.value.dataList.length + 1 : 1,
       },
     })
   }
@@ -82,6 +84,30 @@ function onDel(row: Menu.raw) {
     })
   }).catch(() => { })
 }
+function onMoveUp(row: Menu.raw) {
+  crudMenu.moveUp(row.id).then(() => {
+    getDataList()
+    ElMessage.success({
+      message: '操作成功',
+      center: true,
+    })
+  })
+}
+function onMoveDown(row: Menu.raw) {
+  crudMenu.moveDown(row.id).then(() => {
+    getDataList()
+    ElMessage.success({
+      message: '操作成功',
+      center: true,
+    })
+  })
+}
+function onMove(row: Menu.raw) {
+  ElMessage.info({
+    message: '暂未实现',
+    center: true,
+  })
+}
 </script>
 
 <template>
@@ -103,6 +129,7 @@ function onDel(row: Menu.raw) {
         stripe highlight-current-row height="100%"
       >
         <el-table-column prop="title" label="标题" min-width="200" fixed="left" />
+
         <el-table-column prop="path" label="路由" width="200">
           <template #default="scope">
             <span :title="scope.row.path">
@@ -150,17 +177,42 @@ function onDel(row: Menu.raw) {
             </ElTag>
           </template>
         </el-table-column>
-        <el-table-column v-if="auth.auth(['menu:add', 'menu:edit', 'menu:del'])" width="250" align="center" fixed="right" label="操作">
+        <el-table-column prop="sort" label="排序" min-width="80" fixed="right" />
+        <el-table-column v-if="auth.auth(['menu:add', 'menu:edit', 'menu:del'])" width="350" align="center" fixed="right" label="操作">
           <template #default="scope">
-            <el-button v-show="scope.row.type === 0" v-auth="'menu:add'" type="info" plain size="small" @click="onCreate(scope.row)">
+            <el-button v-show="scope.row.type === 0" v-auth="'menu:add'" link type="info" plain size="small" @click="onCreate(scope.row)">
               新增导航
             </el-button>
-            <el-button v-auth="'menu:edit'" type="primary" size="small" @click="onEdit(scope.row)">
+            <el-button v-auth="'menu:edit'" link type="primary" size="small" @click="onEdit(scope.row)">
               编辑
             </el-button>
-            <el-button v-auth="'menu:del'" type="danger" size="small" @click="onDel(scope.row)">
+            <el-button v-auth="'menu:del'" link type="danger" size="small" @click="onDel(scope.row)">
               删除
             </el-button>
+            <!--            <el-button v-auth="'menu:edit'" type="danger" size="small"> -->
+            <!--              上移 -->
+            <!--            </el-button> -->
+            <el-popconfirm title="是否上移?" @confirm="onMoveUp(scope.row)">
+              <template #reference>
+                <el-button link type="danger" size="small">
+                  上移
+                </el-button>
+              </template>
+            </el-popconfirm>
+            <el-popconfirm title="是否下移?" @confirm="onMoveDown(scope.row)">
+              <template #reference>
+                <el-button v-auth="'menu:edit'" link type="danger" size="small">
+                  下移
+                </el-button>
+              </template>
+            </el-popconfirm>
+            <el-popconfirm title="是否移动?" @confirm="onMove(scope.row)">
+              <template #reference>
+                <el-button v-auth="'menu:edit'" link type="danger" size="small">
+                  移动
+                </el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
