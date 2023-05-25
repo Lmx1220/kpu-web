@@ -28,5 +28,6 @@ declare module '@vue/runtime-core' {
     SearchBar: typeof import('./../components/SearchBar/index.vue')['default']
     SvgIcon: typeof import('./../components/SvgIcon/index.vue')['default']
     SystemInfo: typeof import('./../components/SystemInfo/index.vue')['default']
+    Vue3Cron: typeof import('./../components/vue3Cron/index.vue')['default']
   }
 }

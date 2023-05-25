@@ -1,40 +1,48 @@
 <script lang="ts" setup name="SearchBar">
 const props = defineProps({
-  showMore: {
+
+  fold: {
     type: Boolean,
-    default: false,
+    default: true,
   },
-  unfold: {
+  showToggle: {
+    type: Boolean,
+    default: true,
+  },
+  background: {
     type: Boolean,
     default: false,
   },
 })
 
-const emit = defineEmits(['toggle'])
+const emit = defineEmits(['update:fold', 'toggle'])
 
-const isUnfold = ref(!props.unfold)
+const isFold = ref(!props.fold)
 
-watch(() => props.unfold, () => toggle(), {
+watch(() => props.fold, (value) => {
+  isFold.value = value
+  emit('update:fold', value)
+}, {
   immediate: true,
 })
 
 function toggle() {
-  isUnfold.value = !isUnfold.value
-  emit('toggle', isUnfold.value)
+  isFold.value = !isFold.value
+  emit('toggle', isFold.value)
 }
 </script>
 
 <template>
-  <div class="search-container">
-    <slot />
-    <div v-if="showMore" class="more">
+  <div class="search-container" :class="{ 'has-bg': background }">
+    <slot :fold="isFold" />
+    <div v-if="showToggle" class="toggle">
       <el-button text size="small" @click="toggle">
         <template #icon>
           <el-icon>
-            <svg-icon :name="isUnfold ? 'i-ep:caret-top' : 'i-ep:caret-bottom'" />
+            <svg-icon :name="isFold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
           </el-icon>
         </template>
-        {{ isUnfold ? '收起' : '展开' }}
+        {{ isFold ? '展开' : '收起' }}
       </el-button>
     </div>
   </div>
@@ -43,32 +51,20 @@ function toggle() {
 <style lang="scss" scoped>
 .search-container {
   position: relative;
-  margin: 20px 0;
-  padding: 20px;
-  background-color: var(--el-fill-color-lighter);
-  transition: background-color 0.3s;
 
-  &:first-child {
-    margin-top: 0;
+  &.has-bg[data-v-0fbc6299] {
+    padding: 20px;
+    background-color: var(--el-fill-color-lighter);
+    transition: background-color .3s
   }
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  :deep(.el-form) {
+  :deep(.el-form){
     margin-bottom: -10px;
-
-    .el-select {
-      width: 100%;
-    }
-
-    .el-date-editor {
+    .el-select , .el-date-editor{
       width: 100%;
     }
   }
 
-  .more {
+  .toggle {
     position: relative;
     text-align: center;
     margin-bottom: -10px;

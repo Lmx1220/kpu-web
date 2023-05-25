@@ -13,7 +13,7 @@ export default [
     url: '/mock/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}/list',
     method: 'get',
     response: (option: any) => {
-      let { title, from, limit } = option.query
+      let { title, from = 0, limit = 10 } = option.query
       from = ~~from
       limit = ~~limit
       const list = AllList.filter((item) => {

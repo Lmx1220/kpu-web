@@ -4,9 +4,10 @@ import api from '@/api'
 const prefix = '/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}'
 export default {
   // 后端获取路由数据
-  list: <T>() => api.get<T>({
+  list: <T>(params: any) => api.get<T>({
     url: `${prefix}/list`,
     // baseURL: '/mock/',
+    params,
   }),
   // // 基于文件系统路由模式下，后端获取导航菜单数据
   detail: <T> (id: string | number) => api.get<T>({

@@ -58,6 +58,7 @@ module.exports = {
           relativePath,
           componentName: `${relativePath} ${data.name} list`,
           moduleName: data.name,
+          cname: data.cname,
         },
       },
       {
