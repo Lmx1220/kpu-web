@@ -1,4 +1,4 @@
-<script lang="ts" setup name="Header">
+<script lang="ts" setup>
 import Logo from '../Logo/index.vue'
 import Tools from '../Tools/index.vue'
 import SidebarItem from '../SidebarItem/index.vue'
@@ -7,6 +7,9 @@ import useSettingsStore from '@/store/modules/settings'
 import type { App } from '@/types/global'
 import useMenu from '@/util/composables/useMenu'
 
+defineOptions({
+  name: 'Headers',
+})
 const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()

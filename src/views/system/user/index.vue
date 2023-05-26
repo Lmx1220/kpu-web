@@ -1,4 +1,7 @@
-<script setup lang="ts" name="SystemUser">
+<script setup lang="ts">
+defineOptions({
+  name: 'SystemUser',
+})
 const mes = ref('hello world')
 </script>
 

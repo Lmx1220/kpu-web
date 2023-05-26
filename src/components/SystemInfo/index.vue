@@ -1,6 +1,9 @@
-<script setup lang="ts" name="SystemInfo">
+<script setup lang="ts">
 import eventBus from '@/util/eventBus'
 
+defineOptions({
+  name: 'SystemInfo',
+})
 const isShow = ref(false)
 
 const { pkg, lastBuildTime } = __SYSTEM_INFO__

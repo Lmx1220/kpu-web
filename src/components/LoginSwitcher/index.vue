@@ -1,4 +1,7 @@
-<script setup lang="ts" name="LoginSwitcher">
+<script setup lang="ts">
+defineOptions({
+  name: 'LoginSwitcher',
+})
 const route = useRoute()
 const router = useRouter()
 function command(name: string) {

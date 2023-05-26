@@ -1,4 +1,7 @@
-<script setup lang="ts" name="Home">
+<script setup lang="ts">
+defineOptions({
+  name: 'Home',
+})
 const form = ref<{ [key: string]: string }>({})
 const inputs = ref<{ key: string; label: string; value: any | undefined }[]>([
   { key: 'input1', label: 'Input 1', value: '' },

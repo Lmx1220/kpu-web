@@ -1,6 +1,10 @@
-<script lang="ts" setup name="PersonalSetting">
+<script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
+
+defineOptions({
+  name: 'PersonalSetting',
+})
 
 const router = useRouter()
 

@@ -1,4 +1,4 @@
-<script setup lang="ts" name="Toolbar">
+<script setup lang="ts">
 import { compile } from 'path-to-regexp'
 import Favorites from '../.././Favorites/index.vue'
 import Tools from '../.././Tools/index.vue'
@@ -6,6 +6,9 @@ import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 
+defineOptions({
+  name: 'Toolbar',
+})
 const route = useRoute()
 
 const settingsStore = useSettingsStore()

@@ -1,6 +1,9 @@
-<script lang="ts" setup name="Notification">
+<script lang="ts" setup>
 import useNotificationStore from '@/store/modules/notification'
 
+defineOptions({
+  name: 'Notification',
+})
 const notificationStore = useNotificationStore()
 const activeName = ref('message')
 </script>

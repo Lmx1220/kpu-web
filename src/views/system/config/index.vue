@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+defineOptions({
+  name: 'SystemConfig',
+})
 </script>
 
 <template>

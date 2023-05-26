@@ -1,5 +1,7 @@
-<script setup lang="ts" name="MonitorOnline">
-
+<script setup lang="ts">
+defineOptions({
+  name: 'MonitorOnline',
+})
 </script>
 
 <template>

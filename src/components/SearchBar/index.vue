@@ -1,34 +1,40 @@
-<script lang="ts" setup name="SearchBar">
-const props = defineProps({
+<script lang="ts" setup>
+const props = withDefaults(
+  defineProps<{
+    fold?: boolean
+    showToggle?: boolean
+    background?: boolean
+  }>(),
+  {
+    fold: true,
+    showToggle: true,
+    background: false,
+  },
+)
 
-  fold: {
-    type: Boolean,
-    default: true,
-  },
-  showToggle: {
-    type: Boolean,
-    default: true,
-  },
-  background: {
-    type: Boolean,
-    default: false,
-  },
+const emits = defineEmits<{
+  'update:fold': [
+    value: boolean,
+  ]
+  'toggle': [
+    value: boolean,
+  ]
+}>()
+defineOptions({
+  name: 'SearchBar',
 })
-
-const emit = defineEmits(['update:fold', 'toggle'])
-
 const isFold = ref(!props.fold)
 
 watch(() => props.fold, (value) => {
   isFold.value = value
-  emit('update:fold', value)
+  emits('update:fold', value)
 }, {
   immediate: true,
 })
 
 function toggle() {
   isFold.value = !isFold.value
-  emit('toggle', isFold.value)
+  emits('toggle', isFold.value)
 }
 </script>
 
@@ -57,8 +63,10 @@ function toggle() {
     background-color: var(--el-fill-color-lighter);
     transition: background-color .3s
   }
+
   :deep(.el-form){
     margin-bottom: -10px;
+
     .el-select , .el-date-editor{
       width: 100%;
     }

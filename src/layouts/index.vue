@@ -1,10 +1,10 @@
-<script setup lang="ts" name="Layout">
+<script setup lang="ts">
 import hotkeys from 'hotkeys-js'
 import LinkView from './components/views/link.vue'
 import Search from './components/Search/index.vue'
 import HotkeysIntro from './components/HotkeysIntro/index.vue'
 import AppSetting from './components/AppSetting/index.vue'
-import Header from './components/Header/index.vue'
+import Headers from './components/Header/index.vue'
 import MainSidebar from './components/MainSidebar/index.vue'
 import SubSidebar from './components/SubSidebar/index.vue'
 import Topbar from './components/Topbar/index.vue'
@@ -16,6 +16,9 @@ import useMenuStore from '@/store/modules/menu'
 import useMainPage from '@/util/composables/useMainPage'
 import useMenu from '@/util/composables/useMenu'
 
+defineOptions({
+  name: 'Layout',
+})
 const route = useRoute()
 const mainPage = useMainPage()
 const menu = useMenu()
@@ -61,7 +64,7 @@ onUnmounted(() => {
 <template>
   <div class="layout">
     <div id="app-main" :class="{ 'main-page-maximize': settingsStore.mainPageMaximizeStatus }">
-      <Header />
+      <Headers />
       <div class="wrapper">
         <div
           class="sidebar-container"

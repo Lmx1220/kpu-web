@@ -1,10 +1,13 @@
-<script setup lang="ts" name="Login">
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import storage from '@/util/storage'
 import useUserStore from '@/store/modules/user'
 
+defineOptions({
+  name: 'Login',
+})
 const { t } = useI18n()
 const banner = new URL('../assets/images/login-banner.png', import.meta.url).href
 const title = import.meta.env.VITE_APP_TITLE

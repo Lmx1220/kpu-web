@@ -1,29 +1,24 @@
-<script lang="ts" setup name="ListLayout">
-const props = defineProps({
-  enableLeftSide: {
-    type: Boolean,
-    default: true,
+<script lang="ts" setup>
+const props = withDefaults(
+  defineProps<{
+    enableLeftSide?: boolean
+    enableRightSide?: boolean
+    leftSideWidth?: number | string
+    rightSideWidth?: number | string
+    hideLeftSideToggle?: boolean
+    hideRightSideToggle?: boolean
+  }>(), {
+    enableLeftSide: true,
+    enableRightSide: true,
+    leftSideWidth: 300,
+    rightSideWidth: 300,
+    hideLeftSideToggle: false,
+    hideRightSideToggle: false,
+
   },
-  enableRightSide: {
-    type: Boolean,
-    default: true,
-  },
-  leftSideWidth: {
-    type: [Number, String],
-    default: 300,
-  },
-  rightSideWidth: {
-    type: [Number, String],
-    default: 300,
-  },
-  hideLeftSideToggle: {
-    type: Boolean,
-    default: false,
-  },
-  hideRightSideToggle: {
-    type: Boolean,
-    default: false,
-  },
+)
+defineOptions({
+  name: 'LayoutContainer',
 })
 
 // 侧边栏是否折叠

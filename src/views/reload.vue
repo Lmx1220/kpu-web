@@ -1,4 +1,7 @@
 <script setup lang="ts">
+defineOptions({
+  name: 'Reload',
+})
 const router = useRouter()
 
 onMounted(() => {

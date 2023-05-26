@@ -1,4 +1,4 @@
-<script lang="ts" setup name="Tabbar">
+<script lang="ts" setup>
 import ContextMenu from '@imengyu/vue3-context-menu'
 import Sortable from 'sortablejs'
 import hotkeys from 'hotkeys-js'
@@ -12,6 +12,10 @@ import useTabbar from '@/util/composables/useTabbar'
 import eventBus from '@/util/eventBus'
 import type { Tabbar } from '@/types/global'
 import useMainPage from '@/util/composables/useMainPage'
+
+defineOptions({
+  name: 'Tabbar',
+})
 
 const route = useRoute()
 const router = useRouter()

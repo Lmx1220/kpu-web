@@ -1,5 +1,7 @@
-<script setup lang="ts" name="PersonalNotification">
-
+<script setup lang="ts">
+defineOptions({
+  name: 'PersonalNotification',
+})
 </script>
 
 <template>

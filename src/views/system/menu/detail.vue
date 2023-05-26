@@ -1,4 +1,4 @@
-<script setup lang="ts" name="menuDetail">
+<script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { uniqueId } from 'lodash-es'
@@ -6,6 +6,10 @@ import Sortable from 'sortablejs'
 import type { Menu } from '@/types/global'
 import useSettingsStore from '@/store/modules/settings'
 import crudMenu from '@/api/modules/system/menu'
+
+defineOptions({
+  name: 'MenuDetail',
+})
 
 const route = useRoute()
 const router = useRouter()

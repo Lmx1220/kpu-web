@@ -1,21 +1,19 @@
-<script lang="ts" setup name="SidebarItem">
-import SidebarItem from '../SidebarItem/index.vue'
+<script lang="ts" setup>
+import { resolveRoutePath } from '@/util'
 import useSettingsStore from '@/store/modules/settings'
 import type { Menu } from '@/types/global'
-import { resolveRoutePath } from '@/util'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 
-const props = defineProps({
-  item: {
-    type: Object as () => Menu.recordRaw,
-    required: true,
-  },
-  basePath: {
-    type: String,
-    default: '',
-  },
+const props = withDefaults(
+  defineProps<{
+    item: Menu.recordRaw
+    basePath?: string
+  }>(), {
+    basePath: '',
+  })
+defineOptions({
+  name: 'SidebarItem',
 })
-
 const settingsStore = useSettingsStore()
 
 const { generateI18nTitle } = useI18nTitle()

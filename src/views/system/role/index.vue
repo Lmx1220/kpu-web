@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+defineOptions({
+  name: 'SystemRole',
+})
 </script>
 
 <template>

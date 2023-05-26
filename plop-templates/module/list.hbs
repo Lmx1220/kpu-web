@@ -1,10 +1,13 @@
-<script lang="ts" setup name="{{ properCase componentName }}">
+<script lang="ts" setup>
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import FormMode from './components/FormMode/index.vue'
 import usePagination from '@/util/usePagination.js'
 import eventBus from '@/util/eventBus'
 import crud{{properCase moduleName}} from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}'
 
+defineOptions({
+  name: '{{ properCase componentName }}',
+})
 const { pagination, getParams, onSizeChange, onCurrentChange, onSortChange } = usePagination()
 const router = useRouter()
 // const route = useRoute()

@@ -1,16 +1,18 @@
-<script setup lang="ts" name="Logo">
+<script setup lang="ts">
 import imgLogo from '@/assets/images/logo.png'
 import useSettingsStore from '@/store/modules/settings'
 
-defineProps({
-  showLogo: {
-    type: Boolean,
-    default: true,
-  },
-  showTitle: {
-    type: Boolean,
-    default: true,
-  },
+withDefaults(
+  defineProps<{
+    showLogo?: boolean
+    showTitle?: boolean
+  }>(), {
+    showLogo: true,
+    showTitle: true,
+  })
+
+defineOptions({
+  name: 'Logo',
 })
 const settingsStore = useSettingsStore()
 
