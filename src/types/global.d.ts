@@ -463,6 +463,8 @@ declare namespace Menu {
   interface raw {
     id: string
     parentId: string
+    sort: number
+    pid: string
     name: string
     path: string
     redirect: string
