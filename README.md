@@ -30,7 +30,8 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
 3. `pnpm run new` 创建新页面
 4. `pnpm run generate:icons` 生成svg图标
 ## 项目结构
-``` console
+``` text
+vue3-vite-ts
 ├── plop-templates // plop模板
 ├── public // 静态资源
 ├── scripts // 脚本
