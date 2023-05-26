@@ -1,38 +1,39 @@
 <script lang="ts" setup>
+import type { Props as DetailFormProps } from '../DetailForm/index.vue'
 import DetailForm from '../DetailForm/index.vue'
 
-const props = defineProps({
-  ...DetailForm.props,
-  modelValue: {
-    type: Boolean,
-    default: false,
-  },
-  mode: {
-    type: String,
-    default: 'dialog',
-    validator: (val: string) => ['dialog', 'drawer'].includes(val),
-  },
-})
+export interface Props extends DetailFormProps {
+  modelValue?: boolean
+  mode: 'dialog' | 'drawer' | 'router'
+}
+const props = withDefaults(defineProps<Props>(),
+  {
+    modelValue: false,
+  })
 
-const emit = defineEmits(['update:modelValue', 'success'])
+const emits = defineEmits<{
+  'update:modelValue': [
+    value: boolean,
+  ]
+  success: []
+}>()
 
 const myVisible = computed({
   get() {
     return props.modelValue
   },
   set(val) {
-    emit('update:modelValue', val)
+    emits('update:modelValue', val)
   },
 })
 
 const form = ref<InstanceType<typeof DetailForm>>()
-
 const title = computed(() => props.id === '' ? '新增Test' : '编辑Test')
 
 function onSubmit() {
   // submit() 为组件内部方法
   form.value?.submit(() => {
-    emit('success')
+    emits('success')
     onCancel()
   })
 }

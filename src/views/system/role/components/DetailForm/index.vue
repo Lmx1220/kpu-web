@@ -3,11 +3,10 @@ import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import crudRole from '@/api/modules/system/role'
 
-const props = defineProps({
-  id: {
-    type: [Number, String],
-    default: '',
-  },
+export interface Props {
+  id: number | string
+}
+const props = withDefaults(defineProps<Props>(), {
 })
 
 const data = ref({
