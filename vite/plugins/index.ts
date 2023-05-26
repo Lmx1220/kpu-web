@@ -9,13 +9,11 @@ import createUnocss from './unocss'
 import createBanner from './banner'
 import createCompression from './compression'
 import createPwa from './pwa'
-import createHtml from './html'
 import createMock from './mock'
 
 export default function creactVitePlugins(viteEnv, isBuild = false) {
   const vitePlugins: (PluginOption | PluginOption[])[] = [vue()]
   // vitePlugins.push(createInspector())
-  vitePlugins.push(createHtml(viteEnv, isBuild))
   vitePlugins.push(createAutoImport())
   vitePlugins.push(createComponents())
   vitePlugins.push(createUnocss())

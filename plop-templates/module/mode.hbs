@@ -1,20 +1,24 @@
 <script lang="ts" setup>
+import type { Props as DetailFormProps } from '../DetailForm/index.vue'
 import DetailForm from '../DetailForm/index.vue'
 
-const props = defineProps({
-  ...DetailForm.props,
-  modelValue: {
-    type: Boolean,
-    default: false,
-  },
-  mode: {
-    type: String,
-    default: 'dialog',
-    validator: (val: string) => ['dialog', 'drawer'].includes(val),
-  },
-})
+export interface Props extends DetailFormProps {
+  modelValue?: boolean
+  default?: 'dialog' | 'drawer'
+}
+const props = withDefaults(defineProps<Props>(),
+    {
+      id: '',
+      modelValue: false,
+      mode: 'dialog',
+    })
 
-const emit = defineEmits(['update:modelValue', 'success'])
+const emits = defineEmits<{
+  'update:modelValue': [
+    value: boolean,
+  ]
+  success: []
+}>()
 
 const myVisible = computed({
   get() {
