@@ -96,7 +96,7 @@ const useFavoritesStore = defineStore(
         settingsStore.settings.tabbar.storageTo === 'server' && await api.post({
           url: 'member/favorites/edit',
           data: {
-              tabbar: JSON.stringify(list.value),
+            tabbar: JSON.stringify(list.value),
           },
           baseURL: '/mock/',
         })
