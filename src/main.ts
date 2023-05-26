@@ -20,7 +20,7 @@ import './permission'
 import { useI18n } from '@/locales'
 
 // 自定义指令
-import directive from '@/util/directive'
+import directive from '@/directive'
 
 // 加载svg图标
 import 'virtual:svg-icons-register'
@@ -37,7 +37,7 @@ if (icons.useType === 'offline') {
 app.use(pinia)
 app.use(router)
 useI18n(app)
-directive(app)
+app.use(directive)
 errorLog(app)
 
 app.use(ElemnetPlus)

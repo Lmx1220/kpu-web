@@ -1,7 +1,7 @@
 import presetIcons from '@unocss/preset-icons'
 import UnoCSS from 'unocss/vite'
 
-export default function createUnocss() {
+export default function createUnoCss() {
   return UnoCSS({
     presets: [
       presetIcons({

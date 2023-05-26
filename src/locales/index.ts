@@ -29,12 +29,9 @@ function useI18n(app: App) {
   })
   app.use(i18n)
 }
-// export type LocaleKey = keyof typeof elementLocaleZhCN;
-interface Locale {
-  [key: string]: any
-}
+
 function getElementLocales() {
-  const locales: Locale = {}
+  const locales: Record<string, any> = {}
   for (const key in messages) {
     locales[key] = {}
     switch (key) {

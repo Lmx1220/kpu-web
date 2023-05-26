@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import useI18nTitle from '@/util/composables/useI18nTitle'
 import { getElementLocales } from '@/locales'
 import useSettingsStore from '@/store/modules/settings.js'
-import type { App } from '#/global'
 
 defineOptions({
   name: 'I18nSelector',
@@ -14,7 +14,7 @@ const settingsStore = useSettingsStore()
 
 const locales = computed(() => getElementLocales())
 // 生成国际化标题
-const generateI18nTitle = inject('generateI18nTitle') as App.GenerateI18nTitle
+const { generateI18nTitle } = useI18nTitle()
 
 function languageCommand(command: string) {
   // 切换语言

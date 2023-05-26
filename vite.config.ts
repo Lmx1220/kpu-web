@@ -27,7 +27,11 @@ export default ({ mode, command }) => {
     server: {
       base: './',
       open: true,
+
       port: 9001,
+      fs: {
+        strict: true,
+      },
       proxy: {
         '/proxy': {
           target: env.VITE_APP_API_BASEURL,
@@ -40,6 +44,7 @@ export default ({ mode, command }) => {
     build: {
       outDir: mode === 'production' ? 'dist' : `dist-${mode}`,
       sourcemap: env.VITE_BUILD_SOURCEMAP === 'true',
+      chunkSizeWarningLimit: 2000,
       // minify: 'terser',
       // terserOptions: {
       //   compress: {
