@@ -205,7 +205,7 @@ const useRouteStore = defineStore(
       await api.get<HttpRequest.responseData<any>>({
         url: 'route/list',
         baseURL: '/mock/',
-        showLoading: false,
+        noLoading: true,
       }).then(async (res) => {
         // 设置 routes 数据
         routesRaw.value = formatBackRoutes(res.data) as any

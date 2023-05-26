@@ -2,9 +2,9 @@
 import Logo from '../Logo/index.vue'
 import Tools from '../Tools/index.vue'
 import SidebarItem from '../SidebarItem/index.vue'
+import useI18nTitle from '@/util/composables/useI18nTitle'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
-import type { App } from '@/types/global'
 import useMenu from '@/util/composables/useMenu'
 
 defineOptions({
@@ -15,7 +15,7 @@ const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 const { switchTo } = useMenu()
 
-const generateI18nTitle: App.GenerateI18nTitle = inject('generateI18nTitle') || (() => '')
+const { generateI18nTitle } = useI18nTitle()
 </script>
 
 <template>

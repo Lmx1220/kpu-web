@@ -43,6 +43,7 @@ vue3-vite-ts
 │   │   ├── images // 图片
 │   │   └── styles // 样式
 │   ├── components // 公共组件
+│   ├── directives // 指令
 │   ├── iconify // 图标
 │   ├── layout // 布局
 │   ├── locales // 国际化

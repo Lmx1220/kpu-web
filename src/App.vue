@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import eruda from 'eruda'
 import VConsole from 'vconsole'
-import { useI18n } from 'vue-i18n'
 import hotkeys from 'hotkeys-js'
 import { getElementLocales } from './locales'
+import useI18nTitle from '@/util/composables/useI18nTitle'
 
 import eventBus from '@/util/eventBus'
 import useTabbarStore from '@/store/modules/tabbar'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
-import type { App } from '#/global'
 
 const route = useRoute()
 const locales = computed(() => getElementLocales())
@@ -17,12 +16,8 @@ const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 const tabbarStore = useTabbarStore()
 const tabbar = useTabbar()
-const { t, te } = useI18n()
 const { auth } = useAuth()
-const generateI18nTitle: App.GenerateI18nTitle = (key, defaultTitle) => {
-  // eslint-disable-next-line no-mixed-operators
-  return !!key && te(key) ? t(key) : (typeof defaultTitle === 'function' ? defaultTitle() : defaultTitle)
-}
+const { generateI18nTitle } = useI18nTitle()
 // 侧边栏主导航当前实际宽度
 const mainSidebarActualWidth = computed(() => {
   let actualWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--g-main-sidebar-width'))
