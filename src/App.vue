@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import eruda from 'eruda'
+import VConsole from 'vconsole'
 import { useI18n } from 'vue-i18n'
 import hotkeys from 'hotkeys-js'
 import { getElementLocales } from './locales'
@@ -82,6 +84,9 @@ onMounted(() => {
     window.onresize = null
   }
 })
+
+import.meta.env.VITE_APP_DEBUG_TOOL === 'eruda' && eruda.init()
+import.meta.env.VITE_APP_DEBUG_TOOL === 'vconsole' && new VConsole()
 </script>
 
 <template>

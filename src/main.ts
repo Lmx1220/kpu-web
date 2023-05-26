@@ -1,4 +1,5 @@
 import './util/baidu'
+import './util/system.copyright'
 
 import ElemnetPlus from 'element-plus'
 import App from './App.vue'

@@ -3,13 +3,12 @@ import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import crud{{properCase moduleName}} from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}'
 
-const props = withDefaults(
-  defineProps<{ 
-  id: number| string, 
-  }>(),
-  {
-    id: '',
-  })
+export interface Props {
+  id?: number | string
+}
+const props = withDefaults(defineProps<Props>(), {
+  id: '',
+})
 
 const data = ref({
   loading: false,
