@@ -48,6 +48,8 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
 │   ├── mock // mock数据
 │   ├── router // 路由
 │   ├── store // pinia状态管理
+│   │   │── modules // 模块
+│   │   └── index.ts // 入口
 │   ├── types // 类型
 │   ├── utils // 工具
 │   ├── views // 页面
@@ -83,6 +85,7 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
 ├── .npmrc // npm配置
 ├── .stylelintignore // stylelint忽略
 ├── .stylelintrc // stylelint配置
+├── .editorconfig // 编辑器配置
 ├── docker-compose.yml // docker配置
 ├── Dockerfile // docker配置
 ├── index.html // html模板
