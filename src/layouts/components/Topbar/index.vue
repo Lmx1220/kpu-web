@@ -1,8 +1,11 @@
-<script lang="ts" setup name="Topbar">
+<script lang="ts" setup>
 import Tabbar from './Tabbar/index.vue'
 import Toolbar from './Toolbar/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 
+defineOptions({
+  name: 'Topbar',
+})
 const hide = ref(false)
 const settingsStore = useSettingsStore()
 

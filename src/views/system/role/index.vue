@@ -1,10 +1,13 @@
-<script lang="ts" setup name="SystemRoleList">
+<script lang="ts" setup>
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import FormMode from '@/views/system/role/components/FormMode/index.vue'
 import usePagination from '@/util/usePagination'
 import eventBus from '@/util/eventBus'
 import crudRole from '@/api/modules/system/role'
 
+defineOptions({
+  name: 'SystemRoleList',
+})
 const {
   pagination,
   getParams,

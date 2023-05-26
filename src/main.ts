@@ -16,7 +16,7 @@ import pinia from '@/store'
 import router from '@/router'
 
 import './permission'
-import { useI18n } from '@/locales/index'
+import { useI18n } from '@/locales'
 
 // 自定义指令
 import directive from '@/util/directive'

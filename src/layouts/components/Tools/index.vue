@@ -1,4 +1,4 @@
-<script lang="ts" setup name="Tools">
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { useFullscreen } from '@vueuse/core'
 import Notification from './Notification/index.vue'
@@ -8,6 +8,10 @@ import useUserStore from '@/store/modules/user'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 import useMainPage from '@/util/composables/useMainPage'
 import useNotificationStore from '@/store/modules/notification'
+
+defineOptions({
+  name: 'Tools',
+})
 
 const router = useRouter()
 

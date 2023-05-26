@@ -1,6 +1,10 @@
-<script lang="ts" setup name="LinkView">
+<script lang="ts" setup>
 import { useClipboard } from '@vueuse/core'
 import { ElMessage } from 'element-plus'
+
+defineOptions({
+  name: 'LinkView',
+})
 
 const route = useRoute()
 const { copy, copied } = useClipboard()

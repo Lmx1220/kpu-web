@@ -1,6 +1,9 @@
-<script setup lang="ts" name="IframeView">
+<script setup lang="ts">
 import useIframeStore from '@/store/modules/iframe'
 
+defineOptions({
+  name: 'IframeView',
+})
 const route = useRoute()
 const iframeStore = useIframeStore()
 const iframeRef = ref<HTMLIFrameElement[]>()

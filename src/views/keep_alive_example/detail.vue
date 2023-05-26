@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const router = useRouter()
+
+defineOptions({
+  name: 'KeepAliveExampleDetail',
+})
 </script>
 
 <template>

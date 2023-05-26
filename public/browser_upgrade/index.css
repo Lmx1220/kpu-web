@@ -83,8 +83,15 @@
 }
 
 .vue-ts-admin-home .text {
+    position: relative;
     font-size: 24px;
     margin-top: 20px;
+}
+
+.vue-ts-admin-home .text::after {
+    content: "…";
+    position: absolute;
+    padding-left: 5px;
 }
 
 #browser-upgrade {

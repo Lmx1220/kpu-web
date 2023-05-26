@@ -1,4 +1,4 @@
-<script setup lang="ts" name="menuList">
+<script setup lang="ts">
 import { ElMessage, ElMessageBox } from 'element-plus'
 import useSettingsStore from '@/store/modules/settings'
 import crudMenu from '@/api/modules/system/menu'
@@ -10,6 +10,10 @@ interface Data {
   loading: boolean
   tableAutoHeight: boolean
 }
+
+defineOptions({
+  name: 'MenuList',
+})
 
 const router = useRouter()
 const tabbar = useTabbar()

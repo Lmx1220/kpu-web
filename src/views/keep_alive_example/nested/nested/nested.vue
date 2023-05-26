@@ -1,5 +1,9 @@
-<script lang="ts" setup name="TabExampleNested2">
+<script lang="ts" setup>
 import useKeepAliveStore from '@/store/modules/keepAlive'
+
+defineOptions({
+  name: 'TabExampleNested2',
+})
 
 const keepAliveStore = useKeepAliveStore()
 </script>

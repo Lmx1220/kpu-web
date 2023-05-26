@@ -1,7 +1,11 @@
-<script lang="ts" setup name="PersonalEditPassword">
+<script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import useUserStore from '@/store/modules/user'
+
+defineOptions({
+  name: 'PersonalEditPassword',
+})
 
 const route = useRoute()
 const router = useRouter()

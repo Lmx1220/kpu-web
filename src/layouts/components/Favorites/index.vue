@@ -1,6 +1,10 @@
-<script setup lang="ts" name="Favorites">
+<script setup lang="ts">
 import Sortable from 'sortablejs'
 import useFavoritesStore from '@/store/modules/favorites'
+
+defineOptions({
+  name: 'Favorites',
+})
 
 const route = useRoute()
 const router = useRouter()

@@ -1,7 +1,10 @@
-<script setup lang="ts" name="HotkeysIntro">
+<script setup lang="ts">
 import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
 
+defineOptions({
+  name: 'HotkeysIntro',
+})
 const isShow = ref(false)
 
 const settingsStore = useSettingsStore()

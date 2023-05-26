@@ -1,18 +1,27 @@
-<script lang="ts" setup name="IconPicker">
+<script lang="ts" setup>
 import { icons } from '@/iconify'
 
-const props = defineProps({
-  modelValue: {
-    type: String,
-    default: '',
+const props = withDefaults(
+  defineProps<{
+    modelValue: string
+    size: string
+  }>(),
+  {
+    modelValue: '',
+    size: 'default',
   },
-  size: {
-    type: String,
-    default: 'default',
-  },
+)
+
+const emits = defineEmits<{
+  'update:modelValue': [
+    value: string,
+  ]
+}>()
+
+defineOptions({
+  name: 'IconPicker',
 })
 
-const emit = defineEmits(['update:modelValue'])
 const myValue = ref('')
 watch(() => props.modelValue, (value) => {
   myValue.value = value
@@ -69,12 +78,12 @@ function hidePreviewIcon() {
 
 function chooseIcon(val: string) {
   myValue.value = val
-  emit('update:modelValue', val)
+  emits('update:modelValue', val)
   dialogVisible.value = false
 }
 function removeIcon() {
   myValue.value = ''
-  emit('update:modelValue', '')
+  emits('update:modelValue', '')
   dialogVisible.value = false
 }
 </script>

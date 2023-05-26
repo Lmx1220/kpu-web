@@ -1,4 +1,4 @@
-<script lang="ts" setup name="Search">
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import hotkeys from 'hotkeys-js'
 import type { RouteRecordRaw } from 'vue-router'
@@ -20,6 +20,9 @@ interface SourceRouteMeta {
   path: string
   breadcrumb: { i18n?: string; title: string }[]
 }
+defineOptions({
+  name: 'Search',
+})
 const { t } = useI18n()
 const settingsStore = useSettingsStore()
 const routeStore = useRouteStore()

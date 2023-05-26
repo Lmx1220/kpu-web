@@ -1,5 +1,7 @@
-<script setup lang="ts" name="MonitorLogin">
-
+<script setup lang="ts">
+defineOptions({
+  name: 'MonitorLogin',
+})
 </script>
 
 <template>
