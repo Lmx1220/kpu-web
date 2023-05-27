@@ -110,7 +110,10 @@ function handleSubmit() {
           data.cache = typeof data.cache === 'object' ? data.cache?.join(',') : data.cache
           const res = await crudMenu.create<HttpRequest.responseData<any>>(data)
           if (res.code !== 200) {
-            throw new Error(res)
+            return ElMessage.error({
+              message: res.message,
+              center: true,
+            })
           }
           ElMessage.success({
             message: '模拟新增成功',
@@ -141,7 +144,10 @@ function handleSubmit() {
           data.cache = typeof data.cache === 'object' ? data.cache?.join(',') : data.cache
           const res = await crudMenu.edit<HttpRequest.responseData<any>>(data)
           if (res.code !== 200) {
-            throw new Error(res)
+            return ElMessage.success({
+              message: '模拟编辑失败',
+              center: true,
+            })
           }
           ElMessage.success({
             message: '模拟编辑成功',
