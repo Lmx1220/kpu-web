@@ -2,7 +2,7 @@ import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, Inte
 import axios from 'axios'
 import { cloneDeep } from 'lodash-es'
 import qs from 'qs'
-import type { CreateAxiosOptions } from './type'
+import type { CreateAxiosOptions } from '@/api/request/axiosTransform'
 import { ContentTypeEnum, RequestEnum } from '@/enums/httpEnum'
 import type { RequestOptions, Result, UploadFileParams } from '#/axios'
 import { isFunction } from '@/util/is'

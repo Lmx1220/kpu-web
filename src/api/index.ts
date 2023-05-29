@@ -232,7 +232,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
       // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
       // authentication schemes，e.g: Bearer
       // authenticationScheme: 'Bearer',
-      authenticationScheme: 'Bearer',
+      // authenticationScheme: '1',
       timeout: 10 * 1000,
       headers: { 'Content-Type': ContentTypeEnum.JSON },
       transform: clone(transform),
@@ -251,7 +251,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
         // 消息提示类型
         errorMessageMode: 'message',
         // 接口地址
-        apiUrl: '/mock',
+        apiUrl: '/proxy',
         // 接口拼接地址
         urlPrefix: '',
         //  是否加入时间戳

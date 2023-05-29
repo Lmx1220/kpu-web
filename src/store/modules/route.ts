@@ -174,7 +174,7 @@ const useRouteStore = defineStore(
       return returnRoutes
     })
 
-    // 根据权限动态生成路由（后端获取）
+    // 根据权限动态生成路由（前端获取）
     async function generateRoutesAtFront(asyncRoutes: Route.recordMainRaw[]) {
       routesRaw.value = cloneDeep(asyncRoutes) as any
       if (settingsStore.settings.app.enablePermission) {
@@ -202,17 +202,21 @@ const useRouteStore = defineStore(
       })
     }
     async function generateRoutesAtBack() {
-      await api.get<any>({
-        url: '/route/list',
-        // noLoading: true,
-      }).then(async (res) => {
-        // 设置 routes 数据
+      try {
+        const res = await api.get<any>({
+          url: '/menu/menuInit',
+          // noLoading: true,
+        })
         routesRaw.value = formatBackRoutes(res) as any
-        // if (settingsStore.settings.app.enablePermission) {
-        //   userStore.getPermissions()
-        // }
+        if (settingsStore.settings.app.enablePermission) {
+          userStore.getPermissions()
+        }
         isGenerate.value = true
-      }).catch(() => {})
+      }
+      catch (error) {
+        isGenerate.value = true
+        console.log(error)
+      }
     }
     // 记录 accessRoutes 路由，用于登出时删除路由
     function setCurrentRemoveRoutes(routes: Function[]) {

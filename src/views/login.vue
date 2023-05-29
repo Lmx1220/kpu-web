@@ -208,8 +208,8 @@ function testAccount(account: string) {
         </div>
         <div style="margin-top: 20px; margin-bottom: -20px; text-align: center;">
           <el-divider>演示账号一键登录</el-divider>
-          <el-button type="primary" size="small" plain @click="testAccount('admin')">
-            admin
+          <el-button type="primary" size="small" plain @click="testAccount('root')">
+            root
           </el-button>
           <el-button size="small" plain @click="testAccount('test')">
             test
