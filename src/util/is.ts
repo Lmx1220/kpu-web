@@ -1,15 +1,39 @@
-const opt = Object.prototype.toString;
+const opt = Object.prototype.toString
 
 export function isArray(obj: any): obj is any[] {
-  return opt.call(obj) === '[object Array]';
+  return opt.call(obj) === '[object Array]'
+}
+
+export function isDef<T = unknown>(val?: T): val is T {
+  return typeof val !== 'undefined'
+}
+
+export function isUnDef<T = unknown>(val?: T): val is T {
+  return !isDef(val)
 }
 
 export function isObject(obj: any): obj is { [key: string]: any } {
-  return opt.call(obj) === '[object Object]';
+  return opt.call(obj) === '[object Object]'
+}
+
+export function isEmpty<T = unknown>(val: T): val is T {
+  if (isArray(val) || isString(val)) {
+    return val.length === 0
+  }
+
+  if (val instanceof Map || val instanceof Set) {
+    return val.size === 0
+  }
+
+  if (isObject(val)) {
+    return Object.keys(val).length === 0
+  }
+
+  return false
 }
 
 export function isString(obj: any): obj is string {
-  return opt.call(obj) === '[object String]';
+  return opt.call(obj) === '[object String]'
 }
 
 export function isNumber(obj: any): obj is number {
@@ -17,37 +41,37 @@ export function isNumber(obj: any): obj is number {
 }
 
 export function isRegExp(obj: any) {
-  return opt.call(obj) === '[object RegExp]';
+  return opt.call(obj) === '[object RegExp]'
 }
 
 export function isFile(obj: any): obj is File {
-  return opt.call(obj) === '[object File]';
+  return opt.call(obj) === '[object File]'
 }
 
 export function isBlob(obj: any): obj is Blob {
-  return opt.call(obj) === '[object Blob]';
+  return opt.call(obj) === '[object Blob]'
 }
 
 export function isUndefined(obj: any): obj is undefined {
-  return obj === undefined;
+  return obj === undefined
 }
 
 export function isNull(obj: any): obj is null {
-  return obj === null;
+  return obj === null
 }
 
 export function isFunction(obj: any): obj is (...args: any[]) => any {
-  return typeof obj === 'function';
+  return typeof obj === 'function'
 }
 
 export function isEmptyObject(obj: any): boolean {
-  return isObject(obj) && Object.keys(obj).length === 0;
+  return isObject(obj) && Object.keys(obj).length === 0
 }
 
 export function isExist(obj: any): boolean {
-  return obj || obj === 0;
+  return obj || obj === 0
 }
 
 export function isWindow(el: any): el is Window {
-  return el === window;
+  return el === window
 }

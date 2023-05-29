@@ -10,6 +10,7 @@ import elementLocaleEn from 'element-plus/lib/locale/lang/en'
 import type { App } from 'vue'
 import useSettingsStore from '@/store/modules/settings'
 
+export let i18n: ReturnType<typeof createI18n>
 function useI18n(app: App) {
   const settingsStore = useSettingsStore()
   // 如果没设置默认语言，则根据当前浏览器语言设置默认语言
@@ -20,7 +21,7 @@ function useI18n(app: App) {
       lang.includes(key) && settingsStore.setDefaultLang(key)
     }
   }
-  const i18n = createI18n({
+  i18n = createI18n({
     legacy: false,
     locale: settingsStore.settings.app.defaultLang,
     flatJson: true,
@@ -29,7 +30,6 @@ function useI18n(app: App) {
   })
   app.use(i18n)
 }
-
 function getElementLocales() {
   const locales: Record<string, any> = {}
   for (const key in messages) {

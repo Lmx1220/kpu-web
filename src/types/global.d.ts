@@ -530,11 +530,6 @@ declare namespace App {
   }
 }
 
-declare namespace HttpRequest {
-  interface responseData<T> {
-    code: number
-    message: string
-    success: boolean
-    data: T
-  }
+declare global {
+  declare type Recordable<T = any> = Record<string, T>;
 }

@@ -24,7 +24,7 @@ onMounted(() => {
 function getDataList() {
   data.value.loading = true
   crudMenu.list<any>().then((res) => {
-    data.value.dataList = res.data
+    data.value.dataList = res
     data.value.loading = false
   }).catch(() => {
     data.value.loading = false

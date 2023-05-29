@@ -580,8 +580,8 @@ export default [
     method: 'get',
     response: () => {
       return {
-        error: '',
-        status: 1,
+        msg: '',
+        code: 1,
         data: menuList,
       }
     },
@@ -609,8 +609,8 @@ export default [
         }
       }
       return {
-        error: '',
-        status: 1,
+        msg: '',
+        code: 1,
         data: findTreeMenu(menuList, query.id),
       }
     },
@@ -619,8 +619,8 @@ export default [
     url: '/mock/menu/create',
     method: 'post',
     response: {
-      error: '',
-      status: 1,
+      msg: '',
+      code: 1,
       data: {
         isSuccess: true,
       },
@@ -629,8 +629,8 @@ export default [
     url: '/mock/menu/edit',
     method: 'post',
     response: {
-      error: '',
-      status: 1,
+      msg: '',
+      code: 1,
       data: {
         isSuccess: true,
       },
@@ -639,8 +639,8 @@ export default [
     url: '/mock/menu/delete',
     method: 'post',
     response: {
-      error: '',
-      status: 1,
+      msg: '',
+      code: 1,
       data: {
         isSuccess: true,
       },

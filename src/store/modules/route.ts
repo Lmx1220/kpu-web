@@ -5,7 +5,7 @@ import useSettingsStore from './settings'
 import useUserStore from './user'
 import useTabbarStore from './tabbar'
 import { resolveRoutePath } from '@/util'
-import type { HttpRequest, Route } from '#/global'
+import type { Route } from '#/global'
 import api from '@/api'
 import systemRoutes from '@/router/modules/systemRoutes'
 
@@ -202,13 +202,12 @@ const useRouteStore = defineStore(
       })
     }
     async function generateRoutesAtBack() {
-      await api.get<HttpRequest.responseData<any>>({
-        url: 'route/list',
-        baseURL: '/mock/',
-        noLoading: true,
+      await api.get<any>({
+        url: '/route/list',
+        // noLoading: true,
       }).then(async (res) => {
         // 设置 routes 数据
-        routesRaw.value = formatBackRoutes(res.data) as any
+        routesRaw.value = formatBackRoutes(res) as any
         // if (settingsStore.settings.app.enablePermission) {
         //   userStore.getPermissions()
         // }

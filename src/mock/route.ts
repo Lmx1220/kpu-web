@@ -4,8 +4,8 @@ export default [
     method: 'get',
     response: () => {
       return {
-        error: '',
-        status: 1,
+        msg: '',
+        code: 1,
         data: [
           {
 
