@@ -1,140 +1,240 @@
-import type { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios'
+import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
-import type { RequestConfig, RequestInterceptors } from './type'
-import { checkStatus } from '@/api/helper/checkStatus'
-import { showFullScreenLoading, tryHideFullScreenLoading } from '@/api/request/serviceLoading'
+import { cloneDeep } from 'lodash-es'
+import qs from 'qs'
+import type { CreateAxiosOptions } from './type'
+import { ContentTypeEnum, RequestEnum } from '@/enums/httpEnum'
+import type { RequestOptions, Result, UploadFileParams } from '#/axios'
+import { isFunction } from '@/util/is'
+import { AxiosCanceler } from '@/api/helper/axiosCancel'
 
 class HttpRequest {
-  instance: AxiosInstance
+  private axiosInstance: AxiosInstance
+  private readonly options: CreateAxiosOptions
 
-  interceptors?: RequestInterceptors
-
-  constructor(config: RequestConfig) {
+  constructor(options: CreateAxiosOptions) {
+    this.options = options
     // 创建 axios 实例
-    this.instance = axios.create(config)
-    // 保存拦截器
-    this.interceptors = config.interceptors
-    // 使用拦截器
-    this.instance.interceptors.request.use(
-      this.interceptors?.requestInterceptor,
-      this.interceptors?.requestInterceptorCatch,
-    )
-    this.instance.interceptors.response.use(
-      this.interceptors?.responseInterceptor,
-      this.interceptors?.responseInterceptorCatch,
-    )
-    // 所有的实例都有的拦截器
-
-    this.instance.interceptors.request.use(
-      (config) => {
-        // eslint-disable-next-line no-console
-        console.log('所有的实例都有的拦截器: 请求拦截成功')
-        config.noLoading || showFullScreenLoading()
-        return config
-      },
-      (err) => {
-        err.config.noLoading || endLoading()
-        // eslint-disable-next-line no-console
-        console.log('所有的实例都有的拦截器: 请求拦截失败')
-        return err
-      },
-    )
-
-    this.instance.interceptors.response.use(
-      (res) => {
-        // eslint-disable-next-line no-console
-        console.log('所有的实例都有的拦截器: 响应拦截成功')
-        res.config.noLoading || tryHideFullScreenLoading()
-        const { data } = res
-        // 登陆失效
-        // if (data.code == ResultEnum.OVERDUE) {
-        //   userStore.setToken('')
-        //   router.replace(LOGIN_URL)
-        //   ElMessage.error(data.msg)
-        //   return Promise.reject(data)
-        // }
-        // 全局错误信息拦截（防止下载文件的时候返回数据流，没有 code 直接报错）
-        if (data.code && data.code !== 200) {
-          ElMessage.error(data.msg)
-          return Promise.reject(data)
-        }
-        return res.data
-      },
-      (err: AxiosError) => {
-        const { response } = err
-        // eslint-disable-next-line no-console
-        console.log('所有的实例都有的拦截器: 响应拦截失败')
-        tryHideFullScreenLoading()
-        if (err.message.includes('timeout')) {
-          ElMessage.error('请求超时！请您稍后重试')
-        }
-        if (err.message.includes('Network Error')) {
-          ElMessage.error('网络错误！请您稍后重试')
-        }
-        // 例子:判断不同httpErrorCode显示不同错误信息
-        if (response) {
-          checkStatus(response.status)
-        }
-        if (!window.navigator.onLine) {
-          const router = useRouter()
-          router.replace('/500')
-        }
-        return Promise.reject(err)
-      },
-
-    )
+    this.axiosInstance = axios.create(options)
+    // 设置拦截器
+    this.setupInterceptors()
   }
 
-  request<T>(config: RequestConfig<T>): Promise<T> {
-    return new Promise((resolve, reject) => {
-      // 单个请求对请求config的处理
+  /**
+   * @description:  Create axios instance 创建 axios 实例
+   */
+  private createAxios(config: CreateAxiosOptions): void {
+    this.axiosInstance = axios.create(config)
+  }
 
-      if (config.interceptors?.requestInterceptor) {
-        config = config.interceptors.requestInterceptor(config as InternalAxiosRequestConfig)
+  private getTransform() {
+    const { transform } = this.options
+    return transform
+  }
+
+  getAxios(): AxiosInstance {
+    return this.axiosInstance
+  }
+
+  /**
+   * @description: Reconfigure axios 配置 axios
+   */
+  configAxios(config: CreateAxiosOptions) {
+    if (!this.axiosInstance) {
+      return
+    }
+    this.createAxios(config)
+  }
+
+  /**
+   * @description: Set general header 设置通用头部
+   */
+  setHeader(headers: any): void {
+    if (!this.axiosInstance) {
+      return
+    }
+    Object.assign(this.axiosInstance.defaults.headers, headers)
+  }
+
+  /**
+   * @description: Interceptor configuration 拦截器配置
+   */
+  private setupInterceptors() {
+    // const transform = this.getTransform();
+    const {
+      axiosInstance,
+      options: { transform },
+    } = this
+    if (!transform) {
+      return
+    }
+    const {
+      requestInterceptors,
+      requestInterceptorsCatch,
+      responseInterceptors,
+      responseInterceptorsCatch,
+    } = transform
+
+    const axiosCanceler = new AxiosCanceler()
+
+    // Request interceptor configuration processing 请求拦截器配置处理
+    this.axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+      // If cancel repeat request is turned on, then cancel repeat request is prohibited
+      const { requestOptions } = this.options
+      const ignoreCancelToken = requestOptions?.ignoreCancelToken ?? true
+
+      !ignoreCancelToken && axiosCanceler.addPending(config)
+
+      if (requestInterceptors && isFunction(requestInterceptors)) {
+        config = requestInterceptors(config, this.options)
       }
+      return config
+    }, undefined)
 
-      this.instance
+    // Request interceptor error capture 请求拦截器错误捕获
+    requestInterceptorsCatch
+    && isFunction(requestInterceptorsCatch)
+    && this.axiosInstance.interceptors.request.use(undefined, requestInterceptorsCatch)
 
-        .request<any, T>(config)
+    // Response result interceptor processing 响应结果拦截器处理
+    this.axiosInstance.interceptors.response.use((res: AxiosResponse<any>) => {
+      res && axiosCanceler.removePending(res.config)
+      if (responseInterceptors && isFunction(responseInterceptors)) {
+        res = responseInterceptors(res)
+      }
+      return res
+    }, undefined)
 
-        .then((res) => {
-          // 单个请求对数据的处理
-
-          if (config.interceptors?.responseInterceptor) {
-            res = config.interceptors.responseInterceptor(res)
-          }
-          // eslint-disable-next-line no-console
-          console.log(res)
-
-          // 将结果返回出去
-
-          resolve(res)
-        })
-
-        .catch((err) => {
-          reject(err)
-        })
+    // Response result interceptor error capture 响应结果拦截器错误捕获
+    responseInterceptorsCatch
+    && isFunction(responseInterceptorsCatch)
+    && this.axiosInstance.interceptors.response.use(undefined, (error) => {
+      return responseInterceptorsCatch(axiosInstance, error)
     })
   }
 
-  get<T>(config: RequestConfig<T>): Promise<T> {
-    return this.request<T>({ ...config, method: 'GET' })
+  /**
+   * @description:  File Upload 上传文件
+   */
+  uploadFile<T = any>(config: AxiosRequestConfig, params: UploadFileParams) {
+    const formData = new window.FormData()
+    const customFilename = params.name || 'file'
+
+    if (params.filename) {
+      formData.append(customFilename, params.file, params.filename)
+    }
+    else {
+      formData.append(customFilename, params.file)
+    }
+
+    if (params.data) {
+      Object.keys(params.data).forEach((key) => {
+        const value = params.data![key]
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            formData.append(`${key}[]`, item)
+          })
+          return
+        }
+
+        formData.append(key, params.data![key])
+      })
+    }
+
+    return this.axiosInstance.request<T>({
+      ...config,
+      method: 'POST',
+      data: formData,
+      headers: {
+        'Content-type': ContentTypeEnum.FORM_DATA,
+        'ignoreCancelToken': true,
+      },
+    })
   }
 
-  post<T>(config: RequestConfig<T>): Promise<T> {
-    return this.request<T>({ ...config, method: 'POST' })
+  // support form-data 支持form-data
+  supportFormData(config: AxiosRequestConfig) {
+    const headers = config.headers || this.options.headers
+    const contentType = headers?.['Content-Type'] || headers?.['content-type']
+
+    if (
+      contentType !== ContentTypeEnum.FORM_URLENCODED
+        || !Reflect.has(config, 'data')
+        || config.method?.toUpperCase() === RequestEnum.GET
+    ) {
+      return config
+    }
+
+    return {
+      ...config,
+      data: qs.stringify(config.data, { arrayFormat: 'brackets' }),
+    }
   }
 
-  delete<T>(config: RequestConfig<T>): Promise<T> {
-    return this.request<T>({ ...config, method: 'DELETE' })
+  get<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request({ ...config, method: 'GET' }, options)
   }
 
-  patch<T>(config: RequestConfig<T>): Promise<T> {
-    return this.request<T>({ ...config, method: 'PATCH' })
+  post<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request({ ...config, method: 'POST' }, options)
+  }
+
+  put<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request({ ...config, method: 'PUT' }, options)
+  }
+
+  delete<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request({ ...config, method: 'DELETE' }, options)
+  }
+
+  request<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    let conf: CreateAxiosOptions = cloneDeep(config)
+    // cancelToken 如果被深拷贝，会导致最外层无法使用cancel方法来取消请求
+    if (config.cancelToken) {
+      conf.cancelToken = config.cancelToken
+    }
+
+    const transform = this.getTransform()
+
+    const { requestOptions } = this.options
+
+    const opt: RequestOptions = Object.assign({}, requestOptions, options)
+
+    const { beforeRequestHook, requestCatchHook, transformResponseHook } = transform || {}
+    if (beforeRequestHook && isFunction(beforeRequestHook)) {
+      conf = beforeRequestHook(conf, opt)
+    }
+    conf.requestOptions = opt
+
+    conf = this.supportFormData(conf)
+
+    return new Promise((resolve, reject) => {
+      this.axiosInstance
+        .request<any, AxiosResponse<Result>>(conf)
+        .then((res: AxiosResponse<Result>) => {
+          if (transformResponseHook && isFunction(transformResponseHook)) {
+            try {
+              const ret = transformResponseHook(res, opt)
+              resolve(ret)
+            }
+            catch (err) {
+              reject(err || new Error('request error!'))
+            }
+            return
+          }
+          resolve(res as unknown as Promise<T>)
+        })
+        .catch((e: Error | AxiosError) => {
+          if (requestCatchHook && isFunction(requestCatchHook)) {
+            reject(requestCatchHook(e, opt))
+            return
+          }
+          if (axios.isAxiosError(e)) {
+            // rewrite error message from axios in here
+          }
+          reject(e)
+        })
+    })
   }
 }
 export default HttpRequest
-function endLoading() {
-  throw new Error('Function not implemented.')
-}

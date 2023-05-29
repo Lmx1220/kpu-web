@@ -1,6 +1,5 @@
 import useRouteStore from './route'
 import useSettingsStore from '@/store/modules/settings'
-import type { HttpRequest } from '@/types/global'
 
 // import useMenuStore from './menu'
 import api from '@/api'
@@ -34,17 +33,16 @@ const useUserStore = defineStore(
       password: string
     }) {
       // 通过 mock 进行登录
-      const res = await api.post<HttpRequest.responseData<any>>({
+      const res = await api.post<any>({
         url: 'auth/login',
         data,
-        // baseURL: '/mock/',
       })
       // storage.local.set('login_account', res.data.account)
-      storage.local.set('token', res.data)
+      storage.local.set('token', res)
       // storage.local.set('failure_time', res.data.failure_time)
       storage.local.set('failure_time', String(new Date().getTime() + 2592000))
       // account.value = res.data.account
-      token.value = res.data
+      token.value = res
       // failure_time.value = res.data.failure_time
       failure_time.value = String(new Date().getTime() + 2592000)
     }
@@ -62,19 +60,13 @@ const useUserStore = defineStore(
     // 获取我的权限
     async function getPermissions() {
       // 通过 mock 获取权限
-      try {
-        const res = await api.get<HttpRequest.responseData<string[]>>({
-          url: 'auth/permission',
-          // baseURL: '/mock/',
-          params: {
-            // account: account.value,
-          },
-        })
-        permissions.value = res.data
-      }
-      catch (e) {
-        console.log(e)
-      }
+      const data = await api.get<{ permissions: string[] }>({
+        url: '/member/permission',
+        params: {
+          account: account.value,
+        },
+      })
+      permissions.value = data.permissions
       return permissions.value
     }
     // 修改密码
@@ -83,13 +75,12 @@ const useUserStore = defineStore(
       newpassword: string
     }) {
       await api.post({
-        url: 'member/edit/password',
+        url: '/member/edit/password',
         data: {
           account: account.value,
           password: data.password,
           newpassword: data.newpassword,
         },
-        // baseURL: '/mock/',
       })
     }
     async function getPreferences() {

@@ -2,7 +2,7 @@
 import { ElMessage, ElMessageBox } from 'element-plus'
 import useSettingsStore from '@/store/modules/settings'
 import crudMenu from '@/api/modules/system/menu'
-import type { HttpRequest, Menu } from '@/types/global'
+import type { Menu } from '@/types/global'
 
 const auth = useAuth()
 interface Data {
@@ -32,8 +32,8 @@ onMounted(() => {
 })
 function getDataList() {
   data.value.loading = true
-  crudMenu.list<HttpRequest.responseData<Menu.raw[]>>().then((res) => {
-    data.value.dataList = res.data
+  crudMenu.list<any>().then((res) => {
+    data.value.dataList = res
     data.value.loading = false
   }).catch(() => {
     data.value.loading = false

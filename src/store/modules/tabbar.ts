@@ -340,11 +340,10 @@ const useTabbarStore = defineStore(
       }
       else {
         settingsStore.settings.tabbar.storageTo === 'server' && await api.post({
-          url: 'member/tabbar/edit',
+          url: '/member/tabbar/edit',
           data: {
             tabbar: JSON.stringify(list.value.filter(item => item.isPin)),
           },
-          // baseURL: '/mock/',
         })
       }
       if (settingsStore.settings.tabbar.enableMemory) {
@@ -360,13 +359,12 @@ const useTabbarStore = defineStore(
       }
       else if (settingsStore.settings.tabbar.storageTo === 'server') {
         const res = await api.get<any>({
-          url: 'member/tabbar/edit',
+          url: '/member/tabbar/edit',
           data: {
             tabbar: JSON.stringify(list.value.filter(item => item.isPin)),
           },
-          // baseURL: '/mock/',
         })
-        list.value.push(...JSON.parse(res.data.tabbar || '[]'))
+        list.value.push(...JSON.parse(res.tabbar || '[]'))
       }
       settingsStore.settings.tabbar.enableMemory && storage.session.has('tabbarTempData') && (list.value = JSON.parse(`${storage.session.get('tabbarTempData')}`)[userStore.account] || [])
     }

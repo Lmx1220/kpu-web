@@ -1,14 +1,19 @@
 import { ElMessage } from 'element-plus'
+import type { ErrorMessageMode } from '#/axios'
 
 /**
  * @description: 校验网络请求状态码
  * @param {Number} status
+ * @param {String} msg
+ * @param {String} errorMessageMode
  * @return void
  */
-export function checkStatus(status: number) {
+export function checkStatus(status: number, msg: string,
+  errorMessageMode: ErrorMessageMode = 'message') {
+  let errMessage = ''
   switch (status) {
     case 400:
-      ElMessage.error('请求失败！请您稍后重试')
+      errMessage = `${msg}`
       break
     case 401:
       ElMessage.error('登录失效！请您重新登录')
@@ -39,5 +44,13 @@ export function checkStatus(status: number) {
       break
     default:
       ElMessage.error('请求失败！')
+  }
+  if (errMessage) {
+    if (errorMessageMode === 'modal') {
+      // createErrorModal({ title: t('sys.api.errorTip'), content: errMessage })
+    }
+    else if (errorMessageMode === 'message') {
+      // error({ content: errMessage, key: `global_error_message_status_${status}` })
+    }
   }
 }

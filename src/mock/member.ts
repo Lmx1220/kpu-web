@@ -4,8 +4,8 @@ export default [
     method: 'post',
     response: (option: any) => {
       return {
-        error: '',
-        status: 1,
+        msg: '',
+        code: 1,
         data: {
           account: option.body.account,
           token: '@string',
@@ -33,8 +33,8 @@ export default [
         ]
       }
       return {
-        error: '',
-        status: 1,
+        msg: '',
+        code: 1,
         data: {
           permissions,
         },
@@ -45,8 +45,8 @@ export default [
     url: '/mock/member/edit/password',
     method: 'post',
     response: {
-      error: '',
-      status: 1,
+      msg: '',
+      code: 1,
       data: {
         isSuccess: true,
       },

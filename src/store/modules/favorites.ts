@@ -94,11 +94,10 @@ const useFavoritesStore = defineStore(
       }
       else {
         settingsStore.settings.tabbar.storageTo === 'server' && await api.post({
-          url: 'member/favorites/edit',
+          url: '/member/favorites/edit',
           data: {
             tabbar: JSON.stringify(list.value),
           },
-          // baseURL: '/mock/',
         })
       }
     }
@@ -109,13 +108,12 @@ const useFavoritesStore = defineStore(
       }
       else if (settingsStore.settings.favorites.storageTo === 'server') {
         const res = await api.get<any>({
-          url: 'member/favorites/edit',
+          url: '/member/favorites/edit',
           data: {
             tabbar: JSON.stringify(list.value),
           },
-          // baseURL: '/mock/',
         })
-        list.value.push(...JSON.parse(res.data.favorites || '[]'))
+        list.value.push(...JSON.parse(res.favorites || '[]'))
       }
     }
     return {
