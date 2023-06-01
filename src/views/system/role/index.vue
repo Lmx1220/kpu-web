@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
+import type { RoleParams } from '@/api/modules/system/model/roleModel'
 import FormMode from '@/views/system/role/components/FormMode/index.vue'
 import usePagination from '@/util/usePagination'
 import eventBus from '@/util/eventBus'
@@ -69,17 +70,16 @@ onBeforeUnmount(() => {
 
 function getDataList() {
   data.value.loading = true
-  const params = {
-    ...getParams(),
-    ...data.value.search.title && {
-      title: data.value.search.title,
-    },
-  }
+  const params = getParams<RoleParams>({
+    name: data.value.search.title,
+  })
   console.log(params)
-  crudRole.list<any>(params).then((res) => {
+  crudRole.list(params).then((res) => {
     // data.value.loading = false
-    data.value.dataList = res.data.list
-    pagination.value.total = res.data.total
+    data.value.dataList = res.rows
+    pagination.value.total = res.total
+    pagination.value.page = res.current
+    pagination.value.size = res.size
   }).finally(() => {
     data.value.loading = false
   })
@@ -228,7 +228,7 @@ function onDel(row: any) {
         @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
         <el-table-column v-if="data.batch.enable" type="selection" align="center" fixed />
-        <el-table-column prop="title" label="标题" />
+        <el-table-column prop="name" label="角色名" />
         <el-table-column label="操作" width="250" align="center" fixed="right">
           <template #default="scope">
             <el-button type="primary" size="small" plain @click="onEdit(scope.row)">

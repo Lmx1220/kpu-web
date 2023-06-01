@@ -1,38 +1,51 @@
 import api from '@/api'
+import type { BasicPageParams } from '@/api/model/baseModel'
+import type { RoleListItem, RolePageListGetResultModel, RoleParams } from '@/api/modules/system/model/roleModel'
 
 // 前缀 变量
 const prefix = '/system/role'
-export default {
-  // 后端获取路由数据
-  list: <T>(params: any) => api.get<T>({
+export function getListRole(params: BasicPageParams & RoleParams) {
+  return api.get<RolePageListGetResultModel>({
     url: `${prefix}/list`,
-    baseURL: '/mock/',
     params,
-  }),
-  // // 基于文件系统路由模式下，后端获取导航菜单数据
-  detail: <T> (id: string | number) => api.get<T>({
+  })
+}
+export function detailRole(id: string | number) {
+  return api.get<RoleListItem>({
     url: `${prefix}/detail`,
     params: {
       id,
     },
-    // baseURL: '/mock/',
-  }),
-  create: <T> (data: any) => api.post<T>({
+  })
+}
+
+export function createRole(data: any) {
+  return api.post<RoleListItem>({
     url: `${prefix}/create`,
     data,
-    // baseURL: '/mock/',
-  }),
-  edit: <T> (data: any) => api.post<T>({
+  })
+}
+
+export function editRole(data: any) {
+  return api.post<void>({
     url: `${prefix}/edit`,
     data,
-    // baseURL: '/mock/',
-  }),
-  delete: <T> (id: string) => api.post<T>({
+  })
+}
+
+export function deleteRole(id: string) {
+  return api.post<void>({
     url: `${prefix}/delete`,
     data: {
       id,
     },
-    // baseURL: '/mock/',
-  }),
+  })
+}
 
+export default {
+  list: getListRole,
+  detail: detailRole,
+  create: createRole,
+  edit: editRole,
+  delete: deleteRole,
 }

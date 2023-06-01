@@ -32,9 +32,9 @@ onMounted(() => {
 
 function getInfo() {
   data.value.loading = true
-  crudRole.detail<any>(data.value.form.id).then((res) => {
+  crudRole.detail(data.value.form.id).then((res) => {
     data.value.loading = false
-    data.value.form.title = res.data.title
+    data.value.form.title = res.name
   })
 }
 
