@@ -1,4 +1,7 @@
 import useRouteStore from './route'
+import router from '@/router'
+import useMenuStore from '@/store/modules/menu'
+import useTabbarStore from '@/store/modules/tabbar'
 import useSettingsStore from '@/store/modules/settings'
 
 // import useMenuStore from './menu'
@@ -11,8 +14,10 @@ const useUserStore = defineStore(
   () => {
     const routeStore = useRouteStore()
     const settingsStore = useSettingsStore()
-    // const menuStore = useMenuStore()
-    const account = ref(storage.local.get('login_account') ?? '')
+    const tabbarStore = useTabbarStore()
+    const menuStore = useMenuStore()
+
+    const account = ref(storage.local.get('account') ?? '')
     const token = ref(storage.local.get('token') ?? '')
     const failure_time = ref(storage.local.get('failure_time') ?? '')
     const permissions = ref<string[]>([])
@@ -36,7 +41,7 @@ const useUserStore = defineStore(
         url: '/member/login',
         data,
       })
-      storage.local.set('login_account', res.account)
+      storage.local.set('account', res.account)
       storage.local.set('token', res.token)
       storage.local.set('failure_time', res.failure_time)
       account.value = res.account
@@ -44,15 +49,22 @@ const useUserStore = defineStore(
       failure_time.value = res.failure_time
     }
     // 登出
-    async function logout() {
-      storage.local.remove('login_account')
+    async function logout(redirect = router.currentRoute.value.fullPath) {
+      storage.local.remove('account')
       storage.local.remove('token')
       storage.local.remove('failure_time')
       account.value = ''
       token.value = ''
       failure_time.value = ''
+      tabbarStore.clean()
       routeStore.removeRoutes()
-      // menuStore.setActived(0)
+      menuStore.setActived(0)
+      router.push({
+        name: 'login',
+        query: {
+          ...(router.currentRoute.value.path !== '/' && router.currentRoute.value.name !== 'login' && { redirect }),
+        },
+      })
     }
     // 获取我的权限
     async function getPermissions() {

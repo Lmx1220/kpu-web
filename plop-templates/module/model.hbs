@@ -1,0 +1,16 @@
+import type { BasicFetchResult } from '@/api/model/baseModel'
+
+export interface {{ pascalCase moduleName}}Params {
+  title?: string
+}
+
+export interface {{ pascalCase moduleName}}ListItem {
+  id: string
+  title: string
+}
+
+/**
+* @description: Get menu return value
+*/
+export type {{ pascalCase moduleName}}PageListGetResultModel = BasicFetchResult<{{ pascalCase moduleName}}ListItem>
+export type {{ pascalCase moduleName}}ListGetResultModel = {{ pascalCase moduleName}}ListItem[]

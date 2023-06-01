@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { {{ pascalCase moduleName }}Params } from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}model/{{ snakeCase moduleName }}Model'
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import FormMode from './components/FormMode/index.vue'
 import usePagination from '@/util/usePagination.js'
@@ -63,17 +64,13 @@ onBeforeUnmount(() => {
 
 function getDataList() {
   data.value.loading = true
-  const params = {
-    ...getParams(),
-    ...data.value.search.title && {
-      title: data.value.search.title,
-    },
-  }
+  const params = getParams<{{ pascalCase moduleName }}Params>({
+  })
   data.value.search.title && (params.title = data.value.search.title)
-  crud{{properCase moduleName}}.list<any>(params).then((res) => {
+  crud{{properCase moduleName}}.list(params).then((res) => {
     data.value.loading = false
-    data.value.dataList = res.data.list
-    pagination.value.total = res.data.total
+    data.value.dataList = res.row
+    pagination.value.total = res.total
   })
 }
 
@@ -181,7 +178,7 @@ function onDel(row: any) {
                     <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
                   </el-icon>
                 </template>
-                {{ fold ? '展开' : '收起' }}
+                \{{ fold ? '展开' : '收起' }}
               </el-button>
             </el-form-item>
           </el-form>

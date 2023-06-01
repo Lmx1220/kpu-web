@@ -89,8 +89,17 @@ module.exports = {
         data: {
           relativePath,
           moduleName: data.name,
+          name: data.name,
         },
         templateFile: 'plop-templates/module/api.hbs',
+      },
+      {
+        type: 'add',
+        path: `src/api/modules/${relativePath ? `${relativePath}/` : ''}model/{{name}}Model.ts`,
+        data: {
+          moduleName: data.name,
+        },
+        templateFile: 'plop-templates/module/model.hbs',
       },
     ]
     if (data.isMock) {

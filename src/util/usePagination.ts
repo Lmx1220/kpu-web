@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import type { BasicPageParams } from '@/api/model/baseModel'
 
 interface Pagination {
   page: number
@@ -9,12 +10,7 @@ interface Pagination {
   sort: string | null
   order: string | null
 }
-interface BaseParams {
-  from: number
-  limit: number
-  sort?: string
-  order?: string
-}
+
 function usePagination() {
   const pagination = ref<Pagination>({
     page: 1,
@@ -26,16 +22,17 @@ function usePagination() {
     order: null,
   })
 
-  function getParams(params = {}): any {
-    const baseParams: BaseParams = {
+  function getParams<T extends object>(params: T = {} as T): BasicPageParams & T {
+    const baseParams: BasicPageParams & T = {
       from: (pagination.value.page - 1) * pagination.value.size,
       limit: pagination.value.size,
+      ...params, // 使用展开语法将 params 对象合并到 baseParams 中
     }
+
     if (pagination.value.sort && pagination.value.order) {
       baseParams.sort = pagination.value.sort
       baseParams.order = pagination.value.order
     }
-    Object.assign(baseParams, params)
     return baseParams
   }
 
