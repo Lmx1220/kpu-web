@@ -1,4 +1,7 @@
 import useRouteStore from './route'
+import router from '@/router'
+import useMenuStore from '@/store/modules/menu'
+import useTabbarStore from '@/store/modules/tabbar'
 import useSettingsStore from '@/store/modules/settings'
 
 // import useMenuStore from './menu'
@@ -11,9 +14,10 @@ const useUserStore = defineStore(
   () => {
     const routeStore = useRouteStore()
     const settingsStore = useSettingsStore()
-    // const menuStore = useMenuStore()
+    const tabbarStore = useTabbarStore()
+    const menuStore = useMenuStore()
 
-    const account = ref(storage.local.get('login_account') ?? '')
+    const account = ref(storage.local.get('account') ?? '')
     const token = ref(storage.local.get('token') ?? '')
     const failure_time = ref(storage.local.get('failure_time') ?? '')
     const permissions = ref<string[]>([])
@@ -37,25 +41,30 @@ const useUserStore = defineStore(
         url: 'auth/login',
         data,
       })
-      // storage.local.set('login_account', res.data.account)
-      storage.local.set('token', res)
-      // storage.local.set('failure_time', res.data.failure_time)
-      storage.local.set('failure_time', String(new Date().getTime() + 2592000))
-      // account.value = res.data.account
-      token.value = res
-      // failure_time.value = res.data.failure_time
-      failure_time.value = String(new Date().getTime() + 2592000)
+      storage.local.set('account', res.account)
+      storage.local.set('token', res.token)
+      storage.local.set('failure_time', res.failure_time)
+      account.value = res.account
+      token.value = res.token
+      failure_time.value = res.failure_time
     }
     // 登出
-    async function logout() {
-      storage.local.remove('login_account')
+    async function logout(redirect = router.currentRoute.value.fullPath) {
+      storage.local.remove('account')
       storage.local.remove('token')
       storage.local.remove('failure_time')
       account.value = ''
       token.value = ''
       failure_time.value = ''
+      tabbarStore.clean()
       routeStore.removeRoutes()
-      // menuStore.setActived(0)
+      menuStore.setActived(0)
+      router.push({
+        name: 'login',
+        query: {
+          ...(router.currentRoute.value.path !== '/' && router.currentRoute.value.name !== 'login' && { redirect }),
+        },
+      })
     }
     // 获取我的权限
     async function getPermissions() {

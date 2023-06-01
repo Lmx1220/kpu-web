@@ -33,9 +33,9 @@ onMounted(() => {
 
 function getInfo() {
   data.value.loading = true
-  crud{{properCase moduleName}}.detail<any>(data.value.form.id).then((res) => {
+  crud{{properCase moduleName}}.detail(data.value.form.id).then((res) => {
     data.value.loading = false
-    data.value.form.title = res.data.title
+    data.value.form.title = res.title
   })
 }
 
