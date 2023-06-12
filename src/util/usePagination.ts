@@ -24,8 +24,8 @@ function usePagination() {
 
   function getParams<T extends object>(params: T = {} as T): BasicPageParams & T {
     const baseParams: BasicPageParams & T = {
-      from: (pagination.value.page - 1) * pagination.value.size,
-      limit: pagination.value.size,
+      page: pagination.value.page,
+      size: pagination.value.size,
       ...params, // 使用展开语法将 params 对象合并到 baseParams 中
     }
 

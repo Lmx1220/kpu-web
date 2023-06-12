@@ -1,11 +1,11 @@
 export interface BasicPageParams {
-  from: number
-  limit: number
+  page: number
+  size: number
   sort?: string
   order?: string
 }
 
 export interface BasicFetchResult<T> {
-  items: T[]
+  rows: T[]
   total: number
 }
