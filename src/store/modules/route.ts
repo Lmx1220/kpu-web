@@ -26,6 +26,7 @@ const useRouteStore = defineStore(
         route.children = flatAsyncRoutesRecursive(route.children, [{
           path: route.path,
           title: route.meta?.title,
+          i18n: route.meta?.i18n,
           icon: route.meta?.icon,
           activeIcon: route.meta?.activeIcon,
           hide: !route.meta?.breadcrumb && route.meta?.breadcrumb === false,
@@ -81,6 +82,7 @@ const useRouteStore = defineStore(
             title: tmpRoute.meta?.title,
             icon: tmpRoute.meta?.icon,
             activeIcon: tmpRoute.meta?.activeIcon,
+            i18n: tmpRoute.meta?.i18n,
             hide: !tmpRoute.meta?.breadcrumb && tmpRoute.meta?.breadcrumb === false,
           })
           if (!tmpRoute.meta) {
