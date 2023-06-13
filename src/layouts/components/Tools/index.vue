@@ -113,7 +113,7 @@ function userCommand(command: string) {
       </div>
       <template #dropdown>
         <el-dropdown-menu class="user-dropdown">
-          <el-dropdown-item v-if="settingsStore.settings.home.enable" command="dashboard">
+          <el-dropdown-item v-if="settingsStore.settings.home.enable" command="home">
             {{ generateI18nTitle('route.home', settingsStore.settings.home.title) }}
           </el-dropdown-item>
           <el-dropdown-item command="setting">
