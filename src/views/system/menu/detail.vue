@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { uniqueId } from 'lodash-es'
 import Sortable from 'sortablejs'
-import type { HttpRequest, Menu } from '@/types/global'
+import type { Menu } from '@/types/global'
 import useSettingsStore from '@/store/modules/settings'
 import crudMenu from '@/api/modules/system/menu'
 
@@ -87,14 +86,14 @@ function getInfo() {
   loading.value = true
   crudMenu.detail<any>(form.value.id).then((res) => {
     loading.value = false
-    form.value.id = res.data.id
-    form.value.auths = res.data.auths
-    form.value.parentId = res.data.pid
-    form.value.path = res.data.path
-    form.value.redirect = res.data.redirect
-    form.value.name = res.data.name
-    form.value.component = res.data.component
-    Object.assign(form.value, res.data)
+    form.value.id = res.id
+    form.value.auths = res.auths
+    form.value.parentId = res.pid
+    form.value.path = res.path
+    form.value.redirect = res.redirect
+    form.value.name = res.name
+    form.value.component = res.component
+    Object.assign(form.value, res)
   }).catch(() => {
     loading.value = false
   })
@@ -108,13 +107,7 @@ function handleSubmit() {
           data.auth = data.auth?.join(',')
           data.noCache = data.noCache?.join(',')
           data.cache = typeof data.cache === 'object' ? data.cache?.join(',') : data.cache
-          const res = await crudMenu.create<HttpRequest.responseData<any>>(data)
-          if (res.code !== 200) {
-            return ElMessage.error({
-              message: res.message,
-              center: true,
-            })
-          }
+          await crudMenu.create<any>(data)
           ElMessage.success({
             message: '模拟新增成功',
             center: true,
@@ -142,13 +135,7 @@ function handleSubmit() {
           data.auth = data.auth?.join(',')
           data.noCache = data.noCache?.join(',')
           data.cache = typeof data.cache === 'object' ? data.cache?.join(',') : data.cache
-          const res = await crudMenu.edit<HttpRequest.responseData<any>>(data)
-          if (res.code !== 200) {
-            return ElMessage.success({
-              message: '模拟编辑失败',
-              center: true,
-            })
-          }
+          await crudMenu.edit<any>(data)
           ElMessage.success({
             message: '模拟编辑成功',
             center: true,
@@ -198,7 +185,7 @@ function handleAddAuth() {
 
 function handleAddAuths() {
   form.value.auths.push({
-    id: uniqueId(),
+    id: undefined,
     sort: form.value.auths.length + 1,
     name: '',
     value: '',
@@ -271,11 +258,15 @@ function TableSortable() {
     animation: 300,
     ghostClass: 'ghost',
     onEnd: ({ newIndex, oldIndex }) => {
-      if (!newIndex || !oldIndex) {
+      if (newIndex === undefined || oldIndex === undefined) {
         return
       }
       const row = form.value.auths.splice(oldIndex, 1)[0]
       form.value.auths.splice(newIndex, 0, row)
+      form.value.auths.map((item, index) => ({
+        ...item,
+        sort: item.sort = index + 1,
+      }))
       authsTableKey.value += 1
       nextTick(() => {
         TableSortable()
@@ -363,7 +354,7 @@ function TableSortable() {
                 <el-input v-model="form.redirect" clearable placeholder="请输入重定向地址" />
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.type === 1" :xl="12" :lg="24">
               <el-form-item prop="name" label="路由命名">
                 <template #label>
                   路由命名
@@ -372,7 +363,7 @@ function TableSortable() {
                 <el-input v-model="form.name" clearable placeholder="请输入路由命名" />
               </el-form-item>
             </el-col>
-            <el-col :xl="12" :lg="24">
+            <el-col v-if="form.type === 1" :xl="12" :lg="24">
               <el-form-item prop="redirect" label="组件路径">
                 <template #label>
                   组件路径

@@ -494,7 +494,7 @@ declare namespace Menu {
   }
 
   interface auths {
-    id: string
+    id: string|undefined
     name: string
     value: string
     sort: number

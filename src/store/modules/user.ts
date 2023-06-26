@@ -43,16 +43,16 @@ const useUserStore = defineStore(
       })
       storage.local.set('account', res.account)
       storage.local.set('token', res.token)
-      storage.local.set('failure_time', res.failure_time)
+      storage.local.set('failure_time', res.failureTime)
       account.value = res.account
       token.value = res.token
-      failure_time.value = res.failure_time
+      failure_time.value = res.failureTime
     }
     // 登出
     async function logout(redirect = router.currentRoute.value.fullPath) {
       storage.local.remove('account')
       storage.local.remove('token')
-      storage.local.remove('failure_time')
+      storage.local.remove('failureTime')
       account.value = ''
       token.value = ''
       failure_time.value = ''
