@@ -163,7 +163,7 @@ const transform: AxiosTransform = {
     const token = userStore.token
     if (userStore.isLogin && token && (config as Recordable)?.requestOptions?.withToken !== false) {
       // jwt token
-      (config as Recordable).headers.Authorization = options.authenticationScheme
+      (config as Recordable).headers.token = options.authenticationScheme
         ? `${options.authenticationScheme} ${token}`
         : token
     }
@@ -233,10 +233,13 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     {
       // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
       // authentication schemes，e.g: Bearer
-      // authenticationScheme: 'Bearer',
+      authenticationScheme: 'Bearer',
       // authenticationScheme: '1',
       timeout: 10 * 1000,
-      headers: { 'Content-Type': ContentTypeEnum.JSON },
+      headers: {
+        'Content-Type': ContentTypeEnum.JSON,
+        'Authorization': 'Basic bGFtcF93ZWI6bGFtcF93ZWJfc2VjcmV0',
+      },
       transform: clone(transform),
       // 配置项，下面的选项都可以在独立的接口请求中覆盖
       requestOptions: {

@@ -32,7 +32,7 @@ const loginRules = ref<FormRules>({
   ],
   password: [
     { required: true, trigger: 'blur', message: '请输入密码' },
-    { min: 6, max: 18, trigger: 'blur', message: '密码长度为6到18位' },
+    // { min: 6, max: 18, trigger: 'blur', message: '密码长度为6到18位' },
   ],
 })
 function handleLogin() {

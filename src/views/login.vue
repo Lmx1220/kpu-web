@@ -31,7 +31,7 @@ const loginRules = ref<FormRules>({
   ],
   password: [
     { required: true, trigger: 'blur', message: '请输入密码' },
-    { min: 6, max: 18, trigger: 'blur', message: '密码长度为6到18位' },
+    // { min: 6, max: 18, trigger: 'blur', message: '密码长度为6到18位' },
   ],
 })
 
@@ -76,7 +76,7 @@ const registerRules = ref<FormRules>({
   ],
   password: [
     { required: true, trigger: 'blur', message: '请输入密码' },
-    { min: 6, max: 18, trigger: 'blur', message: '密码长度为6到18位' },
+    // { min: 6, max: 18, trigger: 'blur', message: '密码长度为6到18位' },
   ],
   checkPassword: [
     { required: true, trigger: 'blur', message: '请再次输入密码' },
@@ -121,7 +121,7 @@ const resetRules = ref<FormRules>({
   ],
   newPassword: [
     { required: true, trigger: 'blur', message: '请输入新密码' },
-    { min: 6, max: 18, trigger: 'blur', message: '密码长度为6到18位' },
+    // { min: 6, max: 18, trigger: 'blur', message: '密码长度为6到18位' },
   ],
 })
 

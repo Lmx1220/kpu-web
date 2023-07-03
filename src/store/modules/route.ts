@@ -206,7 +206,7 @@ const useRouteStore = defineStore(
     async function generateRoutesAtBack() {
       try {
         const res = await api.get<any>({
-          url: '/menu/menuInit',
+          url: '/menu/routerInit',
           // noLoading: true,
         })
         routesRaw.value = formatBackRoutes(res) as any

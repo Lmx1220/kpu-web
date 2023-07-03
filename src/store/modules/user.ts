@@ -38,15 +38,19 @@ const useUserStore = defineStore(
     }) {
       // 通过 mock 进行登录
       const res = await api.post<any>({
-        url: 'auth/login',
-        data,
+        url: '/noToken/login',
+        data: {
+          account: data.username,
+          password: data.password,
+          grantType: 'password',
+        },
       })
       storage.local.set('account', res.account)
       storage.local.set('token', res.token)
-      storage.local.set('failure_time', res.failureTime)
+      storage.local.set('failure_time', res.expire)
       account.value = res.account
       token.value = res.token
-      failure_time.value = res.failureTime
+      failure_time.value = res.expire
     }
     // 登出
     async function logout(redirect = router.currentRoute.value.fullPath) {
