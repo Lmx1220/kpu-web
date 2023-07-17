@@ -98,6 +98,7 @@ module.exports = {
         path: `src/api/modules/${relativePath ? `${relativePath}/` : ''}model/{{name}}Model.ts`,
         data: {
           moduleName: data.name,
+          name: data.name,
         },
         templateFile: 'plop-templates/module/model.hbs',
       },

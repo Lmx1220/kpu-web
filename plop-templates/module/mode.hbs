@@ -1,55 +1,63 @@
 <script lang="ts" setup>
-import type { Props as DetailFormProps } from '../DetailForm/index.vue'
-import DetailForm from '../DetailForm/index.vue'
+  import type {Props as DetailFormProps} from '../DetailForm/index.vue'
+  import DetailForm from '../DetailForm/index.vue'
 
-export interface Props extends DetailFormProps {
-  modelValue?: boolean
-  default?: 'dialog' | 'drawer'
-}
-const props = withDefaults(defineProps<Props>(),
-    {
-      id: '',
-      modelValue: false,
-      mode: 'dialog',
-    })
+  export interface Props extends DetailFormProps {
+    modelValue?: boolean
+    mode?: 'dialog' | 'drawer' | string
+  }
 
-const emits = defineEmits<{
-  'update:modelValue': [
-    value: boolean,
-  ]
-  success: []
-}>()
+  const props = withDefaults(defineProps<Props>(),
+      {
+        id: '',
+        modelValue: false,
+        mode: 'dialog',
+      })
 
-const myVisible = computed({
-  get() {
-    return props.modelValue
-  },
-  set(val) {
-    emit('update:modelValue', val)
-  },
-})
+  const emits = defineEmits<{
+    'update:modelValue': [
+      value: boolean,
+    ]
+    success: []
+  }>()
 
-const form = ref<InstanceType<typeof DetailForm>>()
-
-const title = computed(() => props.id === '' ? '新增Test' : '编辑Test')
-
-function onSubmit() {
-  // submit() 为组件内部方法
-  form.value?.submit(() => {
-    emit('success')
-    onCancel()
+  const myVisible = computed({
+    get() {
+      return props.modelValue
+    },
+    set(val) {
+      emits('update:modelValue', val)
+    },
   })
-}
 
-function onCancel() {
-  myVisible.value = false
-}
+  const form = ref<InstanceType<typeof DetailForm>>()
+
+  const title = computed(() => props.id === '' ? '新增Test' : '编辑Test')
+
+  function onSubmit() {
+    // submit() 为组件内部方法
+    form.value?.submit(() => {
+      emits('success')
+      onCancel()
+    })
+  }
+
+  function onCancel() {
+    myVisible.value = false
+  }
+
+  function handleOpen() {
+    // handleOpen() 为组件内部方法
+    form.value?.open()
+  }
 </script>
 
 <template>
   <div>
-    <el-dialog v-if="props.mode === 'dialog'" v-model="myVisible" :title="title" width="600px" :close-on-click-modal="false" append-to-body destroy-on-close>
-      <DetailForm ref="form" v-bind="$props" />
+    <el-dialog v-if="props.mode === 'dialog'" v-model="myVisible" :title="title" width="600px"
+               :close-on-click-modal="false" append-to-body destroy-on-close @open="handleOpen"
+    >
+      <DetailForm ref="form" v-bind="$props"/>
       <template #footer>
         <el-button size="large" @click="onCancel">
           取 消

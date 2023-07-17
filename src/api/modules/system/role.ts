@@ -1,15 +1,23 @@
 import api from '@/api'
 import type { BasicPageParams } from '@/api/model/baseModel'
-import type { RoleListItem, RolePageListGetResultModel, RoleParams } from '@/api/modules/system/model/roleModel'
+import type {
+  RoleListItem,
+  RolePageListGetResultModel,
+  RoleParams,
+  RoleResourceSaveVO,
+  RoleUserSaveVO,
+} from '@/api/modules/system/model/roleModel'
 
 // 前缀 变量
-const prefix = '/system/role'
-export function getListRole(params: BasicPageParams & RoleParams) {
-  return api.get<RolePageListGetResultModel>({
-    url: `${prefix}/list`,
-    params,
+const prefix = '/role'
+
+export function getListRole(params: BasicPageParams<RoleParams>) {
+  return api.post<RolePageListGetResultModel>({
+    url: `${prefix}/page`,
+    data: { ...params },
   })
 }
+
 export function detailRole(id: string | number) {
   return api.get<RoleListItem>({
     url: `${prefix}/detail`,
@@ -20,25 +28,51 @@ export function detailRole(id: string | number) {
 }
 
 export function createRole(data: any) {
-  return api.post<RoleListItem>({
-    url: `${prefix}/create`,
+  return api.post({
+    url: `${prefix}`,
     data,
   })
 }
 
 export function editRole(data: any) {
-  return api.post<void>({
-    url: `${prefix}/edit`,
+  return api.put<void>({
+    url: `${prefix}`,
     data,
   })
 }
 
-export function deleteRole(id: string) {
-  return api.post<void>({
-    url: `${prefix}/delete`,
-    data: {
-      id,
-    },
+export function deleteRole(ids: number[]) {
+  return api.delete<void>({
+    url: `${prefix}`,
+    data: ids,
+  })
+}
+
+export function resourceList(id: string) {
+  return api.get<string[]>({
+    url: `${prefix}/resourceList`,
+    params: { roleId: id },
+  })
+}
+
+export function saveResource(data: RoleResourceSaveVO) {
+  return api.post({
+    url: `${prefix}/saveResource`,
+    data,
+  })
+}
+
+export function userList(id: string | number) {
+  return api.get<string[]>({
+    url: `${prefix}/userList`,
+    params: { roleId: id },
+  })
+}
+
+export function saveRoleUser(data: RoleUserSaveVO) {
+  return api.post<string[]>({
+    url: `${prefix}/saveRoleUser`,
+    data,
   })
 }
 
@@ -48,4 +82,8 @@ export default {
   create: createRole,
   edit: editRole,
   delete: deleteRole,
+  resourceList,
+  saveResource,
+  userList,
+  saveRoleUser,
 }

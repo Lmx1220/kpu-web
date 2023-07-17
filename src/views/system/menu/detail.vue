@@ -14,15 +14,16 @@ const route = useRoute()
 const router = useRouter()
 const settingsStore = useSettingsStore()
 const tabbar = useTabbar()
+
 function handleBack() {
   if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
     tabbar.close({
-      name: 'menuList',
+      name: 'SystemMenuList',
     })
   }
   else {
     router.push({
-      name: 'menuList',
+      name: 'SystemMenuList',
     })
   }
 }
@@ -34,42 +35,50 @@ const form = ref<Menu.raw>({
   id: route.params.id as any ?? '',
   parentId: route.query.parentId as string ?? '',
   pid: route.query.parentId as string ?? '',
-  sort: route.query.sort as unknown as number ?? 0,
+  sortValue: route.query.sort as unknown as number ?? 0,
   path: '',
   redirect: '',
   name: '',
   component: '',
-  type: 0,
-  // meta: {
+  resourceType: '10',
   title: '',
   icon: '',
   activeIcon: '',
-  defaultOpened: false,
-  permanent: false,
-  auth: [],
-  sidebar: true,
-  breadcrumb: true,
-  activeMenu: '',
-  cache: [],
-  noCache: [],
-  badge: '',
-  link: '',
-  iframe: '',
-  copyright: false,
-  paddingBottom: '0px',
-  // },
+  meta: {
+    defaultOpened: false,
+    permanent: false,
+    auth: [],
+    sidebar: true,
+    breadcrumb: true,
+    activeMenu: '',
+    cache: [],
+    noCache: [],
+    badge: '',
+    link: '',
+    iframe: '',
+    copyright: false,
+    paddingBottom: '0px',
+  },
   auths: [],
 },
 )
 const rules = reactive({
   name: [
-    { required: true, message: '请输入菜单名称', trigger: 'blur' },
+    {
+      required: true,
+      message: '请输入菜单名称',
+      trigger: 'blur',
+    },
   ],
   // path: [
   //   { required: true, message: '请输入菜单路径', trigger: 'blur' },
   // ],
-  sort: [
-    { required: true, message: '请输入排序', trigger: 'blur' },
+  sortValue: [
+    {
+      required: true,
+      message: '请输入排序',
+      trigger: 'blur',
+    },
   ],
   title: [{
     required: true,
@@ -82,31 +91,36 @@ onMounted(() => {
     getInfo()
   }
 })
+
 function getInfo() {
   loading.value = true
   crudMenu.detail<any>(form.value.id).then((res) => {
     loading.value = false
     form.value.id = res.id
-    form.value.auths = res.auths
-    form.value.parentId = res.pid
-    form.value.path = res.path
-    form.value.redirect = res.redirect
-    form.value.name = res.name
-    form.value.component = res.component
+    // form.value.auths = res.auths
+    // form.value.parentId = res.parentId
+    // form.value.path = res.path
+    // form.value.redirect = res.redirect
+    // form.value.name = res.name
+    // form.value.component = res.component
+    Object.assign(form.value.meta, JSON.parse(res.metaJson))
     Object.assign(form.value, res)
   }).catch(() => {
     loading.value = false
   })
 }
+
 function handleSubmit() {
-  if (form.value.id === '') {
-    formRef.value && formRef.value.validate(async (valid) => {
-      if (valid) {
-        try {
-          const data = JSON.parse(JSON.stringify(form.value))
-          data.auth = data.auth?.join(',')
-          data.noCache = data.noCache?.join(',')
-          data.cache = typeof data.cache === 'object' ? data.cache?.join(',') : data.cache
+  formRef.value && formRef.value.validate(async (valid) => {
+    if (valid) {
+      try {
+        const data = JSON.parse(JSON.stringify(form.value))
+        data.auth = data.auth?.join(',')
+        data.noCache = data.noCache?.join(',')
+        data.cache = typeof data.cache === 'object' ? data.cache?.join(',') : data.cache
+        data.metaJson = JSON.stringify(data.meta)
+        delete data.meta
+        if (form.value.id === '') {
           await crudMenu.create<any>(data)
           ElMessage.success({
             message: '模拟新增成功',
@@ -114,27 +128,7 @@ function handleSubmit() {
           })
           handleBack()
         }
-        catch (error: any) {
-          console.log(error)
-          if (error && error.msg) {
-            console.log(error.msg)
-            ElMessage.error({
-              message: error.msg,
-              center: true,
-            })
-          }
-        }
-      }
-    })
-  }
-  else {
-    formRef.value && formRef.value.validate(async (valid) => {
-      if (valid) {
-        try {
-          const data = JSON.parse(JSON.stringify(form.value))
-          data.auth = data.auth?.join(',')
-          data.noCache = data.noCache?.join(',')
-          data.cache = typeof data.cache === 'object' ? data.cache?.join(',') : data.cache
+        else {
           await crudMenu.edit<any>(data)
           ElMessage.success({
             message: '模拟编辑成功',
@@ -142,38 +136,42 @@ function handleSubmit() {
           })
           handleBack()
         }
-        catch (error: any) {
-          console.log(error)
-          if (error && error.msg) {
-            ElMessage.error({
-              message: error.msg,
-              center: true,
-            })
-          }
+      }
+      catch (error: any) {
+        console.log(error)
+        if (error && error.msg) {
+          console.log(error.msg)
+          ElMessage.error({
+            message: error.msg,
+            center: true,
+          })
         }
       }
-    },
-    )
-  }
+    }
+  })
 }
+
 const auth = ref('')
 const authShow = ref(false)
 const InputAuthRef = ref()
+
 function handleRemoveAuth(value: string) {
-  form.value.auth.splice(form.value.auth.indexOf(value), 1)
+  form.value.meta.auth.splice(form.value.meta.auth.indexOf(value), 1)
 }
+
 function handleEnterAuth() {
   if (auth.value) {
-    if (form.value.auth.includes(auth.value)) {
+    if (form.value.meta.auth.includes(auth.value)) {
       ElMessage.warning('标识已存在')
     }
     else {
-      form.value.auth.push(auth.value)
+      form.value.meta.auth.push(auth.value)
     }
   }
   authShow.value = false
   auth.value = ''
 }
+
 function handleAddAuth() {
   authShow.value = true
 
@@ -186,32 +184,37 @@ function handleAddAuth() {
 function handleAddAuths() {
   form.value.auths.push({
     id: undefined,
-    sort: form.value.auths.length + 1,
+    sortValue: form.value.auths.length + 1,
     name: '',
-    value: '',
+    code: '',
   })
 }
+
 function handleDelAuths(index: number) {
   form.value.auths.splice(index, 1)
 }
+
 const cache = ref('')
 const cacheShow = ref(false)
 const InputCacheRef = ref()
+
 function handleRemoveCache(value: string) {
-  typeof form.value.cache == 'object' && form.value.cache.splice(form.value.cache.indexOf(value), 1)
+  typeof form.value.meta.cache == 'object' && form.value.meta.cache.splice(form.value.meta.cache.indexOf(value), 1)
 }
+
 function handleEnterCache() {
   if (cache.value) {
-    if (typeof form.value.cache == 'object' && form.value.cache.includes(cache.value)) {
+    if (typeof form.value.meta.cache == 'object' && form.value.meta.cache.includes(cache.value)) {
       ElMessage.warning('标识已存在')
     }
     else {
-      typeof form.value.cache == 'object' && form.value.cache.push(cache.value)
+      typeof form.value.meta.cache == 'object' && form.value.meta.cache.push(cache.value)
     }
   }
   cacheShow.value = false
   cache.value = ''
 }
+
 function handleAddCache() {
   cacheShow.value = true
 
@@ -220,24 +223,28 @@ function handleAddCache() {
   },
   )
 }
+
 const noCache = ref('')
 const noCacheShow = ref(false)
 const InputNoCacheRef = ref()
+
 function handleRemoveNoCache(value: string) {
-  typeof form.value.noCache == 'object' && form.value.noCache.splice(form.value.noCache.indexOf(value), 1)
+  typeof form.value.meta.noCache == 'object' && form.value.meta.noCache.splice(form.value.meta.noCache.indexOf(value), 1)
 }
+
 function handleEnterNoCache() {
   if (noCache.value) {
-    if (typeof form.value.noCache == 'object' && form.value.noCache.includes(noCache.value)) {
+    if (typeof form.value.meta.noCache == 'object' && form.value.meta.noCache.includes(noCache.value)) {
       ElMessage.warning('标识已存在')
     }
     else {
-      typeof form.value.noCache == 'object' && form.value.noCache.push(noCache.value)
+      typeof form.value.meta.noCache == 'object' && form.value.meta.noCache.push(noCache.value)
     }
   }
   noCacheShow.value = false
   noCache.value = ''
 }
+
 function handleAddNoCache() {
   noCacheShow.value = true
 
@@ -246,18 +253,23 @@ function handleAddNoCache() {
   },
   )
 }
+
 const authsTableRef = ref()
 const authsTableKey = ref(0)
 onMounted(() => {
   TableSortable()
 })
+
 function TableSortable() {
   const tbody = authsTableRef.value.$el.querySelector('.el-table__body-wrapper tbody')
   Sortable.create(tbody, {
     handle: '.sortable',
     animation: 300,
     ghostClass: 'ghost',
-    onEnd: ({ newIndex, oldIndex }) => {
+    onEnd: ({
+      newIndex,
+      oldIndex,
+    }) => {
       if (newIndex === undefined || oldIndex === undefined) {
         return
       }
@@ -265,7 +277,7 @@ function TableSortable() {
       form.value.auths.splice(newIndex, 0, row)
       form.value.auths.map((item, index) => ({
         ...item,
-        sort: item.sort = index + 1,
+        sortValue: item.sortValue = index + 1,
       }))
       authsTableKey.value += 1
       nextTick(() => {
@@ -278,7 +290,7 @@ function TableSortable() {
 
 <template>
   <div class="absolute-container">
-    <page-header :title="route.name === 'menuCreate' ? '新增导航' : '编辑导航'">
+    <page-header :title="route.name === 'SystemMenuCreate' ? '新增导航' : '编辑导航'">
       <el-button round @click="handleBack">
         <template #icon>
           <el-icon>
@@ -301,7 +313,7 @@ function TableSortable() {
               </template>
             </page-header>
             <ElTable ref="authsTableRef" :key="authsTableKey" :data="form.auths" border stripe highlight-current-row>
-              <el-table-column prop="sort" label="排序" fixed align="center" width="60">
+              <el-table-column align="center" fixed label="排序" prop="sortValue" width="60">
                 <template #header>
                   <el-button type="primary" size="small" plain circle @click="handleAddAuths">
                     <el-icon>
@@ -318,7 +330,7 @@ function TableSortable() {
                   </el-button>
                 </template>
               </el-table-column>
-              <el-table-column prop="sort" label="排序" fixed align="center" width="80">
+              <el-table-column align="center" fixed label="排序" prop="sortValue" width="80">
                 <ElTag type="info" class="sortable">
                   <el-icon>
                     <svg-icon name="i-ep:d-caret" />
@@ -332,7 +344,7 @@ function TableSortable() {
               </el-table-column>
               <el-table-column prop="value" label="标识">
                 <template #default="{ row }">
-                  <el-input v-model="row.value" clearable placeholder="请输入标识" />
+                  <el-input v-model="row.code" clearable placeholder="请输入标识" />
                 </template>
               </el-table-column>
             </ElTable>
@@ -340,8 +352,11 @@ function TableSortable() {
           <page-header v-if="form.parentId" title="基础配置" content="标准路由配置，包含 path/redirect/name/component" />
           <el-row v-if="form.parentId" :gutter="30" style="padding: 20px;">
             <el-col :xl="12" :lg="24">
-              <el-form-item prop="type" label="目录">
-                <el-switch v-model="form.type" inline-prompt active-text="是" inactive-text="否" :active-value="0" :inactive-value="1" />
+              <el-form-item label="目录" prop="resourceType">
+                <el-switch
+                  v-model="form.resourceType" active-text="是" active-value="10" inactive-text="否"
+                  inactive-value="20" inline-prompt
+                />
               </el-form-item>
             </el-col>
             <el-col :xl="12" :lg="24">
@@ -354,7 +369,7 @@ function TableSortable() {
                 <el-input v-model="form.redirect" clearable placeholder="请输入重定向地址" />
               </el-form-item>
             </el-col>
-            <el-col v-if="form.type === 1" :xl="12" :lg="24">
+            <el-col v-if="form.resourceType === '20'" :lg="24" :xl="12">
               <el-form-item prop="name" label="路由命名">
                 <template #label>
                   路由命名
@@ -363,7 +378,7 @@ function TableSortable() {
                 <el-input v-model="form.name" clearable placeholder="请输入路由命名" />
               </el-form-item>
             </el-col>
-            <el-col v-if="form.type === 1" :xl="12" :lg="24">
+            <el-col v-if="form.resourceType === '20'" :lg="24" :xl="12">
               <el-form-item prop="redirect" label="组件路径">
                 <template #label>
                   组件路径
@@ -403,7 +418,7 @@ function TableSortable() {
                 </template>
                 <el-space>
                   <ElTag
-                    v-for="tag in form.auth" :key="tag" class="mx-1" size="large" :disable-transitions="false"
+                    v-for="tag in form.meta.auth" :key="tag" :disable-transitions="false" class="mx-1" size="large"
                     closable @close="handleRemoveAuth(tag)"
                   >
                     {{ tag }}
@@ -430,7 +445,7 @@ function TableSortable() {
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="defaultOpened" label="默认展开">
-                <el-switch v-model="form.defaultOpened" inline-prompt active-text="是" inactive-text="否" />
+                <el-switch v-model="form.meta.defaultOpened" active-text="是" inactive-text="否" inline-prompt />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
@@ -439,20 +454,20 @@ function TableSortable() {
                   常驻标签页
                   <span class="label-tip"> 请勿在带有参数的路由地址上开启该设置</span>
                 </template>
-                <el-switch v-model="form.permanent" inline-prompt active-text="是" inactive-text="否" />
+                <el-switch v-model="form.meta.permanent" active-text="是" inactive-text="否" inline-prompt />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="sidebar" label="在导航显示">
-                <el-switch v-model="form.sidebar" inline-prompt active-text="显示" inactive-text="隐藏" />
+                <el-switch v-model="form.meta.sidebar" active-text="显示" inactive-text="隐藏" inline-prompt />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
               <el-form-item prop="breadcrumb" label="在面包屑显示">
-                <el-switch v-model="form.breadcrumb" inline-prompt active-text="显示" inactive-text="隐藏" />
+                <el-switch v-model="form.meta.breadcrumb" active-text="显示" inactive-text="隐藏" inline-prompt />
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
               <el-form-item prop="cache" label="缓存规则">
                 <template #label>
                   缓存规则
@@ -462,18 +477,18 @@ function TableSortable() {
                     </el-icon>
                   </el-tooltip>
                   <span class="label-tip">切换为
-                    <ElLink v-show="typeof form.cache === 'object'" type="primary" @click="form.cache = true">
+                    <ElLink v-show="typeof form.meta.cache === 'object'" type="primary" @click="form.meta.cache = true">
                       始终缓存
                     </ElLink>
-                    <ElLink v-show="typeof form.cache === 'boolean'" type="primary" @click="form.cache = []">
+                    <ElLink v-show="typeof form.meta.cache === 'boolean'" type="primary" @click="form.meta.cache = []">
                       规则模式
                     </ElLink>
                   </span>
                 </template>
 
-                <el-space v-show="typeof form.cache === 'object'">
+                <el-space v-show="typeof form.meta.cache === 'object'">
                   <ElTag
-                    v-for="cache in form.cache" :key="cache" class="mx-1" size="large"
+                    v-for="cache in form.meta.cache" :key="cache" class="mx-1" size="large"
                     :disable-transitions="false" closable @close="handleRemoveCache(cache as string)"
                   >
                     {{ cache }}
@@ -486,12 +501,12 @@ function TableSortable() {
                     新增
                   </el-button>
                 </el-space>
-                <div v-show="typeof form.cache === 'boolean'">
+                <div v-show="typeof form.meta.cache === 'boolean'">
                   始终缓存
                 </div>
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
               <el-form-item prop="noCache" label="不缓存规则">
                 <template #label>
                   不缓存规则
@@ -504,7 +519,7 @@ function TableSortable() {
                 </template>
                 <el-space>
                   <ElTag
-                    v-for="noCache in form.noCache" :key="noCache" class="mx-1" size="large"
+                    v-for="noCache in form.meta.noCache" :key="noCache" class="mx-1" size="large"
                     :disable-transitions="false" closable @close="handleRemoveNoCache(noCache)"
                   >
                     {{ noCache }}
@@ -519,13 +534,13 @@ function TableSortable() {
                 </el-space>
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
               <el-form-item prop="activeMenu" label="高亮导航">
                 <template #label>
                   高亮导航
                   <span class="label-tip">如果子路由不在导航显示，则需要设置高亮的上级路由地址</span>
                 </template>
-                <el-input v-model="form.activeMenu" clearable placeholder="请输入高亮导航的完整路由地址" />
+                <el-input v-model="form.meta.activeMenu" clearable placeholder="请输入高亮导航的完整路由地址" />
               </el-form-item>
             </el-col>
             <el-col v-if="form.parentId" :xl="12" :lg="24">
@@ -534,39 +549,39 @@ function TableSortable() {
                   徽标
                   <span class="label-tip">不宜设置太长，建议控制在4个字符内</span>
                 </template>
-                <el-input v-model="form.badge" clearable placeholder="请输入徽标显示内容" />
+                <el-input v-model="form.meta.badge" clearable placeholder="请输入徽标显示内容" />
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
               <el-form-item prop="link" label="访问外链">
                 <template #label>
                   访问外链
                   <span class="label-tip">请设置 http/https 开头的完整外链地址</span>
                 </template>
-                <el-input v-model="form.link" clearable placeholder="请输入网址" />
+                <el-input v-model="form.meta.link" clearable placeholder="请输入网址" />
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
               <el-form-item prop="iframe" label="内嵌网页">
                 <template #label>
                   内嵌网页
                   <span class="label-tip">请勿与外链同时设置，同时设置时，本设置会失效</span>
                 </template>
-                <el-input v-model="form.iframe" clearable placeholder="请输入网址" />
+                <el-input v-model="form.meta.iframe" clearable placeholder="请输入网址" />
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
               <el-form-item prop="copyright" label="底部版权">
-                <el-switch v-model="form.copyright" inline-prompt active-text="显示" inactive-text="隐藏" />
+                <el-switch v-model="form.meta.copyright" active-text="显示" inactive-text="隐藏" inline-prompt />
               </el-form-item>
             </el-col>
-            <el-col v-if="form.parentId && form.type === 1" :xl="12" :lg="24">
+            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
               <el-form-item prop="paddingBottom" label="底部填充高度">
                 <template #label>
                   底部填充高度
                   <span class="label-tip">请设置有效的长度单位，例如：px/em/rem等</span>
                 </template>
-                <el-input v-model="form.paddingBottom" clearable placeholder="请输入底部填充高度" />
+                <el-input v-model="form.meta.paddingBottom" clearable placeholder="请输入底部填充高度" />
               </el-form-item>
             </el-col>
           </el-row>

@@ -100,9 +100,11 @@ const useRouteStore = defineStore(
       const settingsStore = useSettingsStore()
       const returnRoutes: RouteRecordRaw[] = []
       if (routesRaw.value) {
+        console.log('routesRaw.value', routesRaw.value)
+
         if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
           routesRaw.value.forEach((item) => {
-            const tmpRoutes = cloneDeep(item.children) as RouteRecordRaw[]
+            const tmpRoutes = cloneDeep(item.children || []) as RouteRecordRaw[]
             tmpRoutes.map((v) => {
               if (!v.meta) {
                 v.meta = {}
@@ -216,7 +218,7 @@ const useRouteStore = defineStore(
         isGenerate.value = true
       }
       catch (error) {
-        isGenerate.value = true
+        isGenerate.value = false
         console.log(error)
       }
     }

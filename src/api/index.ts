@@ -186,7 +186,7 @@ const transform: AxiosTransform = {
     // errorLogStore.addAjaxErrorInfo(error)
     const { response, code, message, config } = error || {}
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none'
-    const msg: string = response?.data?.error?.message ?? ''
+    const msg: string = response?.data?.msg ?? ''
     const err: string = error?.toString?.() ?? ''
     let errMessage = ''
 
@@ -223,6 +223,7 @@ const transform: AxiosTransform = {
     const retryRequest = new AxiosRetry()
     const { isOpenRetry } = config.requestOptions.retryRequest
     config.method?.toUpperCase() === RequestEnum.GET
+      && error?.response?.status !== 401
     && isOpenRetry
     && retryRequest.retry(axiosInstance, error)
     return Promise.reject(error)
@@ -235,10 +236,10 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
       // authentication schemes，e.g: Bearer
       authenticationScheme: 'Bearer',
       // authenticationScheme: '1',
-      timeout: 10 * 1000,
+      timeout: 10 * 1000 * 60, // 10 * 1000 * 60 = 10分钟
       headers: {
         'Content-Type': ContentTypeEnum.JSON,
-        'Authorization': 'Basic bGFtcF93ZWI6bGFtcF93ZWJfc2VjcmV0',
+        'Authorization': 'Basic a3B1X3dlYjprcHVfd2ViX3NlY3JldA',
       },
       transform: clone(transform),
       // 配置项，下面的选项都可以在独立的接口请求中覆盖
@@ -267,7 +268,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
         withToken: true,
         retryRequest: {
           isOpenRetry: true,
-          count: 5,
+          count: 4,
           waitTime: 100,
         },
       },

@@ -1,10 +1,17 @@
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
+import { get } from 'lodash-es'
 import type { RoleParams } from '@/api/modules/system/model/roleModel'
+import MenuTree from '@/views/system/role/components/MenuTree.vue'
+import BindUserMode from '@/views/system/role/components/BindUserMode.vue'
 import FormMode from '@/views/system/role/components/FormMode/index.vue'
 import usePagination from '@/util/usePagination'
 import eventBus from '@/util/eventBus'
 import crudRole from '@/api/modules/system/role'
+import { stateList } from '@/enums/stautsEnum'
+import { getCategoryColor } from '@/enums/colorEnum'
+import type { DictOption, Option } from '@/api/model/baseModel'
+import { findDictMapItemListByKey } from '@/api/modules/common/dict'
 
 defineOptions({
   name: 'SystemRoleList',
@@ -23,12 +30,12 @@ const data = ref({
   loading: false,
   tableAutoHeight: true,
   /**
-     * 详情展示模式
-     * router 路由跳转
-     * dialog 对话框
-     * drawer 抽屉
-     */
-  formMode: 'router',
+   * 详情展示模式
+   * router 路由跳转
+   * dialog 对话框
+   * drawer 抽屉
+   */
+  formMode: 'dialog',
   // 详情
   formModeProps: {
     visible: false,
@@ -36,24 +43,26 @@ const data = ref({
   },
   // 搜索
   search: {
-    title: '',
-    title2: '',
-    title3: '',
-    title4: '',
+    name: '',
+    category: '',
+    state: '',
   },
-  searchFold: true,
+  searchFold: false,
   // 批量操作
   batch: {
     enable: true,
+    selectionData: {} as {},
     selectionDataList: [],
   },
   // 列表数据
   dataList: [],
+  dicts: new Map<string, Option[]>(),
 })
 
 const table = ref<InstanceType<typeof ElTable>>()
 
 onMounted(() => {
+  getDict()
   getDataList()
   if (data.value.formMode === 'router') {
     eventBus.on('get-data-list', () => {
@@ -71,15 +80,14 @@ onBeforeUnmount(() => {
 function getDataList() {
   data.value.loading = true
   const params = getParams<RoleParams>({
-    name: data.value.search.title,
+    ...data.value.search,
   })
-  console.log(params)
   crudRole.list(params).then((res) => {
     // data.value.loading = false
-    data.value.dataList = res.rows
-    pagination.value.total = res.total
-    pagination.value.page = res.current
-    pagination.value.size = res.size
+    data.value.dataList = get(res, 'records', [])
+    pagination.value.total = Number(res.total)
+    pagination.value.page = Number(get(res, 'current', 1))
+    // pagination.value.size = res.size
   }).finally(() => {
     data.value.loading = false
   })
@@ -130,16 +138,43 @@ function onEdit(row: any) {
   }
 }
 
-function onDel(row: any) {
-  ElMessageBox.confirm(`确认删除「${row.title}」吗？`, '确认信息').then(() => {
-    crudRole.delete(row.id).then(() => {
+function onDel(row?: any) {
+  let ids: number[] = []
+  if (row) {
+    ids.push(row.id)
+  }
+  else {
+    ids = data.value.batch.selectionDataList.map(item => item.id) as number[]
+  }
+  ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
+    crudRole.delete(ids).then(() => {
       getDataList()
       ElMessage.success({
-        message: '模拟删除成功',
+        message: '删除成功',
         center: true,
       })
     })
   }).catch(() => {
+  })
+}
+
+const bindUser = ref({
+  visible: false,
+  id: '',
+})
+
+function onBindUsers(row: any) {
+  bindUser.value.id = row.id
+  bindUser.value.visible = true
+}
+
+async function getDict() {
+  const options: DictOption = await findDictMapItemListByKey([{
+    type: 'ROLE_CATEGORY',
+    extendFirst: true,
+  }])
+  Object.entries(options).forEach(([key, value]) => {
+    data.value.dicts.set(key, value)
   })
 }
 </script>
@@ -148,108 +183,146 @@ function onDel(row: any) {
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
     <page-header title="角色管理" />
     <page-main>
-      <search-bar
-        :fold="data.searchFold"
-        :show-toggle="false"
-      >
-        <template #default="{ fold }">
-          <el-form class="search-form" :model="data.search" size="default" inline inline-message label-width="100px" label-suffix="：">
-            <el-form-item label="标题">
-              <el-input
-                v-model="data.search.title" placeholder="请输入标题，支持模糊查询" clearable
-                @keydown.enter="currentChange()" @clear="currentChange()"
-              />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="标题2">
-              <el-input
-                v-model="data.search.title2" placeholder="请输入标题，支持模糊查询" clearable
-                @keydown.enter="currentChange()" @clear="currentChange()"
-              />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="标题3">
-              <el-input
-                v-model="data.search.title3" placeholder="请输入标题，支持模糊查询" clearable
-                @keydown.enter="currentChange()" @clear="currentChange()"
-              />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="标题4">
-              <el-input
-                v-model="data.search.title4" placeholder="请输入标题，支持模糊查询" clearable
-                @keydown.enter="currentChange()" @clear="currentChange()"
-              />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="currentChange()">
+      <LayoutContainer right-side-width="50%">
+        <search-bar :fold="data.searchFold" :show-toggle="false">
+          <template #default="{ fold }">
+            <el-form
+              :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
+              size="default"
+            >
+              <el-form-item label="名称">
+                <el-input
+                  v-model="data.search.name" clearable placeholder="请输入名称，支持模糊查询"
+                  @clear="currentChange()" @keydown.enter="currentChange()"
+                />
+              </el-form-item>
+              <el-form-item label="角色类别">
+                <el-select
+                  v-model="data.search.category" clearable placeholder="请选择" size="default"
+                  @change="currentChange()"
+                >
+                  <el-option
+                    v-for="item in data.dicts.get('ROLE_CATEGORY') || []"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+              <el-form-item v-show="!fold" label="状态">
+                <el-select
+                  v-model="data.search.state" clearable placeholder="请选择" size="default"
+                  @change="currentChange()"
+                >
+                  <el-option
+                    v-for="(item, index) in stateList"
+                    :key="index"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+
+              <el-form-item>
+                <el-button type="primary" @click="currentChange()">
+                  <template #icon>
+                    <el-icon>
+                      <svg-icon name="ep:search" />
+                    </el-icon>
+                  </template>
+                  筛选
+                </el-button>
+                <el-button link type="primary" @click="data.searchFold = !fold">
+                  <template #icon>
+                    <el-icon>
+                      <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                    </el-icon>
+                  </template>
+                  {{ fold ? '展开' : '收起' }}
+                </el-button>
+              </el-form-item>
+            </el-form>
+          </template>
+        </search-bar>
+        <el-divider border-style="dashed" />
+        <el-space wrap>
+          <el-button size="default" type="primary" @click="onCreate">
+            <template #icon>
+              <el-icon>
+                <svg-icon name="ep:plus" />
+              </el-icon>
+            </template>
+            新增
+          </el-button>
+          <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
+            <template #icon>
+              <el-icon>
+                <svg-icon name="ep:delete" />
+              </el-icon>
+            </template>
+            删除
+          </el-button>
+        </el-space>
+        <ElTable
+          ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%"
+          highlight-current-row stripe @sort-change="sortChange"
+          @current-change="data.batch.selectionData = $event || {}"
+          @selection-change="data.batch.selectionDataList = $event"
+        >
+          <el-table-column v-if="data.batch.enable" align="center" type="selection" />
+          <el-table-column label="名称" prop="name">
+            <template #default="scope">
+              <el-tag :type="getCategoryColor(scope.row.category)">
+                {{ scope.row.echoMap.category }}
+              </el-tag>
+              {{ scope.row.name }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="状态" prop="state" width="80px">
+            <template #default="scope">
+              <el-tag v-if="scope.row.state" type="success">
+                启用
+              </el-tag>
+              <el-tag v-else type="danger">
+                禁用
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" fixed="right" label="操作" width="250">
+            <template #default="scope">
+              <el-button plain size="small" type="primary" @click="onEdit(scope.row)">
                 <template #icon>
                   <el-icon>
-                    <svg-icon name="ep:search" />
+                    <svg-icon name="ep:edit" />
                   </el-icon>
                 </template>
-                筛选
               </el-button>
-              <el-button type="primary" link @click="data.searchFold = !fold">
-                <template #icon>
-                  <el-icon>
-                    <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
-                  </el-icon>
-                </template>
-                {{ fold ? '展开' : '收起' }}
+              <el-divider direction="vertical" />
+              <el-button plain size="small" type="danger" @click="onDel(scope.row)">
+                删 除
               </el-button>
-            </el-form-item>
-          </el-form>
+              <el-divider direction="vertical" />
+              <el-button bg plain size="small" text type="primary" @click="onBindUsers(scope.row)">
+                绑定用户
+              </el-button>
+            </template>
+          </el-table-column>
+        </ElTable>
+        <el-pagination
+          :current-page="pagination.page" :hide-on-single-page="false" :layout="pagination.layout"
+          :page-size="pagination.size" :page-sizes="pagination.sizes" :total="pagination.total" background
+          class="pagination" @size-change="sizeChange" @current-change="currentChange"
+        />
+        <template #rightSide>
+          <MenuTree :data="data.batch.selectionData" />
         </template>
-      </search-bar>
-      <el-divider border-style="dashed" />
-      <el-space wrap>
-        <el-button type="primary" size="default" @click="onCreate">
-          <template #icon>
-            <el-icon>
-              <svg-icon name="ep:plus" />
-            </el-icon>
-          </template>
-          新增
-        </el-button>
-        <el-button size="default" :disabled="!data.batch.selectionDataList.length">
-          单个批量操作按钮
-        </el-button>
-        <el-button-group>
-          <el-button size="default" :disabled="!data.batch.selectionDataList.length">
-            批量操作按钮组1
-          </el-button>
-          <el-button size="default" :disabled="!data.batch.selectionDataList.length">
-            批量操作按钮组2
-          </el-button>
-        </el-button-group>
-      </el-space>
-      <ElTable
-        ref="table" v-loading="data.loading" class="list-table" :data="data.dataList" border stripe
-        highlight-current-row
-        height="100%"
-        @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
-      >
-        <el-table-column v-if="data.batch.enable" type="selection" align="center" fixed />
-        <el-table-column prop="name" label="角色名" />
-        <el-table-column label="操作" width="250" align="center" fixed="right">
-          <template #default="scope">
-            <el-button type="primary" size="small" plain @click="onEdit(scope.row)">
-              编 辑
-            </el-button>
-            <el-button type="danger" size="small" plain @click="onDel(scope.row)">
-              删 除
-            </el-button>
-          </template>
-        </el-table-column>
-      </ElTable>
-      <el-pagination
-        :current-page="pagination.page" :total="pagination.total" :page-size="pagination.size"
-        :page-sizes="pagination.sizes" :layout="pagination.layout" :hide-on-single-page="false"
-        class="pagination" background @size-change="sizeChange" @current-change="currentChange"
-      />
+      </LayoutContainer>
     </page-main>
     <FormMode
       v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
       v-model="data.formModeProps.visible" :mode="data.formMode" @success="getDataList"
     />
+    <BindUserMode :id="bindUser.id" v-model="bindUser.visible" @success="getDataList" />
   </div>
 </template>
 
@@ -257,20 +330,24 @@ function onDel(row: any) {
 .el-pagination {
   margin-top: 20px;
 }
+
 .absolute-container {
   position: absolute;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+
   .page-header {
     margin-bottom: 0;
   }
+
   .page-main {
     flex: 1;
     overflow: auto;
     display: flex;
     flex-direction: column;
+
     .search-container {
       margin-bottom: 0;
     }
@@ -278,14 +355,31 @@ function onDel(row: any) {
 }
 
 .page-main {
+  margin: 0;
+  // 透明背景
+  background-color: transparent;
+
+  .flex-container {
+    position: static;
+    padding: 0;
+
+    :deep(.main-container) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
   .search-form {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: -18px;
+
     :deep(.el-form-item) {
       flex: 1 1 300px;
+
       &:last-child {
         margin-left: auto;
+
         .el-form-item__content {
           justify-content: flex-end;
         }
@@ -293,8 +387,9 @@ function onDel(row: any) {
     }
 
   }
-  .el-divider {
-    margin-inline:-20px;width: calc(100% + 40px);
-  }
+
+  // .el-divider {
+  // margin-inline:-20px;width: calc(100% + 40px);
+  // }
 }
 </style>

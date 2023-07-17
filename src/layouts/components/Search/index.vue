@@ -142,7 +142,7 @@ function hasChildren(item: RouteRecordRaw) {
 }
 
 function getSourceList(arr: RouteRecordRaw[], path?: string, icon?: string, baseBreadcrumb?: { i18n?: string; title: string }[]) {
-  arr.forEach((item) => {
+  arr?.forEach((item) => {
     if (item.meta?.sidebar !== false) {
       if (item.children && hasChildren(item)) {
         const breadcrumb = deepClone(baseBreadcrumb) ?? []

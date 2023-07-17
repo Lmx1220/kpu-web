@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ElMessage, ElMessageBox } from 'element-plus'
+import Move from '@/views/system/menu/components/move.vue'
 import useSettingsStore from '@/store/modules/settings'
 import crudMenu from '@/api/modules/system/menu'
 import type { Menu } from '@/types/global'
@@ -42,19 +43,19 @@ function getDataList() {
 function onCreate(row?: Menu.raw) {
   if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
     tabbar.open({
-      name: 'menuCreate',
+      name: 'SystemMenuCreate',
       query: {
         parentId: row?.id,
-        sort: row?.pid ? row.children?.length ? row.children.length + 1 : 1 : data.value.dataList ? data.value.dataList.length + 1 : 1,
+        sort: row?.parentId ? row.children?.length ? row.children.length + 1 : 1 : data.value.dataList ? data.value.dataList.length + 1 : 1,
       },
     })
   }
   else {
     router.push({
-      name: 'menuCreate',
+      name: 'SystemMenuCreate',
       query: {
         parentId: row?.id,
-        sort: row?.pid ? row.children?.length ? row.children.length + 1 : 1 : data.value.dataList ? data.value.dataList.length + 1 : 1,
+        sort: row?.parentId ? row.children?.length ? row.children.length + 1 : 1 : data.value.dataList ? data.value.dataList.length + 1 : 1,
       },
     })
   }
@@ -62,7 +63,7 @@ function onCreate(row?: Menu.raw) {
 function onEdit(row: Menu.raw) {
   if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
     tabbar.open({
-      name: 'menuEdit',
+      name: 'SystemMenuEdit',
       params: {
         id: row.id,
       },
@@ -70,7 +71,7 @@ function onEdit(row: Menu.raw) {
   }
   else {
     router.push({
-      name: 'menuEdit',
+      name: 'SystemMenuEdit',
       params: {
         id: row.id,
       },
@@ -106,11 +107,20 @@ function onMoveDown(row: Menu.raw) {
     })
   })
 }
+
+const moveDialog = ref<{ id?: number | string; visible: boolean; data: object }>({
+  id: undefined,
+  visible: false,
+  data: {},
+})
 function onMove(row: Menu.raw) {
-  ElMessage.info({
-    message: '暂未实现',
-    center: true,
-  })
+  // ElMessage.info({
+  //   message: '暂未实现',
+  //   center: true,
+  // })
+  moveDialog.value.id = row.id
+  moveDialog.value.visible = true
+  moveDialog.value.data = row
 }
 </script>
 
@@ -137,7 +147,7 @@ function onMove(row: Menu.raw) {
         <el-table-column prop="path" label="路由" width="200">
           <template #default="scope">
             <span :title="scope.row.path">
-              {{ scope.row.path }}:: {{ scope.row.id }}
+              {{ scope.row.path }}
             </span>
           </template>
         </el-table-column>
@@ -169,58 +179,67 @@ function onMove(row: Menu.raw) {
         </el-table-column>
         <el-table-column prop="sidebar" label="菜单" width="80" align="center">
           <template #default="scope">
-            <ElTag v-if="typeof scope.row.sidebar === 'boolean'" :type="scope.row.sidebar ? 'success' : 'danger'">
-              {{ scope.row.sidebar ? '显示' : '隐藏' }}
+            <ElTag
+              v-if="typeof scope.row.meta.sidebar === 'boolean'"
+              :type="scope.row.meta.sidebar ? 'success' : 'danger'"
+            >
+              {{ scope.row.meta.sidebar ? '显示' : '隐藏' }}
             </ElTag>
           </template>
         </el-table-column>
         <el-table-column prop="breadcrumb" label="面包屑" width="80" align="center">
           <template #default="scope">
-            <ElTag v-if="typeof scope.row.breadcrumb === 'boolean'" :type="scope.row.breadcrumb ? 'success' : 'danger'">
-              {{ scope.row.breadcrumb ? '显示' : '隐藏' }}
+            <ElTag
+              v-if="typeof scope.row.meta.breadcrumb === 'boolean'"
+              :type="scope.row.meta.breadcrumb ? 'success' : 'danger'"
+            >
+              {{ scope.row.meta.breadcrumb ? '显示' : '隐藏' }}
             </ElTag>
           </template>
         </el-table-column>
-        <el-table-column prop="sort" label="排序" min-width="80" fixed="right" />
-        <el-table-column v-if="auth.auth(['menu:add', 'menu:edit', 'menu:del'])" width="350" align="center" fixed="right" label="操作">
+        <!-- <el-table-column prop="sortValue" label="排序" min-width="80" fixed="right" /> -->
+        <el-table-column
+          v-if="auth.auth(['authority:menu:add', 'authority:menu:edit', 'authority:menu:delete'])"
+          align="center" fixed="right" label="操作" width="350"
+        >
           <template #default="scope">
-            <el-button v-show="scope.row.type === 0" v-auth="'menu:add'" link type="info" plain size="small" @click="onCreate(scope.row)">
+            <el-button
+              v-show="scope.row.resourceType === '10'" v-auth="'authority:menu:add'" link plain size="small"
+              type="info" @click="onCreate(scope.row)"
+            >
               新增导航
             </el-button>
-            <el-button v-auth="'menu:edit'" link type="primary" size="small" @click="onEdit(scope.row)">
+            <el-button v-auth="'authority:menu:edit'" link size="small" type="primary" @click="onEdit(scope.row)">
               编辑
             </el-button>
-            <el-button v-auth="'menu:del'" link type="danger" size="small" @click="onDel(scope.row)">
+            <el-button v-auth="'authority:menu:del'" link size="small" type="danger" @click="onDel(scope.row)">
               删除
             </el-button>
-            <!--            <el-button v-auth="'menu:edit'" type="danger" size="small"> -->
+            <!--            <el-button v-auth="'authority:menu:edit'" type="danger" size="small"> -->
             <!--              上移 -->
             <!--            </el-button> -->
             <el-popconfirm title="是否上移?" @confirm="onMoveUp(scope.row)">
               <template #reference>
-                <el-button link type="danger" size="small">
+                <el-button v-auth="'authority:menu:edit'" link size="small" type="danger">
                   上移
                 </el-button>
               </template>
             </el-popconfirm>
             <el-popconfirm title="是否下移?" @confirm="onMoveDown(scope.row)">
               <template #reference>
-                <el-button v-auth="'menu:edit'" link type="danger" size="small">
+                <el-button v-auth="'authority:menu:edit'" link size="small" type="danger">
                   下移
                 </el-button>
               </template>
             </el-popconfirm>
-            <el-popconfirm title="是否移动?" @confirm="onMove(scope.row)">
-              <template #reference>
-                <el-button v-auth="'menu:edit'" link type="danger" size="small">
-                  移动
-                </el-button>
-              </template>
-            </el-popconfirm>
+            <el-button v-auth="'authority:menu:edit'" link size="small" type="danger" @click="onMove(scope.row)">
+              移动
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
     </page-main>
+    <Move :id="moveDialog.id" v-model="moveDialog.visible" :data="moveDialog.data" @success="getDataList" />
   </div>
 </template>
 

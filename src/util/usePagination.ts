@@ -16,17 +16,43 @@ function usePagination() {
     page: 1,
     size: 10,
     total: 0,
-    sizes: [10, 20, 50, 100],
+    sizes: [2, 10, 20, 50, 100],
     layout: 'total, sizes, ->, prev, pager, next, jumper',
     sort: null,
     order: null,
   })
 
-  function getParams<T extends object>(params: T = {} as T): BasicPageParams & T {
-    const baseParams: BasicPageParams & T = {
-      page: pagination.value.page,
+  function copyObject<T extends Record<string, any>>(source: T): T {
+    const target = {} as T
+
+    for (const key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        const value = source[key]
+
+        if (
+          typeof value === 'string'
+                    && value.trim() === ''
+        ) {
+          target[key as keyof T] = undefined! as T[keyof T]
+        }
+        else if (typeof value === 'object' && value !== null) {
+          target[key as keyof T] = copyObject(value)
+        }
+        else {
+          target[key as keyof T] = value
+        }
+      }
+    }
+
+    return target
+  }
+
+  function getParams<T extends object>(params: T = {} as T): BasicPageParams<T> {
+    const baseParams: BasicPageParams<T> = {
+      current: pagination.value.page,
       size: pagination.value.size,
-      ...params, // 使用展开语法将 params 对象合并到 baseParams 中
+      model: { ...copyObject<T>(params) }, // 使用展开语法将 params 对象合并到 baseParams 中
+      extra: {},
     }
 
     if (pagination.value.sort && pagination.value.order) {

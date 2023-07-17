@@ -1,4 +1,5 @@
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import useUserStore from '@/store/modules/user'
 import type { ErrorMessageMode } from '#/axios'
 
 /**
@@ -17,6 +18,9 @@ export function checkStatus(status: number, msg: string,
       break
     case 401:
       ElMessage.error('登录失效！请您重新登录')
+      const userStore = useUserStore()
+      userStore.logout()
+
       break
     case 403:
       ElMessage.error('当前账号无权限访问！')
@@ -47,10 +51,18 @@ export function checkStatus(status: number, msg: string,
   }
   if (errMessage) {
     if (errorMessageMode === 'modal') {
-      // createErrorModal({ title: t('sys.api.errorTip'), content: errMessage })
+      ElMessageBox({
+        title: t('sys.api.errorTip'),
+        message: errMessage,
+        type: 'error',
+      })
     }
     else if (errorMessageMode === 'message') {
-      // error({ content: errMessage, key: `global_error_message_status_${status}` })
+      ElMessage.error({
+        message: errMessage,
+        key: `global_error_message_status_${status}`,
+        grouping: true,
+      })
     }
   }
 }

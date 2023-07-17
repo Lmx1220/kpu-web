@@ -21,6 +21,7 @@ const useUserStore = defineStore(
     const token = ref(storage.local.get('token') ?? '')
     const failure_time = ref(storage.local.get('failure_time') ?? '')
     const permissions = ref<string[]>([])
+    const roles = ref<string[]>([])
     const isLogin = computed(() => {
       let retn = false
       if (token.value) {
@@ -40,15 +41,15 @@ const useUserStore = defineStore(
       const res = await api.post<any>({
         url: '/noToken/login',
         data: {
-          account: data.username,
+          username: data.username,
           password: data.password,
           grantType: 'password',
         },
       })
-      storage.local.set('account', res.account)
+      storage.local.set('account', res.username)
       storage.local.set('token', res.token)
       storage.local.set('failure_time', res.expire)
-      account.value = res.account
+      account.value = res.username
       token.value = res.token
       failure_time.value = res.expire
     }
@@ -73,13 +74,19 @@ const useUserStore = defineStore(
     // 获取我的权限
     async function getPermissions() {
       // 通过 mock 获取权限
-      const data = await api.get<string[]>({
-        url: '/auth/permission',
+      const data = await api.get<{
+        caseSensitive: boolean
+        enabled: boolean
+        resourceList: string[]
+        roleList: string[]
+      }>({
+        url: '/resource/visible',
         params: {
           account: account.value,
         },
       })
-      permissions.value = data
+      permissions.value = data.resourceList
+      roles.value = data.roleList
       return permissions.value
     }
     // 修改密码
