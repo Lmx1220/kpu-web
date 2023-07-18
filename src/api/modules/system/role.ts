@@ -41,7 +41,7 @@ export function editRole(data: any) {
   })
 }
 
-export function deleteRole(ids: number[]) {
+export function deleteRole(ids: string[]) {
   return api.delete<void>({
     url: `${prefix}`,
     data: ids,
@@ -62,7 +62,7 @@ export function saveResource(data: RoleResourceSaveVO) {
   })
 }
 
-export function userList(id: string | number) {
+export function userList(id: string) {
   return api.get<string[]>({
     url: `${prefix}/userList`,
     params: { roleId: id },

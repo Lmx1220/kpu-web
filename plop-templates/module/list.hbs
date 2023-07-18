@@ -1,13 +1,11 @@
 <script lang="ts" setup>
+  import crud from '@/api/modules/'
+  import eventBus from '@/util/eventBus'
+  import usePagination from '@/util/usePagination.js'
   import {ElMessage, ElMessageBox, ElTable} from 'element-plus'
   import {get} from 'lodash-es'
-  import FormMode from './components/FormMode/index.vue'
   import type {{{ pascalCase moduleName }}Params} from '@/api/modules/{{#if
         relativePath}}{{ relativePath }}/{{/if}}model/{{ snakeCase moduleName }}Model'
-  import usePagination from '@/util/usePagination.js'
-  import eventBus from '@/util/eventBus'
-  import crud{{properCase moduleName}}
-    from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}'
 
   defineOptions({
     name: '{{ properCase componentName }}',
@@ -22,15 +20,15 @@
   const router = useRouter()
   // const route = useRoute()
 
-const data = ref({
-  loading: false,
-  tableAutoHeight: true,
-  /**
-   * 详情展示模式
-   * router 路由跳转
-   * dialog 对话框
-   * drawer 抽屉
-   */
+  const data = ref({
+    loading: false,
+    tableAutoHeight: true,
+    /**
+     * 详情展示模式
+     * router 路由跳转
+     * dialog 对话框
+     * drawer 抽屉
+     */
   formMode: 'router',
   // 详情
   formModeProps: {
@@ -79,7 +77,7 @@ onMounted(() => {
     const params = getParams<{{ pascalCase moduleName }}Params>({
       ...data.value.search
     })
-    data.value.search.title && (params.title = data.value.search.title)
+    data.value.search.title && (params.model.title = data.value.search.title)
     const res = await crud{{properCase moduleName}}.list(params)
     data.value.dataList = get(res, 'records', [])
     pagination.value.total = Number(res.total)
@@ -217,7 +215,7 @@ function onEdit(row: any) {
           </template>
           新增
         </el-button>
-        <el-button size="default" :disabled="!data.batch.selectionDataList.length" @click="onDel">
+        <el-button size="default" :disabled="!data.batch.selectionDataList.length" @click="onDel()">
           <template #icon>
             <el-icon>
               <svg-icon name="ep:delete"/>
@@ -234,9 +232,11 @@ function onEdit(row: any) {
           </el-button>
         </el-button-group>
       </el-space>
-      <ElTable ref="table" v-loading="data.loading" class="list-table" :data="data.dataList" border stripe highlight-current-row @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event">
-        <el-table-column v-if="data.batch.enable" type="selection" align="center" fixed />
-        <el-table-column prop="title" label="标题" />
+      <ElTable ref="table" v-loading="data.loading" class="list-table" height="100%" :data="data.dataList" border stripe
+               highlight-current-row @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
+      >
+        <el-table-column v-if="data.batch.enable" type="selection" align="center" fixed/>
+        <el-table-column prop="title" label="标题"/>
         <el-table-column label="操作" width="250" align="center" fixed="right">
           <template #default="scope">
             <el-button type="primary" size="small" plain @click="onEdit(scope.row)">

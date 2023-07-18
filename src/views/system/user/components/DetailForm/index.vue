@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import crudUser from '@/api/modules/system/user'
-import { findDictMapItemListByKey } from '@/api/modules/common/dict'
 import type { DictOption, Option } from '@/api/model/baseModel'
+import { findDictMapItemListByKey } from '@/api/modules/common/dict'
+import crudUser from '@/api/modules/system/user'
 import { stateList } from '@/enums/stautsEnum'
 
 export interface Props {
@@ -127,65 +127,75 @@ defineExpose({
       <el-divider content-position="left">
         基本信息
       </el-divider>
-      <el-form-item v-show="!props.id" label="用户账号" prop="username">
-        <el-input v-model="data.form.username" placeholder="请输入用户账号" />
-      </el-form-item>
-      <el-form-item label="昵称" prop="nickName">
-        <el-input v-model="data.form.nickName" placeholder="请输入用户昵称" />
-      </el-form-item>
-      <el-form-item label="状态" prop="state">
-        <el-radio-group v-model="data.form.state" size="large">
-          <el-radio-button v-for="(item, index) in stateList" :key="index" :label="item.value">
-            {{ item.label }}
-          </el-radio-button>
-        </el-radio-group>
-      </el-form-item>
-      <el-divider content-position="left">
-        用户信息
-      </el-divider>
-      <el-form-item label="手机号" prop="mobile">
-        <el-input v-model="data.form.mobile" placeholder="请输入手机号" />
-      </el-form-item>
-      <el-form-item label="性别" prop="sex">
-        <el-radio-group v-model="data.form.sex">
-          <el-radio v-for="(item, index) in data.dicts.get('SEX')" :key="index" :label="item?.value">
-            {{ item?.label }}
-          </el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="民族" prop="nation">
-        <el-select v-model="data.form.nation" clearable placeholder="请选择" size="default">
-          <el-option
-            v-for="item in data.dicts.get('NATION') || []"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="学历" prop="education">
-        <el-select v-model="data.form.education" clearable placeholder="请选择" size="default">
-          <el-option
-            v-for="item in data.dicts.get('EDUCATION') || []"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-divider content-position="left">
-        职位信息
-      </el-divider>
-      <el-form-item label="职位状态" prop="positionStatus">
-        <el-select v-model="data.form.positionStatus" clearable placeholder="请选择" size="default">
-          <el-option
-            v-for="item in data.dicts.get('POSITION_STATUS') || []"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
+      <el-row>
+        <el-row :gutter="30" style="padding: 20px;">
+          <el-col v-show="!props.id" :lg="24" :xl="12">
+            <el-form-item label="用户账号" prop="username">
+              <el-input v-model="data.form.username" placeholder="请输入用户账号" />
+            </el-form-item>
+          </el-col>
+          <el-col :lg="24" :xl="12">
+            <el-form-item label="昵称" prop="nickName">
+              <el-input v-model="data.form.nickName" placeholder="请输入用户昵称" />
+            </el-form-item>
+          </el-col>
+          <el-col :lg="24" :xl="12">
+            <el-form-item label="状态" prop="state">
+              <el-radio-group v-model="data.form.state" size="large">
+                <el-radio-button v-for="(item, index) in stateList" :key="index" :label="item.value">
+                  {{ item.label }}
+                </el-radio-button>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-divider content-position="left">
+          用户信息
+        </el-divider>
+        <el-form-item label="手机号" prop="mobile">
+          <el-input v-model="data.form.mobile" placeholder="请输入手机号" />
+        </el-form-item>
+        <el-form-item label="性别" prop="sex">
+          <el-radio-group v-model="data.form.sex">
+            <el-radio v-for="(item, index) in data.dicts.get('SEX')" :key="index" :label="item?.value">
+              {{ item?.label }}
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="民族" prop="nation">
+          <el-select v-model="data.form.nation" clearable placeholder="请选择" size="default">
+            <el-option
+              v-for="item in data.dicts.get('NATION') || []"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="学历" prop="education">
+          <el-select v-model="data.form.education" clearable placeholder="请选择" size="default">
+            <el-option
+              v-for="item in data.dicts.get('EDUCATION') || []"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-divider content-position="left">
+          职位信息
+        </el-divider>
+        <el-form-item label="职位状态" prop="positionStatus">
+          <el-select v-model="data.form.positionStatus" clearable placeholder="请选择" size="default">
+            <el-option
+              v-for="item in data.dicts.get('POSITION_STATUS') || []"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+      </el-row>
     </el-form>
   </div>
 </template>

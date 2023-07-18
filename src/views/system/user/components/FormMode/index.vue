@@ -32,7 +32,7 @@ const myVisible = computed({
 
 const form = ref<InstanceType<typeof DetailForm>>()
 
-const title = computed(() => props.id === '' ? '新增Test' : '编辑Test')
+const title = computed(() => props.id === '' ? '新增用户' : '编辑用户')
 
 function onSubmit() {
   // submit() 为组件内部方法

@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
+import BindRoleMode from './components/BindRoleMode.vue'
+import FormMode from './components/FormMode/index.vue'
 import type { UserParams } from '@/api/modules/system/model/userModel'
-import usePagination from '@/util/usePagination.js'
-import eventBus from '@/util/eventBus'
 import crudUser from '@/api/modules/system/user'
+import eventBus from '@/util/eventBus'
+
+import usePagination from '@/util/usePagination.js'
 
 defineOptions({
   name: 'SystemUserList',
@@ -142,12 +145,12 @@ function onEdit(row: any) {
 }
 
 function onDel(row?: any) {
-  let ids: number[] = []
+  let ids: string[] = []
   if (row) {
     ids.push(row.id)
   }
   else {
-    ids = data.value.batch.selectionDataList.map(item => item.id) as number[]
+    ids = data.value.batch.selectionDataList.map(item => item.id) as string[]
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
     crudUser.delete(ids).then(() => {
@@ -254,12 +257,13 @@ function onBindRoles(row: any) {
           </template>
           新增
         </el-button>
-        <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel">
+        <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
           删除
         </el-button>
       </el-space>
       <ElTable
         ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table"
+        height="100%"
         highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
@@ -306,8 +310,11 @@ function onBindRoles(row: any) {
         background class="pagination" @size-change="sizeChange" @current-change="currentChange"
       />
     </page-main>
-    <!-- <FormMode v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id" v-model="data.formModeProps.visible" :mode="data.formMode" @success="getDataList" /> -->
-    <!-- <BindRoleMode :id="bindRole.id" v-model="bindRole.visible" @success="getDataList" /> -->
+    <FormMode
+      v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
+      v-model="data.formModeProps.visible" :mode="data.formMode" @success="getDataList"
+    />
+    <BindRoleMode :id="bindRole.id" v-model="bindRole.visible" @success="getDataList" />
   </div>
 </template>
 

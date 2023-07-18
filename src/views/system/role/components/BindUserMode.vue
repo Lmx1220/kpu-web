@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { ElMessage, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
-import usePagination from '@/util/usePagination'
 import type { UserParams } from '@/api/modules/system/model/userModel'
-import { getListUser } from '@/api/modules/system/user'
 import crudRole from '@/api/modules/system/role'
+import { getListUser } from '@/api/modules/system/user'
+import usePagination from '@/util/usePagination'
 
 export interface Props {
-  id: number | string
+  id: string
   modelValue?: boolean
 }
 
@@ -121,7 +121,7 @@ function getDataList(current?: number) {
   })
 }
 
-async function getBindUsers(id: number | string) {
+async function getBindUsers(id: string) {
   const dataList = await crudRole.userList(id)
   data.value.bindUsers = dataList
 }

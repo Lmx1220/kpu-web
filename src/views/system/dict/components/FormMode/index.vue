@@ -4,11 +4,15 @@ import DetailForm from '../DetailForm/index.vue'
 
 export interface Props extends DetailFormProps {
   modelValue?: boolean
-  mode: 'dialog' | 'drawer' | 'router' | string
+  mode?: 'dialog' | 'drawer' | string
 }
+
 const props = withDefaults(defineProps<Props>(),
   {
+    id: '',
+    parentId: '',
     modelValue: false,
+    mode: 'dialog',
   })
 
 const emits = defineEmits<{
@@ -28,7 +32,8 @@ const myVisible = computed({
 })
 
 const form = ref<InstanceType<typeof DetailForm>>()
-const title = computed(() => props.id === '' ? '新增角色' : '编辑角色')
+
+const title = computed(() => props.id === '' ? '新增字典' : '编辑字典')
 
 function onSubmit() {
   // submit() 为组件内部方法
@@ -59,18 +64,21 @@ function handleOpen() {
         <el-button size="large" @click="onCancel">
           取 消
         </el-button>
-        <el-button type="primary" size="large" @click="onSubmit">
+        <el-button size="large" type="primary" @click="onSubmit">
           确 定
         </el-button>
       </template>
     </el-dialog>
-    <el-drawer v-else-if="props.mode === 'drawer'" v-model="myVisible" :title="title" size="600px" :close-on-click-modal="false" destroy-on-close>
+    <el-drawer
+      v-else-if="props.mode === 'drawer'" v-model="myVisible" :close-on-click-modal="false"
+      :direction="props.parentId ? 'rtl' : 'ltr'" :title="title" destroy-on-close size="600px" @open="handleOpen"
+    >
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>
         <el-button size="large" @click="onCancel">
           取 消
         </el-button>
-        <el-button type="primary" size="large" @click="onSubmit">
+        <el-button size="large" type="primary" @click="onSubmit">
           确 定
         </el-button>
       </template>

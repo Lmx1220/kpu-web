@@ -4,7 +4,7 @@ import useSettingsStore from '@/store/modules/settings'
 import eventBus from '@/util/eventBus'
 
 defineOptions({
-  name: 'SystemUserDetail',
+  name: 'SystemDictDetail',
 })
 const settingsStore = useSettingsStore()
 const route = useRoute()
@@ -36,7 +36,7 @@ function goBack() {
 
 <template>
   <div>
-    <page-header :title="route.name === 'routerName' ? '新增用户' : '编辑用户'">
+    <page-header :title="route.name === 'routerName' ? '新增字典' : '编辑字典'">
       <el-button round size="default" @click="goBack">
         <template #icon>
           <el-icon>

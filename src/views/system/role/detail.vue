@@ -1,7 +1,7 @@
 <script lang="ts" setup name="SystemRoleDetail">
-import DetailForm from '@/views/system/role/components/DetailForm/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import eventBus from '@/util/eventBus'
+import DetailForm from '@/views/system/role/components/DetailForm/index.vue'
 
 const settingsStore = useSettingsStore()
 const route = useRoute()
@@ -33,7 +33,7 @@ function goBack() {
 
 <template>
   <div>
-    <page-header :title="route.name === 'routerName' ? '新增Test' : '编辑Test'">
+    <page-header :title="route.name === 'routerName' ? '新增角色' : '编辑角色'">
       <el-button size="default" round @click="goBack">
         <template #icon>
           <el-icon>

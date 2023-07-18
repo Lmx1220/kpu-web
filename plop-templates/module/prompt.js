@@ -67,6 +67,7 @@ module.exports = {
         templateFile: 'plop-templates/module/detail.hbs',
         data: {
           componentName: `${relativePath} ${data.name} detail`,
+          cname: data.cname,
         },
       },
       {
@@ -82,6 +83,9 @@ module.exports = {
         type: 'add',
         path: `${data.path}/{{snakeCase name}}/components/FormMode/index.vue`,
         templateFile: 'plop-templates/module/mode.hbs',
+        data: {
+          cname: data.cname,
+        },
       },
       {
         type: 'add',

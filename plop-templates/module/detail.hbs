@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import DetailForm from './components/DetailForm/index.vue'
-import useSettingsStore from '@/store/modules/settings'
-import eventBus from '@/util/eventBus'
+  import useSettingsStore from '@/store/modules/settings'
+  import eventBus from '@/util/eventBus'
+  import DetailForm from './components/DetailForm/index.vue'
 
-defineOptions({
+  defineOptions({
   name: '{{ properCase componentName }}',
 })
 const settingsStore = useSettingsStore()
@@ -26,21 +26,20 @@ function onCancel() {
 // 返回列表页
 function goBack() {
   if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
-    tabbar.close({ name: 'pagesExampleGeneralFormModeList' })
-  }
-  else {
-    router.push({ name: 'pagesExampleGeneralFormModeList' })
+    tabbar.close({name: 'pagesExampleGeneralFormModeList'})
+  } else {
+    router.push({name: 'pagesExampleGeneralFormModeList'})
   }
 }
 </script>
 
 <template>
   <div>
-    <page-header :title="route.name === 'routerName' ? '新增Test' : '编辑Test'">
+    <page-header :title="route.name === 'routerName' ? '新增{{ cname }}' : '编辑{{ cname }}'">
       <el-button size="default" round @click="goBack">
         <template #icon>
           <el-icon>
-            <svg-icon name="ep:arrow-left" />
+            <svg-icon name="ep:arrow-left"/>
           </el-icon>
         </template>
         返回

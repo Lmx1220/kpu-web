@@ -199,13 +199,13 @@ function isAllCheckedByKey(node: any) {
 </script>
 
 <template>
-  <div class="flex flex-col h-full">
-    <page-header :title="data?.id ? `【${data?.name || ''}】拥有的应用资源` : '请选中角色'">
-      <el-button v-show="!!data?.id" round type="primary" @click="handleSubmit()">
+  <div v-if="data.id" class="flex flex-col h-full">
+    <page-header :title="`【${data?.name || ''}】拥有的应用资源`">
+      <el-button round type="primary" @click="handleSubmit()">
         保存
       </el-button>
     </page-header>
-    <div v-show="!!data.id" v-loading="loading" class="flex flex-col" style="height: calc(100% - 64px);">
+    <div v-loading="loading" class="flex flex-col" style="min-height:0;flex: 1;">
       <div class="title flex items-center">
         <div class="flex-1 flex items-center cursor-pointer">
           <el-input v-model="filterText" class="mr-1 ml-5 " placeholder="搜素">
@@ -237,9 +237,10 @@ function isAllCheckedByKey(node: any) {
         </div>
       </div>
       <el-divider />
-      <el-scrollbar max-height="100%">
+      <el-scrollbar>
         <ElTree
-          ref="treeRef" :data="three" :expand-on-click-node="false" :filter-node-method="filterNode" :props="defaultProps"
+          ref="treeRef" :data="three" :expand-on-click-node="false" :filter-node-method="filterNode"
+          :props="defaultProps"
           check-strictly
           class="filter-tree"
           node-key="key"
@@ -266,6 +267,9 @@ function isAllCheckedByKey(node: any) {
         </ElTree>
       </el-scrollbar>
     </div>
+  </div>
+  <div v-else class="empty">
+    请在左侧点击一行表格
   </div>
 </template>
 

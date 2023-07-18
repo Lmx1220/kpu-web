@@ -1,20 +1,15 @@
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
-import type { DictOption, Option } from '@/api/model/baseModel'
-import { findDictMapItemListByKey } from '@/api/modules/common/dict'
-import type { RoleParams } from '@/api/modules/system/model/roleModel'
-import crudRole from '@/api/modules/system/role'
-import { getCategoryColor } from '@/enums/colorEnum'
-import { stateList } from '@/enums/stautsEnum'
+import FormMode from './components/FormMode/index.vue'
+import DictItem from './DictItem.vue'
+import crudDict from '@/api/modules/system/dict'
+import type { DictParams } from '@/api/modules/system/model/dictModel'
 import eventBus from '@/util/eventBus'
-import usePagination from '@/util/usePagination'
-import BindUserMode from '@/views/system/role/components/BindUserMode.vue'
-import FormMode from '@/views/system/role/components/FormMode/index.vue'
-import MenuTree from '@/views/system/role/components/MenuTree.vue'
+import usePagination from '@/util/usePagination.js'
 
 defineOptions({
-  name: 'SystemRoleList',
+  name: 'SystemDictList',
 })
 const {
   pagination,
@@ -35,7 +30,7 @@ const data = ref({
    * dialog 对话框
    * drawer 抽屉
    */
-  formMode: 'dialog',
+  formMode: 'drawer',
   // 详情
   formModeProps: {
     visible: false,
@@ -43,26 +38,25 @@ const data = ref({
   },
   // 搜索
   search: {
+    classify: '',
+    key: '',
     name: '',
-    category: '',
-    state: '',
+    remark: '',
   },
-  searchFold: false,
+  searchFold: true,
   // 批量操作
   batch: {
     enable: true,
-    selectionData: {} as {},
+    selectionData: {} as { id?: string },
     selectionDataList: [],
   },
   // 列表数据
   dataList: [],
-  dicts: new Map<string, Option[]>(),
 })
 
 const table = ref<InstanceType<typeof ElTable>>()
 
 onMounted(() => {
-  getDict()
   getDataList()
   if (data.value.formMode === 'router') {
     eventBus.on('get-data-list', () => {
@@ -77,20 +71,22 @@ onBeforeUnmount(() => {
   }
 })
 
-function getDataList() {
+async function getDataList(current?: number) {
+  if (current && current === 1) {
+    pagination.value.page = current
+  }
   data.value.loading = true
-  const params = getParams<RoleParams>({
+  const params = getParams<DictParams>({
     ...data.value.search,
   })
-  crudRole.list(params).then((res) => {
-    // data.value.loading = false
-    data.value.dataList = get(res, 'records', [])
-    pagination.value.total = Number(res.total)
-    pagination.value.page = Number(get(res, 'current', 1))
-    // pagination.value.size = res.size
-  }).finally(() => {
+  const res = await crudDict.list(params)
+  data.value.dataList = get(res, 'records', [])
+  pagination.value.total = Number(res.total)
+  pagination.value.page = Number(get(res, 'current', 1))
+  // pagination.value.size = res.size
+  setTimeout(() => {
     data.value.loading = false
-  })
+  }, 100)
 }
 
 // 每页数量切换
@@ -147,75 +143,43 @@ function onDel(row?: any) {
     ids = data.value.batch.selectionDataList.map(item => item.id) as string[]
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudRole.delete(ids).then(() => {
+    crudDict.delete(ids).then(() => {
       getDataList()
       ElMessage.success({
-        message: '删除成功',
+        message: '模拟删除成功',
         center: true,
       })
     })
   }).catch(() => {
   })
 }
-
-const bindUser = ref({
-  visible: false,
-  id: '',
-})
-
-function onBindUsers(row: any) {
-  bindUser.value.id = row.id
-  bindUser.value.visible = true
-}
-
-async function getDict() {
-  const options: DictOption = await findDictMapItemListByKey([{
-    type: 'ROLE_CATEGORY',
-    extendFirst: true,
-  }])
-  Object.entries(options).forEach(([key, value]) => {
-    data.value.dicts.set(key, value)
-  })
-}
 </script>
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="角色管理" />
+    <page-header title="字典管理" />
     <div class="page-main">
-      <LayoutContainer right-side-width="50%">
+      <LayoutContainer right-side-width="60%">
         <search-bar :fold="data.searchFold" :show-toggle="false">
-          <template #default="{ fold }">
+          <template #default>
             <el-form
               :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
               size="default"
             >
-              <el-form-item label="名称">
+              <el-form-item label="标识">
                 <el-input
-                  v-model="data.search.name" clearable placeholder="请输入名称，支持模糊查询" @clear="currentChange()"
+                  v-model="data.search.key" clearable placeholder="请输入标识，支持模糊查询"
+                  @clear="currentChange()"
                   @keydown.enter="currentChange()"
                 />
               </el-form-item>
-              <el-form-item label="角色类别">
-                <el-select
-                  v-model="data.search.category" clearable placeholder="请选择" size="default"
-                  @change="currentChange()"
-                >
-                  <el-option
-                    v-for="item in data.dicts.get('ROLE_CATEGORY') || []" :key="item.value" :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
+              <el-form-item label="名称">
+                <el-input
+                  v-model="data.search.name" clearable placeholder="请输入名称，支持模糊查询"
+                  @clear="currentChange()"
+                  @keydown.enter="currentChange()"
+                />
               </el-form-item>
-              <el-form-item v-show="!fold" label="状态">
-                <el-select
-                  v-model="data.search.state" clearable placeholder="请选择" size="default"
-                  @change="currentChange()"
-                >
-                  <el-option v-for="(item, index) in stateList" :key="index" :label="item.label" :value="item.value" />
-                </el-select>
-              </el-form-item>
-
               <el-form-item>
                 <el-button type="primary" @click="currentChange()">
                   <template #icon>
@@ -224,14 +188,6 @@ async function getDict() {
                     </el-icon>
                   </template>
                   筛选
-                </el-button>
-                <el-button link type="primary" @click="data.searchFold = !fold">
-                  <template #icon>
-                    <el-icon>
-                      <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
-                    </el-icon>
-                  </template>
-                  {{ fold ? '展开' : '收起' }}
                 </el-button>
               </el-form-item>
             </el-form>
@@ -257,46 +213,33 @@ async function getDict() {
           </el-button>
         </el-space>
         <ElTable
-          ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%"
-          highlight-current-row stripe @sort-change="sortChange"
+          ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
+          stripe @sort-change="sortChange"
           @current-change="data.batch.selectionData = $event || {}"
           @selection-change="data.batch.selectionDataList = $event"
         >
-          <el-table-column v-if="data.batch.enable" align="center" type="selection" />
-          <el-table-column label="名称" prop="name">
-            <template #default="scope">
-              <el-tag :type="getCategoryColor(scope.row.category)">
-                {{ scope.row.echoMap.category }}
-              </el-tag>
-              {{ scope.row.name }}
+          <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
+          <el-table-column align="center" label="序号" width="100">
+            <template #default="{ $index }">
+              {{ (pagination.size * (pagination.page - 1)) + $index + 1 }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="状态" prop="state" width="80px">
-            <template #default="scope">
-              <el-tag v-if="scope.row.state" type="success">
-                启用
-              </el-tag>
-              <el-tag v-else type="danger">
-                禁用
+          <el-table-column align="center" label="名称" prop="name" />
+          <el-table-column align="center" label="状态" prop="state" width="80">
+            <template #default="{ row }">
+              <el-tag :type="row.state ? 'success' : 'danger'">
+                {{ row.state ? '启用' : '禁用' }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column align="center" fixed="right" label="操作" width="250">
+
+          <el-table-column align="center" fixed="right" label="操作" width="150">
             <template #default="scope">
-              <el-button plain size="small" type="primary" @click="onEdit(scope.row)">
-                <template #icon>
-                  <el-icon>
-                    <svg-icon name="ep:edit" />
-                  </el-icon>
-                </template>
+              <el-button plain size="small" type="primary" @click.stop="onEdit(scope.row)">
+                编 辑
               </el-button>
-              <el-divider direction="vertical" />
-              <el-button plain size="small" type="danger" @click="onDel(scope.row)">
+              <el-button plain size="small" type="danger" @click.stop="onDel(scope.row)">
                 删 除
-              </el-button>
-              <el-divider direction="vertical" />
-              <el-button bg plain size="small" text type="primary" @click="onBindUsers(scope.row)">
-                绑定用户
               </el-button>
             </template>
           </el-table-column>
@@ -307,7 +250,7 @@ async function getDict() {
           class="pagination" @size-change="sizeChange" @current-change="currentChange"
         />
         <template #rightSide>
-          <MenuTree :data="data.batch.selectionData" />
+          <DictItem :id="data.batch.selectionData.id" :current-data="data.batch.selectionData" />
         </template>
       </LayoutContainer>
     </div>
@@ -315,7 +258,6 @@ async function getDict() {
       v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
       v-model="data.formModeProps.visible" :mode="data.formMode" @success="getDataList"
     />
-    <BindUserMode :id="bindUser.id" v-model="bindUser.visible" @success="getDataList" />
   </div>
 </template>
 
@@ -355,18 +297,18 @@ async function getDict() {
         display: flex;
         flex-direction: column;
 
-        .empty {
+        > .empty {
           flex: 1;
           display: flex;
           align-items: center;
           justify-content: center;
           font-size: 32px;
-          color: var(--el-text-color-placeholder)
+          color: var(--el-text-color-placeholder);
         }
       }
-
     }
   }
+
 }
 
 .page-main {
@@ -389,8 +331,5 @@ async function getDict() {
 
   }
 
-  // .el-divider {
-  // margin-inline:-20px;width: calc(100% + 40px);
-  // }
 }
 </style>

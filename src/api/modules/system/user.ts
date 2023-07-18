@@ -40,7 +40,7 @@ export function editUser(data: any) {
   })
 }
 
-export function deleteUser(ids: number[]) {
+export function deleteUser(ids: string[]) {
   return api.delete<void>({
     url: `${prefix}`,
     data: ids,

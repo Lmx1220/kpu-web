@@ -2,13 +2,13 @@
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import type { DictOption, Option } from '@/api/model/baseModel'
+import { findDictMapItemListByKey } from '@/api/modules/common/dict'
 
 import crudRole from '@/api/modules/system/role'
-import { findDictMapItemListByKey } from '@/api/modules/common/dict'
 import { stateList } from '@/enums/stautsEnum'
 
 export interface Props {
-  id: number | string
+  id: string
 }
 
 const props = withDefaults(defineProps<Props>(), {})

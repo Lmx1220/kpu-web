@@ -32,7 +32,7 @@
 
   const form = ref<InstanceType<typeof DetailForm>>()
 
-  const title = computed(() => props.id === '' ? '新增Test' : '编辑Test')
+  const title = computed(() => props.id === '' ? '新增{{ cname }}' : '编辑{{ cname }}')
 
   function onSubmit() {
     // submit() 为组件内部方法
@@ -67,8 +67,10 @@
         </el-button>
       </template>
     </el-dialog>
-    <el-drawer v-else-if="props.mode === 'drawer'" v-model="myVisible" :title="title" size="600px" :close-on-click-modal="false" destroy-on-close>
-      <DetailForm ref="form" v-bind="$props" />
+    <el-drawer v-else-if="props.mode === 'drawer'" v-model="myVisible" :title="title" size="600px"
+               :close-on-click-modal="false" destroy-on-close @open="handleOpen"
+    >
+      <DetailForm ref="form" v-bind="$props"/>
       <template #footer>
         <el-button size="large" @click="onCancel">
           取 消
