@@ -1,8 +1,6 @@
 import api from '@/api'
 import type { BasicPageParams } from '@/api/model/baseModel'
-import type { {{ pascalCase moduleName }}ListItem, {{ pascalCase moduleName }}PageListGetResultModel, {{ pascalCase
-    moduleName }}Params } from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}model/{{ snakeCase
-    moduleName }}Model'
+import type { {{ pascalCase moduleName }}ListItem, {{ pascalCase moduleName }}PageListGetResultModel, {{ pascalCase moduleName }}Params } from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}model/{{ snakeCase moduleName }}Model'
 
 // 前缀 变量
 const prefix = '/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}'
