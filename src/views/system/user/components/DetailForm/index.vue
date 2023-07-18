@@ -76,6 +76,7 @@ async function getDict() {
 const form = ref<FormInstance>()
 
 onMounted(() => {
+  getDict()
   if (data.value.form.id !== '') {
     getInfo()
   }
@@ -90,10 +91,6 @@ function getInfo() {
 }
 
 defineExpose({
-  open() {
-    getDict()
-    form.value?.clearValidate()
-  },
   submit(callback: any) {
     form.value?.validate((valid) => {
       if (valid) {

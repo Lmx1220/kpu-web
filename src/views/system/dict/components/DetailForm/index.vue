@@ -73,8 +73,6 @@ function getInfo() {
 }
 
 defineExpose({
-  open() {
-  },
   submit(callback: any) {
     form.value?.validate((valid) => {
       if (valid) {

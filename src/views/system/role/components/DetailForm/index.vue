@@ -54,6 +54,7 @@ const data = ref({
 const form = ref<FormInstance>()
 
 onMounted(() => {
+  getDict()
   if (data.value.form.id !== '') {
     getInfo()
   }
@@ -78,9 +79,6 @@ function getInfo() {
 }
 
 defineExpose({
-  open() {
-    getDict()
-  },
   submit(callback: any) {
     form.value?.validate((valid) => {
       if (valid) {

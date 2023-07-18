@@ -45,18 +45,13 @@ function onSubmit() {
 function onCancel() {
   myVisible.value = false
 }
-
-function handleOpen() {
-  // handleOpen() 为组件内部方法
-  form.value?.open()
-}
 </script>
 
 <template>
   <div>
     <el-dialog
       v-if="props.mode === 'dialog'" v-model="myVisible" :close-on-click-modal="false" :title="title"
-      append-to-body destroy-on-close width="600px" @open="handleOpen"
+      append-to-body destroy-on-close width="600px"
     >
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>
@@ -70,7 +65,7 @@ function handleOpen() {
     </el-dialog>
     <el-drawer
       v-else-if="props.mode === 'drawer'" v-model="myVisible" :close-on-click-modal="false" :title="title"
-      destroy-on-close size="50%" @open="handleOpen"
+      destroy-on-close size="50%"
     >
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>
