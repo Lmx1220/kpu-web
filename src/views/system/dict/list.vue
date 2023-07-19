@@ -48,7 +48,7 @@ const data = ref({
   batch: {
     enable: true,
     selectionData: {} as { id?: string },
-    selectionDataList: [],
+    selectionDataList: [] as { id: string }[],
   },
   // 列表数据
   dataList: [],
@@ -183,9 +183,7 @@ function onDel(row?: any) {
               <el-form-item>
                 <el-button type="primary" @click="currentChange()">
                   <template #icon>
-                    <el-icon>
-                      <svg-icon name="ep:search" />
-                    </el-icon>
+                    <svg-icon name="ep:search" />
                   </template>
                   筛选
                 </el-button>
@@ -197,17 +195,13 @@ function onDel(row?: any) {
         <el-space wrap>
           <el-button size="default" type="primary" @click="onCreate">
             <template #icon>
-              <el-icon>
-                <svg-icon name="ep:plus" />
-              </el-icon>
+              <svg-icon name="ep:plus" />
             </template>
             新增
           </el-button>
           <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
             <template #icon>
-              <el-icon>
-                <svg-icon name="ep:delete" />
-              </el-icon>
+              <svg-icon name="ep:delete" />
             </template>
             删除
           </el-button>

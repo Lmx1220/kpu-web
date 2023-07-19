@@ -293,9 +293,7 @@ function TableSortable() {
     <page-header :title="route.name === 'SystemMenuCreate' ? '新增导航' : '编辑导航'">
       <el-button round @click="handleBack">
         <template #icon>
-          <el-icon>
-            <svg-icon name="i-ep:arrow-left" />
-          </el-icon>
+          <svg-icon name="i-ep:arrow-left" />
         </template>
         返回
       </el-button>
@@ -316,25 +314,19 @@ function TableSortable() {
               <el-table-column align="center" fixed label="排序" prop="sortValue" width="60">
                 <template #header>
                   <el-button type="primary" size="small" plain circle @click="handleAddAuths">
-                    <el-icon>
-                      <svg-icon name="i-ep:plus" />
-                    </el-icon>
+                    <svg-icon name="i-ep:plus" />
                   </el-button>
                 </template>
                 <template #default="{ $index }">
                   <span class="index">{{ $index + 1 }}</span>
                   <el-button class="delete" type="danger" size="small" plain circle @click="handleDelAuths($index)">
-                    <el-icon>
-                      <svg-icon name="i-ep:delete" />
-                    </el-icon>
+                    <svg-icon name="i-ep:delete" />
                   </el-button>
                 </template>
               </el-table-column>
               <el-table-column align="center" fixed label="排序" prop="sortValue" width="80">
                 <ElTag type="info" class="sortable">
-                  <el-icon>
-                    <svg-icon name="i-ep:d-caret" />
-                  </el-icon>
+                  <svg-icon name="i-ep:d-caret" />
                 </ElTag>
               </el-table-column>
               <el-table-column prop="name" label="名称">
@@ -411,9 +403,7 @@ function TableSortable() {
                 <template #label>
                   鉴权标识
                   <el-tooltip content="当设置多个标识时，只要命中其中一个则鉴权通过" placement="top">
-                    <el-icon>
-                      <svg-icon name="i-ri:question-line" />
-                    </el-icon>
+                    <svg-icon name="i-ri:question-line" />
                   </el-tooltip>
                 </template>
                 <el-space>
@@ -472,9 +462,7 @@ function TableSortable() {
                 <template #label>
                   缓存规则
                   <el-tooltip content="当跳转到设置的路由时，则会对当前路由进行缓存" placement="top">
-                    <el-icon>
-                      <svg-icon name="i-ri:question-line" />
-                    </el-icon>
+                    <svg-icon name="i-ri:question-line" />
                   </el-tooltip>
                   <span class="label-tip">切换为
                     <ElLink v-show="typeof form.meta.cache === 'object'" type="primary" @click="form.meta.cache = true">
@@ -511,9 +499,7 @@ function TableSortable() {
                 <template #label>
                   不缓存规则
                   <el-tooltip content="当跳转到设置的路由时，则会对当前路由取消缓存" placement="top">
-                    <el-icon>
-                      <svg-icon name="i-ri:question-line" />
-                    </el-icon>
+                    <svg-icon name="i-ri:question-line" />
                   </el-tooltip>
                   <span class="label-tip">当缓存规则为“始终缓存”时生效</span>
                 </template>

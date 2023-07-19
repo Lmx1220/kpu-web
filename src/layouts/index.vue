@@ -86,9 +86,7 @@ onUnmounted(() => {
               v-show="settingsStore.mainPageMaximizeStatus" class="exit-main-page-maximize"
               @click="settingsStore.setMainPageMaximize(undefined)"
             >
-              <el-icon>
-                <svg-icon name="i-ri:logout-box-line" />
-              </el-icon>
+              <svg-icon name="i-ri:logout-box-line" />
             </div>
             <RouterView v-slot="{ Component, route }">
               <transition
@@ -111,9 +109,7 @@ onUnmounted(() => {
     <Search />
     <HotkeysIntro />
     <div v-if="settingsStore.settings.app.enableAppSetting">
-      <el-icon class="app-setting" @click="eventBus.emit('global-app-setting-toggle')">
-        <svg-icon name="ep:setting" />
-      </el-icon>
+      <svg-icon class="app-setting" name="ep:setting" @click="eventBus.emit('global-app-setting-toggle')" />
       <AppSetting />
     </div>
   </div>
@@ -286,7 +282,7 @@ onUnmounted(() => {
           color: #fff
         }
 
-        .el-icon {
+        .icon {
           position: absolute;
           bottom: 16px;
           left: 16px;

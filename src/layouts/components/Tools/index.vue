@@ -60,56 +60,40 @@ function userCommand(command: string) {
   <div class="tools">
     <div class="buttons">
       <span v-if="settingsStore.settings.navSearch.enable" class="item" @click="eventBus.emit('global-search-toggle', 'menu')">
-        <el-icon>
-          <svg-icon name="i-ri:search-line" />
-        </el-icon>
+        <svg-icon name="i-ri:search-line" />
       </span>
       <el-popover v-if="settingsStore.settings.toolbar.enableNotification" trigger="hover" :show-after="200" placement="bottom" :width="350">
         <Notification />
         <template #reference>
           <span class="item">
             <el-badge :hidden="notificationStore.total <= 0" type="primary" :value="notificationStore.total" :max="99">
-              <el-icon>
-                <svg-icon name="i-ri:notification-3-line" />
-              </el-icon>
+              <svg-icon name="i-ri:notification-3-line" />
             </el-badge>
           </span>
         </template>
       </el-popover>
       <i18n-selector>
         <span class="item">
-          <el-icon>
-            <svg-icon name="i-ri:translate" />
-          </el-icon>
+          <svg-icon name="i-ri:translate" />
         </span>
       </i18n-selector>
       <span v-if="settingsStore.mode === 'pc' && settingsStore.settings.toolbar.enableFullscreen" class="item" @click="toggle">
-        <el-icon>
-          <svg-icon :name="isFullscreen ? 'i-ri:fullscreen-exit-line' : 'i-ri:fullscreen-line'" />
-        </el-icon>
+        <svg-icon :name="isFullscreen ? 'i-ri:fullscreen-exit-line' : 'i-ri:fullscreen-line'" />
       </span>
       <span v-if="settingsStore.settings.toolbar.enablePageReload" class="item" @click="mainPage.reload()">
-        <el-icon>
-          <svg-icon name="i-iconoir:refresh-double" />
-        </el-icon>
+        <svg-icon name="i-iconoir:refresh-double" />
       </span>
       <span v-if="settingsStore.settings.toolbar.enableColorScheme" class="item" @click="settingsStore.setColorScheme(settingsStore.settings.app.colorScheme === 'dark' ? 'light' : 'dark')">
-        <el-icon>
-          <svg-icon :name="settingsStore.settings.app.colorScheme === 'light' ? 'i-ri:sun-line' : 'i-ri:moon-line'" />
-        </el-icon>
+        <svg-icon :name="settingsStore.settings.app.colorScheme === 'light' ? 'i-ri:sun-line' : 'i-ri:moon-line'" />
       </span>
     </div>
     <el-dropdown class="user-container" size="default" @command="userCommand">
       <div class="user-wrapper">
         <el-avatar size="small">
-          <el-icon>
-            <svg-icon name="i-ep:user-filled" />
-          </el-icon>
+          <svg-icon name="i-ep:user-filled" />
         </el-avatar>
         {{ userStore.account }}
-        <el-icon>
-          <svg-icon name="i-ep:caret-bottom" />
-        </el-icon>
+        <svg-icon name="i-ep:caret-bottom" />
       </div>
       <template #dropdown>
         <el-dropdown-menu class="user-dropdown">
@@ -153,10 +137,10 @@ function userCommand(command: string) {
             cursor: pointer;
             vertical-align: middle;
 
-            .el-icon {
-                color: var(--el-text-color-primary);
-                transition: var(--el-transition-color);
-            }
+          .icon {
+            color: var(--el-text-color-primary);
+            transition: var(--el-transition-color);
+          }
 
             .el-badge {
                 display: flex;

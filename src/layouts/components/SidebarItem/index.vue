@@ -81,9 +81,7 @@ function badge(badge: number | boolean | string | Function | undefined) {
     >
       <template #title>
         <div class="item">
-          <el-icon v-if="item.meta?.icon" class="title-icon">
-            <svg-icon :name="item.meta.icon" />
-          </el-icon>
+          <svg-icon v-if="item.meta?.icon" :name="item.meta.icon" class="title-icon" />
           <span class="title">{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
         </div>
       </template>
@@ -100,9 +98,11 @@ function badge(badge: number | boolean | string | Function | undefined) {
           :title=" generateI18nTitle(item.meta?.i18n, item.meta?.title) "
           :index="resolveRoutePath(basePath, item.path)"
         >
-          <el-icon v-if="iconName(isActive || isExactActive, item.meta?.icon, item.meta?.activeIcon)" class="title-icon">
-            <svg-icon :name="iconName(isActive || isExactActive, item.meta?.icon, item.meta?.activeIcon)" />
-          </el-icon>
+          <svg-icon
+            v-if="iconName(isActive || isExactActive, item.meta?.icon, item.meta?.activeIcon)"
+            :name="iconName(isActive || isExactActive, item.meta?.icon, item.meta?.activeIcon)"
+            class="title-icon"
+          />
           <span class="title">{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
           <span
             v-if="badge(item.meta?.badge).visible" class="badge" :class="{
@@ -118,12 +118,11 @@ function badge(badge: number | boolean | string | Function | undefined) {
       :index="settingsStore.settings.app.routeBaseOn !== 'filesystem' ? resolveRoutePath(basePath, item.path) : JSON.stringify(item)"
     >
       <template #title>
-        <el-icon v-if="item.meta?.icon" class="title-icon unactive">
-          <svg-icon :name="item.meta.icon" />
-        </el-icon>
-        <el-icon v-if="item.meta?.activeIcon || item.meta?.icon" class="title-icon active">
-          <svg-icon :name="item.meta.activeIcon || item.meta.icon || ''" />
-        </el-icon>
+        <svg-icon v-if="item.meta?.icon" :name="item.meta.icon" class="title-icon unactive" />
+        <svg-icon
+          v-if="item.meta?.activeIcon || item.meta?.icon" :name="item.meta.activeIcon || item.meta.icon || ''"
+          class="title-icon active"
+        />
         <span class="title">{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
         <span
           v-if="badge(item.meta?.badge).visible" class="badge" :class="{

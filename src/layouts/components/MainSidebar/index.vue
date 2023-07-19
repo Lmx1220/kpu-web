@@ -39,9 +39,7 @@ const { switchTo } = useMenu()
               class="item" :title="generateI18nTitle(item.meta?.i18n, item.meta?.title)"
               @click="switchTo(index)"
             >
-              <el-icon v-if="item.meta?.icon">
-                <svg-icon :name="item.meta.icon" />
-              </el-icon>
+              <svg-icon v-if="item.meta?.icon" :name="item.meta.icon" />
               <span>{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
             </div>
           </div>
@@ -213,7 +211,7 @@ const { switchTo } = useMenu()
           background-color: var(--g-main-sidebar-menu-hover-bg);
         }
 
-        .el-icon {
+        .icon {
           font-size: 24px;
         }
 
@@ -280,12 +278,12 @@ const { switchTo } = useMenu()
           color: var(--g-main-sidebar-menu-hover-color) !important;
           background-color: var(--g-main-sidebar-menu-hover-bg) !important;
 
-          .el-icon {
+          .icon {
             transform: scale(1);
           }
         }
 
-        .el-icon {
+        .icon {
           margin: 0 auto;
           font-size: 24px;
           vertical-align: middle;

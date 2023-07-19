@@ -39,15 +39,11 @@ watch(() => favoritesContainer.value, (value) => {
         我的收藏夹
       </div>
       <div v-show="favoritesStore.canAdd(route.fullPath)" class="icons">
-        <el-icon
-          v-if="favoritesStore.isAdd(route.fullPath)" title="从收藏夹移除"
+        <svg-icon
+          v-if="favoritesStore.isAdd(route.fullPath)" name="i-mdi:star-remove" title="从收藏夹移除"
           @click="favoritesStore.remove(route.fullPath)"
-        >
-          <svg-icon name="i-mdi:star-remove" />
-        </el-icon>
-        <el-icon v-else title="添加到收藏夹" @click="favoritesStore.add(route)">
-          <svg-icon name="i-mdi:star-plus-outline" />
-        </el-icon>
+        />
+        <svg-icon v-else name="i-mdi:star-plus-outline" title="添加到收藏夹" @click="favoritesStore.add(route)" />
       </div>
     </div>
     <el-scrollbar v-if="favoritesStore.list.length > 0" :max-height="300">
@@ -60,30 +56,22 @@ watch(() => favoritesContainer.value, (value) => {
           :title="generateI18nTitle(favorites.i18n, favorites.title)"
           @click="router.push(favorites.fullPath)"
         >
-          <el-icon>
-            <svg-icon :name="favorites.icon ?? ''" />
-          </el-icon>
+          <svg-icon :name="favorites.icon ?? ''" />
           <el-text class="name" truncated>
             {{ generateI18nTitle(favorites.i18n, favorites.title) }}
           </el-text>
-          <el-icon class="delete" @click.stop="favoritesStore.remove(route.fullPath)">
-            <svg-icon name="i-ep:delete" />
-          </el-icon>
+          <svg-icon class="delete" name="i-ep:delete" @click.stop="favoritesStore.remove(route.fullPath)" />
         </div>
       </TransitionGroup>
     </el-scrollbar>
     <div v-else class="empty">
-      <el-icon>
-        <svg-icon name="i-tabler:mood-empty" />
-      </el-icon>
+      <svg-icon name="i-tabler:mood-empty" />
       <ElText>
         收藏夹是空的
       </ElText>
       <ElText v-show="favoritesStore.canAdd(route.fullPath)" class="tips">
         点击右上角
-        <el-icon>
-          <svg-icon name="i-mdi:star-plus-outline" />
-        </el-icon>
+        <svg-icon name="i-mdi:star-plus-outline" />
         将当前页面添加到收藏夹
       </ElText>
     </div>
@@ -116,7 +104,7 @@ watch(() => favoritesContainer.value, (value) => {
       display: flex;
       align-items: center;
 
-      .el-icon {
+      .icon {
         font-size: 20px;
         cursor: pointer;
       }
@@ -163,7 +151,7 @@ watch(() => favoritesContainer.value, (value) => {
         user-select: none;
       }
 
-      .el-icon {
+      .icon {
         font-size: 18px;
       }
 
@@ -201,7 +189,7 @@ watch(() => favoritesContainer.value, (value) => {
     padding: 20px 0;
     color: var(--el-text-color-placeholder);
 
-    .el-icon {
+    .icon {
       font-size: 40px;
     }
 
@@ -215,7 +203,7 @@ watch(() => favoritesContainer.value, (value) => {
         color: var(--el-text-color-disabled);
       }
 
-      .el-icon {
+      .icon {
         margin: 0 4px;
         font-size: 18px;
         color: var(--el-text-color-primary);

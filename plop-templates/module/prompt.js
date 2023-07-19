@@ -2,11 +2,12 @@ const path = require('node:path')
 const fs = require('node:fs')
 
 function getFolder(path) {
-  const components = [path]
+  const components = []
   const files = fs.readdirSync(path)
   files.forEach((item) => {
     const stat = fs.lstatSync(`${path}/${item}`)
     if (stat.isDirectory() === true && item !== 'components') {
+      components.push(`${path}/${item}`)
       components.push(...getFolder(`${path}/${item}`))
     }
   })

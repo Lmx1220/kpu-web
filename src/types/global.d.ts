@@ -548,4 +548,29 @@ declare namespace App {
 
 declare global {
     declare type Recordable<T = any> = Record<string, T>;
+    declare type Id<T = any> = Record<string, T> & {
+        id: string
+    };
+
+}
+declare type DataConfig<SEARCH = RecursiveRequired, T = Id> = Recordable & {
+    loading?: boolean
+    tableAutoHeight: boolean
+    formMode: 'router' | 'dialog' | 'drawer'
+    formModeProps: {
+        visible: boolean
+        id: string
+    }
+    // 搜索
+    search: SEARCH
+    searchFold: boolean
+    // 批量操作
+    batch: {
+        enable: boolean
+        selectionData?: RecursivePartial<T>
+        selectionDataList: T[]
+    }
+    // 列表数据
+    dataList: T[]
+    dicts?: Map
 }

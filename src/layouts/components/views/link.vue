@@ -23,9 +23,7 @@ function open() {
     <transition name="link" mode="out-in" appear>
       <page-main :key="route.meta.link" title="⚠️访问提醒">
         <div class="container">
-          <el-icon size="120" color="var(--g-theme-color)">
-            <svg-icon name="i-icon-park-twotone:planet" />
-          </el-icon>
+          <svg-icon color="var(--g-theme-color)" name="i-icon-park-twotone:planet" size="120" />
           <div class="title">
             是否访问此链接
           </div>
@@ -36,9 +34,7 @@ function open() {
           </el-tooltip>
           <el-button type="primary" plain round @click="open">
             <template #icon>
-              <el-icon>
-                <svg-icon name="ep:link" />
-              </el-icon>
+              <svg-icon name="ep:link" />
             </template>
             立即访问
           </el-button>

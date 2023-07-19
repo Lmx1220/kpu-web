@@ -89,9 +89,10 @@ function removeIcon() {
 </script>
 
 <template>
-  <el-icon class="icon-picker" :class="{ empty: myValue === '', [`icon-picker--${size}`]: true }" @click="dialogVisible = true">
-    <svg-icon :name="myValue !== '' ? myValue : 'i-ep:plus'" />
-  </el-icon>
+  <svg-icon
+    :class="{ empty: myValue === '', [`icon-picker--${size}`]: true }" :name="myValue !== '' ? myValue : 'i-ep:plus'"
+    class="icon-picker" @click="dialogVisible = true"
+  />
   <el-dialog v-model="dialogVisible" width="600px" :show-close="true" append-to-body>
     <div class="icon-picker-dialog-body">
       <el-tabs v-model="activeName" tab-position="left" class="demo-tabs" @tab-change="handleTabChange">
@@ -112,22 +113,18 @@ function removeIcon() {
         <div class="search-bar">
           <el-input v-model="search" size="large" placeholder="搜索..." clearable>
             <template #prefix>
-              <el-icon>
-                <svg-icon name="i-ep:search" />
-              </el-icon>
+              <svg-icon name="i-ep:search" />
             </template>
           </el-input>
         </div>
         <div class="list-icon">
-          <el-icon class="list-icon-item empty" @click="removeIcon">
-            <svg-icon name="i-ep:delete" />
-          </el-icon>
-          <el-icon v-for="(icon, index) in currentIconList" :key="index" class="list-icon-item" @click="chooseIcon(`${activeName}:${icon}`)" @mouseover="showPreviewIcon(`${activeName}:${icon}`, index + 1)" @mouseout="hidePreviewIcon">
-            <svg-icon :name="`${activeName}:${icon}`" />
-          </el-icon>
-          <el-icon class="list-icon-preview-item" :class="previewIcon && previewIconPosition">
-            <svg-icon :name="previewIcon" />
-          </el-icon>
+          <svg-icon class="list-icon-item empty" name="i-ep:delete" @click="removeIcon" />
+          <svg-icon
+            v-for="(icon, index) in currentIconList" :key="index" :name="`${activeName}:${icon}`"
+            class="list-icon-item" @click="chooseIcon(`${activeName}:${icon}`)"
+            @mouseout="hidePreviewIcon" @mouseover="showPreviewIcon(`${activeName}:${icon}`, index + 1)"
+          />
+          <svg-icon :class="previewIcon && previewIconPosition" :name="previewIcon" class="list-icon-preview-item" />
         </div>
         <el-pagination v-model:current-page="pagination.page" layout="prev, pager, next" :page-size="pagination.pageSize" :total="iconList.length" :pager-count="5" background />
       </div>

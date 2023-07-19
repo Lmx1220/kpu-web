@@ -43,18 +43,16 @@ const enabledRightSide = computed(() => {
       <slot name="leftSide" />
     </div>
     <div class="main">
-      <el-icon
-        v-if="enabledLeftSide && !hideLeftSideToggle" class="left-side-icon"
+      <svg-icon
+        v-if="enabledLeftSide && !hideLeftSideToggle"
+        :name="leftSideVisiable ? 'i-ep:caret-left' : 'i-ep:caret-right'" class="left-side-icon"
         @click="leftSideVisiable = !leftSideVisiable"
-      >
-        <svg-icon :name="leftSideVisiable ? 'i-ep:caret-left' : 'i-ep:caret-right'" />
-      </el-icon>
-      <el-icon
-        v-if="enabledRightSide && !hideRightSideToggle" class="right-side-icon"
+      />
+      <svg-icon
+        v-if="enabledRightSide && !hideRightSideToggle"
+        :name="rightSideVisiable ? 'i-ep:caret-right' : 'i-ep:caret-left'" class="right-side-icon"
         @click="rightSideVisiable = !rightSideVisiable"
-      >
-        <svg-icon :name="rightSideVisiable ? 'i-ep:caret-right' : 'i-ep:caret-left'" />
-      </el-icon>
+      />
       <div class="main-container">
         <slot name="default" />
       </div>

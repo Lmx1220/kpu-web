@@ -2,7 +2,8 @@ import type { BasicFetchResult } from '@/api/model/baseModel'
 
 export interface RoleParams {
   name?: string
-  permission?: string
+  category?: string
+  state?: boolean
   userId?: string
 }
 

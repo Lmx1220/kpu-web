@@ -247,9 +247,7 @@ function handleScroll() {
           @keydown.enter.prevent="keyEnter"
         >
           <template #prefix>
-            <el-icon>
-              <svg-icon name="i-ep:search" />
-            </el-icon>
+            <svg-icon name="i-ep:search" />
           </template>
         </el-input>
         <div v-if="settingsStore.mode === 'pc'" class="tips">
@@ -263,14 +261,10 @@ function handleScroll() {
           </div>
           <div class="tip">
             <el-tag type="info" size="large">
-              <el-icon>
-                <svg-icon name="i-ant-design:caret-up-filled" />
-              </el-icon>
+              <svg-icon name="i-ant-design:caret-up-filled" />
             </el-tag>
             <el-tag type="info" size="large">
-              <el-icon>
-                <svg-icon name="i-ant-design:caret-down-filled" />
-              </el-icon>
+              <svg-icon name="i-ant-design:caret-down-filled" />
             </el-tag>
             <el-tag type="info" size="large">
               {{ t('app.search.up_down') }}
@@ -278,9 +272,7 @@ function handleScroll() {
           </div>
           <div class="tip">
             <el-tag type="info" size="large">
-              <el-icon>
-                <svg-icon name="i-ion:md-return-left" />
-              </el-icon>
+              <svg-icon name="i-ion:md-return-left" />
             </el-tag>
             <el-tag type="info" size="large">
               {{ t('app.search.enter') }}
@@ -307,18 +299,14 @@ function handleScroll() {
             @click="navigate" @mouseover="actived = index"
           >
             <div class="icon">
-              <el-icon v-if="item.icon">
-                <svg-icon :name="item.icon" />
-              </el-icon>
+              <svg-icon v-if="item.icon" :name="item.icon" />
             </div>
             <div class="info">
               <div class="title">{{ generateI18nTitle(item.i18n, item.title) }}</div>
               <div class="breadcrumb">
                 <span v-for="(bc, bcIndex) in item.breadcrumb" :key="bcIndex">
                   {{ generateI18nTitle(bc.i18n, bc.title) }}
-                  <el-icon>
-                    <svg-icon name="i-ep:arrow-right" />
-                  </el-icon>
+                  <svg-icon name="i-ep:arrow-right" />
                 </span>
               </div>
               <div class="path">{{ item.path }}</div>
@@ -437,7 +425,7 @@ function handleScroll() {
             background-color: var(--el-bg-color-page);
 
             .icon {
-              .el-icon {
+              .icon {
                 color: var(--el-color-primary);
                 transform: scale(1.2);
               }
@@ -461,7 +449,7 @@ function handleScroll() {
             flex: 0 0 66px;
             text-align: center;
 
-            .el-icon {
+            .icon {
               color: var(--el-color-info);
               font-size: 20px;
               transition: all 0.1s;
@@ -487,7 +475,7 @@ function handleScroll() {
 
               @include text-overflow(1, true);
 
-              .el-icon {
+              .icon {
                 font-size: 14px;
               }
             }
@@ -509,11 +497,11 @@ function handleScroll() {
                 display: flex;
                 align-items: center;
 
-                .el-icon {
+                .icon {
                   margin: 0 5px;
                 }
 
-                &:last-child .el-icon {
+                &:last-child .icon {
                   display: none;
                 }
               }

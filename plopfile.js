@@ -1,8 +1,11 @@
+const fs = require('node:fs')
+
 module.exports = function (plop) {
   plop.setWelcomeMessage('请选择需要创建的模式：')
-  plop.setGenerator('module', require('./plop-templates/module/prompt'))
-  plop.setGenerator('page', require('./plop-templates/page/prompt'))
-  plop.setGenerator('component', require('./plop-templates/component/prompt'))
-  plop.setGenerator('store', require('./plop-templates/store/prompt'))
-  plop.setGenerator('mock', require('./plop-templates/mock/prompt'))
+  fs.readdirSync('./plop-templates').forEach((item) => {
+    if (item === '.DS_Store') {
+      return
+    }
+    plop.setGenerator(item, require(`./plop-templates/${item}/prompt`))
+  })
 }

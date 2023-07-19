@@ -12,6 +12,7 @@ import usePagination from '@/util/usePagination'
 import BindUserMode from '@/views/system/role/components/BindUserMode.vue'
 import FormMode from '@/views/system/role/components/FormMode/index.vue'
 import MenuTree from '@/views/system/role/components/MenuTree.vue'
+import type { DataConfig } from '@/types/global'
 
 defineOptions({
   name: 'SystemRoleList',
@@ -26,7 +27,7 @@ const {
 const router = useRouter()
 // const route = useRoute()
 
-const data = ref({
+const data = ref<DataConfig>({
   loading: false,
   tableAutoHeight: true,
   /**
@@ -45,13 +46,12 @@ const data = ref({
   search: {
     name: '',
     category: '',
-    state: '',
   },
   searchFold: false,
   // 批量操作
   batch: {
     enable: true,
-    selectionData: {} as {},
+    selectionData: {},
     selectionDataList: [],
   },
   // 列表数据
@@ -82,6 +82,7 @@ function getDataList() {
   const params = getParams<RoleParams>({
     ...data.value.search,
   })
+
   crudRole.list(params).then((res) => {
     // data.value.loading = false
     data.value.dataList = get(res, 'records', [])
@@ -144,7 +145,7 @@ function onDel(row?: any) {
     ids.push(row.id)
   }
   else {
-    ids = data.value.batch.selectionDataList.map(item => item.id) as string[]
+    ids = data.value.batch.selectionDataList.map(item => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
     crudRole.delete(ids).then(() => {
@@ -219,17 +220,13 @@ async function getDict() {
               <el-form-item>
                 <el-button type="primary" @click="currentChange()">
                   <template #icon>
-                    <el-icon>
-                      <svg-icon name="ep:search" />
-                    </el-icon>
+                    <svg-icon name="ep:search" />
                   </template>
                   筛选
                 </el-button>
                 <el-button link type="primary" @click="data.searchFold = !fold">
                   <template #icon>
-                    <el-icon>
-                      <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
-                    </el-icon>
+                    <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
                   </template>
                   {{ fold ? '展开' : '收起' }}
                 </el-button>
@@ -241,17 +238,13 @@ async function getDict() {
         <el-space wrap>
           <el-button size="default" type="primary" @click="onCreate">
             <template #icon>
-              <el-icon>
-                <svg-icon name="ep:plus" />
-              </el-icon>
+              <svg-icon name="ep:plus" />
             </template>
             新增
           </el-button>
           <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
             <template #icon>
-              <el-icon>
-                <svg-icon name="ep:delete" />
-              </el-icon>
+              <svg-icon name="ep:delete" />
             </template>
             删除
           </el-button>
@@ -285,9 +278,7 @@ async function getDict() {
             <template #default="scope">
               <el-button plain size="small" type="primary" @click="onEdit(scope.row)">
                 <template #icon>
-                  <el-icon>
-                    <svg-icon name="ep:edit" />
-                  </el-icon>
+                  <svg-icon name="ep:edit" />
                 </template>
               </el-button>
               <el-divider direction="vertical" />

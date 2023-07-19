@@ -327,28 +327,25 @@ onUnmounted(
               :key="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element?.title)"
               class="title"
             >
-              <el-icon
+              <svg-icon
                 v-if="settingsStore.settings.tabbar.enableIcon && iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
-                class="title-icon"
-              >
-                <svg-icon :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)" />
-              </el-icon>
-              {{ settingsStore.titleFirst && element.tabId === activedTabId ? element.title
-                : generateI18nTitle(element.i18n, element.title) }}
+                :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)" class="title-icon"
+              />
+              {{
+                settingsStore.titleFirst && element.tabId === activedTabId ? element.title
+                : generateI18nTitle(element.i18n, element.title)
+              }}
             </div>
-            <el-icon
-              v-if="!element.isPermanent && element.isPin" class="action-icon"
-              @click.stop="tabbarStore.unPin(`${element.tabId}`)"
-            >
-              <svg-icon name="i-ri:pushpin-2-fill" />
-            </el-icon>
 
-            <el-icon
+            <svg-icon
+              v-if="!element.isPermanent && element.isPin" class="action-icon"
+              name="i-ri:pushpin-2-fill" @click.stop="tabbarStore.unPin(`${element.tabId}`)"
+            />
+
+            <svg-icon
               v-else-if="!element.isPermanent && tabbarStore.list.length > 1" class="action-icon"
-              @click.stop="tabbar.closeById(`${element.tabId}`)"
-            >
-              <svg-icon name="i-ri:close-fill" />
-            </el-icon>
+              name="i-ri:close-fill" @click.stop="tabbar.closeById(`${element.tabId}`)"
+            />
             <div class="drag-handle" />
           </div>
         </div>
@@ -358,39 +355,29 @@ onUnmounted(
       <el-dropdown
         ref="dropdownTabContainer" popper-class="tabbar-dropdown" placement="bottom-end"
       >
-        <el-icon>
-          <svg-icon name="i-ri:arrow-down-s-fill" />
-        </el-icon>
+        <svg-icon name="i-ri:arrow-down-s-fill" />
         <template #dropdown>
           <div class="quick-button">
             <button v-if="settingsStore.settings.navSearch.enable" class="button" @click="actionCommand('search-tabs')">
-              <el-icon>
-                <svg-icon name="i-ep:search" />
-              </el-icon>
+              <svg-icon name="i-ep:search" />
             </button>
             <button
               class="button" :disabled="!tabbar.checkCloseOtherSide(activedTabId)"
               @click="actionCommand('other-side')"
             >
-              <el-icon>
-                <svg-icon name="i-ep:close" />
-              </el-icon>
+              <svg-icon name="i-ep:close" />
             </button>
             <button
               class="button" :disabled="!tabbar.checkCloseLeftSide(activedTabId)"
               @click="actionCommand('left-side')"
             >
-              <el-icon>
-                <svg-icon name="i-ph:arrow-line-left" />
-              </el-icon>
+              <svg-icon name="i-ph:arrow-line-left" />
             </button>
             <button
               class="button" :disabled="!tabbar.checkCloseRightSide(activedTabId)"
               @click="actionCommand('right-side')"
             >
-              <el-icon>
-                <svg-icon name="i-ph:arrow-line-right" />
-              </el-icon>
+              <svg-icon name="i-ph:arrow-line-right" />
             </button>
           </div>
           <el-scrollbar height="300px">
@@ -407,18 +394,18 @@ onUnmounted(
                   :title="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element.title)"
                   @click="router.push(`${element.fullPath}`)"
                 >
-                  <el-icon
+                  <svg-icon
                     v-if="settingsStore.settings.tabbar.enableIcon && iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
                     class="title-icon"
-                  >
-                    <svg-icon :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)" />
-                  </el-icon>
+                    :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
+                  />
                   {{ settingsStore.titleFirst && element.tabId === activedTabId ? element.title
                     : generateI18nTitle(element.i18n, element.title) }}
                 </div>
-                <el-icon class="action-icon" @click.stop="tabbar.closeById(`${element.tabId}`)">
-                  <svg-icon name="i-ri:close-fill" />
-                </el-icon>
+                <svg-icon
+                  class="action-icon" name="i-ri:close-fill"
+                  @click.stop="tabbar.closeById(`${element.tabId}`)"
+                />
               </div>
             </div>
           </el-scrollbar>
@@ -499,7 +486,7 @@ onUnmounted(
         cursor: not-allowed;
       }
 
-      .el-icon {
+      .icon {
         font-size: 14px;
       }
     }
@@ -567,7 +554,7 @@ onUnmounted(
         color: var(--el-text-color-regular);
         transition: var(--el-transition-color), width .3s;
 
-        .el-icon {
+        .icon {
           margin-right: 5px;
           font-size: 16px
         }
@@ -889,7 +876,7 @@ onUnmounted(
                 margin-right: 28px
               }
 
-              .el-icon{
+              .icon {
                 margin-right: 5px;
               }
 
@@ -1019,7 +1006,7 @@ onUnmounted(
     width: 50px;
     background-image: linear-gradient(to right, transparent, var(--g-tabbar-bg));
 
-    .el-icon {
+    .icon {
       width: 1.5em;
       height: 1.5em;
       border-radius: 5px;

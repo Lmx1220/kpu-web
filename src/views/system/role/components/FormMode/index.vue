@@ -4,7 +4,7 @@ import DetailForm from '../DetailForm/index.vue'
 
 export interface Props extends DetailFormProps {
   modelValue?: boolean
-  mode: 'dialog' | 'drawer' | 'router' | string
+  mode: 'dialog' | 'drawer' | 'router'
 }
 const props = withDefaults(defineProps<Props>(),
   {

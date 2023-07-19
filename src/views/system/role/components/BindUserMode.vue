@@ -57,7 +57,7 @@ const data = ref({
   batch: {
     enable: true,
     selectionData: {} as {},
-    selectionDataList: [],
+    selectionDataList: [] as { id: string }[],
   },
   // 列表数据
   dataList: [],
@@ -202,17 +202,13 @@ async function onBindUser(flag: boolean, id?: string) {
           <el-form-item>
             <el-button type="primary" @click="currentChange()">
               <template #icon>
-                <el-icon>
-                  <svg-icon name="ep:search" />
-                </el-icon>
+                <svg-icon name="ep:search" />
               </template>
               筛选
             </el-button>
             <el-button link type="primary" @click="data.searchFold = !fold">
               <template #icon>
-                <el-icon>
-                  <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
-                </el-icon>
+                <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
               </template>
               {{ fold ? '展开' : '收起' }}
             </el-button>

@@ -39,9 +39,7 @@ function goBack() {
     <page-header :title="route.name === 'routerName' ? '新增用户' : '编辑用户'">
       <el-button round size="default" @click="goBack">
         <template #icon>
-          <el-icon>
-            <svg-icon name="ep:arrow-left" />
-          </el-icon>
+          <svg-icon name="ep:arrow-left" />
         </template>
         返回
       </el-button>

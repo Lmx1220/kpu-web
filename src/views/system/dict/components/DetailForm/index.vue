@@ -13,9 +13,22 @@ export interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   id: '',
-  currentData: {},
+  currentData: () => ({
+    key: '',
+    name: '',
+  }),
 })
-
+const pData = computed(
+  () => {
+    if (!props.currentData) {
+      return {
+        key: '',
+        name: '',
+      }
+    }
+    return props.currentData
+  },
+)
 const data = ref({
   loading: false,
   form: {
@@ -61,13 +74,13 @@ function getInfo() {
   if (props.parentId) {
     crudDictItem.detail(data.value.form.id).then((res) => {
       data.value.loading = false
-      data.value.form = res
+      data.value.form = res as any
     })
   }
   else {
     crudDict.detail(data.value.form.id).then((res) => {
       data.value.loading = false
-      data.value.form = res
+      data.value.form = res as any
     })
   }
 }
@@ -126,10 +139,10 @@ defineExpose({
   <div v-loading="data.loading">
     <el-form ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
       <el-form-item v-show="parentId" label="父标识" prop="key">
-        <el-input v-model="currentData.key" disabled placeholder="请输入标题" />
+        <el-input v-model="pData.key" disabled placeholder="请输入标题" />
       </el-form-item>
       <el-form-item v-show="parentId" label="父名称" prop="name">
-        <el-input v-model="currentData.name" disabled placeholder="请输入标题" />
+        <el-input v-model="pData.name" disabled placeholder="请输入标题" />
       </el-form-item>
       <el-form-item label="标识" prop="key">
         <el-input v-model="data.form.key" :disabled="!!id && !parentId" placeholder="请输入标识" />

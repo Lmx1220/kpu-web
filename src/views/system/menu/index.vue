@@ -131,9 +131,7 @@ function onMove(row: Menu.raw) {
       <el-space>
         <el-button type="primary" @click="onCreate()">
           <template #icon>
-            <el-icon>
-              <svg-icon name="ep:plus" />
-            </el-icon>
+            <svg-icon name="ep:plus" />
           </template>
           新增主导航
         </el-button>
@@ -164,17 +162,13 @@ function onMove(row: Menu.raw) {
         <el-table-column prop="icon" label="图标" width="90" align="center">
           <template #default="scope">
             <div style="display: flex; justify-content: center;">
-              <el-icon v-if="scope.row.icon" style="font-size: 24px;">
-                <svg-icon :name="scope.row.icon" />
-              </el-icon>
+              <svg-icon v-if="scope.row.icon" :name="scope.row.icon" style="font-size: 24px;" />
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="activeIcon" label="激活图标" width="90" align="center">
           <template #default="scope">
-            <el-icon v-if="scope.row.activeIcon" style="font-size: 24px;">
-              <svg-icon :name="scope.row.activeIcon" />
-            </el-icon>
+            <svg-icon v-if="scope.row.activeIcon" :name="scope.row.activeIcon" style="font-size: 24px;" />
           </template>
         </el-table-column>
         <el-table-column prop="sidebar" label="菜单" width="80" align="center">

@@ -35,9 +35,7 @@ const { generateI18nTitle } = useI18nTitle()
             <template v-for="(item, index) in menuStore.allMenus" :key="index">
               <div v-if="item.children && item.children.length !== 0" class="item-container" :class="{ active: index === menuStore.actived }">
                 <div class="item" @click="switchTo(index)">
-                  <el-icon v-if="item.meta?.icon">
-                    <svg-icon :name="item.meta.icon" />
-                  </el-icon>
+                  <svg-icon v-if="item.meta?.icon" :name="item.meta.icon" />
                   <span>{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
                 </div>
               </div>
@@ -258,9 +256,9 @@ header {
                     background-color: var(--g-header-menu-hover-bg);
                 }
 
-                .el-icon {
-                    font-size: 24px;
-                }
+              .icon {
+                font-size: 24px;
+              }
 
                 span {
                     text-align: center;
@@ -333,17 +331,17 @@ header {
                     color: var(--g-header-menu-hover-color) !important;
                     background-color: var(--g-header-menu-hover-bg) !important;
 
-                    .el-icon {
-                        transform: scale(1);
-                    }
+                  .icon {
+                    transform: scale(1);
+                  }
                 }
 
-                .el-icon {
-                    margin: 0 auto;
-                    font-size: 24px;
-                    vertical-align: middle;
-                    color: inherit;
-                }
+              .icon {
+                margin: 0 auto;
+                font-size: 24px;
+                vertical-align: middle;
+                color: inherit;
+              }
 
                 .title {
                     flex: initial;
@@ -368,9 +366,9 @@ header {
     :deep(.tools) {
         padding: 0;
 
-        .buttons .item .el-icon {
-            color: var(--g-header-color);
-        }
+      .buttons .item .icon {
+        color: var(--g-header-color);
+      }
 
         .user-container {
             font-size: 16px;

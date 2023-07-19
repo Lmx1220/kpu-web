@@ -68,17 +68,13 @@ function pathCompile(path: string) {
         :class="{ 'is-collapse': settingsStore.settings.menu.subMenuCollapse }"
         @click="settingsStore.toggleSidebarCollapse()"
       >
-        <el-icon>
-          <svg-icon name="toolbar-collapse" />
-        </el-icon>
+        <svg-icon name="toolbar-collapse" />
       </div>
       <el-dropdown
         v-if="settingsStore.settings.favorites.enable && settingsStore.mode === 'pc'" class="sidebar-favorites"
         placement="bottom-start"
       >
-        <el-icon>
-          <svg-icon name="i-uiw:star-off" />
-        </el-icon>
+        <svg-icon name="i-uiw:star-off" />
         <template #dropdown>
           <Favorites />
         </template>
@@ -130,16 +126,16 @@ function pathCompile(path: string) {
       height: 50px;
       cursor: pointer;
 
-      .el-icon {
+      .icon {
         color: var(--el-text-color-primary);
         transition: var(--el-transition-color), var(--el-transition-md-fade);
       }
 
-      &:hover .el-icon {
+      &:hover .icon {
         color: var(--el-color-primary);
       }
 
-      &.is-collapse .el-icon {
+      &.is-collapse .icon {
         transform: rotateZ(-180deg);
       }
 
@@ -155,7 +151,7 @@ function pathCompile(path: string) {
       height: 26px;
       cursor: pointer;
 
-      .el-icon {
+      .icon {
         color: var(--el-text-color-primary);
         transition: var(--el-transition-color);
       }

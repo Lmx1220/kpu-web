@@ -12,9 +12,7 @@ const settingsStore = useSettingsStore()
 <template>
   <footer v-if="route.meta.copyright ?? settingsStore.settings.copyright.enable" class="copyright">
     <span>Copyright</span>
-    <el-icon style="font-size: 18px;">
-      <svg-icon name="i-ri:copyright-line" />
-    </el-icon>
+    <svg-icon name="i-ri:copyright-line" style="font-size: 18px;" />
     <span v-if="settingsStore.settings.copyright.dates">{{ settingsStore.settings.copyright.dates }}</span>
     <template v-if="settingsStore.settings.copyright.company">
       <a
@@ -55,7 +53,7 @@ const settingsStore = useSettingsStore()
     }
   }
 
-  .el-icon {
+  .icon {
     margin: 0 2px
   }
 }

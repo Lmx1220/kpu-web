@@ -14,9 +14,7 @@ function command(name: string) {
     <el-dropdown @command="command">
       <el-button>
         切换登录页风格
-        <el-icon class="el-icon--right">
-          <svg-icon name="i-ep:arrow-down" />
-        </el-icon>
+        <svg-icon class="el-icon--right" name="i-ep:arrow-down" />
       </el-button>
       <template #dropdown>
         <el-dropdown-menu>

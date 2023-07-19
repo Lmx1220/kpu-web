@@ -190,9 +190,7 @@ function handleCancel() {
           </template>
         </el-input>
         <el-dropdown class="inline" @command="handleCommand">
-          <el-icon class="mr-1 ml-1" size="26">
-            <svg-icon name="i-ant-design:more-outlined" />
-          </el-icon>
+          <svg-icon class="mr-1 ml-1" name="i-ant-design:more-outlined" size="26" />
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="expand">
@@ -218,9 +216,7 @@ function handleCancel() {
             class="custom-tree-node"
             @click="() => !node.disabled && onNodeClick(data)"
           >
-            <el-icon class="mr-1 ml-1" size="16">
-              <svg-icon :name="data.icon" />
-            </el-icon>
+            <svg-icon :name="data.icon" class="mr-1 ml-1" size="16" />
             <el-tag :type="getResourceTagColor(data.resourceType)" class="mr-1">
               {{ data?.echoMap?.resourceType }}
             </el-tag>

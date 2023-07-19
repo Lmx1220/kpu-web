@@ -13,9 +13,7 @@ const activeName = ref('message')
     <el-tab-pane :label="`消息 ${notificationStore.message > 0 ? `(${notificationStore.message})` : ''}`" name="message" class="container">
       <div class="list">
         <div class="item">
-          <el-icon>
-            <svg-icon name="i-ri:mail-fill" />
-          </el-icon>
+          <svg-icon name="i-ri:mail-fill" />
           <div class="info">
             <div class="title">
               你收到了 8 份日报
@@ -26,9 +24,7 @@ const activeName = ref('message')
           </div>
         </div>
         <div class="item">
-          <el-icon class="service">
-            <svg-icon name="i-ri:service-fill" />
-          </el-icon>
+          <svg-icon class="service" name="i-ri:service-fill" />
           <div class="info">
             <div class="title">
               你收到了 3 位同事的好友申请，请及时处理
@@ -39,9 +35,7 @@ const activeName = ref('message')
           </div>
         </div>
         <div class="item">
-          <el-icon class="file-edit">
-            <svg-icon name="i-ri:file-edit-fill" />
-          </el-icon>
+          <svg-icon class="file-edit" name="i-ri:file-edit-fill" />
           <div class="info">
             <div class="title">
               你有 3 份合同待审批
@@ -52,9 +46,7 @@ const activeName = ref('message')
           </div>
         </div>
         <div class="item">
-          <el-icon>
-            <svg-icon name="i-ri:mail-fill" />
-          </el-icon>
+          <svg-icon name="i-ri:mail-fill" />
           <div class="info">
             <div class="title">
               你收到了 8 份日报
@@ -65,9 +57,7 @@ const activeName = ref('message')
           </div>
         </div>
         <div class="item">
-          <el-icon class="service">
-            <svg-icon name="i-ri:service-fill" />
-          </el-icon>
+          <svg-icon class="service" name="i-ri:service-fill" />
           <div class="info">
             <div class="title">
               你收到了 3 位同事的好友申请，请及时处理
@@ -85,9 +75,7 @@ const activeName = ref('message')
     <el-tab-pane :label="`待办 ${notificationStore.todo > 0 ? `(${notificationStore.todo})` : ''}`" name="todo" class="container">
       <div class="list">
         <div class="item">
-          <el-icon class="bug">
-            <svg-icon name="i-ri:bug-fill" />
-          </el-icon>
+          <svg-icon class="bug" name="i-ri:bug-fill" />
           <div class="info">
             <div class="title">
               你有 2 个来自项目「admin」的 bug 待处理
@@ -98,9 +86,7 @@ const activeName = ref('message')
           </div>
         </div>
         <div class="item">
-          <el-icon>
-            <svg-icon name="i-ri:git-merge-fill" />
-          </el-icon>
+          <svg-icon name="i-ri:git-merge-fill" />
           <div class="info">
             <div class="title">
               你有 3 个来自项目「admin」的代码合并申请，提交人：Hooray，提交备注：专业版更新
@@ -160,17 +146,17 @@ const activeName = ref('message')
                 border-bottom: unset;
             }
 
-            .el-icon {
-                flex: none;
-                margin-right: 10px;
-                width: 2em;
-                height: 2em;
-                border-radius: 50%;
-                color: #fff;
-                background-color: var(--el-color-primary);
+          .icon {
+            flex: none;
+            margin-right: 10px;
+            width: 2em;
+            height: 2em;
+            border-radius: 50%;
+            color: #fff;
+            background-color: var(--el-color-primary);
 
-                &.service {
-                    background-color: var(--el-color-success);
+            &.service {
+              background-color: var(--el-color-success);
                 }
 
                 &.file-edit {

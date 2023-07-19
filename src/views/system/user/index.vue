@@ -51,7 +51,7 @@ const data = ref({
   // 批量操作
   batch: {
     enable: true,
-    selectionDataList: [],
+    selectionDataList: [] as { id: string }[],
   },
   // 列表数据
   dataList: [],
@@ -229,17 +229,13 @@ function onBindRoles(row: any) {
             <el-form-item>
               <el-button type="primary" @click="currentChange()">
                 <template #icon>
-                  <el-icon>
-                    <svg-icon name="ep:search" />
-                  </el-icon>
+                  <svg-icon name="ep:search" />
                 </template>
                 筛选
               </el-button>
               <el-button link type="primary" @click="data.searchFold = !fold">
                 <template #icon>
-                  <el-icon>
-                    <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
-                  </el-icon>
+                  <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
                 </template>
                 {{ fold ? '展开' : '收起' }}
               </el-button>
@@ -251,9 +247,7 @@ function onBindRoles(row: any) {
       <el-space wrap>
         <el-button size="default" type="primary" @click="onCreate">
           <template #icon>
-            <el-icon>
-              <svg-icon name="ep:plus" />
-            </el-icon>
+            <svg-icon name="ep:plus" />
           </template>
           新增
         </el-button>
