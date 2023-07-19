@@ -84,7 +84,7 @@ onUnmounted(() => {
           <div class="main">
             <div
               v-show="settingsStore.mainPageMaximizeStatus" class="exit-main-page-maximize"
-              @click="settingsStore.setMainPageMaximize(undefined)"
+              @click="settingsStore.setMainPageMaximize()"
             >
               <svg-icon name="i-ri:logout-box-line" />
             </div>

@@ -8,6 +8,7 @@ import { stateList } from '@/enums/stautsEnum'
 
 export interface Props {
   id?: string
+  type?: 'add' | 'edit' | 'view'
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -94,7 +95,7 @@ defineExpose({
   submit(callback: any) {
     form.value?.validate((valid) => {
       if (valid) {
-        if (data.value.form.id === '') {
+        if (props.type === 'add') {
           crudUser.create(data.value.form).then(() => {
             ElMessage.success({
               message: '新增成功',
@@ -103,7 +104,7 @@ defineExpose({
             callback && callback()
           })
         }
-        else {
+        else if (props.type === 'edit') {
           crudUser.edit(data.value.form).then(() => {
             ElMessage.success({
               message: '编辑成功',
@@ -111,6 +112,9 @@ defineExpose({
             })
             callback && callback()
           })
+        }
+        else {
+          callback && callback(false)
         }
       }
     })
@@ -126,19 +130,19 @@ defineExpose({
       </el-divider>
       <el-row>
         <el-row :gutter="30" style="padding: 20px;">
-          <el-col v-show="!props.id" :lg="24" :xl="12">
+          <el-col v-show="!(type === 'edit')" :lg="24" :xl="12">
             <el-form-item label="用户账号" prop="username">
-              <el-input v-model="data.form.username" placeholder="请输入用户账号" />
+              <el-input v-model="data.form.username" :disabled="type === 'view'" placeholder="请输入用户账号" />
             </el-form-item>
           </el-col>
           <el-col :lg="24" :xl="12">
             <el-form-item label="昵称" prop="nickName">
-              <el-input v-model="data.form.nickName" placeholder="请输入用户昵称" />
+              <el-input v-model="data.form.nickName" :disabled="type === 'view'" placeholder="请输入用户昵称" />
             </el-form-item>
           </el-col>
           <el-col :lg="24" :xl="12">
             <el-form-item label="状态" prop="state">
-              <el-radio-group v-model="data.form.state" size="large">
+              <el-radio-group v-model="data.form.state" :disabled="type === 'view'">
                 <el-radio-button v-for="(item, index) in stateList" :key="index" :label="item.value">
                   {{ item.label }}
                 </el-radio-button>
@@ -150,17 +154,20 @@ defineExpose({
           用户信息
         </el-divider>
         <el-form-item label="手机号" prop="mobile">
-          <el-input v-model="data.form.mobile" placeholder="请输入手机号" />
+          <el-input v-model="data.form.mobile" :disabled="type === 'view'" placeholder="请输入手机号" />
         </el-form-item>
         <el-form-item label="性别" prop="sex">
-          <el-radio-group v-model="data.form.sex">
+          <el-radio-group v-model="data.form.sex" :disabled="type === 'view'">
             <el-radio v-for="(item, index) in data.dicts.get('SEX')" :key="index" :label="item?.value">
               {{ item?.label }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="民族" prop="nation">
-          <el-select v-model="data.form.nation" clearable placeholder="请选择" size="default">
+          <el-select
+            v-model="data.form.nation" :disabled="type === 'view'" clearable placeholder="请选择"
+            size="default"
+          >
             <el-option
               v-for="item in data.dicts.get('NATION') || []"
               :key="item.value"
@@ -170,7 +177,10 @@ defineExpose({
           </el-select>
         </el-form-item>
         <el-form-item label="学历" prop="education">
-          <el-select v-model="data.form.education" clearable placeholder="请选择" size="default">
+          <el-select
+            v-model="data.form.education" :disabled="type === 'view'" clearable placeholder="请选择"
+            size="default"
+          >
             <el-option
               v-for="item in data.dicts.get('EDUCATION') || []"
               :key="item.value"
@@ -183,7 +193,10 @@ defineExpose({
           职位信息
         </el-divider>
         <el-form-item label="职位状态" prop="positionStatus">
-          <el-select v-model="data.form.positionStatus" clearable placeholder="请选择" size="default">
+          <el-select
+            v-model="data.form.positionStatus" :disabled="type === 'view'" clearable placeholder="请选择"
+            size="default"
+          >
             <el-option
               v-for="item in data.dicts.get('POSITION_STATUS') || []"
               :key="item.value"

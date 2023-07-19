@@ -9,7 +9,7 @@ export function menuResourceTree<T>(menuOnly = true) {
   })
 }
 
-export function move<T>(currentId: string, targetId: string | undefined) {
+export function move<T>(currentId: string, targetId: string) {
   return api.post<T>({
     url: `${prefix}/move/${currentId}/${targetId || 0}`,
   })

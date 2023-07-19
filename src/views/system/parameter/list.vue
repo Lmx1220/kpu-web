@@ -1,16 +1,15 @@
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
-import BindRoleMode from './components/BindRoleMode.vue'
 import FormMode from './components/FormMode/index.vue'
-import type { DataConfig } from '#/global'
-import type { UserParams } from '@/api/modules/system/model/userModel'
-import crudUser from '@/api/modules/system/user'
+import type { ParameterParams } from '@/api/modules/system/model/parameterModel'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
+import crudParameter from '@/api/modules/system/parameter'
+import type { DataConfig } from '@/types/global'
 
 defineOptions({
-  name: 'SystemUserList',
+  name: 'SystemParameterList',
 })
 const {
   pagination,
@@ -39,15 +38,12 @@ const data = ref<DataConfig>({
   },
   // 搜索
   search: {
-    username: '',
-    nickName: '',
-    email: '',
-    mobile: '',
-    createTime_st: '',
-    createTime_ed: '',
+    name: '',
+    key: '',
+    value: '',
   },
-  daterange: undefined,
-  searchFold: true,
+  daterange: [],
+  searchFold: false,
   // 批量操作
   batch: {
     enable: true,
@@ -79,14 +75,14 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<UserParams>({
+  const params = getParams<ParameterParams>({
     ...data.value.search,
   })
   if (data.value.daterange) {
     params.extra.createTime_st = data.value.daterange[0]
     params.extra.createTime_ed = data.value.daterange[1]
   }
-  const res = await crudUser.list(params)
+  const res = await crudParameter.list(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)
   pagination.value.page = Number(get(res, 'current', 1))
@@ -111,10 +107,7 @@ function sortChange({
   prop,
   order,
 }: any) {
-  onSortChange(prop, order).then(() => {
-    getDataList()
-  },
-  )
+  onSortChange(prop, order).then(() => getDataList())
 }
 
 function onCreate() {
@@ -129,6 +122,7 @@ function onCreate() {
   else {
     data.value.formModeProps.id = ''
     data.value.formModeProps.visible = true
+    data.value.formModeProps.type = 'add'
   }
 }
 
@@ -175,42 +169,21 @@ function onDel(row?: any) {
     ids = data.value.batch.selectionDataList.map(item => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudUser.delete(ids).then(() => {
+    crudParameter.delete(ids).then(() => {
       getDataList()
       ElMessage.success({
-        message: '删除成功',
+        message: '模拟删除成功',
         center: true,
       })
     })
   }).catch(() => {
   })
 }
-
-const bindRole = ref({
-  visible: false,
-  id: '',
-})
-
-function onBindRoles(row: any) {
-  bindRole.value.id = row.id
-  bindRole.value.visible = true
-}
-
-function onCommand(command: string) {
-  // switch (command) {
-  //   case 'add':
-  //     ex(true)
-  //     break
-  //   case 'fold':
-  //     expandHandle(false)
-  //     break
-  // }
-}
 </script>
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="用户管理" />
+    <page-header title="参数配置" />
     <page-main>
       <search-bar
         :fold="data.searchFold"
@@ -221,30 +194,24 @@ function onCommand(command: string) {
             :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
             size="default"
           >
-            <el-form-item label="用户账号">
+            <el-form-item label="参数名称">
               <el-input
-                v-model="data.search.username" clearable placeholder="请输入用户账号，支持模糊查询"
+                v-model="data.search.name" clearable placeholder="请输入参数名称，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
             </el-form-item>
-            <el-form-item label="昵称">
+            <el-form-item v-show="!fold" label="参数键">
               <el-input
-                v-model="data.search.nickName" clearable placeholder="请输入昵称，支持模糊查询"
+                v-model="data.search.key" clearable placeholder="请输入参数键，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
             </el-form-item>
-            <!-- <el-form-item label="邮箱">
+            <el-form-item v-show="!fold" label="参数值">
               <el-input
-                v-model="data.search.email" placeholder="请输入邮箱，支持模糊查询" clearable
-                @keydown.enter="currentChange()" @clear="currentChange()"
+                v-model="data.search.value" clearable placeholder="请输入参数值，支持模糊查询"
+                @clear="currentChange()" @keydown.enter="currentChange()"
               />
             </el-form-item>
-            <el-form-item label="手机号">
-              <el-input
-                v-model="data.search.mobile" placeholder="请输入手机号，支持模糊查询" clearable
-                @keydown.enter="currentChange()" @clear="currentChange()"
-              />
-            </el-form-item> -->
             <el-form-item v-show="!fold" label="创建时间">
               <el-date-picker
                 v-model="data.daterange"
@@ -255,6 +222,7 @@ function onCommand(command: string) {
                 end-placeholder="结束时间"
                 range-separator=":"
                 start-placeholder="开始时间"
+                style="width: 250px;"
                 type="daterange"
                 value-format="YYYY-MM-DD HH:mm:ss"
               />
@@ -285,62 +253,40 @@ function onCommand(command: string) {
           新增
         </el-button>
         <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
+          <template #icon>
+            <svg-icon name="ep:delete" />
+          </template>
           删除
         </el-button>
       </el-space>
       <ElTable
-        ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table"
-        height="100%"
-        highlight-current-row
+        ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
         <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
-        <el-table-column align="center" label="序号" width="100">
-          <template #default="{ $index }">
-            {{ (pagination.size * (pagination.page - 1)) + $index + 1 }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="用户账号" prop="username" />
-        <el-table-column align="center" label="名称" prop="nickName" />
-        <el-table-column align="center" label="邮箱" prop="email" />
-        <el-table-column align="center" label="手机号" prop="mobile" />
-        <el-table-column align="center" column-key="sex" label="性别" prop="sex" sortable="custom">
-          <template #default="{ row }">
-            {{ row.echoMap.sex }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="状态" prop="state">
+        <el-table-column align="center" label="参数名称" prop="name" />
+        <el-table-column align="center" label="参数键" prop="key" />
+        <el-table-column align="center" label="参数值" prop="value" />
+        <el-table-column align="center" label="状态" prop="state" width="80">
           <template #default="{ row }">
             <el-tag :type="row.state ? 'success' : 'danger'">
               {{ row.state ? '启用' : '禁用' }}
             </el-tag>
           </template>
         </el-table-column>
+        <el-table-column align="center" label="备注" prop="remarks" show-overflow-tooltip width="250" />
         <el-table-column align="center" label="创建时间" prop="createTime" sortable="custom" />
         <el-table-column align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
             <el-button plain size="small" type="primary" @click="onView(scope.row)">
               查 看
             </el-button>
-            <el-button plain size="small" type="primary" @click="onBindRoles(scope.row)">
-              绑定角色
+            <el-button plain size="small" type="primary" @click="onEdit(scope.row)">
+              编 辑
             </el-button>
-            <el-dropdown @command="onCommand">
-              <svg-icon class="mr-1 ml-1" flip="both" name="ep:more-filled" />
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="edit" @click="onEdit(scope.row)">
-                    编辑
-                  </el-dropdown-item>
-                  <el-dropdown-item command="resetPassword" divided>
-                    重置密码
-                  </el-dropdown-item>
-                  <el-dropdown-item command="del" divided @click="onDel(scope.row)">
-                    删除
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
+            <el-button plain size="small" type="danger" @click="onDel(scope.row)">
+              删 除
+            </el-button>
           </template>
         </el-table-column>
       </ElTable>
@@ -352,10 +298,8 @@ function onCommand(command: string) {
     </page-main>
     <FormMode
       v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
-      v-model="data.formModeProps.visible" :mode="data.formMode" :type="data.formModeProps.type"
-      @success="getDataList"
+      v-model="data.formModeProps.visible" :mode="data.formMode" @success="getDataList"
     />
-    <BindRoleMode :id="bindRole.id" v-model="bindRole.visible" @success="getDataList" />
   </div>
 </template>
 
@@ -410,10 +354,6 @@ function onCommand(command: string) {
   .el-divider {
     margin-inline: -20px;
     width: calc(100% + 40px);
-  }
-
-  .el-dropdown {
-    vertical-align: middle;
   }
 }
 </style>

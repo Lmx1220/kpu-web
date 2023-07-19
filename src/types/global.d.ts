@@ -560,6 +560,7 @@ declare type DataConfig<SEARCH = RecursiveRequired, T = Id> = Recordable & {
     formModeProps: {
         visible: boolean
         id: string
+        type?: 'add' | 'edit' | 'view'
     }
     // 搜索
     search: SEARCH

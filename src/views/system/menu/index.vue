@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import { ElMessage, ElMessageBox } from 'element-plus'
+import type { DataConfig, Menu } from '@/types/global'
 import Move from '@/views/system/menu/components/move.vue'
 import useSettingsStore from '@/store/modules/settings'
 import crudMenu from '@/api/modules/system/menu'
-import type { Menu } from '@/types/global'
 
 const auth = useAuth()
-interface Data {
-  dataList?: Menu.raw[]
-  loading: boolean
-  tableAutoHeight: boolean
-}
 
 defineOptions({
   name: 'MenuList',
@@ -19,7 +14,7 @@ defineOptions({
 const router = useRouter()
 const tabbar = useTabbar()
 
-const data: Ref<Data> = ref(
+const data: Ref<DataConfig<any, Menu.raw>> = ref(
   {
     dataList: [],
     loading: false,
@@ -108,7 +103,7 @@ function onMoveDown(row: Menu.raw) {
   })
 }
 
-const moveDialog = ref<{ id?: number | string; visible: boolean; data: object }>({
+const moveDialog = ref<{ id?: string; visible: boolean; data: object }>({
   id: undefined,
   visible: false,
   data: {},

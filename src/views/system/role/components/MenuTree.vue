@@ -9,12 +9,12 @@ export interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {})
-const emits = defineEmits<{
-  'update:modelValue': [
-    value: boolean,
-  ]
-  'success': []
-}>()
+// const emits = defineEmits<{
+//   'update:modelValue': [
+//     value: boolean,
+//   ]
+//   'success': []
+// }>()
 const treeRef = ref<InstanceType<typeof ElTree>>()
 // 监听props变化
 watch(() => props.data.id, () => {
@@ -45,7 +45,7 @@ export interface MenuResourceTreeRes extends Tree {
   code: string
   createTime: Record<string, unknown>
   createdBy: number
-  describe: string
+  remarks: string
   icon: string
   id: number
   isDef: boolean

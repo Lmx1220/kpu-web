@@ -121,7 +121,8 @@ const useSettingsStore = defineStore(
     function setColorScheme(colorScheme: '' | 'light' | 'dark') {
       settings.value.app.colorScheme = colorScheme
     }
-    function setMainPageMaximize(status: boolean | undefined) {
+
+    function setMainPageMaximize(status?: boolean) {
       mainPageMaximizeStatus.value = status ?? !mainPageMaximizeStatus.value
     }
     return {

@@ -1,8 +1,11 @@
-<script lang="ts" setup name="SystemRoleDetail">
+<script lang="ts" setup>
+import DetailForm from './components/DetailForm/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import eventBus from '@/util/eventBus'
-import DetailForm from '@/views/system/role/components/DetailForm/index.vue'
 
+defineOptions({
+  name: 'SystemParameterDetail',
+})
 const settingsStore = useSettingsStore()
 const route = useRoute()
 const router = useRouter()
@@ -33,8 +36,8 @@ function goBack() {
 
 <template>
   <div>
-    <page-header :title="route.name === 'routerName' ? '新增角色' : '编辑角色'">
-      <el-button size="default" round @click="goBack">
+    <page-header :title="route.name === 'routerName' ? '新增参数配置' : '编辑参数配置'">
+      <el-button round size="default" @click="goBack">
         <template #icon>
           <svg-icon name="ep:arrow-left" />
         </template>
@@ -43,7 +46,7 @@ function goBack() {
     </page-header>
     <page-main>
       <el-row>
-        <el-col :md="24" :lg="16">
+        <el-col :lg="16" :md="24">
           <DetailForm
             :id="route.params.id as string" ref="form"
             :type="(route.params.type as 'add'|'edit'| 'view'| undefined)"
@@ -52,7 +55,7 @@ function goBack() {
       </el-row>
     </page-main>
     <fixed-action-bar>
-      <el-button type="primary" size="large" @click="onSubmit">
+      <el-button size="large" type="primary" @click="onSubmit">
         提交
       </el-button>
       <el-button size="large" @click="onCancel">

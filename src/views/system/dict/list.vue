@@ -3,6 +3,7 @@ import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
 import DictItem from './DictItem.vue'
+import type { DataConfig } from '#/global'
 import crudDict from '@/api/modules/system/dict'
 import type { DictParams } from '@/api/modules/system/model/dictModel'
 import eventBus from '@/util/eventBus'
@@ -21,7 +22,7 @@ const {
 const router = useRouter()
 // const route = useRoute()
 
-const data = ref({
+const data = ref<DataConfig>({
   loading: false,
   tableAutoHeight: true,
   /**
@@ -47,8 +48,8 @@ const data = ref({
   // 批量操作
   batch: {
     enable: true,
-    selectionData: {} as { id?: string },
-    selectionDataList: [] as { id: string }[],
+    selectionData: {},
+    selectionDataList: [],
   },
   // 列表数据
   dataList: [],
@@ -140,7 +141,7 @@ function onDel(row?: any) {
     ids.push(row.id)
   }
   else {
-    ids = data.value.batch.selectionDataList.map(item => item.id) as string[]
+    ids = data.value.batch.selectionDataList.map(item => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
     crudDict.delete(ids).then(() => {

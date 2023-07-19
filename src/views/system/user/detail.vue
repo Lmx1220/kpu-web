@@ -47,7 +47,10 @@ function goBack() {
     <page-main>
       <el-row>
         <el-col :lg="16" :md="24">
-          <DetailForm :id="route.params.id as string" ref="form" />
+          <DetailForm
+            :id="route.params.id as string" ref="form"
+            :type="(route.params.type as 'add'|'edit'| 'view'| undefined)"
+          />
         </el-col>
       </el-row>
     </page-main>

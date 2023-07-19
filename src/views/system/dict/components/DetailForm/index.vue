@@ -159,8 +159,8 @@ defineExpose({
       </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input
-          v-model="data.form.remark" :autosize="{ minRows: 2, maxRows: 4 }"
-          placeholder="请输入备注" type="textarea"
+          v-model="data.form.remark" :autosize="{ minRows: 2, maxRows: 4 }" placeholder="请输入备注"
+          type="textarea"
         />
       </el-form-item>
       <el-form-item v-show="parentId" label="排序" prop="remark">

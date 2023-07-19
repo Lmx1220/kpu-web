@@ -219,7 +219,7 @@ function onTabbarContextmenu(event: MouseEvent, routeItem: Tabbar.recordRaw) {
             router.push(`${routeItem.fullPath}`)
           }
           tabbarMaximizeTip()
-          settingsStore.setMainPageMaximize(undefined)
+          settingsStore.setMainPageMaximize()
         },
       },
       {
@@ -317,7 +317,7 @@ onUnmounted(
             'no-drag': element.isPermanent || element.isPin,
           }"
           :title="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element.title)"
-          @click="router.push(`${element.fullPath}`)" @dblclick="settingsStore.setMainPageMaximize(undefined)"
+          @click="router.push(`${element.fullPath}`)" @dblclick="settingsStore.setMainPageMaximize()"
           @contextmenu="onTabbarContextmenu($event, element)"
         >
           <div class="tab-dividers" />

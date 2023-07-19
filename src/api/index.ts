@@ -73,8 +73,6 @@ const transform: AxiosTransform = {
       case ResultEnum.TIMEOUT:
         timeoutMsg = t('sys.api.timeoutMessage')
         userStore.logout()
-        // userStore.setToken(undefined)
-        // userStore.logout(true)
         break
       default:
         if (msg) {
@@ -138,10 +136,7 @@ const transform: AxiosTransform = {
           config.params = undefined
         }
         if (joinParamsToUrl) {
-          config.url = setObjToUrlParams(
-            config.url as string,
-            Object.assign({}, config.params, config.data),
-          )
+          config.url = setObjToUrlParams(config.url as string, config.data)
         }
       }
       else {

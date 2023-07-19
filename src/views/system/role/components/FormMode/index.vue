@@ -28,12 +28,25 @@ const myVisible = computed({
 })
 
 const form = ref<InstanceType<typeof DetailForm>>()
-const title = computed(() => props.id === '' ? '新增角色' : '编辑角色')
+const title = computed(() => {
+  switch (props.type) {
+    case 'add':
+      return '新增角色'
+    case 'edit':
+      return '编辑角色'
+    case 'view':
+      return '查看角色'
+    default:
+      return '查看角色'
+  }
+})
 
 function onSubmit() {
   // submit() 为组件内部方法
-  form.value?.submit(() => {
-    emits('success')
+  form.value?.submit((success = true) => {
+    if (success) {
+      emits('success')
+    }
     onCancel()
   })
 }

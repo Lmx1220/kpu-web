@@ -116,11 +116,15 @@ function onCreate() {
   if (data.value.formMode === 'router') {
     router.push({
       name: 'routerName',
+      params: {
+        type: 'add',
+      },
     })
   }
   else {
     data.value.formModeProps.id = ''
     data.value.formModeProps.visible = true
+    data.value.formModeProps.type = 'add'
   }
 }
 
@@ -130,12 +134,31 @@ function onEdit(row: any) {
       name: 'routerName',
       params: {
         id: row.id,
+        type: 'edit',
       },
     })
   }
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
+    data.value.formModeProps.type = 'edit'
+  }
+}
+
+function onView(row: any) {
+  if (data.value.formMode === 'router') {
+    router.push({
+      name: 'routerName',
+      params: {
+        id: row.id,
+        type: 'view',
+      },
+    })
+  }
+  else {
+    data.value.formModeProps.id = row.id
+    data.value.formModeProps.visible = true
+    data.value.formModeProps.type = 'view'
   }
 }
 
@@ -276,6 +299,11 @@ async function getDict() {
           </el-table-column>
           <el-table-column align="center" fixed="right" label="操作" width="250">
             <template #default="scope">
+              <el-button plain size="small" type="primary" @click="onView(scope.row)">
+                <template #icon>
+                  <svg-icon name="ep:view" />
+                </template>
+              </el-button>
               <el-button plain size="small" type="primary" @click="onEdit(scope.row)">
                 <template #icon>
                   <svg-icon name="ep:edit" />
@@ -283,7 +311,9 @@ async function getDict() {
               </el-button>
               <el-divider direction="vertical" />
               <el-button plain size="small" type="danger" @click="onDel(scope.row)">
-                删 除
+                <template #icon>
+                  <svg-icon name="ep:delete" />
+                </template>
               </el-button>
               <el-divider direction="vertical" />
               <el-button bg plain size="small" text type="primary" @click="onBindUsers(scope.row)">
@@ -304,7 +334,8 @@ async function getDict() {
     </div>
     <FormMode
       v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
-      v-model="data.formModeProps.visible" :mode="data.formMode" @success="getDataList"
+      v-model="data.formModeProps.visible"
+      :mode="data.formMode" :type="data.formModeProps.type" @success="getDataList"
     />
     <BindUserMode :id="bindUser.id" v-model="bindUser.visible" @success="getDataList" />
   </div>

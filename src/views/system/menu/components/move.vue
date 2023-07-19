@@ -3,7 +3,7 @@ import { ElMessageBox, ElTree } from 'element-plus'
 import { menuResourceTree, move } from '@/api/modules/system/menu'
 
 export interface Props {
-  id?: number | string
+  id?: string
   title?: string
   data: any
   modelValue: boolean
@@ -41,7 +41,7 @@ export interface MenuResourceTreeRes extends Tree {
   code: string
   createTime: Record<string, unknown>
   createdBy: number
-  describe: string
+  remarks: string
   icon: string
   id: number
   isDef: boolean
@@ -147,7 +147,7 @@ function expandHandle(isExpand: boolean) {
   }
 }
 
-async function handleSubmit(_node: MenuResourceTreeRes | undefined) {
+async function handleSubmit(_node?: MenuResourceTreeRes) {
   try {
     await ElMessageBox.confirm(
         `确定要将【${props.data.title}】移动到 【${_node ? _node.label : '根节点'}】?`,
@@ -162,7 +162,7 @@ async function handleSubmit(_node: MenuResourceTreeRes | undefined) {
     return
   }
   try {
-    await move(props.data.id, _node?.id as unknown as string)
+    await move(props.data.id, _node?.id)
     handleCancel()
     emits('success')
   }
@@ -190,7 +190,7 @@ function handleCancel() {
           </template>
         </el-input>
         <el-dropdown class="inline" @command="handleCommand">
-          <svg-icon class="mr-1 ml-1" name="i-ant-design:more-outlined" size="26" />
+          <svg-icon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="expand">
@@ -216,7 +216,7 @@ function handleCancel() {
             class="custom-tree-node"
             @click="() => !node.disabled && onNodeClick(data)"
           >
-            <svg-icon :name="data.icon" class="mr-1 ml-1" size="16" />
+            <svg-icon :name="data.icon" :size="16" class="mr-1 ml-1" />
             <el-tag :type="getResourceTagColor(data.resourceType)" class="mr-1">
               {{ data?.echoMap?.resourceType }}
             </el-tag>
@@ -230,7 +230,7 @@ function handleCancel() {
         <el-button @click="dialogVisible = false">
           取消
         </el-button>
-        <el-button @click="handleSubmit(undefined)">
+        <el-button @click="handleSubmit()">
           移动到根节点
         </el-button>
         <el-button type="primary" @click="() => handleSubmit(currentNode)">

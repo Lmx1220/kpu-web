@@ -35,15 +35,16 @@ const form = ref<InstanceType<typeof DetailForm>>()
 const title = computed(() => {
   switch (props.type) {
     case 'add':
-      return '新增用户'
+      return '新增参数配置'
     case 'edit':
-      return '编辑用户'
+      return '编辑参数配置'
     case 'view':
-      return '查看用户'
+      return '查看参数配置'
     default:
-      return '查看用户'
+      return '查看参数配置'
   }
 })
+
 function onSubmit() {
   // submit() 为组件内部方法
   form.value?.submit(() => {
@@ -75,7 +76,7 @@ function onCancel() {
     </el-dialog>
     <el-drawer
       v-else-if="props.mode === 'drawer'" v-model="myVisible" :close-on-click-modal="false" :title="title"
-      destroy-on-close size="50%"
+      destroy-on-close size="600px"
     >
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>

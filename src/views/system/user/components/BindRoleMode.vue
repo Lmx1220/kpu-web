@@ -179,7 +179,7 @@ async function onBindUser(flag: boolean, id?: string) {
             />
           </el-form-item>
           <el-form-item v-show="!fold" label="范围">
-            <el-radio-group v-model="data.search.scope" size="large" @change="currentChange()">
+            <el-radio-group v-model="data.search.scope" @change="currentChange()">
               <el-radio-button :label="-1">
                 全部
               </el-radio-button>

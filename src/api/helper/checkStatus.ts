@@ -12,15 +12,14 @@ import type { ErrorMessageMode } from '#/axios'
 export function checkStatus(status: number, msg: string,
   errorMessageMode: ErrorMessageMode = 'message') {
   let errMessage = ''
+  const userStore = useUserStore()
   switch (status) {
     case 400:
       errMessage = `${msg}`
       break
     case 401:
       ElMessage.error('登录失效！请您重新登录')
-      const userStore = useUserStore()
       userStore.logout()
-
       break
     case 403:
       ElMessage.error('当前账号无权限访问！')

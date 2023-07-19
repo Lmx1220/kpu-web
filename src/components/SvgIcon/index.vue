@@ -62,7 +62,7 @@ const style = computed(() => {
   }
   return {
     ...(props.color && { color: props.color }),
-    ...(props.size && { fontSize: typeof props.size === 'number' ? `${props.size}px` : props.size }),
+    ...(props.size && { 'font-size': typeof props.size === 'number' ? `${props.size}px` : props.size }),
     ...(transform.length && { transform: transform.join(' ') }),
   }
 })

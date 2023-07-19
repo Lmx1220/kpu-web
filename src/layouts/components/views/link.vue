@@ -23,7 +23,7 @@ function open() {
     <transition name="link" mode="out-in" appear>
       <page-main :key="route.meta.link" title="⚠️访问提醒">
         <div class="container">
-          <svg-icon color="var(--g-theme-color)" name="i-icon-park-twotone:planet" size="120" />
+          <svg-icon :size="120" color="var(--g-theme-color)" name="i-icon-park-twotone:planet" />
           <div class="title">
             是否访问此链接
           </div>
