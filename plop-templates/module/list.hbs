@@ -1,10 +1,10 @@
 <script lang="ts" setup>
+  import type { {{ pascalCase moduleName }}Params } from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}model/{{ snakeCase moduleName }}Model'
   import crud from '@/api/modules/'
   import eventBus from '@/util/eventBus'
   import usePagination from '@/util/usePagination.js'
   import {ElMessage, ElMessageBox, ElTable} from 'element-plus'
   import {get} from 'lodash-es'
-  import type {{{ pascalCase moduleName }}Params} from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}model/{{ snakeCase moduleName }}Model'
 
   defineOptions({
     name: '{{ properCase componentName }}',
