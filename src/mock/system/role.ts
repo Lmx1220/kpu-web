@@ -23,10 +23,10 @@ export default [
         return index >= from && index < (from + limit)
       })
       return {
-        error: '',
-        status: 1,
+        errorMsg: '',
+        code: 0,
         data: {
-          list: pageList,
+          records: pageList,
           total: list.length,
         },
       }
@@ -38,40 +38,40 @@ export default [
     response: (option: any) => {
       const info = AllList.filter(item => item.id === option.query.id)
       return {
-        error: '',
-        status: 1,
+        errorMsg: '',
+        code: 0,
         data: info[0],
       }
     },
   },
   {
-    url: '/mock/system/role/create',
+    url: '/mock/system/role',
     method: 'post',
     response: {
-      error: '',
-      status: 1,
+      errorMsg: '',
+      code: 0,
       data: {
         isSuccess: true,
       },
     },
   },
   {
-    url: '/mock/system/role/edit',
-    method: 'post',
+    url: '/mock/system/role',
+    method: 'put',
     response: {
-      error: '',
-      status: 1,
+      errorMsg: '',
+      code: 0,
       data: {
         isSuccess: true,
       },
     },
   },
   {
-    url: '/mock/system/role/delete',
-    method: 'post',
+    url: '/mock/system/role',
+    method: 'delete',
     response: {
-      error: '',
-      status: 1,
+      errorMsg: '',
+      code: 0,
       data: {
         isSuccess: true,
       },
