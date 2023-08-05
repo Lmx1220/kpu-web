@@ -15,14 +15,23 @@ defineOptions({
 })
 const {
   pagination,
+  search,
   getParams,
   onSizeChange,
   onCurrentChange,
   onSortChange,
+  resetQuery,
 } = usePagination()
 const router = useRouter()
 // const route = useRoute()
-
+const defaultQuery = {
+  status: '',
+  requestIp: '',
+  username: '',
+  nickName: '',
+  description: '',
+  // createTime_between: [],
+}
 const data = ref<DataConfig>({
   loading: false,
   tableAutoHeight: true,
@@ -39,14 +48,8 @@ const data = ref<DataConfig>({
     id: '',
   },
   // 搜索
-  search: {
-    status: '',
-    requestIp: '',
-    username: '',
-    nickName: '',
-    description: '',
-  },
-  daterange: [],
+  search,
+  createTime_between: [],
   searchFold: false,
   // 批量操作
   batch: {
@@ -83,10 +86,10 @@ async function getDataList(current?: number) {
   data.value.loading = true
   const params = getParams<LoginLogParams>({
     ...data.value.search,
-  })
-  if (data.value.daterange) {
-    params.extra.createTime_st = data.value.daterange[0]
-    params.extra.createTime_ed = data.value.daterange[1]
+  },
+  )
+  if (data.value.createTime_between) {
+    params.extra.createTime_between = data.value.createTime_between
   }
   const res = await crudLoginLog.list(params)
   data.value.dataList = get(res, 'records', [])
@@ -97,7 +100,6 @@ async function getDataList(current?: number) {
     data.value.loading = false
   }, 100)
 }
-
 // 每页数量切换
 function sizeChange(size: number) {
   onSizeChange(size).then(() => getDataList())
@@ -264,7 +266,7 @@ async function getDict() {
             </el-form-item>
             <el-form-item v-show="!fold" label="创建时间">
               <el-date-picker
-                v-model="data.daterange"
+                v-model="data.createTime_between"
                 :default-time="[
                   new Date(2000, 1, 1, 0, 0, 0),
                   new Date(2000, 2, 1, 23, 59, 59),
@@ -284,6 +286,9 @@ async function getDict() {
                   <svg-icon name="ep:search" />
                 </template>
                 筛选
+              </el-button>
+              <el-button type="primary" @click="resetQuery(defaultQuery)">
+                重置
               </el-button>
               <el-button link type="primary" @click="data.searchFold = !fold">
                 <template #icon>

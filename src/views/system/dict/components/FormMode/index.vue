@@ -66,7 +66,7 @@ function onCancel() {
     </el-dialog>
     <el-drawer
       v-else-if="props.mode === 'drawer'" v-model="myVisible" :close-on-click-modal="false"
-      :direction="props.parentId ? 'rtl' : 'ltr'" :title="title" destroy-on-close size="600px"
+      :direction="props.parentId ? 'rtl' : 'ltr'" :size="600" :title="title" destroy-on-close
     >
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>

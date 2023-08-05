@@ -26,9 +26,9 @@ function onCancel() {
 // 返回列表页
 function goBack() {
   if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
-    tabbar.close({name: 'pagesExampleGeneralFormModeList'})
+    tabbar.close({name: '{{properCase componentListName }}'})
   } else {
-    router.push({name: 'pagesExampleGeneralFormModeList'})
+    router.push({name: '{{properCase componentListName }}'})
   }
 }
 </script>
@@ -38,9 +38,7 @@ function goBack() {
     <page-header :title="route.name === 'routerName' ? '新增{{ cname }}' : '编辑{{ cname }}'">
       <el-button size="default" round @click="goBack">
         <template #icon>
-          <el-icon>
-            <svg-icon name="ep:arrow-left"/>
-          </el-icon>
+          <svg-icon name="ep:arrow-left"/>
         </template>
         返回
       </el-button>
@@ -48,7 +46,9 @@ function goBack() {
     <page-main>
       <el-row>
         <el-col :md="24" :lg="16">
-          <DetailForm :id="route.params.id as string" ref="form" />
+          <DetailForm :id="route.params.id as string" ref="form"
+                      :type="(route.params.type as 'add'|'edit'| 'view'| undefined)"
+          />
         </el-col>
       </el-row>
     </page-main>

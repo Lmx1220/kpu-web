@@ -89,6 +89,7 @@ onUnmounted(() => {
               <svg-icon name="i-ri:logout-box-line" />
             </div>
             <RouterView v-slot="{ Component, route }">
+              <!--              <transition name="main" mode="out-in" appear> -->
               <transition
                 :name="settingsStore.settings.mainPage.enableTransition ? settingsStore.settings.mainPage.transitionMode : ''"
                 mode="out-in" appear

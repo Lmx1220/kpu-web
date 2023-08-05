@@ -8,6 +8,10 @@ type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>
 }
 
+declare interface PromiseFn<T = any, R = T> {
+    (...arg: T[]): Promise<R>;
+}
+
 declare namespace Settings {
     interface app {
         /**
@@ -561,14 +565,15 @@ declare type DataConfig<SEARCH = RecursiveRequired, T = Id> = Recordable & {
         visible: boolean
         id: string
         type?: 'add' | 'edit' | 'view'
+        data?: Partial<Id>
     }
     // 搜索
     search: SEARCH
     searchFold: boolean
+    current?: Partial<Id>
     // 批量操作
     batch: {
         enable: boolean
-        selectionData?: RecursivePartial<T>
         selectionDataList: T[]
     }
     // 列表数据

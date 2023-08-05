@@ -1,14 +1,16 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import crud{{properCase moduleName}} from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}'
+import crud{{properCase moduleName}} from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ moduleName }}'
 
 export interface Props {
   id?: string
+  type?: 'add' | 'edit' | 'view'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   id: '',
+  type: 'view',
 })
 
 const data = ref({
@@ -19,7 +21,11 @@ const data = ref({
   },
   rules: {
     title: [
-      { required: true, message: '请输入标题', trigger: 'blur' },
+      {
+        required: true,
+        message: '请输入',
+        trigger: 'blur'
+      },
     ],
   },
 })
@@ -36,7 +42,7 @@ function getInfo() {
   data.value.loading = true
   crud{{properCase moduleName}}.detail(data.value.form.id).then((res) => {
     data.value.loading = false
-    data.value.form.title = res.title
+    data.value.form = res
   })
 }
 
@@ -44,22 +50,24 @@ defineExpose({
   submit(callback: any) {
     form.value?.validate((valid) => {
       if (valid) {
-        if (data.value.form.id === '') {
+        if (props.type === 'add') {
           crud{{properCase moduleName}}.create(data.value.form).then(() => {
             ElMessage.success({
-              message: '模拟新增成功',
+              message: '新增成功',
+              center: true,
+            })
+            callback && callback()
+          })
+        } else if (props.type === 'edit') {
+          crud{{properCase moduleName}}.edit(data.value.form).then(() => {
+            ElMessage.success({
+              message: '编辑成功',
               center: true,
             })
             callback && callback()
           })
         } else {
-          crud{{properCase moduleName}}.edit(data.value.form).then(() => {
-            ElMessage.success({
-              message: '模拟编辑成功',
-              center: true,
-            })
-            callback && callback()
-          })
+          callback && callback(false)
         }
       }
     })
@@ -71,7 +79,7 @@ defineExpose({
   <div v-loading="data.loading">
     <el-form ref="form" :model="data.form" :rules="data.rules" label-width="120px" label-suffix="：">
       <el-form-item label="标题" prop="title">
-        <el-input v-model="data.form.title" placeholder="请输入标题"/>
+        <el-input v-model="data.form.title" :disabled="type === 'view'" placeholder="请输入"/>
       </el-form-item>
     </el-form>
   </div>

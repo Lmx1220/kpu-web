@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
+import { treeOrg } from '@/api/modules/system/org'
 import type { DictOption, Option } from '@/api/model/baseModel'
 import { findDictMapItemListByKey } from '@/api/modules/common/dict'
 import crudUser from '@/api/modules/system/user'
-import { stateList } from '@/enums/stautsEnum'
+import stautsEnum from '@/enums/stautsEnum'
 
 export interface Props {
   id?: string
@@ -24,11 +25,14 @@ const data = ref({
     state: true,
     mobile: '',
     sex: '',
+    orgIdList: [] as string[],
+    positionId: '',
     nation: '',
     education: '',
     positionStatus: '',
   },
   dicts: new Map<string, Option[]>(),
+  orgTree: [] as any[],
   rules: {
     username: [
       {
@@ -78,10 +82,15 @@ const form = ref<FormInstance>()
 
 onMounted(() => {
   getDict()
+  getTreeList()
   if (data.value.form.id !== '') {
     getInfo()
   }
 })
+
+async function getTreeList() {
+  data.value.orgTree = await treeOrg()
+}
 
 function getInfo() {
   data.value.loading = true
@@ -143,7 +152,7 @@ defineExpose({
           <el-col :lg="24" :xl="12">
             <el-form-item label="状态" prop="state">
               <el-radio-group v-model="data.form.state" :disabled="type === 'view'">
-                <el-radio-button v-for="(item, index) in stateList" :key="index" :label="item.value">
+                <el-radio-button v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
                   {{ item.label }}
                 </el-radio-button>
               </el-radio-group>
@@ -192,6 +201,41 @@ defineExpose({
         <el-divider content-position="left">
           职位信息
         </el-divider>
+        <el-form-item label="部门" prop="positionStatus">
+          <el-tree-select
+            v-model="data.form.orgIdList"
+            :data="data.orgTree"
+            :disabled="type === 'view'"
+            :max-collapse-tags="3"
+            :props="{
+              children: 'children',
+              label: 'name',
+            }"
+            :render-after-expand="false"
+            check-on-click-node
+            check-strictly
+            collapse-tags
+            collapse-tags-tooltip
+            filterable
+            multiple
+            show-checkbox
+            style="width: 250px"
+            value-key="id"
+          />
+        </el-form-item>
+        <el-form-item label="岗位" prop="org">
+          <el-select
+            v-model="data.form.positionId" :disabled="type === 'view'" clearable placeholder="请选择"
+            size="default"
+          >
+            <el-option
+              v-for="item in data.dicts.get('POSITION_STATUS') || []"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="职位状态" prop="positionStatus">
           <el-select
             v-model="data.form.positionStatus" :disabled="type === 'view'" clearable placeholder="请选择"

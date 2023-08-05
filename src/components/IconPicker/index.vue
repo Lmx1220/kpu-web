@@ -4,7 +4,7 @@ import { icons } from '@/iconify'
 const props = withDefaults(
   defineProps<{
     modelValue: string
-    size: string
+    size?: string
   }>(),
   {
     modelValue: '',

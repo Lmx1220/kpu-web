@@ -5,7 +5,7 @@ import type { DictOption, Option } from '@/api/model/baseModel'
 import { findDictMapItemListByKey } from '@/api/modules/common/dict'
 
 import crudRole from '@/api/modules/system/role'
-import { stateList } from '@/enums/stautsEnum'
+import stautsEnum from '@/enums/stautsEnum'
 
 export interface Props {
   id: string
@@ -28,7 +28,6 @@ const data = ref({
     state: true,
 
   },
-  stateList,
   dicts: new Map<string, Option[]>(),
   rules: {
     code: [
@@ -137,7 +136,7 @@ defineExpose({
       </el-form-item>
       <el-form-item label="状态" prop="state">
         <el-radio-group v-model="data.form.state" :disabled="type === 'view'">
-          <el-radio-button v-for="(item, index) in stateList" :key="index" :label="item.value">
+          <el-radio-button v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
             {{ item.label }}
           </el-radio-button>
         </el-radio-group>

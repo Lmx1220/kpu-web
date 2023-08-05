@@ -6,8 +6,6 @@ export interface UserParams {
   nickName?: string
   scope?: string
   roleId?: string | number
-  createdTime_st?: string
-  createdTime_ed?: string
 }
 
 export interface UserListItem {

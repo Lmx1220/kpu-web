@@ -26,7 +26,7 @@ const systemRoutes: RouteRecordRaw[] = [
         },
       },
       {
-        path: 'reload',
+        path: '/reload',
         name: 'reload',
         component: () => import('@/views/reload.vue'),
         meta: {

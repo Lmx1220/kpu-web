@@ -196,15 +196,8 @@ function onBindRoles(row: any) {
   bindRole.value.visible = true
 }
 
-function onCommand(command: string) {
-  // switch (command) {
-  //   case 'add':
-  //     ex(true)
-  //     break
-  //   case 'fold':
-  //     expandHandle(false)
-  //     break
-  // }
+function onResetPassword(row: any) {
+
 }
 </script>
 
@@ -325,17 +318,17 @@ function onCommand(command: string) {
             <el-button plain size="small" type="primary" @click="onBindRoles(scope.row)">
               绑定角色
             </el-button>
-            <el-dropdown @command="onCommand">
+            <el-dropdown>
               <svg-icon class="mr-1 ml-1" flip="both" name="ep:more-filled" />
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item command="edit" @click="onEdit(scope.row)">
+                  <el-dropdown-item command="edit" @click.stop="onEdit(scope.row)">
                     编辑
                   </el-dropdown-item>
-                  <el-dropdown-item command="resetPassword" divided>
+                  <el-dropdown-item command="resetPassword" divided @click.stop="onResetPassword(scope.row)">
                     重置密码
                   </el-dropdown-item>
-                  <el-dropdown-item command="del" divided @click="onDel(scope.row)">
+                  <el-dropdown-item command="del" divided @click.stop="onDel(scope.row)">
                     删除
                   </el-dropdown-item>
                 </el-dropdown-menu>

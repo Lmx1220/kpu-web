@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ElMessage, ElTree } from 'element-plus'
 import { intersection, uniq, without } from 'lodash-es'
-import { menuResourceTree } from '@/api/modules/system/menu'
+import { resourceAuthTree } from '@/api/modules/system/menu'
 import crudRole from '@/api/modules/system/role'
 
 export interface Props {
@@ -78,7 +78,7 @@ watch(filterText, (val) => {
 })
 
 function getThreeData() {
-  menuResourceTree<MenuResourceTreeRes[]>(false).then((res) => {
+  resourceAuthTree<MenuResourceTreeRes[]>(false).then((res) => {
     three.value = res
     cpe(three.value, (item: MenuResourceTreeRes, options = { keyLinks: [] }) => {
       item.key = item.id
@@ -214,7 +214,7 @@ function isAllCheckedByKey(node: any) {
             </template>
           </el-input>
           <el-dropdown class="inline" @command="handleCommand">
-            <svg-icon class="mr-1 ml-1" name="i-ant-design:more-outlined" size="26" />
+            <svg-icon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item command="checkAll">

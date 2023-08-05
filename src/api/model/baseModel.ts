@@ -12,7 +12,7 @@ export interface BasicPageParams<T extends {}> {
 }
 
 export interface BasicFetchResult<T> {
-  items: T
+  records: T[]
   total: number
 }
 

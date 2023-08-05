@@ -5,6 +5,7 @@ import type { UserParams } from '@/api/modules/system/model/userModel'
 import crudRole from '@/api/modules/system/role'
 import { getListUser } from '@/api/modules/system/user'
 import usePagination from '@/util/usePagination'
+import type { DataConfig } from '@/types/global'
 
 export interface Props {
   id: string
@@ -30,7 +31,7 @@ const {
   onSortChange,
 } = usePagination()
 
-const data = ref({
+const data = ref<DataConfig>({
   loading: false,
   tableAutoHeight: true,
   /**
@@ -53,11 +54,11 @@ const data = ref({
     scope: '-1',
   },
   searchFold: false,
+  current: {},
   // 批量操作
   batch: {
     enable: true,
-    selectionData: {} as {},
-    selectionDataList: [] as { id: string }[],
+    selectionDataList: [],
   },
   // 列表数据
   dataList: [],
@@ -236,7 +237,7 @@ async function onBindUser(flag: boolean, id?: string) {
       row-key="id" stripe
 
       @sort-change="sortChange"
-      @current-change="data.batch.selectionData = $event"
+      @current-change="data.current = $event"
       @selection-change="data.batch.selectionDataList = $event"
     >
       <el-table-column v-if="data.batch.enable" align="center" reserve-selection type="selection" />
@@ -259,9 +260,9 @@ async function onBindUser(flag: boolean, id?: string) {
         <template #default="scope">
           <el-button
             bg plain size="small" text type="primary"
-            @click="onBindUser(!data.bindUsers.find(item => item === scope.row.id), scope.row.id)"
+            @click="onBindUser(!data.bindUsers.find((item: any) => item === scope.row.id), scope.row.id)"
           >
-            {{ data.bindUsers.find(item => item === scope.row.id) ? '取消绑定' : '绑定' }}
+            {{ data.bindUsers.find((item: any) => item === scope.row.id) ? '取消绑定' : '绑定' }}
           </el-button>
         </template>
       </el-table-column>
@@ -281,4 +282,3 @@ async function onBindUser(flag: boolean, id?: string) {
     </template>
   </el-dialog>
 </template>
-@/api/modules/system/model/usersModel

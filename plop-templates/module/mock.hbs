@@ -10,23 +10,23 @@ for (let i = 0; i < 50; i++) {
 
 export default [
   {
-    url: '/mock/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}/list',
-    method: 'get',
+url: '/mock/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}/page',
+method: 'post',
     response: (option: any) => {
-      let { title, from = 0, limit = 10 } = option.query
-      from = ~~from
-      limit = ~~limit
+let { model: { title }, current = 0, size = 10 } = option.query
+current = ~~current
+size = ~~size
       const list = AllList.filter((item) => {
         return title ? item.title.includes(title) : true
       })
       const pageList = list.filter((item, index) => {
-        return index >= from && index < (from + limit)
+return index >= current && index < (current + size)
       })
       return {
         msg: '',
-        code: 1,
+code: 0,
         data: {
-          list: pageList,
+records: pageList,
           total: list.length,
         },
       }
@@ -39,7 +39,7 @@ export default [
       const info = AllList.filter(item => item.id === option.query.id)
       return {
         msg: '',
-        code: 1,
+code: 0,
         data: info[0],
       }
     },
@@ -49,7 +49,7 @@ export default [
     method: 'post',
     response: {
       msg: '',
-      code: 1,
+code: 0,
       data: {
         isSuccess: true,
       },
@@ -60,7 +60,7 @@ export default [
     method: 'post',
     response: {
       msg: '',
-      code: 1,
+code: 0,
       data: {
         isSuccess: true,
       },
@@ -71,7 +71,7 @@ export default [
     method: 'post',
     response: {
       msg: '',
-      code: 1,
+code: 0,
       data: {
         isSuccess: true,
       },

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { stateList } from '@/enums/stautsEnum'
+import stautsEnum from '@/enums/stautsEnum'
 import crudParameter from '@/api/modules/system/parameter'
 
 export interface Props {
@@ -113,7 +113,7 @@ defineExpose({
       </el-form-item>
       <el-form-item label="状态" prop="state">
         <el-radio-group v-model="data.form.state" :disabled="type === 'view'">
-          <el-radio-button v-for="(item, index) in stateList" :key="index" :label="item.value">
+          <el-radio-button v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
             {{ item.label }}
           </el-radio-button>
         </el-radio-group>

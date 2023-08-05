@@ -18,6 +18,13 @@ export function getListRole(params: BasicPageParams<RoleParams>) {
   })
 }
 
+export function getMyListRole(params: BasicPageParams<RoleParams>) {
+  return api.post<RolePageListGetResultModel>({
+    url: `${prefix}/myPage`,
+    data: { ...params },
+  })
+}
+
 export function detailRole(id: string | number) {
   return api.get<RoleListItem>({
     url: `${prefix}/detail`,

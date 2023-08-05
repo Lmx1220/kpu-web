@@ -11,6 +11,9 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Auth: typeof import('./../components/Auth/index.vue')['default']
     AuthAll: typeof import('./../components/AuthAll/index.vue')['default']
+      BasicUpload: typeof import('./../components/BasicUpload/index.vue')['default']
+      BlocksTree: typeof import('./../components/BlocksTree/index.vue')['default']
+      CodeEdite: typeof import('./../components/CodeEdite/index.vue')['default']
     Copyright: typeof import('./../components/Copyright/index.vue')['default']
     FixedActionBar: typeof import('./../components/FixedActionBar/index.vue')['default']
     I18nSelector: typeof import('./../components/I18nSelector/index.vue')['default']
@@ -18,6 +21,7 @@ declare module '@vue/runtime-core' {
     ImagePreview: typeof import('./../components/ImagePreview/index.vue')['default']
     ImagesUpload: typeof import('./../components/ImagesUpload/index.vue')['default']
     ImageUpload: typeof import('./../components/ImageUpload/index.vue')['default']
+      JsonPreview: typeof import('./../components/JsonPreview/JsonPreview.vue')['default']
     LayoutContainer: typeof import('./../components/LayoutContainer/index.vue')['default']
     LoginSwitcher: typeof import('./../components/LoginSwitcher/index.vue')['default']
     NotAllowed: typeof import('./../components/NotAllowed/index.vue')['default']
@@ -28,6 +32,7 @@ declare module '@vue/runtime-core' {
     SearchBar: typeof import('./../components/SearchBar/index.vue')['default']
     SvgIcon: typeof import('./../components/SvgIcon/index.vue')['default']
     SystemInfo: typeof import('./../components/SystemInfo/index.vue')['default']
+      Upload: typeof import('./../components/Upload/index.vue')['default']
     Vue3Cron: typeof import('./../components/vue3Cron/index.vue')['default']
   }
 }

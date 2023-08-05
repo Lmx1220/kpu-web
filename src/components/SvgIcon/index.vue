@@ -78,7 +78,7 @@ const style = computed(() => {
   </i>
 </template>
 
-<style>
+<style lang="scss" scoped>
 .icon {
   height: 1em;
   width: 1em;

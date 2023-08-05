@@ -6,7 +6,7 @@ import { findDictMapItemListByKey } from '@/api/modules/common/dict'
 import type { RoleParams } from '@/api/modules/system/model/roleModel'
 import crudRole from '@/api/modules/system/role'
 import { getCategoryColor } from '@/enums/colorEnum'
-import { stateList } from '@/enums/stautsEnum'
+import stautsEnum from '@/enums/stautsEnum'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination'
 import BindUserMode from '@/views/system/role/components/BindUserMode.vue'
@@ -48,10 +48,10 @@ const data = ref<DataConfig>({
     category: '',
   },
   searchFold: false,
+  current: {},
   // 批量操作
   batch: {
     enable: true,
-    selectionData: {},
     selectionDataList: [],
   },
   // 列表数据
@@ -236,7 +236,10 @@ async function getDict() {
                   v-model="data.search.state" clearable placeholder="请选择" size="default"
                   @change="currentChange()"
                 >
-                  <el-option v-for="(item, index) in stateList" :key="index" :label="item.label" :value="item.value" />
+                  <el-option
+                    v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.label"
+                    :value="item.value"
+                  />
                 </el-select>
               </el-form-item>
 
@@ -275,7 +278,7 @@ async function getDict() {
         <ElTable
           ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%"
           highlight-current-row stripe @sort-change="sortChange"
-          @current-change="data.batch.selectionData = $event || {}"
+          @current-change="data.current = $event || {}"
           @selection-change="data.batch.selectionDataList = $event"
         >
           <el-table-column v-if="data.batch.enable" align="center" type="selection" />
@@ -328,7 +331,7 @@ async function getDict() {
           class="pagination" @size-change="sizeChange" @current-change="currentChange"
         />
         <template #rightSide>
-          <MenuTree :data="data.batch.selectionData" />
+          <MenuTree :data="data.current" />
         </template>
       </LayoutContainer>
     </div>

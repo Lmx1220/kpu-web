@@ -9,14 +9,14 @@ import type {
 // 前缀 变量
 const prefix = '/dictItem'
 
-export function getListRole(params: BasicPageParams<DictItemParams>) {
+export function getListDictItem(params: BasicPageParams<DictItemParams>) {
   return api.post<DictItemPageListGetResultModel>({
     url: `${prefix}/page`,
     params,
   })
 }
 
-export function detailRole(id: string | number) {
+export function detailDictItem(id: string | number) {
   return api.get<DictItemListItem>({
     url: `${prefix}/detail`,
     params: {
@@ -25,21 +25,21 @@ export function detailRole(id: string | number) {
   })
 }
 
-export function createRole(data: any) {
+export function createDictItem(data: any) {
   return api.post<DictItemListItem>({
     url: `${prefix}`,
     data,
   })
 }
 
-export function editRole(data: any) {
+export function editDictItem(data: any) {
   return api.put<void>({
     url: `${prefix}`,
     data,
   })
 }
 
-export function deleteRole(ids: string[]) {
+export function deleteDictItem(ids: string[]) {
   return api.delete<void>({
     url: `${prefix}`,
     data: ids,
@@ -47,9 +47,9 @@ export function deleteRole(ids: string[]) {
 }
 
 export default {
-  list: getListRole,
-  detail: detailRole,
-  create: createRole,
-  edit: editRole,
-  delete: deleteRole,
+  list: getListDictItem,
+  detail: detailDictItem,
+  create: createDictItem,
+  edit: editDictItem,
+  delete: deleteDictItem,
 }

@@ -3,7 +3,7 @@ import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import crudDict from '@/api/modules/system/dict'
 import crudDictItem from '@/api/modules/system/dictItem'
-import { stateList } from '@/enums/stautsEnum'
+import stautsEnum from '@/enums/stautsEnum'
 
 export interface Props {
   id?: string
@@ -151,8 +151,8 @@ defineExpose({
         <el-input v-model="data.form.name" placeholder="请输入名称" />
       </el-form-item>
       <el-form-item label="状态" prop="state">
-        <el-radio-group v-model="data.form.state" size="large">
-          <el-radio-button v-for="(item, index) in stateList" :key="index" :label="item.value">
+        <el-radio-group v-model="data.form.state">
+          <el-radio-button v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
             {{ item.label }}
           </el-radio-button>
         </el-radio-group>
@@ -163,7 +163,7 @@ defineExpose({
           type="textarea"
         />
       </el-form-item>
-      <el-form-item v-show="parentId" label="排序" prop="remark">
+      <el-form-item v-show="parentId" label="排序" prop="sortValue">
         <el-input-number
           v-model="data.form.sortValue"
           controls-position="right"

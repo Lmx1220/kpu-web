@@ -1,10 +1,14 @@
 <script lang="ts" setup>
-  import type { {{ pascalCase moduleName }}Params } from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}model/{{ snakeCase moduleName }}Model'
-  import crud from '@/api/modules/'
+  import type {{{ pascalCase moduleName }}Params} from '@/api/modules/{{#if
+        relativePath}}{{ relativePath }}/{{/if}}model/{{ moduleName }}Model'
+  import crud{{properCase moduleName}}
+    from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ moduleName }}'
+  import FormMode from './components/FormMode/index.vue'
   import eventBus from '@/util/eventBus'
   import usePagination from '@/util/usePagination.js'
   import {ElMessage, ElMessageBox, ElTable} from 'element-plus'
   import {get} from 'lodash-es'
+  import type {DataConfig} from '@/types/global'
 
   defineOptions({
     name: '{{ properCase componentName }}',
@@ -19,7 +23,7 @@
   const router = useRouter()
   // const route = useRoute()
 
-  const data = ref({
+  const data = ref<DataConfig>({
     loading: false,
     tableAutoHeight: true,
     /**
@@ -41,7 +45,7 @@
     title3: '',
     title4: '',
   },
-  searchFold: true,
+    searchFold: false,
   // 批量操作
   batch: {
     enable: false,
@@ -105,41 +109,63 @@ function sortChange({ prop, order }: any) {
 function onCreate() {
   if (data.value.formMode === 'router') {
     router.push({
-      name: 'routerName',
+      name: '{{properCase componentDetailName }}Create',
+      params: {
+        type: 'add',
+      }
     })
   }
   else {
     data.value.formModeProps.id = ''
     data.value.formModeProps.visible = true
+    data.value.formModeProps.type = 'add'
   }
 }
 
 function onEdit(row: any) {
   if (data.value.formMode === 'router') {
     router.push({
-      name: 'routerName',
+      name: '{{properCase componentDetailName }}Edit',
       params: {
         id: row.id,
+        type: 'edit'
       },
     })
   } else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
+    data.value.formModeProps.type = 'edit'
   }
 }
 
+  function onView(row: any) {
+    if (data.value.formMode === 'router') {
+      router.push({
+        name: '{{properCase componentDetailName }}Detail',
+        params: {
+          id: row.id,
+          type: 'view',
+        },
+      })
+    } else {
+      data.value.formModeProps.id = row.id
+      data.value.formModeProps.visible = true
+      data.value.formModeProps.type = 'view'
+    }
+  }
+
   function onDel(row?: any) {
-    let ids: number[] = []
+    let ids: string[] = []
     if (row) {
       ids.push(row.id)
     } else {
-      ids = data.value.batch.selectionDataList.map(item => item.id) as number[]
+      ids = data.value.batch.selectionDataList.map(item => item.id)
     }
     ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
       crud{{properCase moduleName}}.delete(ids).then(() => {
         getDataList()
         ElMessage.success({
-          message: '模拟删除成功',
+          message: '删除成功',
           center: true,
         })
       })
@@ -161,42 +187,38 @@ function onEdit(row: any) {
           <el-form class="search-form" :model="data.search" size="default" inline inline-message label-width="100px" label-suffix="：">
             <el-form-item label="标题">
               <el-input
-                  v-model="data.search.title" placeholder="请输入标题，支持模糊查询" clearable
+                  v-model="data.search.title" placeholder="请输入，支持模糊查询" clearable
                   @keydown.enter="currentChange()" @clear="currentChange()"
               />
             </el-form-item>
             <el-form-item v-show="!fold" label="标题2">
               <el-input
-                  v-model="data.search.title2" placeholder="请输入标题，支持模糊查询" clearable
+                  v-model="data.search.title2" placeholder="请输入，支持模糊查询" clearable
                   @keydown.enter="currentChange()" @clear="currentChange()"
               />
             </el-form-item>
             <el-form-item v-show="!fold" label="标题3">
               <el-input
-                  v-model="data.search.title3" placeholder="请输入标题，支持模糊查询" clearable
+                  v-model="data.search.title3" placeholder="请输入，支持模糊查询" clearable
                   @keydown.enter="currentChange()" @clear="currentChange()"
               />
             </el-form-item>
             <el-form-item v-show="!fold" label="标题4">
               <el-input
-                  v-model="data.search.title4" placeholder="请输入标题，支持模糊查询" clearable
+                  v-model="data.search.title4" placeholder="请输入，支持模糊查询" clearable
                   @keydown.enter="currentChange()" @clear="currentChange()"
               />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="currentChange()">
                 <template #icon>
-                  <el-icon>
-                    <svg-icon name="ep:search" />
-                  </el-icon>
+                  <svg-icon name="ep:search"/>
                 </template>
                 筛选
               </el-button>
               <el-button type="primary" link @click="data.searchFold = !fold">
                 <template #icon>
-                  <el-icon>
-                    <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
-                  </el-icon>
+                  <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'"/>
                 </template>
                 \{{ fold ? '展开' : '收起' }}
               </el-button>
@@ -208,17 +230,13 @@ function onEdit(row: any) {
       <el-space wrap>
         <el-button type="primary" size="default" @click="onCreate">
           <template #icon>
-            <el-icon>
-              <svg-icon name="ep:plus"/>
-            </el-icon>
+            <svg-icon name="ep:plus"/>
           </template>
           新增
         </el-button>
         <el-button size="default" :disabled="!data.batch.selectionDataList.length" @click="onDel()">
           <template #icon>
-            <el-icon>
-              <svg-icon name="ep:delete"/>
-            </el-icon>
+            <svg-icon name="ep:delete"/>
           </template>
           删除
         </el-button>
@@ -238,6 +256,9 @@ function onEdit(row: any) {
         <el-table-column prop="title" label="标题"/>
         <el-table-column label="操作" width="250" align="center" fixed="right">
           <template #default="scope">
+            <el-button type="primary" size="small" plain @click="onView(scope.row)">
+              查 看
+            </el-button>
             <el-button type="primary" size="small" plain @click="onEdit(scope.row)">
               编 辑
             </el-button>

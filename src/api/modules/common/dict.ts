@@ -11,6 +11,6 @@ export function findDictMapItemListByKey(data: CodeQueryVO[]) {
 export function findEnumListByType(data: CodeQueryVO[]) {
   return api.post<DictOption>({
     url: '/enums/findEnumListByType',
-    params: { ...data },
+    data,
   })
 }

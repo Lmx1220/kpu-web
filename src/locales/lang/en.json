@@ -1,4 +1,5 @@
 {
+  "language": "account2",
   "app": {
     "account": "account",
     "captcha": "captcha",

@@ -39,16 +39,16 @@ const data = ref<DataConfig>({
   },
   // 搜索
   search: {
-    classify: '',
+    classify: [],
     key: '',
     name: '',
     remark: '',
   },
   searchFold: true,
+  current: {},
   // 批量操作
   batch: {
     enable: true,
-    selectionData: {},
     selectionDataList: [],
   },
   // 列表数据
@@ -210,7 +210,7 @@ function onDel(row?: any) {
         <ElTable
           ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
           stripe @sort-change="sortChange"
-          @current-change="data.batch.selectionData = $event || {}"
+          @current-change="data.current = $event || {}"
           @selection-change="data.batch.selectionDataList = $event"
         >
           <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
@@ -245,7 +245,7 @@ function onDel(row?: any) {
           class="pagination" @size-change="sizeChange" @current-change="currentChange"
         />
         <template #rightSide>
-          <DictItem :id="data.batch.selectionData.id" :current-data="data.batch.selectionData" />
+          <DictItem :id="data.current?.id" :current-data="data.current" />
         </template>
       </LayoutContainer>
     </div>

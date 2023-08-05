@@ -4,7 +4,7 @@ import type { {{ pascalCase moduleName }}ListItem, {{ pascalCase moduleName }}Pa
 
 // 前缀 变量
 const prefix = '/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ snakeCase moduleName }}'
-export function getListRole(params: BasicPageParams
+export function getList{{ pascalCase moduleName }}(params: BasicPageParams
 <{{ pascalCase moduleName }}Params>) {
   return api.post
   <{{ pascalCase moduleName }}PageListGetResultModel>({
@@ -12,7 +12,7 @@ export function getListRole(params: BasicPageParams
     params,
     })
     }
-    export function detailRole(id: string | number) {
+    export function detail{{ pascalCase moduleName }}(id: string | number) {
     return api.get
     <{{ pascalCase moduleName }}ListItem>({
       url: `${prefix}/detail`,
@@ -22,14 +22,14 @@ export function getListRole(params: BasicPageParams
       })
 }
 
-export function createRole(data: any) {
+      export function create{{ pascalCase moduleName }}(data: any) {
   return api.post<{{ pascalCase moduleName }}ListItem>({
         url: `${prefix}`,
         data,
         })
         }
 
-        export function editRole(data: any) {
+        export function edit{{ pascalCase moduleName }}(data: any) {
         return api.put
         <void>({
           url: `${prefix}`,
@@ -37,17 +37,18 @@ export function createRole(data: any) {
           })
           }
 
-          export function deleteRole(ids: string[]) {
+          export function delete{{ pascalCase moduleName }}(ids: string[]) {
           return api.delete
           <void>({
             url: `${prefix}`,
             data: ids,
             })
             }
+
             export default {
-            list: getListRole,
-            detail: detailRole,
-            create: createRole,
-            edit: editRole,
-            delete: deleteRole,
+            list: getList{{ pascalCase moduleName }},
+            detail: detail{{ pascalCase moduleName }},
+            create: create{{ pascalCase moduleName }},
+            edit: edit{{ pascalCase moduleName }},
+            delete: delete{{ pascalCase moduleName }},
             }

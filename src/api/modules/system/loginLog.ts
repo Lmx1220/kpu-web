@@ -10,14 +10,14 @@ import { ContentTypeEnum } from '@/enums/httpEnum'
 // 前缀 变量
 const prefix = '/loginLog'
 
-export function getListRole(params: BasicPageParams<LoginLogParams>) {
+export function getListLoginLog(params: BasicPageParams<LoginLogParams>) {
   return api.post<LoginLogPageListGetResultModel>({
     url: `${prefix}/page`,
     params,
   })
 }
 
-export function detailRole(id: string | number) {
+export function detailLoginLog(id: string | number) {
   return api.get<LoginLogListItem>({
     url: `${prefix}/detail`,
     params: {
@@ -26,21 +26,21 @@ export function detailRole(id: string | number) {
   })
 }
 
-export function createRole(data: any) {
+export function createLoginLog(data: any) {
   return api.post<LoginLogListItem>({
     url: `${prefix}`,
     data,
   })
 }
 
-export function editRole(data: any) {
+export function editLoginLog(data: any) {
   return api.put<void>({
     url: `${prefix}`,
     data,
   })
 }
 
-export function deleteRole(ids: string[]) {
+export function deleteLoginLog(ids: string[]) {
   return api.delete<void>({
     url: `${prefix}`,
     data: ids,
@@ -58,10 +58,10 @@ export function clear(type: number) {
 }
 
 export default {
-  list: getListRole,
-  detail: detailRole,
-  create: createRole,
-  edit: editRole,
-  delete: deleteRole,
+  list: getListLoginLog,
+  detail: detailLoginLog,
+  create: createLoginLog,
+  edit: editLoginLog,
+  delete: deleteLoginLog,
   clear,
 }

@@ -3,13 +3,46 @@
 import { createI18n } from 'vue-i18n'
 
 import messages from '@intlify/unplugin-vue-i18n/messages'
-
-import elementLocaleZhCN from 'element-plus/lib/locale/lang/zh-cn'
-import elementLocaleZhTW from 'element-plus/lib/locale/lang/zh-tw'
-import elementLocaleEn from 'element-plus/lib/locale/lang/en'
+import elementLocaleZhCN from 'element-plus/dist/locale/zh-cn'
+import elementLocaleZhTW from 'element-plus/dist/locale/zh-tw'
+import elementLocaleEn from 'element-plus/dist/locale/en'
+import elementLocaleJa from 'element-plus/dist/locale/ja'
 import type { App } from 'vue'
+import { defaultsDeep, set } from 'lodash-es'
 import useSettingsStore from '@/store/modules/settings'
 
+const modules = import.meta.glob('./lang/zh-cn/**/*.ts', {
+  as: 'json',
+  eager: true,
+})
+
+export function genMessage(langs: Record<string, any>, prefix = 'lang') {
+  const obj: Recordable = {}
+
+  Object.keys(langs).forEach((key) => {
+    const langFileModule = langs[key].default
+    let fileName = key.replace(`./${prefix}/`, '').replace(/^\.\//, '')
+    const lastIndex = fileName.lastIndexOf('.')
+    fileName = fileName.substring(0, lastIndex)
+    const keyList = fileName.split('/')
+    const moduleName = keyList.shift()
+    const objKey = keyList.join('.')
+
+    if (moduleName) {
+      if (objKey) {
+        set(obj, moduleName, obj[moduleName] || {})
+        set(obj[moduleName], objKey, langFileModule)
+      }
+      else {
+        set(obj, moduleName, langFileModule || {})
+      }
+    }
+  })
+  return obj
+}
+
+messages['zh-cn'] = defaultsDeep(messages['zh-cn'], genMessage(modules, 'lang/zh_CN'))
+console.log(messages)
 export let i18n: ReturnType<typeof createI18n>
 function useI18n(app: App) {
   const settingsStore = useSettingsStore()
@@ -43,6 +76,9 @@ function getElementLocales() {
         break
       case 'en':
         Object.assign(locales[key], elementLocaleEn, { labelName: 'English' })
+        break
+      case 'ja':
+        Object.assign(locales[key], elementLocaleJa, { labelName: '日本語' })
         break
     }
   }

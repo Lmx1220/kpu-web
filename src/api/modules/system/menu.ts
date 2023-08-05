@@ -1,11 +1,11 @@
 import api from '@/api'
 
 // 前缀 变量
-const prefix = '/menu'
+const prefix = '/resource'
 
-export function menuResourceTree<T>(menuOnly = true) {
+export function resourceAuthTree<T>(resourceOnly = true) {
   return api.post<T>({
-    url: `${prefix}/menuResourceTree?menuOnly=${menuOnly}`,
+    url: `${prefix}/resourceResourceTree?resourceOnly=${resourceOnly}`,
   })
 }
 
@@ -18,7 +18,7 @@ export function move<T>(currentId: string, targetId: string) {
 export default {
   // 后端获取路由数据
   list: <T>() => api.post<T>({
-    url: `${prefix}/treeMenuAndView`,
+    url: `${prefix}/treeResourceAndView`,
 
   }, {
     errorMessageMode: 'message',
@@ -41,7 +41,7 @@ export default {
       id,
     },
   }),
-  menuResourceTree,
+  resourceAuthTree,
   moveUp: <T>(id: string) => api.post<T>({
     url: `${prefix}/moveUp/${id}`,
   }),

@@ -5,14 +5,14 @@ import type { DictListItem, DictPageListGetResultModel, DictParams } from '@/api
 // 前缀 变量
 const prefix = '/dict'
 
-export function getListRole(params: BasicPageParams<DictParams>) {
+export function getListDict(params: BasicPageParams<DictParams>) {
   return api.post<DictPageListGetResultModel>({
     url: `${prefix}/page`,
     params,
   })
 }
 
-export function detailRole(id: string | number) {
+export function detailDict(id: string | number) {
   return api.get<DictListItem>({
     url: `${prefix}/detail`,
     params: {
@@ -21,21 +21,21 @@ export function detailRole(id: string | number) {
   })
 }
 
-export function createRole(data: any) {
+export function createDict(data: any) {
   return api.post<DictListItem>({
     url: `${prefix}`,
     data,
   })
 }
 
-export function editRole(data: any) {
+export function editDict(data: any) {
   return api.put<void>({
     url: `${prefix}`,
     data,
   })
 }
 
-export function deleteRole(ids: string[]) {
+export function deleteDict(ids: string[]) {
   return api.delete<void>({
     url: `${prefix}`,
     data: ids,
@@ -43,9 +43,9 @@ export function deleteRole(ids: string[]) {
 }
 
 export default {
-  list: getListRole,
-  detail: detailRole,
-  create: createRole,
-  edit: editRole,
-  delete: deleteRole,
+  list: getListDict,
+  detail: detailDict,
+  create: createDict,
+  edit: editDict,
+  delete: deleteDict,
 }

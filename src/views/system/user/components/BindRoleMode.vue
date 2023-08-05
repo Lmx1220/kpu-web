@@ -3,9 +3,10 @@ import { ElMessage, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import usePagination from '@/util/usePagination'
 import crudUser from '@/api/modules/system/user'
-import { getListRole } from '@/api/modules/system/role'
+import { getMyListRole } from '@/api/modules/system/role'
 import { getCategoryColor } from '@/enums/colorEnum'
 import type { RoleParams } from '@/api/modules/system/model/roleModel'
+import type { DataConfig } from '@/types/global'
 
 export interface Props {
   id: string
@@ -31,7 +32,7 @@ const {
   onSortChange,
 } = usePagination()
 
-const data = ref({
+const data = ref<DataConfig>({
   loading: false,
   tableAutoHeight: true,
   /**
@@ -53,10 +54,10 @@ const data = ref({
     scope: '-1',
   },
   searchFold: false,
+  current: {},
   // 批量操作
   batch: {
     enable: true,
-    selectionData: {} as {},
     selectionDataList: [] as { id: string }[],
   },
   // 列表数据
@@ -107,8 +108,9 @@ function getDataList(current?: number) {
   const params = getParams<RoleParams>({
     ...data.value.search,
     userId: props.id,
+    scopeType: '1',
   })
-  getListRole(params).then((res) => {
+  getMyListRole(params).then((res) => {
     data.value.dataList = get(res, 'records', [])
     pagination.value.total = Number(res.total)
     pagination.value.page = Number(get(res, 'current', 1))
@@ -228,7 +230,7 @@ async function onBindUser(flag: boolean, id?: string) {
       row-key="id" stripe
 
       @sort-change="sortChange"
-      @current-change="data.batch.selectionData = $event"
+      @current-change="data.current = $event"
       @selection-change="data.batch.selectionDataList = $event"
     >
       <el-table-column v-if="data.batch.enable" align="center" reserve-selection type="selection" />
@@ -257,9 +259,9 @@ async function onBindUser(flag: boolean, id?: string) {
         <template #default="scope">
           <el-button
             bg plain size="small" text type="primary"
-            @click="onBindUser(!data.bindRoles.find(item => item === scope.row.id), scope.row.id)"
+            @click="onBindUser(!data.bindRoles.find((item: any) => item === scope.row.id), scope.row.id)"
           >
-            {{ data.bindRoles.find(item => item === scope.row.id) ? '取消绑定' : '绑定' }}
+            {{ data.bindRoles.find((item: any) => item === scope.row.id) ? '取消绑定' : '绑定' }}
           </el-button>
         </template>
       </el-table-column>

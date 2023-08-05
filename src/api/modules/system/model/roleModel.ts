@@ -5,6 +5,9 @@ export interface RoleParams {
   category?: string
   state?: boolean
   userId?: string
+  orgId?: string
+  scope?: string
+  scopeType?: string
 }
 
 export interface RoleListItem {

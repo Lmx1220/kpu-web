@@ -9,14 +9,14 @@ import type {
 // 前缀 变量
 const prefix = '/parameter'
 
-export function getListRole(params: BasicPageParams<ParameterParams>) {
+export function getListParameter(params: BasicPageParams<ParameterParams>) {
   return api.post<ParameterPageListGetResultModel>({
     url: `${prefix}/page`,
     params,
   })
 }
 
-export function detailRole(id: string | number) {
+export function detailParameter(id: string | number) {
   return api.get<ParameterListItem>({
     url: `${prefix}/detail`,
     params: {
@@ -25,21 +25,21 @@ export function detailRole(id: string | number) {
   })
 }
 
-export function createRole(data: any) {
+export function createParameter(data: any) {
   return api.post<ParameterListItem>({
     url: `${prefix}`,
     data,
   })
 }
 
-export function editRole(data: any) {
+export function editParameter(data: any) {
   return api.put<void>({
     url: `${prefix}`,
     data,
   })
 }
 
-export function deleteRole(ids: string[]) {
+export function deleteParameter(ids: string[]) {
   return api.delete<void>({
     url: `${prefix}`,
     data: ids,
@@ -47,9 +47,9 @@ export function deleteRole(ids: string[]) {
 }
 
 export default {
-  list: getListRole,
-  detail: detailRole,
-  create: createRole,
-  edit: editRole,
-  delete: deleteRole,
+  list: getListParameter,
+  detail: detailParameter,
+  create: createParameter,
+  edit: editParameter,
+  delete: deleteParameter,
 }

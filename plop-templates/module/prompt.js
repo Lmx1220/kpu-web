@@ -53,27 +53,29 @@ module.exports = {
     const actions = [
       {
         type: 'add',
-        path: `${data.path}/{{snakeCase name}}/list.vue`,
+        path: `${data.path}/{{name}}/list.vue`,
         templateFile: 'plop-templates/module/list.hbs',
         data: {
           relativePath,
-          componentName: `${relativePath} ${data.name} list`,
+          componentName: `${relativePath} ${data.name}List`,
+          componentDetailName: `${relativePath} ${data.name}`,
           moduleName: data.name,
           cname: data.cname,
         },
       },
       {
         type: 'add',
-        path: `${data.path}/{{snakeCase name}}/detail.vue`,
+        path: `${data.path}/{{name}}/detail.vue`,
         templateFile: 'plop-templates/module/detail.hbs',
         data: {
-          componentName: `${relativePath} ${data.name} detail`,
+          componentName: `${relativePath} ${data.name}Detail`,
+          componentListName: `${relativePath} ${data.name}List`,
           cname: data.cname,
         },
       },
       {
         type: 'add',
-        path: `${data.path}/{{snakeCase name}}/components/DetailForm/index.vue`,
+        path: `${data.path}/{{name}}/components/DetailForm/index.vue`,
         templateFile: 'plop-templates/module/form.hbs',
         data: {
           relativePath,
@@ -82,7 +84,7 @@ module.exports = {
       },
       {
         type: 'add',
-        path: `${data.path}/{{snakeCase name}}/components/FormMode/index.vue`,
+        path: `${data.path}/{{name}}/components/FormMode/index.vue`,
         templateFile: 'plop-templates/module/mode.hbs',
         data: {
           cname: data.cname,

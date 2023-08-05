@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ElMessageBox, ElTree } from 'element-plus'
-import { menuResourceTree, move } from '@/api/modules/system/menu'
+import { move, resourceAuthTree } from '@/api/modules/system/menu'
 
 export interface Props {
   id?: string
@@ -76,7 +76,7 @@ watch(filterText, (val) => {
 })
 
 function getThreeData() {
-  menuResourceTree<MenuResourceTreeRes[]>().then((res) => {
+  resourceAuthTree<MenuResourceTreeRes[]>().then((res) => {
     three.value = res
     cpe(three.value, (item: MenuResourceTreeRes, options = { keyLinks: [] }) => {
       item.key = item.id
