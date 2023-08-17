@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-  import useSettingsStore from '@/store/modules/settings'
-  import eventBus from '@/util/eventBus'
-  import DetailForm from './components/DetailForm/index.vue'
+import useSettingsStore from '@/store/modules/settings'
+import eventBus from '@/util/eventBus'
+import DetailForm from './components/DetailForm/index.vue'
 
-  defineOptions({
+defineOptions({
   name: '{{ properCase componentName }}',
 })
 const settingsStore = useSettingsStore()
