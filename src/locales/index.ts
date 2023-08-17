@@ -3,19 +3,22 @@
 import { createI18n } from 'vue-i18n'
 
 import messages from '@intlify/unplugin-vue-i18n/messages'
-import elementLocaleZhCN from 'element-plus/dist/locale/zh-cn'
-import elementLocaleZhTW from 'element-plus/dist/locale/zh-tw'
-import elementLocaleEn from 'element-plus/dist/locale/en'
-import elementLocaleJa from 'element-plus/dist/locale/ja'
+import elementLocaleZhCN from 'element-plus/dist/locale/zh-cn.mjs'
+import elementLocaleZhTW from 'element-plus/dist/locale/zh-tw.mjs'
+import elementLocaleEn from 'element-plus/dist/locale/en.mjs'
+import elementLocaleJa from 'element-plus/dist/locale/ja.mjs'
 import type { App } from 'vue'
 import { defaultsDeep, set } from 'lodash-es'
 import useSettingsStore from '@/store/modules/settings'
 
-const modules = import.meta.glob('./lang/zh-cn/**/*.ts', {
+const modules = import.meta.glob('./lang/zh_CN/**/*.ts', {
   as: 'json',
   eager: true,
 })
-
+const modulesEn = import.meta.glob('./lang/en/**/*.ts', {
+  as: 'json',
+  eager: true,
+})
 export function genMessage(langs: Record<string, any>, prefix = 'lang') {
   const obj: Recordable = {}
 
@@ -42,7 +45,8 @@ export function genMessage(langs: Record<string, any>, prefix = 'lang') {
 }
 
 messages['zh-cn'] = defaultsDeep(messages['zh-cn'], genMessage(modules, 'lang/zh_CN'))
-console.log(messages)
+messages.en = defaultsDeep(messages.en, genMessage(modulesEn, 'lang/en'))
+// eslint-disable-next-line import/no-mutable-exports
 export let i18n: ReturnType<typeof createI18n>
 function useI18n(app: App) {
   const settingsStore = useSettingsStore()

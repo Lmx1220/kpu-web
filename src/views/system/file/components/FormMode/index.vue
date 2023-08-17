@@ -9,7 +9,6 @@ export interface Props extends DetailFormProps {
 
 const props = withDefaults(defineProps<Props>(),
   {
-    id: '',
     modelValue: false,
     mode: 'dialog',
   })

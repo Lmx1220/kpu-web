@@ -115,7 +115,7 @@ const transform: AxiosTransform = {
       }
       else {
         // 兼容restful风格
-        config.url = `${config.url + params}${joinTimestamp(joinTime, true)}`
+        config.url = `${config.url + (params.startsWith('?') ? params : `?${params}&`)}${joinTimestamp(joinTime, false)}`
         config.params = undefined
       }
     }
@@ -262,7 +262,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
         // 是否携带token
         withToken: true,
         retryRequest: {
-          isOpenRetry: true,
+          isOpenRetry: false,
           count: 4,
           waitTime: 100,
         },

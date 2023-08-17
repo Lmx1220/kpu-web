@@ -25,6 +25,7 @@
       ]
     },
     "types": [
+      "vite/client",
       "element-plus/global",
       "@intlify/unplugin-vue-i18n/messages"
     ]

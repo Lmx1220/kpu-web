@@ -1,0 +1,95 @@
+<script setup lang="ts">
+import type { CSSProperties } from 'vue'
+import { encode } from 'js-base64'
+import { timeDelayReqFindUrlById } from '@/api/modules/system/upload'
+import { defaultBase64Img } from '@/util/file/base64Conver'
+
+interface Props {
+  fileUrl?: string
+  fileId?: string
+  width?: string | number
+  height?: string | number
+  fileType?: string
+  imageStyle?: CSSProperties
+  originalFileName?: string
+  fallback?: string
+  placeholder?: string
+  isDef?: boolean
+  api: Function
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  fileUrl: '',
+  fileId: '',
+  width: 104,
+  height: 104,
+  fileType: 'IMAGE',
+  imageStyle: () => ({
+    width: '104px',
+    height: '104px',
+  }),
+  originalFileName: '未知文件',
+  fallback: defaultBase64Img,
+  isDef: false,
+  api: null,
+})
+const realSrc = ref('')
+watch(
+  () => props.fileUrl,
+  () => {
+    realSrc.value = props.fileUrl
+  },
+  { immediate: true },
+)
+watch(
+  () => props.fileId,
+  () => {
+    if (props.fileId) {
+      realSrc.value = ''
+      findRealSrc()
+    }
+  },
+  { immediate: true },
+)
+
+function findRealSrc() {
+  if (props.api) {
+    props.api(props.fileId).then((res: any) => {
+      if (res && res.data) {
+        realSrc.value = res.data
+      }
+    })
+  }
+  else {
+    timeDelayReqFindUrlById(props.fileId).then((res) => {
+      if (res && res.code === 0) {
+        realSrc.value = res.data
+      }
+    })
+  }
+}
+
+function onView(url: string, e: Event) {
+  e?.preventDefault()
+  e?.stopPropagation()
+  console.log(url)
+  url && window.open(`https://file.kkview.cn/onlinePreview?url=${encodeURIComponent(encode(url))}`)
+}
+</script>
+
+<template>
+  <span class="thumb">
+    <el-image v-if="fileType === 'IMAGE'" :src="realSrc" :preview-src-list="[realSrc]" preview-teleported>
+      <template #error>
+        <el-image :src="fallback" :style="imageStyle" />
+      </template>
+    </el-image>
+    <a v-else style="color: var(--el-color-primary);" class="cursor-pointer" @click="(event) => onView(realSrc, event)">
+      {{ originalFileName }}
+    </a>
+  </span>
+</template>
+
+<style scoped lang="scss">
+
+</style>

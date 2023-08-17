@@ -45,6 +45,7 @@ const useSettingsStore = defineStore(
     watch(() => settings.value.app.colorScheme, (val) => {
       if (val === '') {
         val = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        settings.value.app.colorScheme = val
       }
       switch (val) {
         case 'dark':

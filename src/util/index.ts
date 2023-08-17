@@ -1,4 +1,6 @@
-import { cloneDeep, isEqual, mergeWith, unionWith } from 'lodash-es'
+import type { AxiosResponse } from 'axios'
+import { ElMessage } from 'element-plus'
+import { isEqual, mergeWith, unionWith } from 'lodash-es'
 import path from 'path-browserify'
 import { isArray, isObject } from '@/util/is'
 
@@ -49,26 +51,52 @@ export function resolveRoutePath(basePath: string, routePath?: string) {
 }
 
 /**
-
- 递归合并两个对象。
- Recursively merge two objects.
- @param target 目标对象，合并后结果存放于此。The target object to merge into.
- @param source 要合并的源对象。The source object to merge from.
- @returns 合并后的对象。The merged object.
+ * Recursively merge two objects.
+ * 递归合并两个对象。
+ *
+ * @param source The source object to merge from. 要合并的源对象。
+ * @param target The target object to merge into. 目标对象，合并后结果存放于此。
+ * @param mergeArrays How to merge arrays. Default is "replace".
+ *        如何合并数组。默认为replace。
+ *        - "union": Union the arrays. 对数组执行并集操作。
+ *        - "intersection": Intersect the arrays. 对数组执行交集操作。
+ *        - "concat": Concatenate the arrays. 连接数组。
+ *        - "replace": Replace the source array with the target array. 用目标数组替换源数组。
+ * @returns The merged object. 合并后的对象。
  */
 export function deepMerge<T extends object | null | undefined, U extends object | null | undefined>(
-  target: T,
-  source: U,
+  source: T,
+  target: U,
+  mergeArrays: 'union' | 'intersection' | 'concat' | 'replace' = 'replace',
 ): T & U {
-  return mergeWith(cloneDeep(target), source, (objValue, srcValue) => {
-    if (isObject(objValue) && isObject(srcValue)) {
-      return mergeWith(cloneDeep(objValue), srcValue, (prevValue, nextValue) => {
-        // 如果是数组，合并数组(去重) If it is an array, merge the array (remove duplicates)
-        return isArray(prevValue) ? unionWith(prevValue, nextValue, isEqual) : undefined
-      })
+  if (!target) {
+    return source as T & U
+  }
+  if (!source) {
+    return target as T & U
+  }
+  return mergeWith({}, source, target, (sourceValue, targetValue) => {
+    if (isArray(targetValue) && isArray(sourceValue)) {
+      switch (mergeArrays) {
+        case 'union':
+          return unionWith(sourceValue, targetValue, isEqual)
+        case 'intersection':
+          return intersectionWith(sourceValue, targetValue, isEqual)
+        case 'concat':
+          return sourceValue.concat(targetValue)
+        case 'replace':
+          return targetValue
+        default:
+          throw new Error(`Unknown merge array strategy: ${mergeArrays as string}`)
+      }
     }
+    if (isObject(targetValue) && isObject(sourceValue)) {
+      return deepMerge(sourceValue, targetValue, mergeArrays)
+    }
+    return undefined
   })
 }
+
 /**
  * Add the object as a parameter to the URL
  * @param baseUrl url
@@ -142,4 +170,66 @@ export function findOrgNode(pId: string, nodes: Array<Record<string, any>>, opti
   }
 
   return null
+}
+
+export function openWindow(
+  url: string,
+  opt?: { target?: TargetContext | string; noopener?: boolean; noreferrer?: boolean },
+) {
+  const {
+    target = '__blank',
+    noopener = true,
+    noreferrer = true,
+  } = opt || {}
+  const feature: string[] = []
+
+  noopener && feature.push('noopener=yes')
+  noreferrer && feature.push('noreferrer=yes')
+
+  window.open(url, target, feature.join(','))
+}
+
+export function downloadFile(response: AxiosResponse<Blob>) {
+  const res = response.data
+  const type = res.type
+  if (type.includes('application/json')) {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      if (e?.target?.readyState === 2) {
+        const data = JSON.parse(<string>e?.target?.result)
+        ElMessage.warning(data.msg)
+      }
+    }
+    reader.readAsText(res)
+  }
+  else {
+    const disposition = response.headers['content-disposition']
+    let fileName = '下载文件.zip'
+    if (disposition) {
+      const respcds = disposition.split(';')
+      for (let i = 0; i < respcds.length; i++) {
+        const header = respcds[i]
+        if (header !== null && header !== '') {
+          const headerValue = header.split('=')
+          if (headerValue !== null && headerValue.length > 0) {
+            if (headerValue[0].trim().toLowerCase() === 'filename') {
+              fileName = decodeURI(headerValue[1])
+              break
+            }
+          }
+        }
+      }
+    }
+    // 处理引号
+    if ((fileName.startsWith('\'') || fileName.startsWith('"')) && (fileName.endsWith('\'') || fileName.endsWith('"'))) {
+      fileName = fileName.substring(1, fileName.length - 1)
+    }
+
+    const blob = new Blob([res])
+    const link = document.createElement('a')
+    link.href = window.URL.createObjectURL(blob)
+    link.download = fileName
+    link.click()
+    window.URL.revokeObjectURL(link.href)
+  }
 }

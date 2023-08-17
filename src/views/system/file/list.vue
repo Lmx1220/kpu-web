@@ -2,7 +2,9 @@
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
-import { uploadApi } from '@/api/modules/system/upload'
+import { downloadFile } from '@/util'
+import type { UploadApiResult } from '@/api/modules/system/model/uploadModel'
+import { downloadIds, uploadApi } from '@/api/modules/system/upload'
 import type { FileParams } from '@/api/modules/system/model/fileModel'
 import crudFile from '@/api/modules/system/file'
 import eventBus from '@/util/eventBus'
@@ -47,7 +49,7 @@ const data = ref<DataConfig>({
   searchFold: false,
   // 批量操作
   batch: {
-    enable: false,
+    enable: true,
     selectionDataList: [],
   },
   // 列表数据
@@ -178,8 +180,22 @@ function onDel(row?: any) {
   })
 }
 
-function handleChange(list: string[]) {
-  ElMessage.info(`已上传文件${JSON.stringify(list)}`)
+async function onDownload(row?: any) {
+  let ids: string[] = []
+  if (row) {
+    ids.push(row.id)
+  }
+  else {
+    ids = data.value.batch.selectionDataList.map(item => item.id)
+  }
+  const res = await downloadIds(ids)
+  downloadFile(res)
+}
+
+function handleChange(list: UploadApiResult[]) {
+  console.log('@')
+  ElMessage.info(`已上传文件${JSON.stringify(list.length)}`)
+  getDataList()
 }
 </script>
 
@@ -243,15 +259,33 @@ function handleChange(list: string[]) {
           :api="uploadApi"
           :max-number="10"
           :max-size="20"
-          class="my-5"
+          :show-preview-button="false"
+          :upload-params="{ bizType: 'BASE_FILE' }"
           @change="handleChange"
         />
+        <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
+          <template #icon>
+            <svg-icon name="ep:delete" />
+          </template>
+          删除
+        </el-button>
+        <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDownload()">
+          <template #icon>
+            <svg-icon name="ep:" />
+          </template>
+          下载
+        </el-button>
       </el-space>
       <ElTable
         ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
         <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
+        <el-table-column align="center" label="文件预览" prop="path">
+          <template #default="{ row }">
+            <ThumbUrl :file-id="row.id" :file-type="row.fileType" :original-file-name="row.originalFileName" />
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="原始文件名" prop="originalFileName" />
         <el-table-column align="center" label="桶" prop="bucket" width="100" />
         <el-table-column align="center" label="业务类型" prop="bizType" />
@@ -262,14 +296,11 @@ function handleChange(list: string[]) {
         <el-table-column align="center" label="创建时间" prop="createTime" sortable="custom" width="180" />
         <el-table-column align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button plain size="small" type="primary" @click="onView(scope.row)">
-              查 看
+            <el-button plain size="small" text @click="onDownload(scope.row)">
+              下载
             </el-button>
-            <el-button plain size="small" type="primary" @click="onEdit(scope.row)">
-              编 辑
-            </el-button>
-            <el-button plain size="small" type="danger" @click="onDel(scope.row)">
-              删 除
+            <el-button plain size="small" text type="danger" @click="onDel(scope.row)">
+              删除
             </el-button>
           </template>
         </el-table-column>

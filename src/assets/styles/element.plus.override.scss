@@ -6,4 +6,11 @@
         margin-left: 10px;
     }
 }
- 
+
+.el-dialog {
+    margin-bottom: 0 !important;
+
+    &.is-fullscreen {
+        max-width: calc(100vw - 32px);
+    }
+}

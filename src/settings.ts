@@ -7,7 +7,7 @@ const globalSettings: Settings.all = {
     // enableErrorLog: true,
     // enableAppSetting: true,
     theme: 'default',
-    colorScheme: 'light',
+    colorScheme: '',
     elementSize: 'default',
     defaultLang: '',
     enableProgress: true,
