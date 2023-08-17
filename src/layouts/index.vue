@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import hotkeys from 'hotkeys-js'
-import LinkView from './components/views/link.vue'
-import Search from './components/Search/index.vue'
-import HotkeysIntro from './components/HotkeysIntro/index.vue'
 import AppSetting from './components/AppSetting/index.vue'
 import Headers from './components/Header/index.vue'
+import HotkeysIntro from './components/HotkeysIntro/index.vue'
+import IframeView from './components/IframeView/index.vue'
 import MainSidebar from './components/MainSidebar/index.vue'
+import Search from './components/Search/index.vue'
 import SubSidebar from './components/SubSidebar/index.vue'
 import Topbar from './components/Topbar/index.vue'
-import IframeView from './components/IframeView/index.vue'
+import LinkView from './components/views/link.vue'
 import eventBus from '@/util/eventBus'
-import useSettingsStore from '@/store/modules/settings'
-import useKeepAliveStore from '@/store/modules/keepAlive'
-import useMenuStore from '@/store/modules/menu'
-import useMainPage from '@/util/composables/useMainPage'
 import useMenu from '@/util/composables/useMenu'
+import useMainPage from '@/util/composables/useMainPage'
+import useSettingsStore from '@/store/modules/settings'
+import useMenuStore from '@/store/modules/menu'
+import useKeepAliveStore from '@/store/modules/keepAlive'
 
 defineOptions({
   name: 'Layout',
@@ -297,11 +297,11 @@ onUnmounted(() => {
       }
 
       &.has-toolbar+.main {
-        margin: var(--g-topbar-height) 0 0;
+        margin: var(--g-toolbar-height) 0 0;
       }
 
       &.has-toolbar.has-tabbar+.main {
-        margin: calc(var(--g-topbar-height) + var(--g-tabbar-height)) 0 0;
+        margin: calc(var(--g-toolbar-height) + var(--g-tabbar-height)) 0 0;
       }
     }
   }

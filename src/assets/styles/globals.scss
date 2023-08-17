@@ -3,7 +3,7 @@
 @use "./element.plus.system.override.scss" as *;
 @use "./element.plus.customized.scss" as *;
 @use "./element.plus.customized.dark.scss" as *;
-@use "./element.plus.override.scss" as *; 
+@use "./element.plus.override.scss" as *;
 
 // 全局样式
 ::-webkit-scrollbar {
@@ -34,11 +34,10 @@
   }
 
   @include set-themes-css-var;
-  // 顶栏高度
-  --g-topbar-height: 50px;
+
 }
- 
-html,body{ 
+
+html, body {
   height: 100%;
 }
 
@@ -54,7 +53,7 @@ body {
 
   &.overflow-hidden {
     overflow: hidden;
-  } 
+  }
 }
 
 * {
@@ -98,7 +97,7 @@ select:-webkit-autofill {
       width: calc(100% - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
       transform: translateX(-50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2));
   }
-} 
+}
 
 [data-app-width-mode="center"],
 [data-app-width-mode="center-max-width"] {
