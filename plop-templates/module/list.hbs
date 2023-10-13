@@ -250,7 +250,7 @@ function onDel(row?: any) {
           </template>
           新增
         </el-button>
-        <el-button size="default" :disabled="!data.batch.selectionDataList.length" @click="onDel()">
+        <el-button size="default" :disabled="!data.batch.selectionDataList.length" type="danger" @click="onDel()">
           <template #icon>
             <svg-icon name="ep:delete"/>
           </template>
@@ -278,7 +278,7 @@ function onDel(row?: any) {
             <el-button type="primary" size="small" plain @click="onEdit(scope.row)">
               编 辑
             </el-button>
-            <el-button type="danger" size="small" plain @click="onDel(scope.row)">
+            <el-button type="danger" size="small" plain type="danger" @click="onDel(scope.row)">
               删 除
             </el-button>
           </template>
