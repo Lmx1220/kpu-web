@@ -1,9 +1,9 @@
 <script lang="ts" setup>
+import type { DataConfig } from '@/types/global'
+import eventBus from '@/util/eventBus'
 import DetailForm from '@/views/system/org/components/DetailForm/index.vue'
 import OrgBloksTree from '@/views/system/org/components/OrgBloksTree/index.vue'
 import OrgManagement from '@/views/system/org/components/OrgManagement/index.vue'
-import eventBus from '@/util/eventBus'
-import type { DataConfig } from '@/types/global'
 
 defineOptions({
   name: 'SystemOrgList',
@@ -58,7 +58,7 @@ async function getDataList() {
   treeRef.value?.getDataList()
 }
 
-function onCreate(row) {
+function onCreate(row: any) {
   if (data.value.formMode === 'router') {
     router.push({
       name: 'SystemOrgCreate',

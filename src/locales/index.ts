@@ -1,14 +1,14 @@
 // import useSettingsStore from '@/store/modules/settings'
 
-import { createI18n } from 'vue-i18n'
-
 import messages from '@intlify/unplugin-vue-i18n/messages'
-import elementLocaleZhCN from 'element-plus/dist/locale/zh-cn.mjs'
-import elementLocaleZhTW from 'element-plus/dist/locale/zh-tw.mjs'
 import elementLocaleEn from 'element-plus/dist/locale/en.mjs'
 import elementLocaleJa from 'element-plus/dist/locale/ja.mjs'
-import type { App } from 'vue'
+
+import elementLocaleZhCN from 'element-plus/dist/locale/zh-cn.mjs'
+import elementLocaleZhTW from 'element-plus/dist/locale/zh-tw.mjs'
 import { defaultsDeep, set } from 'lodash-es'
+import type { App } from 'vue'
+import { createI18n } from 'vue-i18n'
 import useSettingsStore from '@/store/modules/settings'
 
 const modules = import.meta.glob('./lang/zh_CN/**/*.ts', {

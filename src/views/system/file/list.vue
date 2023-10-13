@@ -2,14 +2,14 @@
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
-import { downloadFile } from '@/util'
+import crudFile from '@/api/modules/system/file'
+import type { FileParams } from '@/api/modules/system/model/fileModel'
 import type { UploadApiResult } from '@/api/modules/system/model/uploadModel'
 import { downloadIds, uploadApi } from '@/api/modules/system/upload'
-import type { FileParams } from '@/api/modules/system/model/fileModel'
-import crudFile from '@/api/modules/system/file'
+import type { DataConfig } from '@/types/global'
+import { downloadFile } from '@/util'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
-import type { DataConfig } from '@/types/global'
 
 defineOptions({
   name: 'SystemFileList',
@@ -293,7 +293,7 @@ function handleChange(list: UploadApiResult[]) {
         <el-table-column align="center" label="文件类型" prop="echoMap.fileType" width="100" />
         <el-table-column align="center" label="文件类型" prop="contentType" />
         <el-table-column align="center" label="大小" prop="size" width="100" />
-        <el-table-column align="center" label="创建时间" prop="createTime" sortable="custom" width="180" />
+        <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
         <el-table-column align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
             <el-button plain size="small" text @click="onDownload(scope.row)">

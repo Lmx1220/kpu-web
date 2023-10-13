@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { downloadFile } from '@/util'
-import type { DialogMethods } from '@/components/Dialog/typing'
+import type { UploadApiResult } from '@/api/modules/system/model/uploadModel'
 import { downloadIds } from '@/api/modules/system/upload'
 import { useDialogInner } from '@/components/Dialog/hooks/useDialog'
+import type { DialogMethods } from '@/components/Dialog/typing'
+import { downloadFile } from '@/util'
 import { isArray } from '@/util/is'
-import type { UploadApiResult } from '@/api/modules/system/model/uploadModel'
 
 interface Props {
   value?: UploadApiResult[]
@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits<{
   'listChange': [UploadApiResult[]]
-  'delete': [Recordable<any>]
+  'delete': [string]
   'register': [DialogMethods, string]
   'update:value': [UploadApiResult[]]
 }>()

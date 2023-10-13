@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
-import { isEqual, mergeWith, unionWith } from 'lodash-es'
+import { intersectionWith, isEqual, mergeWith, unionWith } from 'lodash-es'
 import path from 'path-browserify'
 import { isArray, isObject } from '@/util/is'
 

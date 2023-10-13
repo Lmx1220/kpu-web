@@ -54,7 +54,7 @@ onMounted(() => {
 
 function getInfo() {
   data.value.loading = true
-  crudLoginLog.detail(data.value.form.id).then((res) => {
+  crudLoginLog.detail(data.value.form.id).then((res: any) => {
     data.value.loading = false
     data.value.form = res
   })

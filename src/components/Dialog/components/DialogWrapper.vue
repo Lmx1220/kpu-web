@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useMutationObserver } from '@vueuse/core'
 import { createDialogContext } from '../hooks/useDialogContext'
-import type { AnyFunction } from '@/hooks/utils.ts'
-import { useWindowSizeFn } from '@/hooks/useWindowSizeFn.ts'
+import { useWindowSizeFn } from '@/hooks/useWindowSizeFn'
+import type { AnyFunction } from '@/hooks/utils'
 
 const props = defineProps({
   loading: { type: Boolean },
@@ -90,8 +90,10 @@ watch(
   },
 )
 
-async function setDialogHeight() {
-  console.log('setDialogHeight')
+async function setDialogHeight(bool = true) {
+  if (!bool) {
+    return
+  }
   if (!props.visible) {
     return
   }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { UploadResultStatus } from './types'
 import type { FileItem } from './types'
+import { UploadResultStatus } from './types'
 
 interface Props {
   dataSource?: FileItem[]
@@ -37,7 +37,7 @@ function formatStatus(record: FileItem) {
   else if (uploadStatus === UploadResultStatus.SUCCESS) {
     status = 'success'
   }
-  return status
+  return status as any
 }
 
 const { t } = useI18n()

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox, ElTree } from 'element-plus'
 import { onMounted } from 'vue'
-import BindRoleMode from '@/views/system/org/components/BindRoleMode.vue'
-import { findOrgNode } from '@/util'
 import crudOrg, { treeOrg } from '@/api/modules/system/org'
+import { findOrgNode } from '@/util'
+import BindRoleMode from '@/views/system/org/components/BindRoleMode.vue'
 
 interface Props {
   query?: boolean
@@ -146,8 +146,8 @@ function onEdit(row?: any) {
   if (row) {
     const parent = findOrgNode(row.parentId, dataTree.value.tree)
     emits('edit', {
-      parentId: parent.id,
-      parentName: parent.name,
+      parentId: parent?.id,
+      parentName: parent?.name,
       id: row.id,
       name: row.name,
     })
@@ -165,7 +165,6 @@ function onBindRoles(row: any) {
 }
 
 function onDel(row?: any) {
-  console.log(row)
   let ids: string[]
   if (row) {
     ids = [row.id]

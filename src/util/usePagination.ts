@@ -135,8 +135,6 @@ function usePagination() {
 
   function onSortChange(prop: any, order: any) {
     return new Promise<void>((resolve) => {
-      // eslint-disable-next-line no-console
-      console.log(order)
       pagination.value.sort = prop
       pagination.value.order = order === 'ascending' ? 'asc' : 'desc'
       resolve()

@@ -13,7 +13,7 @@ export interface LoginLogListItem {
   id: string
   browser: string
   browserVersion: string
-  createTime: string
+  createdTime: string
   createdBy: number
   description: string
   location: string

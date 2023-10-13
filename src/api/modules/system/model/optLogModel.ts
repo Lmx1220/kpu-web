@@ -15,7 +15,7 @@ export interface OptLogListItem {
   actionMethod: string
   classPath: string
   consumingTime: number
-  createTime: string
+  createdTime: string
   createdBy: number
   description: string
   finishTime: string

@@ -3,10 +3,10 @@ import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
 import type { ParameterParams } from '@/api/modules/system/model/parameterModel'
-import eventBus from '@/util/eventBus'
-import usePagination from '@/util/usePagination.js'
 import crudParameter from '@/api/modules/system/parameter'
 import type { DataConfig } from '@/types/global'
+import eventBus from '@/util/eventBus'
+import usePagination from '@/util/usePagination.js'
 
 defineOptions({
   name: 'SystemParameterList',
@@ -79,8 +79,8 @@ async function getDataList(current?: number) {
     ...data.value.search,
   })
   if (data.value.daterange) {
-    params.extra.createTime_st = data.value.daterange[0]
-    params.extra.createTime_ed = data.value.daterange[1]
+    params.extra.createdTime_st = data.value.daterange[0]
+    params.extra.createdTime_ed = data.value.daterange[1]
   }
   const res = await crudParameter.list(params)
   data.value.dataList = get(res, 'records', [])
@@ -275,7 +275,7 @@ function onDel(row?: any) {
           </template>
         </el-table-column>
         <el-table-column align="center" label="备注" prop="remarks" show-overflow-tooltip width="250" />
-        <el-table-column align="center" label="创建时间" prop="createTime" sortable="custom" />
+        <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" />
         <el-table-column align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
             <el-button plain size="small" type="primary" @click="onView(scope.row)">

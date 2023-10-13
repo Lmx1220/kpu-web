@@ -65,7 +65,7 @@ onMounted(() => {
 
 function getInfo() {
   data.value.loading = true
-  crudOptLog.detail(data.value.form.id).then((res) => {
+  crudOptLog.detail(data.value.form.id).then((res: any) => {
     data.value.loading = false
     data.value.form = res
     data.value.form.params = (res.params ? JSON.parse(res.params) : '') as any

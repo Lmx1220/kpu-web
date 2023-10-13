@@ -32,8 +32,6 @@ function goBack() {
     router.push({ name: 'SystemOptLogList' })
   }
 }
-
-console.log(route.params.type)
 </script>
 
 <template>

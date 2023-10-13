@@ -30,7 +30,7 @@ const defaultQuery = {
   username: '',
   nickName: '',
   description: '',
-  // createTime_between: [],
+  // createdTime_between: [],
 }
 const data = ref<DataConfig>({
   loading: false,
@@ -49,7 +49,7 @@ const data = ref<DataConfig>({
   },
   // 搜索
   search,
-  createTime_between: [],
+  createdTime_between: [],
   searchFold: false,
   // 批量操作
   batch: {
@@ -88,8 +88,8 @@ async function getDataList(current?: number) {
     ...data.value.search,
   },
   )
-  if (data.value.createTime_between) {
-    params.extra.createTime_between = data.value.createTime_between
+  if (data.value.createdTime_between) {
+    params.extra.createdTime_between = data.value.createdTime_between
   }
   const res = await crudLoginLog.list(params)
   data.value.dataList = get(res, 'records', [])
@@ -266,7 +266,7 @@ async function getDict() {
             </el-form-item>
             <el-form-item v-show="!fold" label="创建时间">
               <el-date-picker
-                v-model="data.createTime_between"
+                v-model="data.createdTime_between"
                 :default-time="[
                   new Date(2000, 1, 1, 0, 0, 0),
                   new Date(2000, 2, 1, 23, 59, 59),
@@ -365,7 +365,7 @@ async function getDict() {
         <el-table-column align="center" label="浏览器版本" prop="browserVersion" width="120" />
         <el-table-column align="center" label="操作系统" prop="operatingSystem" width="100" />
         <el-table-column align="center" label="登录地点" prop="location" width="150" />
-        <el-table-column align="center" label="创建时间" prop="createTime" sortable="custom" width="180" />
+        <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
         <el-table-column align="center" fixed="right" label="操作" width="150">
           <template #default="scope">
             <el-button size="small" text type="primary" @click="onView(scope.row)">

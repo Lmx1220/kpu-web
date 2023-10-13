@@ -2,7 +2,9 @@ export interface Extra {
   [key: string]: any
 }
 
-export interface BasicPageParams<T extends {}> {
+export interface BasicPageParams<T extends {
+  [key: string]: any
+}> {
   current: number
   size: number
   sort?: string

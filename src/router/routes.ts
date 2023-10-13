@@ -1,8 +1,8 @@
+// import Monitorxample from './modules/monitor.example'
 import type { RouteRecordRaw } from 'vue-router'
 import KeepAliveExample from './modules/keep.alive.example'
-import SystemExample from './modules/system.example'
 import LinkExample from './modules/link.example'
-import Monitorxample from './modules/monitor.example'
+import SystemExample from './modules/system.example'
 import type { Route } from '@/types/global'
 
 // 固定路由
@@ -43,7 +43,7 @@ const asyncRoutes: Route.recordMainRaw[] = [
       KeepAliveExample,
       LinkExample,
       SystemExample,
-      Monitorxample,
+      // Monitorxample,
     ],
   },
   {

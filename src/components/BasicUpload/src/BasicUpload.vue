@@ -3,8 +3,8 @@ import { omit } from 'lodash-es'
 import { useAttrs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import UploadDialog from './UploadDialog.vue'
-import type { UploadApiResult } from '@/api/modules/system/model/uploadModel'
 import { useDialog } from '@/components/Dialog/hooks/useDialog'
+import type { UploadApiResult } from '@/api/modules/system/model/uploadModel'
 import type { PromiseFn } from '#/global'
 
 export interface BasicProps {
@@ -84,7 +84,7 @@ function handleDelete(record: Recordable<any>) {
   emits('delete', record)
 }
 
-function handlePreviewDelete(url: Recordable<any>) {
+function handlePreviewDelete(url: any) {
   emits('previewDelete', url)
 }
 

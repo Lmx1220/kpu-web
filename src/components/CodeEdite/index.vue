@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue'
-import { Codemirror } from 'vue-codemirror'
 import { java } from '@codemirror/lang-java'
 import { javascript } from '@codemirror/lang-javascript'
 import { oneDark } from '@codemirror/theme-one-dark'
+import { onMounted } from 'vue'
+import { Codemirror } from 'vue-codemirror'
 
 interface Props {
   code: string
@@ -30,12 +30,12 @@ defineOptions({
   name: 'CodeEdite',
 })
 const code = computed(() => props.code)
-const themes = { oneDark }
+const themes = { oneDark } as any
 const log = console.log
 const languages = {
   java: java(),
   Javascript: javascript(),
-}
+} as any
 const extensions = computed(() => {
   const result = []
   if (props.mode) {
@@ -44,11 +44,9 @@ const extensions = computed(() => {
   if (props.theme) {
     result.push(themes[props.theme])
   }
-  console.log(result)
   return result
 })
 onMounted(() => {
-  console.log(extensions)
 })
 </script>
 

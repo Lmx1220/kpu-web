@@ -1,5 +1,5 @@
 import { tryOnMounted, tryOnUnmounted, useDebounceFn } from '@vueuse/core'
-import type { AnyFunction } from './utils.ts'
+import type { AnyFunction } from './utils'
 
 interface UseWindowSizeOptions {
   wait?: number

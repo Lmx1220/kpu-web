@@ -3,6 +3,7 @@ withDefaults(
   defineProps<{
     title: string
     content?: string
+    footer?: string
   }>(),
   {
     content: '',
@@ -20,7 +21,7 @@ const slots = useSlots()
       <div class="title">
         {{ title }}
       </div>
-      <div class="content">
+      <div v-if="slots.content || content" class="content">
         <slot name="content">
           {{ content }}
         </slot>
@@ -61,6 +62,10 @@ const slots = useSlots()
       &:empty {
         display: none;
       }
+    }
+
+    .footer {
+      margin-top: 10px;
     }
   }
 

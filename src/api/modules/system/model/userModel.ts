@@ -11,7 +11,7 @@ export interface UserParams {
 export interface UserListItem {
   username: string
   avatar: string
-  createTime: string
+  createdTime: string
   createdBy: number
   createdOrgId: number
   echoMap: string
@@ -32,7 +32,7 @@ export interface UserListItem {
   sex: string
   state: boolean
   stationId: number
-  updateTime: string
+  updatedTime: string
   updatedBy: number
   workDescribe: string
 }

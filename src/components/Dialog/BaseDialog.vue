@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { omit } from 'lodash-es'
+import DialogFooter from './components/DialogFooter.vue'
+import DialogHeader from './components/DialogHeader.vue'
 import DialogWrapper from './components/DialogWrapper.vue'
 
 import type { DialogMethods, DialogProps } from './typing'
-import DialogFooter from './components/DialogFooter.vue'
-import DialogHeader from './components/DialogHeader.vue'
 import { isFunction } from '@/util/is'
 import { deepMerge } from '@/util'
 
@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<Partial<DialogProps>>(), {
   mask: true,
   maskClosable: true,
   keyboard: true,
+  footer: undefined,
 })
 const emits = defineEmits<{
   'register': [DialogMethods, string]
@@ -87,7 +88,7 @@ const getBindValue = computed((): Recordable => {
     ...unref(getMergeProps),
     modelValue: visibleRef.value,
     fullscreen: unref(fullscreenRef),
-  }
+  } as any
 
   if (unref(fullscreenRef)) {
     return omit(attr, ['height', 'title'])

@@ -2,9 +2,9 @@
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import Sortable from 'sortablejs'
-import type { Menu } from '@/types/global'
-import useSettingsStore from '@/store/modules/settings'
 import crudMenu from '@/api/modules/system/menu'
+import useSettingsStore from '@/store/modules/settings'
+import type { Menu } from '@/types/global'
 
 defineOptions({
   name: 'MenuDetail',
@@ -371,7 +371,7 @@ function TableSortable() {
               </el-form-item>
             </el-col>
             <el-col v-if="form.resourceType === '20'" :lg="24" :xl="12">
-              <el-form-item prop="redirect" label="组件路径">
+              <el-form-item label="组件路径" prop="component">
                 <template #label>
                   组件路径
                   <span class="label-tip"> 顶级路由请设置 <ElLink

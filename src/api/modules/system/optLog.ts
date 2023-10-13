@@ -1,24 +1,20 @@
 import api from '@/api'
 import type { BasicPageParams } from '@/api/model/baseModel'
-import type {
-  LoginLogListItem,
-  LoginLogPageListGetResultModel,
-  LoginLogParams,
-} from '@/api/modules/system/model/optLogModel'
+import type { OptLogListItem, OptLogPageListGetResultModel, OptLogParams } from '@/api/modules/system/model/optLogModel'
 import { ContentTypeEnum } from '@/enums/httpEnum'
 
 // 前缀 变量
 const prefix = '/optLog'
 
-export function getListLoginLog(params: BasicPageParams<LoginLogParams>) {
-  return api.post<LoginLogPageListGetResultModel>({
+export function getListOptLog(params: BasicPageParams<OptLogParams>) {
+  return api.post<OptLogPageListGetResultModel>({
     url: `${prefix}/page`,
     params,
   })
 }
 
-export function detailLoginLog(id: string | number) {
-  return api.get<LoginLogListItem>({
+export function detailOptLog(id: string | number) {
+  return api.get<OptLogListItem>({
     url: `${prefix}/detail`,
     params: {
       id,
@@ -26,21 +22,21 @@ export function detailLoginLog(id: string | number) {
   })
 }
 
-export function createLoginLog(data: any) {
-  return api.post<LoginLogListItem>({
+export function createOptLog(data: any) {
+  return api.post<OptLogListItem>({
     url: `${prefix}`,
     data,
   })
 }
 
-export function editLoginLog(data: any) {
+export function editOptLog(data: any) {
   return api.put<void>({
     url: `${prefix}`,
     data,
   })
 }
 
-export function deleteLoginLog(ids: string[]) {
+export function deleteOptLog(ids: string[]) {
   return api.delete<void>({
     url: `${prefix}`,
     data: ids,
@@ -58,10 +54,10 @@ export function clear(type: number) {
 }
 
 export default {
-  list: getListLoginLog,
-  detail: detailLoginLog,
-  create: createLoginLog,
-  edit: editLoginLog,
-  delete: deleteLoginLog,
+  list: getListOptLog,
+  detail: detailOptLog,
+  create: createOptLog,
+  edit: editOptLog,
+  delete: deleteOptLog,
   clear,
 }

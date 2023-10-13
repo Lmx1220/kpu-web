@@ -5,6 +5,7 @@ import type {
   DatasourceConfigPageListGetResultModel,
   DatasourceConfigParams,
 } from '@/api/modules/tools/model/datasourceConfigModel'
+import { ContentTypeEnum } from '@/enums/httpEnum'
 
 // 前缀 变量
 const prefix = '/datasourceConfig'
@@ -55,6 +56,15 @@ export function deleteDatasourceConfig(ids: string[]) {
   })
 }
 
+export function testConnect(id: string) {
+  return api.post({
+    url: `${prefix}/testConnect`,
+    headers: {
+      'Content-Type': ContentTypeEnum.FORM_URLENCODED,
+    },
+    params: { id },
+  })
+}
 export default {
   list: getListDatasourceConfig,
   detail: detailDatasourceConfig,

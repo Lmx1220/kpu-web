@@ -441,15 +441,15 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
         <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
         <el-table-column align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button plain size="default" text type="primary" @click="onEdit(scope.row)">
+            <el-button plain size="default" text title="修改" type="primary" @click="onEdit(scope.row)">
               <svg-icon name="ep:edit" />
             </el-button>
-            <el-button plain size="default" text type="danger" @click="onDel(scope.row)">
+            <el-button plain size="default" text title="删除" type="danger" @click="onDel(scope.row)">
               <svg-icon name="ep:delete" />
             </el-button>
             <el-popconfirm title="确定同步该表的字段吗？" @confirm="onSync(scope.row)">
               <template #reference>
-                <el-button plain size="default" text type="primary">
+                <el-button plain size="default" text title="同步" type="primary">
                   <svg-icon name="ant-design:cloud-sync-outlined" />
                 </el-button>
               </template>

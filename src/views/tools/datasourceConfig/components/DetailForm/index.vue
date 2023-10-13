@@ -145,6 +145,7 @@ defineExpose({
       <el-form-item label="驱动" prop="driverClassName">
         <el-select
           v-model="data.form.driverClassName" clearable
+          :disabled="type === 'view'"
           placeholder="请选择"
         >
           <el-option

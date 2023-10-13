@@ -89,44 +89,44 @@ const routes: RouteRecordRaw = {
           },
         ],
     },
-    {
-      path: 'dept',
-      name: 'dept',
-      component: () => import('@/views/system/dept/index.vue'),
-      meta: {
-        title: '部门管理',
-        badge: false,
-        roles: ['admin'],
-      },
-    },
-    {
-      path: 'dict',
-      name: 'dict',
-      component: () => import('@/views/system/dict/index.vue'),
-      meta: {
-        title: '字典管理',
-        badge: () => true,
-        roles: ['admin'],
-      },
-    },
-    {
-      path: 'config',
-      name: 'config',
-      component: () => import('@/views/system/config/index.vue'),
-      meta: {
-        title: '配置管理',
-        roles: ['admin'],
-      },
-    },
-    {
-      path: 'log',
-      name: 'log',
-      component: () => import('@/views/system/log/index.vue'),
-      meta: {
-        title: '日志管理',
-        roles: ['admin'],
-      },
-    },
+    // {
+    //   path: 'dept',
+    //   name: 'dept',
+    //   // component: () => import('@/views/system/dept/index.vue'),
+    //   meta: {
+    //     title: '部门管理',
+    //     badge: false,
+    //     roles: ['admin'],
+    //   },
+    // },
+    // {
+    //   path: 'dict',
+    //   name: 'dict',
+    //   component: () => import('@/views/system/dict/index.vue'),
+    //   meta: {
+    //     title: '字典管理',
+    //     badge: () => true,
+    //     roles: ['admin'],
+    //   },
+    // },
+    // {
+    //   path: 'config',
+    //   name: 'config',
+    //   component: () => import('@/views/system/config/index.vue'),
+    //   meta: {
+    //     title: '配置管理',
+    //     roles: ['admin'],
+    //   },
+    // },
+    // {
+    //   path: 'log',
+    //   name: 'log',
+    //   component: () => import('@/views/system/log/index.vue'),
+    //   meta: {
+    //     title: '日志管理',
+    //     roles: ['admin'],
+    //   },
+    // },
   ],
 }
 export default routes

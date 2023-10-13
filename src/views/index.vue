@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useDialogContext } from '@/components/Dialog/hooks/useDialogContext'
 import { useDialog } from '@/components/Dialog/hooks/useDialog'
+import { useDialogContext } from '@/components/Dialog/hooks/useDialogContext'
 
 defineOptions({
   name: 'Home',
@@ -26,7 +26,6 @@ function onOk() {
   nextTick(() => {
     modalFn?.redoDialogHeight?.()
   })
-  console.log('ok')
 }
 
 function visibleChange() {

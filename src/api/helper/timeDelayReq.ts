@@ -9,7 +9,7 @@ class TimeDelayReq {
   /**
    * 定时器id
    */
-  private timeoutId: NodeJS.Timeout | null
+  private timeoutId: number | null
   /**
    * 临时参数
    */
@@ -203,7 +203,7 @@ class TimeDelayReq {
         const {
           param,
           reject,
-        } = params.get(key)
+        } = params.get(key) as TempParam
         const data = this.getErrorData(param, error, reject)
         if (data) {
           data.resolve(data)
@@ -212,7 +212,7 @@ class TimeDelayReq {
     }
     else {
       for (const key of params.keys()) {
-        params.get(key).reject(error)
+        params.get(key)?.reject(error)
       }
     }
   }

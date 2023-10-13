@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ElMessage, ElMessageBox } from 'element-plus'
+import crudMenu from '@/api/modules/system/menu'
+import useSettingsStore from '@/store/modules/settings'
 import type { DataConfig, Menu } from '@/types/global'
 import Move from '@/views/system/menu/components/move.vue'
-import useSettingsStore from '@/store/modules/settings'
-import crudMenu from '@/api/modules/system/menu'
 
 const auth = useAuth()
 
@@ -16,9 +16,35 @@ const tabbar = useTabbar()
 
 const data: Ref<DataConfig<any, Menu.raw>> = ref(
   {
-    dataList: [],
+    dataList: [] as Menu.raw[],
     loading: false,
     tableAutoHeight: true,
+    /**
+     * 详情展示模式
+     * router 路由跳转
+     * dialog 对话框
+     * drawer 抽屉
+     */
+    formMode: 'drawer',
+    // 详情
+    formModeProps: {
+      visible: false,
+      id: '',
+    },
+    // 搜索
+    search: {
+      parentId: '',
+      classify: '',
+      key: '',
+      name: '',
+      remark: '',
+    },
+    searchFold: true,
+    // 批量操作
+    batch: {
+      enable: true,
+      selectionDataList: [],
+    },
   },
 )
 const settingsStore = useSettingsStore()

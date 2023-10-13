@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { treeOrg } from '@/api/modules/system/org'
 import type { DictOption, Option } from '@/api/model/baseModel'
 import { findDictMapItemListByKey } from '@/api/modules/common/dict'
+import { treeOrg } from '@/api/modules/system/org'
 import crudUser from '@/api/modules/system/user'
 import stautsEnum from '@/enums/stautsEnum'
 
@@ -96,7 +96,7 @@ function getInfo() {
   data.value.loading = true
   crudUser.detail(data.value.form.id).then((res) => {
     data.value.loading = false
-    data.value.form = res
+    data.value.form = res as any
   })
 }
 

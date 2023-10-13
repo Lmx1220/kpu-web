@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { CSSProperties } from 'vue'
 import { encode } from 'js-base64'
+import type { CSSProperties } from 'vue'
 import { timeDelayReqFindUrlById } from '@/api/modules/system/upload'
 import { defaultBase64Img } from '@/util/file/base64Conver'
 
@@ -15,7 +15,7 @@ interface Props {
   fallback?: string
   placeholder?: string
   isDef?: boolean
-  api: Function
+  api: Function | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -72,7 +72,6 @@ function findRealSrc() {
 function onView(url: string, e: Event) {
   e?.preventDefault()
   e?.stopPropagation()
-  console.log(url)
   url && window.open(`https://file.kkview.cn/onlinePreview?url=${encodeURIComponent(encode(url))}`)
 }
 </script>

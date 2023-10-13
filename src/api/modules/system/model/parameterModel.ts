@@ -9,14 +9,14 @@ export interface ParameterParams {
 
 export interface ParameterListItem {
   id: string
-  createTime: string
+  createdTime: string
   createdBy: number
   key: string
   name: string
   readonly: boolean
   remarks: string
   state: boolean
-  updateTime: string
+  updatedTime: string
   updatedBy: number
   value: string
 }

@@ -1,6 +1,5 @@
-import {
-  readonly as defineReadonly,
-} from 'vue'
+import type { UnwrapRef } from 'vue'
+import { readonly as defineReadonly } from 'vue'
 
 export interface CreateContextOptions {
   readonly?: boolean

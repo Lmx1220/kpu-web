@@ -43,7 +43,7 @@ interface Tree {
 
 export interface MenuResourceTreeRes extends Tree {
   code: string
-  createTime: Record<string, unknown>
+  createdTime: Record<string, unknown>
   createdBy: number
   remarks: string
   icon: string
@@ -53,7 +53,7 @@ export interface MenuResourceTreeRes extends Tree {
   parentId: number
   sortValue: number
   type: string
-  updateTime: Record<string, unknown>
+  updatedTime: Record<string, unknown>
   updatedBy: number
   children: MenuResourceTreeRes[]
   disabled: boolean

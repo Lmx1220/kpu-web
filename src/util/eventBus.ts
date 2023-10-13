@@ -17,9 +17,10 @@ type Events = {
   /**
    * 搜索框弹窗
    */
-  'global-search-toggle': undefined
+  'global-search-toggle'?: string
   /** 数据列表 */
   'get-data-list': undefined
+  'global-preferences-toggle': undefined
 }
 
 export default mitt<Events>()

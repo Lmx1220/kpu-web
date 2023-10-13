@@ -17,8 +17,8 @@ export interface RoleListItem {
   category: string | null
   state: boolean | string | null
   remark: string | null
-  createTime: string
-  updateTime: string | null
+  createdTime: string
+  updatedTime: string | null
 }
 
 export interface RoleResourceSaveVO {

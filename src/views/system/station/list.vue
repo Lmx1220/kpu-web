@@ -2,12 +2,12 @@
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
-import OrgManagement from '@/views/system/org/components/OrgManagement/index.vue'
-import crudStation from '@/api/modules/system/station'
-import eventBus from '@/util/eventBus'
-import type { DataConfig } from '@/types/global'
-import usePagination from '@/util/usePagination'
 import type { StationParams } from '@/api/modules/system/model/stationModel'
+import crudStation from '@/api/modules/system/station'
+import type { DataConfig } from '@/types/global'
+import eventBus from '@/util/eventBus'
+import usePagination from '@/util/usePagination'
+import OrgManagement from '@/views/system/org/components/OrgManagement/index.vue'
 
 defineOptions({
   name: 'SystemStationList',
@@ -78,7 +78,7 @@ async function getDataList(current?: number) {
     {
       type: 'daterange',
       name: 'daterange',
-      prop: 'createTime',
+      prop: 'createdTime',
     })
     params.model.orgIdList = orgIds.value
     const res = await crudStation.list(params)
@@ -271,7 +271,7 @@ function onReset() {
                 </template>
               </el-table-column>
               <el-table-column align="center" label="备注" prop="remarks" show-overflow-tooltip width="180" />
-              <el-table-column align="center" label="创建时间" prop="createTime" sortable="custom" width="180" />
+              <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
               <el-table-column align="center" fixed="right" label="操作" width="150">
                 <template #default="scope">
                   <el-button plain size="small" type="primary" @click="onEdit(scope.row)">

@@ -56,7 +56,11 @@ export function roleList(id: string) {
   })
 }
 
-export function saveOrgRole(data: { orgId: string; roleIds: string[]; flag?: boolean }) {
+export function saveOrgRole(data: {
+  orgId: string
+  roleIdList: string[]
+  flag?: boolean
+}) {
   return api.post<string[]>({
     url: `${prefix}/saveOrgRole`,
     data,

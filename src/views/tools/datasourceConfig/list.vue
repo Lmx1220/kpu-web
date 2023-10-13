@@ -2,7 +2,7 @@
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
-import crudDatasourceConfig from '@/api/modules/tools/datasourceConfig'
+import crudDatasourceConfig, { testConnect } from '@/api/modules/tools/datasourceConfig'
 import type { DatasourceConfigParams } from '@/api/modules/tools/model/datasourceConfigModel'
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus'
@@ -176,6 +176,11 @@ function onDel(row?: any) {
   }).catch(() => {
   })
 }
+
+async function onTestConnect(row: any) {
+  await testConnect(row.id)
+  ElMessage.success('测试连接成功')
+}
 </script>
 
 <template>
@@ -252,7 +257,7 @@ function onDel(row?: any) {
           </template>
           新增
         </el-button>
-        <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
+        <el-button :disabled="!data.batch.selectionDataList.length" size="default" type="danger" @click="onDel()">
           <template #icon>
             <svg-icon name="ep:delete" />
           </template>
@@ -274,14 +279,17 @@ function onDel(row?: any) {
         <el-table-column label="创建时间" prop="createdTime" sortable="custom" width="180" />
         <el-table-column align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button plain size="small" type="primary" @click="onView(scope.row)">
-              查 看
+            <!--            <el-button plain size="small" type="primary" @click="onView(scope.row)"> -->
+            <!--              查 看 -->
+            <!--            </el-button> -->
+            <el-button plain size="default" text title="修改" type="primary" @click="onEdit(scope.row)">
+              <svg-icon name="ep:edit" />
             </el-button>
-            <el-button plain size="small" type="primary" @click="onEdit(scope.row)">
-              编 辑
+            <el-button plain size="small" text title="测试" type="primary" @click="onTestConnect(scope.row)">
+              <svg-icon name="ant-design:bug-outlined" />
             </el-button>
-            <el-button plain size="small" type="danger" @click="onDel(scope.row)">
-              删 除
+            <el-button plain size="default" text title="删除" type="danger" @click="onDel(scope.row)">
+              <svg-icon name="ep:delete" />
             </el-button>
           </template>
         </el-table-column>
