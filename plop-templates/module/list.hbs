@@ -1,35 +1,40 @@
 <script lang="ts" setup>
-  import type {{{ pascalCase moduleName }}Params} from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}model/{{ moduleName }}Model'
-  import crud{{properCase moduleName}} from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ moduleName }}'
-  import FormMode from './components/FormMode/index.vue'
-  import eventBus from '@/util/eventBus'
-  import usePagination from '@/util/usePagination.js'
-  import {ElMessage, ElMessageBox, ElTable} from 'element-plus'
-  import {get} from 'lodash-es'
-  import type {DataConfig} from '@/types/global'
+import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
+import { get } from 'lodash-es'
+import FormMode from './components/FormMode/index.vue'
+import type { {{ pascalCase moduleName }}Params } from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}model/{{ moduleName }}Model'
+import crud{{properCase moduleName}} from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ moduleName }}'
+import eventBus from '@/util/eventBus'
+import usePagination from '@/util/usePagination.js'
+import type { DataConfig } from '@/types/global'
 
-  defineOptions({
-    name: '{{ properCase componentName }}',
-  })
-  const {
-    pagination,
-    getParams,
-    onSizeChange,
-    onCurrentChange,
-    onSortChange
-  } = usePagination()
-  const router = useRouter()
-  // const route = useRoute()
-
-  const data = ref<DataConfig>({
-    loading: false,
-    tableAutoHeight: true,
-    /**
-     * 详情展示模式
-     * router 路由跳转
-     * dialog 对话框
-     * drawer 抽屉
-     */
+defineOptions({
+  name: '{{ properCase componentName }}',
+})
+const {
+  pagination,
+  search,
+  getParams,
+  onSizeChange,
+  onCurrentChange,
+  onSortChange,
+  resetQuery,
+} = usePagination()
+const router = useRouter()
+// const route = useRoute()
+const defaultQuery = {
+  name: '',
+  daterange: [],
+}
+const data = ref<DataConfig>({
+  loading: false,
+  tableAutoHeight: true,
+  /**
+   * 详情展示模式
+   * router 路由跳转
+   * dialog 对话框
+   * drawer 抽屉
+   */
   formMode: 'router',
   // 详情
   formModeProps: {
@@ -37,13 +42,8 @@
     id: '',
   },
   // 搜索
-  search: {
-    title: '',
-    title2: '',
-    title3: '',
-    title4: '',
-  },
-    searchFold: false,
+  search,
+  searchFold: false,
   // 批量操作
   batch: {
     enable: false,
@@ -64,39 +64,45 @@ onMounted(() => {
   }
 })
 
-  onBeforeUnmount(() => {
-    if (data.value.formMode === 'router') {
-      eventBus.off('get-data-list')
-    }
-  })
-
-  async function getDataList(current?: number) {
-    if (current && current === 1) {
-      pagination.value.page = current
-    }
-    data.value.loading = true
-    const params = getParams<{{ pascalCase moduleName }}Params>({
-      ...data.value.search
-    })
-    data.value.search.title && (params.model.title = data.value.search.title)
-    const res = await crud{{properCase moduleName}}.list(params)
-    data.value.dataList = get(res, 'records', [])
-    pagination.value.total = Number(res.total)
-    pagination.value.page = Number(get(res, 'current', 1))
-    // pagination.value.size = res.size
-    setTimeout(() => {
-      data.value.loading = false
-    }, 100)
+onBeforeUnmount(() => {
+  if (data.value.formMode === 'router') {
+    eventBus.off('get-data-list')
   }
+})
 
-  // 每页数量切换
-  function sizeChange(size: number) {
-    onSizeChange(size).then(() => getDataList())
+async function getDataList(current?: number) {
+  if (current && current === 1) {
+    pagination.value.page = current
   }
+  data.value.loading = true
+  const params = getParams<{{ pascalCase moduleName }}Params>({
+    ...data.value.search
+  },
+  {
+    type: 'daterange',
+    name: 'daterange',
+    prop: 'createdTime',
+  },
+  )
+  data.value.search.title && (params.model.title = data.value.search.title)
+  const res = await crud{{properCase moduleName}}.list(params)
+  data.value.dataList = get(res, 'records', [])
+  pagination.value.total = Number(res.total)
+  pagination.value.page = Number(get(res, 'current', 1))
+  // pagination.value.size = res.size
+  setTimeout(() => {
+    data.value.loading = false
+  }, 100)
+}
 
-  // 当前页码切换（翻页）
-  function currentChange(page = 1) {
-    onCurrentChange(page).then(() => getDataList())
+// 每页数量切换
+function sizeChange(size: number) {
+  onSizeChange(size).then(() => getDataList())
+}
+
+// 当前页码切换（翻页）
+function currentChange(page = 1) {
+  onCurrentChange(page).then(() => getDataList())
 }
 
 // 字段排序
@@ -136,40 +142,40 @@ function onEdit(row: any) {
   }
 }
 
-  function onView(row: any) {
-    if (data.value.formMode === 'router') {
-      router.push({
-        name: '{{properCase componentDetailName }}Detail',
-        params: {
-          id: row.id,
-          type: 'view',
-        },
-      })
-    } else {
-      data.value.formModeProps.id = row.id
-      data.value.formModeProps.visible = true
-      data.value.formModeProps.type = 'view'
-    }
-  }
-
-  function onDel(row?: any) {
-    let ids: string[] = []
-    if (row) {
-      ids.push(row.id)
-    } else {
-      ids = data.value.batch.selectionDataList.map(item => item.id)
-    }
-    ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-      crud{{properCase moduleName}}.delete(ids).then(() => {
-        getDataList()
-        ElMessage.success({
-          message: '删除成功',
-          center: true,
-        })
-      })
-    }).catch(() => {
+function onView(row: any) {
+  if (data.value.formMode === 'router') {
+    router.push({
+      name: '{{properCase componentDetailName }}Detail',
+      params: {
+        id: row.id,
+        type: 'view',
+      },
     })
+  } else {
+    data.value.formModeProps.id = row.id
+    data.value.formModeProps.visible = true
+    data.value.formModeProps.type = 'view'
   }
+}
+
+function onDel(row?: any) {
+  let ids: string[] = []
+  if (row) {
+    ids.push(row.id)
+  } else {
+    ids = data.value.batch.selectionDataList.map(item => item.id)
+  }
+  ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
+    crud{{properCase moduleName}}.delete(ids).then(() => {
+      getDataList()
+      ElMessage.success({
+        message: '删除成功',
+        center: true,
+      })
+    })
+  }).catch(() => {
+  })
+}
 
 </script>
 
@@ -201,10 +207,19 @@ function onEdit(row: any) {
                   @keydown.enter="currentChange()" @clear="currentChange()"
               />
             </el-form-item>
-            <el-form-item v-show="!fold" label="标题4">
-              <el-input
-                  v-model="data.search.title4" placeholder="请输入，支持模糊查询" clearable
-                  @keydown.enter="currentChange()" @clear="currentChange()"
+            <el-form-item v-show="!fold" label="创建时间">
+              <el-date-picker
+                  v-model="data.search.daterange"
+                  :default-time="[
+                  new Date(2000, 1, 1, 0, 0, 0),
+                  new Date(2000, 2, 1, 23, 59, 59),
+                ]"
+                  end-placeholder="结束时间"
+                  range-separator=":"
+                  start-placeholder="开始时间"
+                  style="width: 250px;"
+                  type="daterange"
+                  value-format="YYYY-MM-DD HH:mm:ss"
               />
             </el-form-item>
             <el-form-item>
@@ -213,6 +228,9 @@ function onEdit(row: any) {
                   <svg-icon name="ep:search"/>
                 </template>
                 筛选
+              </el-button>
+              <el-button type="primary" @click="resetQuery(defaultQuery)">
+                重置
               </el-button>
               <el-button type="primary" link @click="data.searchFold = !fold">
                 <template #icon>
