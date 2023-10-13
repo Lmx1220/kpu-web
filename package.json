@@ -29,6 +29,7 @@
     "codemirror": "^6.0.1",
     "element-plus": "^2.3.8",
     "eruda": "^3.0.1",
+    "highlight.js": "^11.9.0",
     "hotkeys-js": "^3.11.2",
     "js-base64": "^3.7.5",
     "lodash-es": "^4.17.21",

@@ -2,16 +2,14 @@
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
-import type { DictOption, Option } from '@/api/model/baseModel'
-import { findEnumListByType } from '@/api/modules/common/dict'
-import type { OptLogParams } from '@/api/modules/system/model/optLogModel'
-import crudOptLog from '@/api/modules/system/optLog'
+import crudDatasourceConfig from '@/api/modules/tools/datasourceConfig'
+import type { DatasourceConfigParams } from '@/api/modules/tools/model/datasourceConfigModel'
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
 
 defineOptions({
-  name: 'SystemOptLogList',
+  name: 'ToolsDatasourceConfigList',
 })
 const {
   pagination,
@@ -24,13 +22,11 @@ const {
 } = usePagination()
 const router = useRouter()
 // const route = useRoute()
+
 const defaultQuery = {
-  type: '',
-  description: '',
-  nickName: '',
-  classPath: '',
-  requestUri: '',
-  requestIp: '',
+  name: '',
+  username: '',
+  url: '',
   daterange: [],
 }
 const data = ref<DataConfig>({
@@ -42,7 +38,7 @@ const data = ref<DataConfig>({
    * dialog 对话框
    * drawer 抽屉
    */
-  formMode: 'drawer',
+  formMode: 'dialog',
   // 详情
   formModeProps: {
     visible: false,
@@ -53,18 +49,16 @@ const data = ref<DataConfig>({
   searchFold: false,
   // 批量操作
   batch: {
-    enable: true,
+    enable: false,
     selectionDataList: [],
   },
   // 列表数据
   dataList: [],
-  dicts: new Map<string, Option[]>(),
 })
 
 const table = ref<InstanceType<typeof ElTable>>()
 
 onMounted(() => {
-  getDict()
   getDataList()
   if (data.value.formMode === 'router') {
     eventBus.on('get-data-list', () => {
@@ -84,20 +78,11 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<OptLogParams>({
+  const params = getParams<DatasourceConfigParams>({
     ...data.value.search,
-  },
-  {
-    type: 'daterange',
-    name: 'daterange',
-    prop: 'createdTime',
-  },
-  )
-  // if (data.value.daterange) {
-  //   params.extra.createdTime_st = data.value.daterange[0]
-  //   params.extra.createdTime_ed = data.value.daterange[1]
-  // }
-  const res = await crudOptLog.list(params)
+  })
+  data.value.search.title && (params.model.title = data.value.search.title)
+  const res = await crudDatasourceConfig.list(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)
   pagination.value.page = Number(get(res, 'current', 1))
@@ -118,35 +103,15 @@ function currentChange(page = 1) {
 }
 
 // 字段排序
-function sortChange({
-  prop,
-  order,
-}: any) {
+function sortChange({ prop, order }: any) {
   onSortChange(prop, order).then(() => getDataList())
-}
-
-function filterChange(filters: any) {
-  const { queryParams } = toValue(data)
-  for (const key in filters) {
-    if (key.includes('.')) {
-      queryParams.model[key.split('.')[0]] = filters[key]
-    }
-    else {
-      queryParams.model[key] = filters[key]
-    }
-    if (key === 'state') {
-      queryParams.model[key] = filters[key][0]
-    }
-  }
-
-  getDataList(1)
 }
 
 function onCreate() {
   if (data.value.formMode === 'router') {
     router.push({
-      name: 'SystemOptLogCreate',
-      query: {
+      name: 'ToolsDatasourceConfigCreate',
+      params: {
         type: 'add',
       },
     })
@@ -161,11 +126,9 @@ function onCreate() {
 function onEdit(row: any) {
   if (data.value.formMode === 'router') {
     router.push({
-      name: 'SystemOptLogEdit',
+      name: 'ToolsDatasourceConfigEdit',
       params: {
         id: row.id,
-      },
-      query: {
         type: 'edit',
       },
     })
@@ -180,11 +143,9 @@ function onEdit(row: any) {
 function onView(row: any) {
   if (data.value.formMode === 'router') {
     router.push({
-      name: 'SystemOptLogDetail',
+      name: 'ToolsDatasourceConfigDetail',
       params: {
         id: row.id,
-      },
-      query: {
         type: 'view',
       },
     })
@@ -205,44 +166,21 @@ function onDel(row?: any) {
     ids = data.value.batch.selectionDataList.map(item => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudOptLog.delete(ids).then(() => {
+    crudDatasourceConfig.delete(ids).then(() => {
       getDataList()
       ElMessage.success({
-        message: '模拟删除成功',
+        message: '删除成功',
         center: true,
       })
     })
   }).catch(() => {
-  })
-}
-
-function onCommand(type: number) {
-  ElMessageBox.confirm('确认要清理数据吗？').then(() => {
-    crudOptLog.clear(type).then(() => {
-      getDataList(1)
-      ElMessage.success({
-        message: '清理成功',
-        center: true,
-      })
-    })
-  }).catch(() => {
-  })
-}
-
-async function getDict() {
-  const options: DictOption = await findEnumListByType([{
-    type: 'LogType',
-    extendFirst: true,
-  }])
-  Object.entries(options).forEach(([key, value]) => {
-    data.value.dicts.set(key, value)
   })
 }
 </script>
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="登录日志" />
+    <page-header title="数据源管理" />
     <page-main>
       <search-bar
         :fold="data.searchFold"
@@ -253,44 +191,21 @@ async function getDict() {
             :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
             size="default"
           >
-            <el-form-item label="日志类型">
-              <el-select
-                v-model="data.search.type" clearable placeholder="请选择" size="default"
-                @change="currentChange()"
-              >
-                <el-option
-                  v-for="item in data.dicts.get('LogType') || []" :key="item.value" :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="操作描述">
+            <el-form-item label="名称">
               <el-input
-                v-model="data.search.description" clearable placeholder="请输入，支持模糊查询"
+                v-model="data.search.name" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
             </el-form-item>
-            <el-form-item label="操作人">
+            <el-form-item v-show="!fold" label="账号">
               <el-input
-                v-model="data.search.nickName" clearable placeholder="请输入，支持模糊查询"
+                v-model="data.search.username" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
             </el-form-item>
-            <el-form-item v-show="!fold" label="类路径">
+            <el-form-item v-show="!fold" label="链接">
               <el-input
-                v-model="data.search.classPath" clearable placeholder="请输入，支持模糊查询"
-                @clear="currentChange()" @keydown.enter="currentChange()"
-              />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="请求地址">
-              <el-input
-                v-model="data.search.requestUri" clearable placeholder="请输入，支持模糊查询"
-                @clear="currentChange()" @keydown.enter="currentChange()"
-              />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="操作IP">
-              <el-input
-                v-model="data.search.requestIp" clearable placeholder="请输入，支持模糊查询"
+                v-model="data.search.url" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
             </el-form-item>
@@ -309,7 +224,6 @@ async function getDict() {
                 value-format="YYYY-MM-DD HH:mm:ss"
               />
             </el-form-item>
-
             <el-form-item>
               <el-button type="primary" @click="currentChange()">
                 <template #icon>
@@ -332,91 +246,42 @@ async function getDict() {
       </search-bar>
       <el-divider border-style="dashed" />
       <el-space wrap>
+        <el-button size="default" type="primary" @click="onCreate">
+          <template #icon>
+            <svg-icon name="ep:plus" />
+          </template>
+          新增
+        </el-button>
         <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
           <template #icon>
             <svg-icon name="ep:delete" />
           </template>
           删除
         </el-button>
-        <el-dropdown trigger="click" @command="onCommand">
-          <el-button size="default">
-            清除日志
-          </el-button>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item :command="1">
-                保留一个月
-              </el-dropdown-item>
-              <el-dropdown-item :command="2">
-                保留三个月
-              </el-dropdown-item>
-              <el-dropdown-item :command="3">
-                保留六个月
-              </el-dropdown-item>
-              <el-dropdown-item :command="4">
-                保留一年
-              </el-dropdown-item>
-              <el-dropdown-item :command="5">
-                保留一千条
-              </el-dropdown-item>
-              <el-dropdown-item :command="6">
-                保留一万条
-              </el-dropdown-item>
-              <el-dropdown-item :command="7">
-                保留三万条
-              </el-dropdown-item>
-              <el-dropdown-item :command="8">
-                保留十万条
-              </el-dropdown-item>
-              <el-dropdown-item :command="9">
-                清空所有
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
       </el-space>
       <ElTable
-        ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%"
-        highlight-current-row
+        ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
         <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
-        <el-table-column align="center" label="序号" width="100">
-          <template #default="{ $index }">
-            {{ (pagination.size * (pagination.page - 1)) + $index + 1 }}
-          </template>
+        <el-table-column label="名称" prop="name" />
+        <el-table-column label="账号" prop="username" />
+        <el-table-column label="密码" prop="password">
+          ***
         </el-table-column>
-        <el-table-column align="center" label="操作IP" prop="requestIp" width="150" />
-        <el-table-column align="center" label="日志类型" prop="type" width="150">
-          <template #default="{ row }">
-            {{ row.echoMap.type }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="操作描述" prop="description" show-overflow-tooltip width="150" />
-        <el-table-column align="center" label="请求方法" prop="classPath" show-overflow-tooltip width="150">
-          <template #default="{ row }">
-            {{ `${row.classPath}#${row.actionMethod}` }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="请求地址" prop="requestUri" show-overflow-tooltip width="150" />
-        <el-table-column align="center" label="消耗时间" prop="consumingTime" width="120" />
-        <el-table-column align="center" label="请求类型" prop="httpMethod" width="120" />
-        <el-table-column align="center" label="开始时间" prop="startTime" width="180" />
-        <el-table-column align="center" label="完成时间" prop="finishTime" width="180" />
-        <el-table-column align="center" label="浏览器" prop="ua" show-overflow-tooltip width="150" />
-        <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
-        <el-table-column align="center" fixed="right" label="操作" width="150">
+        <el-table-column label="驱动" min-width="160" prop="driverClassName" show-overflow-tooltip />
+        <el-table-column label="链接" min-width="200" prop="url" show-overflow-tooltip />
+        <el-table-column label="创建时间" prop="createdTime" sortable="custom" width="180" />
+        <el-table-column align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button size="small" text type="primary" @click="onView(scope.row)">
-              <template #icon>
-                <svg-icon name="ep:view" />
-              </template>
+            <el-button plain size="small" type="primary" @click="onView(scope.row)">
+              查 看
             </el-button>
-            <el-divider direction="vertical" />
-            <el-button size="small" text type="danger" @click="onDel(scope.row)">
-              <template #icon>
-                <svg-icon name="ep:delete" />
-              </template>
+            <el-button plain size="small" type="primary" @click="onEdit(scope.row)">
+              编 辑
+            </el-button>
+            <el-button plain size="small" type="danger" @click="onDel(scope.row)">
+              删 除
             </el-button>
           </template>
         </el-table-column>
@@ -429,7 +294,8 @@ async function getDict() {
     </page-main>
     <FormMode
       v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
-      v-model="data.formModeProps.visible" :mode="data.formMode" @success="getDataList"
+      v-model="data.formModeProps.visible" :mode="data.formMode" :type="data.formModeProps.type"
+      @success="getDataList"
     />
   </div>
 </template>
@@ -482,7 +348,7 @@ async function getDict() {
 
   }
 
-  > .el-divider {
+  .el-divider {
     margin-inline: -20px;
     width: calc(100% + 40px);
   }

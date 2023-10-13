@@ -38,6 +38,9 @@ dependencies:
   eruda:
     specifier: ^3.0.1
     version: 3.0.1
+  highlight.js:
+    specifier: ^11.9.0
+    version: 11.9.0
   hotkeys-js:
     specifier: ^3.11.2
     version: 3.11.2
@@ -678,6 +681,7 @@ packages:
   /@babel/plugin-proposal-unicode-property-regex@7.18.6(@babel/core@7.22.9):
     resolution: { integrity: sha512-2BShG/d5yoZyXZfVePH91urL5wTG6ASZU9M4o03lKK8u8UW1y08OMttBSOADTcJrnPMpvDXRG3G8fyLh4ovs8w== }
     engines: { node: '>=4' }
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-unicode-property-regex instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
@@ -6048,6 +6052,11 @@ packages:
       capital-case: 1.0.4
       tslib: 2.6.1
     dev: true
+
+  /highlight.js@11.9.0:
+    resolution: { integrity: sha512-fJ7cW7fQGCYAkgv4CPfwFHrfd/cLS4Hau96JuJ+ZTOWhjnhoeN1ub1tFmALm/+lW5z4WCAuAV9bm05AP0mS6Gw== }
+    engines: { node: '>=12.0.0' }
+    dev: false
 
   /homedir-polyfill@1.0.3:
     resolution: {integrity: sha512-eSmmWE5bZTK2Nou4g0AI3zZ9rswp7GRKoKXS1BLUkvPviOqs4YTN1djQIqrXy9k5gEtdLPy86JjRwsNM9tnDcA==}
