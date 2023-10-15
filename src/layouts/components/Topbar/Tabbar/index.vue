@@ -455,7 +455,42 @@ onUnmounted(
     }
   }
 }
-
+.mx-menu-ghost-host {
+  z-index: 1000;
+  .mx-context-menu {
+    position: fixed;
+    background-color: var(--g-app-bg);
+    box-shadow: var(--el-box-shadow);
+    .mx-context-menu-items {
+      .mx-context-menu-item {
+        transition: background-color .3s;
+        &:not(.disabled):hover {
+          cursor: pointer;
+          background-color: var(--el-fill-color);
+        }
+        span {
+          color: var(--el-text-color-primary);
+        }
+        .icon {
+          width: 1em;
+          margin-right: 10px;
+          color: var(--el-text-color-primary);
+        }
+        &.disabled  {
+          .icon,span{
+            color: var(--el-text-color-disabled);
+          }
+        }
+      }
+    }
+    .mx-context-menu-item-sperator {
+      background-color: var(--g-app-bg);
+      &:after {
+        background-color: var(--el-border-color);
+      }
+    }
+  }
+}
 .tabbar-dropdown {
   .quick-button {
     padding: 15px 15px 10px;

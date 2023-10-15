@@ -12,10 +12,12 @@ import createCompression from './compression'
 import createPwa from './pwa'
 import createMock from './mock'
 import createVisualizer from './visualizer'
+import createVueDevTools from './vue-dev-tools'
 
 export default function creactVitePlugins(viteEnv, isBuild = false) {
   const vitePlugins: (PluginOption | PluginOption[] | Plugin)[] = [vue()]
   // vitePlugins.push(createInspector())
+  vitePlugins.push(createVueDevTools())
   vitePlugins.push(createAutoImport())
   vitePlugins.push(createComponents())
   vitePlugins.push(createUnoCss())

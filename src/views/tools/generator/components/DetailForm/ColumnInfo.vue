@@ -3,7 +3,7 @@ import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import type { DataConfig } from '#/global'
 import crudGenerator from '@/api/modules/tools/genTableColumn'
-import type { GeneratorParams } from '@/api/modules/tools/model/generatorModel'
+import type { GenTableColumnParams } from '@/api/modules/tools/model/genTableColumnModel'
 import { deepClone } from '@/util'
 import usePagination from '@/util/usePagination'
 
@@ -172,7 +172,7 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<GeneratorParams>({
+  const params = getParams<GenTableColumnParams>({
     ...data.value.search,
   })
   params.model.tableId = props.id
@@ -191,26 +191,6 @@ onMounted(() => {
 })
 // async function getDict() {
 //   const options: DictOption = await findEnumListByType([
-//     {
-//       type: 'EntitySuperClassEnum',
-//       extendFirst: true,
-//     },
-//     {
-//       type: 'SuperClassEnum',
-//       extendFirst: true,
-//     },
-//     {
-//       type: 'GenTypeEnum',
-//       extendFirst: true,
-//     },
-//     {
-//       type: 'PopupTypeEnum',
-//       extendFirst: true,
-//     },
-//     {
-//       type: 'TplEnum',
-//       extendFirst: true,
-//     },
 //     {
 //       type: 'FileOverrideStrategyEnum',
 //       extendFirst: true,

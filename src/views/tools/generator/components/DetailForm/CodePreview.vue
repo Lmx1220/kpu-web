@@ -55,13 +55,13 @@ const data = ref<Data>({
   templateObj: {},
   activeNameTemplate: '',
 })
-
 async function getDataList() {
   data.value.loading = true
   const id = isArray(props.id) ? props.id : [props.id]
   const res = await findTableList(id) as any
   data.value.tableList = res
   data.value.activeName = res[0]?.id
+  getPreviewCode()
   setTimeout(() => {
     data.value.loading = false
   }, 100)

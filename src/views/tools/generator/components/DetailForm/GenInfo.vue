@@ -2,6 +2,7 @@
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { camelCase } from 'lodash-es'
+import { getListDatasourceConfigQuery } from '@/api/modules/tools/datasourceConfig'
 import type { DictOption } from '@/api/model/baseModel'
 import { findEnumListByType } from '@/api/modules/common/dict'
 import { resourceAuthTree } from '@/api/modules/system/menu'
@@ -351,6 +352,12 @@ async function getDict() {
   resourceAuthTree().then((res) => {
     data.value.dicts.set('menuList', res)
   })
+  getListDatasourceConfigQuery({}).then((records) => {
+    data.value.dicts.set('DsEnum', records.map(item => ({
+      label: item.name,
+      value: item.id,
+    })))
+  })
   crudGenerator.query().then((res) => {
     data.value.dicts.set('genTableList', res)
   })
@@ -480,7 +487,7 @@ defineExpose({
               v-model="data.form.dsId" disabled placeholder="请选择"
             >
               <el-option
-                v-for="item in data.dicts.get('LogType') || []" :key="item.value" :label="item.label"
+                v-for="item in data.dicts.get('DsEnum') || []" :key="item.value" :label="item.label"
                 :value="item.value"
               />
             </el-select>
@@ -777,6 +784,7 @@ defineExpose({
               :check-strictly="true"
               :data="data.dicts.get('menuList') || []"
               :render-after-expand="false"
+              :default-expanded-keys="['10']"
               highlight-current
               node-key="id"
               show-checkbox
