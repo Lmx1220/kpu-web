@@ -41,7 +41,7 @@ const title = computed(() => {
     case 'view':
       return '查看登录日志'
     default:
-      return '查看角色'
+      return '查看登录日志'
   }
 })
 

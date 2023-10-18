@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ElMessageBox, ElTable } from 'element-plus'
+import type { GenTableListGetResultModel, GenTableParams } from '@/api/modules/tools/model/genTableModel'
 import type { DataConfig } from '#/global'
 import { getListDatasourceConfigQuery } from '@/api/modules/tools/datasourceConfig'
 import { importCheck, importTable, selectTableList } from '@/api/modules/tools/genTable'
-import type { GenTableParams } from '@/api/modules/tools/model/genTableModel'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination'
 
@@ -44,7 +44,7 @@ const data = ref<DataConfig>({
   dataList: [],
   dicts: new Map(),
 })
-const list = ref([])
+const list = ref<GenTableListGetResultModel>([])
 const table = ref<InstanceType<typeof ElTable>>()
 
 async function getDataList(current?: number) {
@@ -81,15 +81,15 @@ function dsList() {
 
 async function getDataLists() {
   data.value.loading = true
-  const params = getParams<GeneratorParams>({
+  const params = getParams<GenTableParams>({
     ...data.value.search,
   })
   try {
-    list.value = await selectTableList(params)
+    list.value = await selectTableList(params.model)
   }
   catch (e) {
     list.value = []
-    console.log(e)
+    console.error(e)
   }
   finally {
     setTimeout(() => {
@@ -125,7 +125,7 @@ async function onOk() {
     await importCheck(tableNames) && importTable({ dsId: data.value.search.dsId, tableNames })
     isAdd = true
   }
-  catch (e) {
+  catch (e: any) {
     if (e?.response?.data?.msg?.indexOf('是否覆盖导入') > -1) {
       const msg = e?.response?.data?.msg ?? '是否确认导入此表？'
       await ElMessageBox.confirm(msg, '提示', {

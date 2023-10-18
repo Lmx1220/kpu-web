@@ -3,6 +3,7 @@ import type { BasicFetchResult } from '@/api/model/baseModel'
 export interface GenTableColumnParams {
   title?: string
   dsId?: string
+  tableId?: string | string[]
 }
 
 export interface GenTableColumnListItem {

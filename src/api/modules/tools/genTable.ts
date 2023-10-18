@@ -1,11 +1,12 @@
 import qs from 'qs'
-import api from '@/api'
-import type { BasicPageParams } from '@/api/model/baseModel'
 import type {
+  GenTableListGetResultModel,
   GenTableListItem,
   GenTablePageListGetResultModel,
   GenTableParams,
 } from '@/api/modules/tools/model/genTableModel'
+import api from '@/api'
+import type { BasicPageParams } from '@/api/model/baseModel'
 import { ContentTypeEnum } from '@/enums/httpEnum'
 
 // 前缀 变量
@@ -26,7 +27,7 @@ export function getQueryListGenTable(params?: GenTableParams) {
 }
 
 export function selectTableList(params: GenTableParams) {
-  return api.post<GenTablePageListGetResultModel>({
+  return api.post<GenTableListGetResultModel>({
     url: `${prefix}/selectTableList`,
     params,
   })

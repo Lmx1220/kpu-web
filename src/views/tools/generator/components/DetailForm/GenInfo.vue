@@ -839,7 +839,7 @@ defineExpose({
       </template>
       <el-row class="justify-center">
         <div>
-          <el-button @click="() => (form.resetFields())">
+          <el-button @click="() => (form?.resetFields())">
             重置
           </el-button>
           <el-button @click="onOk()">

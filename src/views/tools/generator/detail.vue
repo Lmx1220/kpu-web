@@ -45,14 +45,17 @@ const steps = ref([{
   title: '立即生成',
 
 }])
-const activeStatus = ref({
+const activeStatus = ref<{
+  active: number
+  processStatus: 'error' | 'success' | 'wait' | 'finish' | 'process' | undefined
+}>({
   active: 0,
   processStatus: 'finish',
 })
 
 function updateActiveStatus(val: {
   active?: number
-  processStatus?: string
+  processStatus?: 'error' | 'success' | 'wait' | 'finish' | 'process' | undefined
 }) {
   activeStatus.value = { ...activeStatus.value, ...val }
 }

@@ -35,13 +35,13 @@ const form = ref<InstanceType<typeof DetailForm>>()
 const title = computed(() => {
   switch (props.type) {
     case 'add':
-      return '新增登录日志'
+      return '新增操作日志'
     case 'edit':
-      return '编辑登录日志'
+      return '编辑操作日志'
     case 'view':
-      return '查看登录日志'
+      return '查看操作日志'
     default:
-      return '查看角色'
+      return '查看操作日志'
   }
 })
 

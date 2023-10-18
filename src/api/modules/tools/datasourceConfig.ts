@@ -18,7 +18,7 @@ export function getListDatasourceConfig(params: BasicPageParams<any> & Datasourc
 }
 
 export function getListDatasourceConfigQuery(params?: DatasourceConfigParams) {
-  return api.post<DatasourceConfigPageListGetResultModel>({
+  return api.post<DatasourceConfigListItem[]>({
     url: `${prefix}/query`,
     params,
   })
