@@ -1,10 +1,10 @@
 import api from '@/api'
-import type { BasicPageParams } from '@/api/model/baseModel'
+import type { PageParams, PageResult } from '@/api/model/baseModel'
 import type { {{ pascalCase moduleName }}ListItem, {{ pascalCase moduleName }}PageListGetResultModel, {{ pascalCase moduleName }}Params } from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}model/{{ pascalCase moduleName }}Model'
 
 // 前缀 变量
 const prefix = '/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ pascalCase moduleName }}'
-export function getList{{ pascalCase moduleName }}(params: BasicPageParams & {{ pascalCase moduleName }}Params) {
+export function getList{{ pascalCase moduleName }}(params: PageParams & {{ pascalCase moduleName }}Params) {
   return api.post<{{ pascalCase moduleName }}PageListGetResultModel>({
     url: `${prefix}/page`,
     params,

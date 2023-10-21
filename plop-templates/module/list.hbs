@@ -84,7 +84,6 @@ async function getDataList(current?: number) {
     prop: 'createdTime',
   },
   )
-  data.value.search.title && (params.model.title = data.value.search.title)
   const res = await crud{{properCase moduleName}}.list(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)
