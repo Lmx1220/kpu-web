@@ -1,94 +1,82 @@
-import api from '@/api'
-import type { BasicPageParams } from '@/api/model/baseModel'
+import type { AxiosRequestConfig } from 'axios'
 import type {
-  RoleListItem,
-  RolePageListGetResultModel,
-  RoleParams,
+  RolePageQuery,
   RoleResourceSaveVO,
+  RoleResultVO,
+  RoleSaveVO,
+  RoleUpdateVO,
   RoleUserSaveVO,
-} from '@/api/modules/system/model/roleModel'
+} from './model/roleModel'
+import defHttp from '@/api'
+import { RequestEnum } from '@/enums/httpEnum'
+import type { PageParams, PageResult } from '@/api/model/baseModel'
 
-// 前缀 变量
-const prefix = '/role'
+const MODULAR = 'role'
+const ServicePrefix = ''
 
-export function getListRole(params: BasicPageParams<RoleParams>) {
-  return api.post<RolePageListGetResultModel>({
-    url: `${prefix}/page`,
-    data: { ...params },
-  })
+export const Api = {
+  Page: { url: `${ServicePrefix}/${MODULAR}/page`, method: RequestEnum.POST } as AxiosRequestConfig,
+  Save: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.POST } as AxiosRequestConfig,
+  Update: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.PUT },
+  Delete: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.DELETE } as AxiosRequestConfig,
+  Query: { url: `${ServicePrefix}/${MODULAR}/query`, method: RequestEnum.POST } as AxiosRequestConfig,
+  Detail: { url: `${ServicePrefix}/${MODULAR}/detail`, method: RequestEnum.GET } as AxiosRequestConfig,
+  Copy: { url: `${ServicePrefix}/${MODULAR}/copy`, method: RequestEnum.POST } as AxiosRequestConfig,
+  MyPage: { url: `${ServicePrefix}/${MODULAR}/myPage`, method: RequestEnum.POST } as AxiosRequestConfig,
+  ResourceList: { url: `${ServicePrefix}/${MODULAR}/resourceList`, method: RequestEnum.GET } as AxiosRequestConfig,
+  SaveResource: { url: `${ServicePrefix}/${MODULAR}/saveResource`, method: RequestEnum.POST } as AxiosRequestConfig,
+  UserList: { url: `${ServicePrefix}/${MODULAR}/userList`, method: RequestEnum.GET } as AxiosRequestConfig,
+  SaveRoleUser: { url: `${ServicePrefix}/${MODULAR}/saveRoleUser`, method: RequestEnum.POST } as AxiosRequestConfig,
 }
 
-export function getMyListRole(params: BasicPageParams<RoleParams>) {
-  return api.post<RolePageListGetResultModel>({
-    url: `${prefix}/myPage`,
-    data: { ...params },
-  })
+export function page(params: PageParams<RolePageQuery>) {
+  return defHttp.request<PageResult<RoleResultVO>>({ ...Api.Page, params })
+}
+export function save(params: RoleSaveVO) {
+  return defHttp.request<RoleResultVO>({ ...Api.Save, params })
+}
+export function update(params: RoleUpdateVO) {
+  return defHttp.request<RoleResultVO>({ ...Api.Update, params })
+}
+export function remove(params: string[]) {
+  return defHttp.request<boolean>({ ...Api.Delete, params })
+}
+export function query(params: RolePageQuery) {
+  return defHttp.request<RoleResultVO[]>({ ...Api.Query, params })
+}
+export function detail(id: string) {
+  return defHttp.request<RoleResultVO>({ ...Api.Detail, params: { id } })
+}
+export function copy(id: string) {
+  return defHttp.request<RoleResultVO>({ ...Api.Copy, params: { id } })
 }
 
-export function detailRole(id: string | number) {
-  return api.get<RoleListItem>({
-    url: `${prefix}/detail`,
-    params: {
-      id,
-    },
-  })
+export function getMyListRole(params: PageParams<RolePageQuery>) {
+  return defHttp.request<PageResult<RoleResultVO>>({ ...Api.Page, params })
 }
 
-export function createRole(data: any) {
-  return api.post({
-    url: `${prefix}`,
-    data,
-  })
-}
-
-export function editRole(data: any) {
-  return api.put<void>({
-    url: `${prefix}`,
-    data,
-  })
-}
-
-export function deleteRole(ids: string[]) {
-  return api.delete<void>({
-    url: `${prefix}`,
-    data: ids,
-  })
-}
-
-export function resourceList(id: string) {
-  return api.get<string[]>({
-    url: `${prefix}/resourceList`,
-    params: { roleId: id },
-  })
+export function resourceList(roleId: string) {
+  return defHttp.request<string[]>({ ...Api.ResourceList, params: { roleId } })
 }
 
 export function saveResource(data: RoleResourceSaveVO) {
-  return api.post({
-    url: `${prefix}/saveResource`,
-    data,
-  })
+  return defHttp.request<PageResult<RoleResultVO>>({ ...Api.SaveResource, params: data })
 }
 
-export function userList(id: string) {
-  return api.get<string[]>({
-    url: `${prefix}/userList`,
-    params: { roleId: id },
-  })
+export function userList(roleId: string) {
+  return defHttp.request<PageResult<RoleResultVO>>({ ...Api.UserList, params: { roleId } })
 }
 
 export function saveRoleUser(data: RoleUserSaveVO) {
-  return api.post<string[]>({
-    url: `${prefix}/saveRoleUser`,
-    data,
-  })
+  return defHttp.request<PageResult<RoleResultVO>>({ ...Api.SaveRoleUser, params: data })
 }
 
 export default {
-  list: getListRole,
-  detail: detailRole,
-  create: createRole,
-  edit: editRole,
-  delete: deleteRole,
+  list: page,
+  detail,
+  create: save,
+  edit: update,
+  delete: remove,
   resourceList,
   saveResource,
   userList,

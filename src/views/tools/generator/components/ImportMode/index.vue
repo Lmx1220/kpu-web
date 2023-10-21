@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ElMessageBox, ElTable } from 'element-plus'
-import type { GenTableListGetResultModel, GenTableParams } from '@/api/modules/tools/model/genTableModel'
+import type { GenTablePageQuery, GenTableResultVO } from '@/api/modules/tools/model/genTableModel'
 import type { DataConfig } from '#/global'
-import { getListDatasourceConfigQuery } from '@/api/modules/tools/datasourceConfig'
+import { query } from '@/api/modules/tools/datasourceConfig'
 import { importCheck, importTable, selectTableList } from '@/api/modules/tools/genTable'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination'
@@ -44,7 +44,7 @@ const data = ref<DataConfig>({
   dataList: [],
   dicts: new Map(),
 })
-const list = ref<GenTableListGetResultModel>([])
+const list = ref<GenTableResultVO[]>([])
 const table = ref<InstanceType<typeof ElTable>>()
 
 async function getDataList(current?: number) {
@@ -52,7 +52,7 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
 
-  const params = getParams<GenTableParams>({
+  const params = getParams<GenTablePageQuery>({
     ...data.value.search,
   })
   const pageList = list.value.filter((item, index) => {
@@ -68,7 +68,7 @@ const dsLoading = ref(false)
 
 function dsList() {
   dsLoading.value = true
-  getListDatasourceConfigQuery({}).then((records) => {
+  query({}).then((records) => {
     data.value.dicts.set('DsEnum', records.map(item => ({
       label: item.name,
       value: item.id,
@@ -81,11 +81,11 @@ function dsList() {
 
 async function getDataLists() {
   data.value.loading = true
-  const params = getParams<GenTableParams>({
+  const params = getParams<GenTablePageQuery>({
     ...data.value.search,
   })
   try {
-    list.value = await selectTableList(params.model)
+    list.value = await selectTableList(params)
   }
   catch (e) {
     list.value = []

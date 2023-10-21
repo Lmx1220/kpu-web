@@ -1,24 +1,44 @@
-import type { BasicFetchResult } from '@/api/model/baseModel'
-
-export interface RoleParams {
-  name?: string
-  category?: string
-  state?: boolean
-  userId?: string
-  orgId?: string
-  scope?: string
-  scopeType?: string
+export interface RolePageQuery {
+  category?: string // 角色类别
+  name?: string // 名称
+  code?: string // 编码
+  remarks?: string // 描述
+  state?: boolean // 状态
+  readonly?: boolean // 内置角色
 }
 
-export interface RoleListItem {
+export interface RoleSaveVO {
+  category?: string // 角色类别
+  name?: string // 名称
+  code?: string // 编码
+  remarks?: string // 描述
+  state?: boolean // 状态
+  readonly?: boolean // 内置角色
+}
+
+export interface RoleUpdateVO {
   id: string
-  name: string
-  code: string
-  category: string | null
-  state: boolean | string | null
-  remark: string | null
-  createdTime: string
-  updatedTime: string | null
+  category?: string // 角色类别
+  name?: string // 名称
+  code?: string // 编码
+  remarks?: string // 描述
+  state?: boolean // 状态
+  readonly?: boolean // 内置角色
+}
+
+export interface RoleResultVO {
+  echoMap?: any
+  id?: string // ID
+  createdBy?: string // 创建人id
+  createdTime?: string // 创建时间
+  updatedBy?: string // 更新人id
+  updatedTime?: string // 更新时间
+  category?: string // 角色类别
+  name?: string // 名称
+  code?: string // 编码
+  remarks?: string // 描述
+  state?: boolean // 状态
+  readonly?: boolean // 内置角色
 }
 
 export interface RoleResourceSaveVO {
@@ -31,9 +51,3 @@ export interface RoleUserSaveVO {
   userIdList: string[]
   roleId: string | number
 }
-
-/**
- * @description: Get menu return value
- */
-export type RolePageListGetResultModel = BasicFetchResult<RoleListItem>
-export type RoleListGetResultModel = RoleListItem[]

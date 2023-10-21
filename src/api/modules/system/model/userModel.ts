@@ -1,40 +1,104 @@
-import type { BasicFetchResult } from '@/api/model/baseModel'
-
-export interface UserParams {
-  username?: string
-  mobile?: string
-  nickName?: string
-  scope?: string
-  roleId?: string | number
+export interface UserPageQuery {
+  username?: string // 账号
+  nickName?: string // 姓名
+  orgId?: string // 组织
+  stationId?: string // 岗位
+  readonly?: boolean // 内置
+  email?: string // 邮箱
+  mobile?: string // 手机
+  sex?: string // 性别
+  state?: boolean // 状态
+  avatar?: string // 头像
+  nation?: string // 民族
+  education?: string // 学历
+  positionStatus?: string // 职位状态
+  workDescribe?: string // 工作描述
+  passwordErrorLastTime?: string // 最后一次输错密码时间
+  passwordErrorNum?: number // 密码错误次数
+  passwordExpireTime?: string // 密码过期时间
+  password?: string // 密码
+  salt?: string // 密码盐
+  lastLoginTime?: string // 最后登录时间
+  createdOrgId?: string // 创建者所属机构
 }
 
-export interface UserListItem {
-  username: string
-  avatar: string
-  createdTime: string
-  createdBy: number
-  createdOrgId: number
-  echoMap: string
-  education: string
-  email: string
+export interface UserSaveVO {
+  username?: string // 账号
+  nickName?: string // 姓名
+  orgId?: string // 组织
+  stationId?: string // 岗位
+  readonly?: boolean // 内置
+  email?: string // 邮箱
+  mobile?: string // 手机
+  sex?: string // 性别
+  state?: boolean // 状态
+  avatar?: string // 头像
+  nation?: string // 民族
+  education?: string // 学历
+  positionStatus?: string // 职位状态
+  workDescribe?: string // 工作描述
+  passwordErrorLastTime?: string // 最后一次输错密码时间
+  passwordErrorNum?: number // 密码错误次数
+  passwordExpireTime?: string // 密码过期时间
+  password?: string // 密码
+  salt?: string // 密码盐
+  lastLoginTime?: string // 最后登录时间
+  createdOrgId?: string // 创建者所属机构
+}
+
+export interface UserUpdateVO {
   id: string
-  lastLoginTime: string
-  mobile: string
-  nickName: string
-  nation: string
-  orgId: number
-  passwordErrorLastTime: string
-  passwordErrorNum: number
-  passwordExpireTime: string
-  positionStatus: string
-  readonly: boolean
-  salt: string
-  sex: string
-  state: boolean
-  stationId: number
-  updatedTime: string
-  updatedBy: number
-  workDescribe: string
+  username?: string // 账号
+  nickName?: string // 姓名
+  orgId?: string // 组织
+  stationId?: string // 岗位
+  readonly?: boolean // 内置
+  email?: string // 邮箱
+  mobile?: string // 手机
+  sex?: string // 性别
+  state?: boolean // 状态
+  avatar?: string // 头像
+  nation?: string // 民族
+  education?: string // 学历
+  positionStatus?: string // 职位状态
+  workDescribe?: string // 工作描述
+  passwordErrorLastTime?: string // 最后一次输错密码时间
+  passwordErrorNum?: number // 密码错误次数
+  passwordExpireTime?: string // 密码过期时间
+  password?: string // 密码
+  salt?: string // 密码盐
+  lastLoginTime?: string // 最后登录时间
+  createdOrgId?: string // 创建者所属机构
+}
+
+export interface UserResultVO {
+  echoMap?: any
+  id?: string // ID
+  createdBy?: string // 创建人id
+  createdTime?: string // 创建时间
+  updatedBy?: string // 更新人id
+  updatedTime?: string // 更新时间
+  username?: string // 账号
+  nickName?: string // 姓名
+  orgId?: string // 组织
+  stationId?: string // 岗位
+  readonly?: boolean // 内置
+  email?: string // 邮箱
+  mobile?: string // 手机
+  sex?: string // 性别
+  state?: boolean // 状态
+  avatar?: string // 头像
+  nation?: string // 民族
+  education?: string // 学历
+  positionStatus?: string // 职位状态
+  workDescribe?: string // 工作描述
+  passwordErrorLastTime?: string // 最后一次输错密码时间
+  passwordErrorNum?: number // 密码错误次数
+  passwordExpireTime?: string // 密码过期时间
+  password?: string // 密码
+  salt?: string // 密码盐
+  lastLoginTime?: string // 最后登录时间
+  createdOrgId?: string // 创建者所属机构
 }
 
 export interface UserRoleSaveVO {
@@ -42,9 +106,3 @@ export interface UserRoleSaveVO {
   roleIdList: string[]
   userId: string | number
 }
-
-/**
- * @description: Get menu return value
- */
-export type UserPageListGetResultModel = BasicFetchResult<UserListItem>
-export type UserListGetResultModel = UserListItem[]

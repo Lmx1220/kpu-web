@@ -5,7 +5,7 @@ import FormMode from './components/FormMode/index.vue'
 import DictItem from './DictItem.vue'
 import type { DataConfig } from '#/global'
 import crudDict from '@/api/modules/system/dict'
-import type { DictParams } from '@/api/modules/system/model/dictModel'
+import type { DictPageQuery } from '@/api/modules/system/model/dictModel'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
 
@@ -77,7 +77,7 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<DictParams>({
+  const params = getParams<DictPageQuery>({
     ...data.value.search,
   })
   const res = await crudDict.list(params)

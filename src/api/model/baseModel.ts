@@ -2,7 +2,7 @@ export interface Extra {
   [key: string]: any
 }
 
-export interface BasicPageParams<T extends {
+export interface PageParams<T extends {
   [key: string]: any
 }> {
   current: number
@@ -13,7 +13,7 @@ export interface BasicPageParams<T extends {
   extra: Extra
 }
 
-export interface BasicFetchResult<T> {
+export interface PageResult<T> {
   records: T[]
   total: number
 }

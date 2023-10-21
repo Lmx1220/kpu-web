@@ -4,7 +4,7 @@ import { useAttrs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import UploadDialog from './UploadDialog.vue'
 import { useDialog } from '@/components/Dialog/hooks/useDialog'
-import type { UploadApiResult } from '@/api/modules/system/model/uploadModel'
+import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 import type { PromiseFn } from '#/global'
 
 export interface BasicProps {
@@ -23,7 +23,7 @@ export interface BasicProps {
 }
 
 export interface UploadContainerProps extends BasicProps {
-  value?: UploadApiResult[]
+  value?: FileResultVO[]
   showPreviewNumber?: boolean
   emptyHidePreview?: boolean
   showPreviewButton?: boolean
@@ -44,17 +44,17 @@ const props = withDefaults(defineProps<UploadContainerProps>(), {
   uploadParams: () => ({}),
 })
 const emits = defineEmits<{
-  'change': [UploadApiResult[]]
+  'change': [FileResultVO[]]
   'delete': [Recordable<any>]
   'previewDelete': [Recordable<any>]
-  'update:value': [UploadApiResult[]]
+  'update:value': [FileResultVO[]]
 }>()
 defineOptions({
   name: 'BasicUpload',
 })
 const { t } = useI18n()
 
-const fileList = ref<UploadApiResult[]>([])
+const fileList = ref<FileResultVO[]>([])
 const showPreview = computed(() => {
   const { emptyHidePreview } = props
   if (!emptyHidePreview) {
@@ -68,13 +68,13 @@ const bindValue = computed(() => {
   return omit(value, 'onChange')
 })
 
-function handleChange(urls: UploadApiResult[]) {
+function handleChange(urls: FileResultVO[]) {
   fileList.value = [...unref(fileList), ...(urls || [])]
   emits('update:value', fileList.value)
   emits('change', fileList.value)
 }
 
-function handlePreviewChange(urls: UploadApiResult[]) {
+function handlePreviewChange(urls: FileResultVO[]) {
   fileList.value = [...(urls || [])]
   emits('update:value', fileList.value)
   emits('change', fileList.value)

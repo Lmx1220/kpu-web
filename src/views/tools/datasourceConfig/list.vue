@@ -3,7 +3,7 @@ import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
 import crudDatasourceConfig, { testConnect } from '@/api/modules/tools/datasourceConfig'
-import type { DatasourceConfigParams } from '@/api/modules/tools/model/datasourceConfigModel'
+import type { DatasourceConfigPageQuery } from '@/api/modules/tools/model/datasourceConfigModel'
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
@@ -78,10 +78,9 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<DatasourceConfigParams>({
+  const params = getParams<DatasourceConfigPageQuery>({
     ...data.value.search,
   })
-  data.value.search.title && (params.model.title = data.value.search.title)
   const res = await crudDatasourceConfig.list(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)

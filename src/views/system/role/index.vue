@@ -3,7 +3,7 @@ import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import type { DictOption, Option } from '@/api/model/baseModel'
 import { findDictMapItemListByKey } from '@/api/modules/common/dict'
-import type { RoleParams } from '@/api/modules/system/model/roleModel'
+import type { RolePageQuery } from '@/api/modules/system/model/roleModel'
 import crudRole from '@/api/modules/system/role'
 import { getCategoryColor } from '@/enums/colorEnum'
 import stautsEnum from '@/enums/stautsEnum'
@@ -79,7 +79,7 @@ onBeforeUnmount(() => {
 
 function getDataList() {
   data.value.loading = true
-  const params = getParams<RoleParams>({
+  const params = getParams<RolePageQuery>({
     ...data.value.search,
   })
 

@@ -2,7 +2,7 @@
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
-import type { StationParams } from '@/api/modules/system/model/stationModel'
+import type { StationPageQuery } from '@/api/modules/system/model/stationModel'
 import crudStation from '@/api/modules/system/station'
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus'
@@ -72,7 +72,7 @@ async function getDataList(current?: number) {
   }
   data.value.loading = true
   try {
-    const params = getParams<StationParams>({
+    const params = getParams<StationPageQuery>({
       ...data.value.search,
     },
     {

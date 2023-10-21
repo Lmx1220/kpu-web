@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import type { BasicPageParams } from '@/api/model/baseModel'
+import type { PageParams } from '@/api/model/baseModel'
 
 interface Pagination {
   page: number
@@ -11,7 +11,7 @@ interface Pagination {
   order?: string
 }
 
-function usePagination() {
+function usePagination<T extends Record<string, any>>() {
   const pagination = ref<Pagination>({
     page: 1,
     size: 10,
@@ -19,7 +19,7 @@ function usePagination() {
     sizes: [2, 10, 20, 50, 100],
     layout: 'total, sizes, ->, prev, pager, next, jumper',
   })
-  const search = ref({})
+  const search: Ref<T> = ref({}) as Ref<T>
   function copyObject<T extends Record<string, any>>(source: T): T {
     const target = {} as T
 
@@ -62,8 +62,8 @@ function usePagination() {
 
   function getParams<T extends {
     [key: string]: any
-  }>(params: T, modelConfig?: ModelConfig | ModelConfig[]): BasicPageParams<T> {
-    const baseParams: BasicPageParams<T> = {
+  }>(params: T, modelConfig?: ModelConfig | ModelConfig[]): PageParams<T> {
+    const baseParams: PageParams<T> = {
       current: toValue(pagination).page,
       size: toValue(pagination).size,
       model: { ...copyObject(toValue(params)) },
@@ -115,7 +115,7 @@ function usePagination() {
       baseParams.sort = toValue(pagination).sort
       baseParams.order = toValue(pagination).order
     }
-    // 假设返回 BasicPageParams<T> 类型的结果
+    // 假设返回 PageParams<T> 类型的结果
     return baseParams
   }
 
@@ -145,11 +145,16 @@ function usePagination() {
      * 重置查询参数
      * @param {any} defaultSearch 默认查询参数
      */
-  function resetQuery(defaultSearch: Record<string, any> = {}) {
-    const queryParams: { [key: string]: any } = search.value
-    Object.keys(queryParams).forEach((key) => {
-      queryParams[key] = defaultSearch[key]
-    })
+  function resetQuery(defaultSearch?: Record<string, any>) {
+    const queryParams: Record<string, any> = search.value
+    if (defaultSearch) {
+      Object.assign(queryParams, defaultSearch)
+    }
+    else {
+      queryParams && Object.keys(queryParams).forEach((key) => {
+        queryParams[key] = undefined
+      })
+    }
     // this?.getDataList && this.getDataList(1)
     // this?.table.clearSort()
     // this?.table.clearFilter()

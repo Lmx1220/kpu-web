@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
+import type { FormConfig } from '#/global'
 import stautsEnum from '@/enums/stautsEnum'
 import crudParameter from '@/api/modules/system/parameter'
 
@@ -14,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'view',
 })
 
-const data = ref({
+const data = ref<FormConfig>({
   loading: false,
   form: {
     id: props.id,

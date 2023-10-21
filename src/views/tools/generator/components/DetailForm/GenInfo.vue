@@ -2,7 +2,9 @@
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { camelCase } from 'lodash-es'
-import { getListDatasourceConfigQuery } from '@/api/modules/tools/datasourceConfig'
+import type { FormConfig } from '#/global'
+import type { GenTableUpdateVO } from '@/api/modules/tools/model/genTableModel'
+import { query as getListDatasourceConfigQuery } from '@/api/modules/tools/datasourceConfig'
 import type { DictOption } from '@/api/model/baseModel'
 import { findEnumListByType } from '@/api/modules/common/dict'
 import { resourceAuthTree } from '@/api/modules/system/menu'
@@ -19,17 +21,7 @@ defineOptions({
   name: 'GenInfo',
 })
 
-interface Data {
-  loading: boolean
-  form: {
-    [key: string]: any
-  }
-  rules: any
-  dicts: Map<string, any>
-
-}
-
-const data = ref<Data>({
+const data = ref<FormConfig>({
   loading: false,
   form: {
     id: props.id,
@@ -299,7 +291,7 @@ const data = ref<Data>({
   dicts: new Map(),
 })
 const form = ref<FormInstance>()
-data.value.dicts.set('isNot', [
+data.value.dicts?.set('isNot', [
   {
     label: '是',
     value: true,
@@ -347,19 +339,19 @@ async function getDict() {
     },
   ])
   Object.entries(options).forEach(([key, value]) => {
-    data.value.dicts.set(key, value)
+    data.value.dicts?.set(key, value)
   })
   resourceAuthTree().then((res) => {
-    data.value.dicts.set('menuList', res)
+    data.value.dicts?.set('menuList', res)
   })
   getListDatasourceConfigQuery({}).then((records) => {
-    data.value.dicts.set('DsEnum', records.map(item => ({
+    data.value.dicts?.set('DsEnum', records.map(item => ({
       label: item.name,
       value: item.id,
     })))
   })
-  crudGenerator.query().then((res) => {
-    data.value.dicts.set('genTableList', res)
+  crudGenerator.query({}).then((res) => {
+    data.value.dicts?.set('genTableList', res)
   })
 }
 
@@ -406,7 +398,7 @@ function onOk(callback?: Function) {
           delete newData[item]
         })
       }
-      crudGenerator.edit(newData).then(() => {
+      crudGenerator.edit(newData as GenTableUpdateVO).then(() => {
         ElMessage.success({
           message: '修改成功',
           center: true,
@@ -487,7 +479,7 @@ defineExpose({
               v-model="data.form.dsId" disabled placeholder="请选择"
             >
               <el-option
-                v-for="item in data.dicts.get('DsEnum') || []" :key="item.value" :label="item.label"
+                v-for="item in data.dicts?.get('DsEnum') || []" :key="item.value" :label="item.label"
                 :value="item.value"
               />
             </el-select>
@@ -548,7 +540,7 @@ defineExpose({
               placeholder="请选择"
             >
               <el-option
-                v-for="item in data.dicts.get('EntitySuperClassEnum') || []" :key="item.value" :label="item.label"
+                v-for="item in data.dicts?.get('EntitySuperClassEnum') || []" :key="item.value" :label="item.label"
                 :value="item.value"
               />
             </el-select>
@@ -561,7 +553,7 @@ defineExpose({
               placeholder="请选择"
             >
               <el-option
-                v-for="item in data.dicts.get('SuperClassEnum') || []" :key="item.value" :label="item.label"
+                v-for="item in data.dicts?.get('SuperClassEnum') || []" :key="item.value" :label="item.label"
                 :value="item.value"
               />
             </el-select>
@@ -570,7 +562,7 @@ defineExpose({
         <el-col :lg="24" :xl="24">
           <el-form-item label="@DS" prop="isDs">
             <el-radio-group v-model="data.form.isDs">
-              <el-radio v-for="(item, index) in data.dicts.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -579,7 +571,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="@TenantLine" prop="isTenantLine">
             <el-radio-group v-model="data.form.isTenantLine">
-              <el-radio v-for="(item, index) in data.dicts.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -588,7 +580,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="lombok" prop="isLombok">
             <el-radio-group v-model="data.form.isLombok">
-              <el-radio v-for="(item, index) in data.dicts.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -597,7 +589,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="链式模型" prop="isChain">
             <el-radio-group v-model="data.form.isChain">
-              <el-radio v-for="(item, index) in data.dicts.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -606,7 +598,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="生成字段常量" prop="isColumnConstant">
             <el-radio-group v-model="data.form.isColumnConstant">
-              <el-radio v-for="(item, index) in data.dicts.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -615,7 +607,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="生成方式" prop="genType">
             <el-radio-group v-model="data.form.genType">
-              <el-radio v-for="(item, index) in data.dicts.get('GenTypeEnum')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('GenTypeEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -647,7 +639,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="弹窗方式" prop="popupType">
             <el-radio-group v-model="data.form.popupType">
-              <el-radio v-for="(item, index) in data.dicts.get('PopupTypeEnum')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('PopupTypeEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -656,7 +648,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="生成模板" prop="tplType">
             <el-radio-group v-model="data.form.tplType">
-              <el-radio v-for="(item, index) in data.dicts.get('TplEnum')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('TplEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -665,7 +657,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="显示新增按钮" prop="addShow">
             <el-radio-group v-model="data.form.addShow">
-              <el-radio v-for="(item, index) in data.dicts.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -674,7 +666,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="显示编辑按钮" prop="editShow">
             <el-radio-group v-model="data.form.editShow">
-              <el-radio v-for="(item, index) in data.dicts.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -683,7 +675,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="显示删除按钮" prop="deleteShow">
             <el-radio-group v-model="data.form.deleteShow">
-              <el-radio v-for="(item, index) in data.dicts.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -692,7 +684,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="显示复制按钮" prop="copyShow">
             <el-radio-group v-model="data.form.copyShow">
-              <el-radio v-for="(item, index) in data.dicts.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -701,7 +693,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="显示详情按钮" prop="viewShow">
             <el-radio-group v-model="data.form.viewShow">
-              <el-radio v-for="(item, index) in data.dicts.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -771,7 +763,7 @@ defineExpose({
         <!--              v-model="data.form.menuApplicationId" placeholder="请选择" -->
         <!--            > -->
         <!--              <el-option -->
-        <!--                v-for="item in data.dicts.get('LogType') || []" :key="item.value" :label="item.label" -->
+        <!--                v-for="item in data.dicts?.get('LogType') || []" :key="item.value" :label="item.label" -->
         <!--                :value="item.value" -->
         <!--              /> -->
         <!--            </el-select> -->
@@ -782,7 +774,7 @@ defineExpose({
             <el-tree-select
               v-model="data.form.menuParentId"
               :check-strictly="true"
-              :data="data.dicts.get('menuList') || []"
+              :data="data.dicts?.get('menuList') || []"
               :render-after-expand="false"
               :default-expanded-keys="['10']"
               highlight-current
@@ -824,7 +816,7 @@ defineExpose({
                 v-model="data.form.subId" placeholder="请选择"
               >
                 <el-option
-                  v-for="item in data.dicts.get('genTableList') || []" :key="item.id" :label="item.name"
+                  v-for="item in data.dicts?.get('genTableList') || []" :key="item.id" :label="item.name"
                   :value="item.id"
                 />
               </el-select>

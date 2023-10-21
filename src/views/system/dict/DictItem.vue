@@ -4,7 +4,7 @@ import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
 import type { DataConfig } from '#/global'
 import crudDictItem from '@/api/modules/system/dictItem'
-import type { DictItemParams } from '@/api/modules/system/model/dictItemModel'
+import type { DictItemPageQuery } from '@/api/modules/system/model/dictItemModel'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
 
@@ -84,7 +84,7 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<DictItemParams>({
+  const params = getParams<DictItemPageQuery>({
     ...data.value.search,
   })
   if (!params.sort) {

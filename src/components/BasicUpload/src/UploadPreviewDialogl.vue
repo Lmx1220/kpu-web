@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import type { UploadApiResult } from '@/api/modules/system/model/uploadModel'
+import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 import { downloadIds } from '@/api/modules/system/upload'
 import { useDialogInner } from '@/components/Dialog/hooks/useDialog'
 import type { DialogMethods } from '@/components/Dialog/typing'
@@ -8,21 +8,21 @@ import { downloadFile } from '@/util'
 import { isArray } from '@/util/is'
 
 interface Props {
-  value?: UploadApiResult[]
+  value?: FileResultVO[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
   value: () => [],
 })
 const emits = defineEmits<{
-  'listChange': [UploadApiResult[]]
+  'listChange': [FileResultVO[]]
   'delete': [string]
   'register': [DialogMethods, string]
-  'update:value': [UploadApiResult[]]
+  'update:value': [FileResultVO[]]
 }>()
 const { t } = useI18n()
 const [register, { closeDialog }] = useDialogInner()
-const fileListRef = ref<UploadApiResult[]>([])
+const fileListRef = ref<FileResultVO[]>([])
 
 watch(
   () => props.value,
@@ -32,16 +32,18 @@ watch(
   },
   { immediate: true })
 
-function handleRemove(record: UploadApiResult) {
+function handleRemove(record: FileResultVO) {
   const index = fileListRef.value.findIndex(item => item.id === record.id)
   if (index !== -1) {
     const removed = fileListRef.value.splice(index, 1)
-    emits('delete', removed[0].id)
+    if (removed[0].id) {
+      emits('delete', removed[0].id)
+    }
     emits('listChange', fileListRef.value)
   }
 }
 
-async function handleDownload(record: UploadApiResult) {
+async function handleDownload(record: FileResultVO) {
   const { id = '' } = record
   const res = await downloadIds([id])
   downloadFile(res)

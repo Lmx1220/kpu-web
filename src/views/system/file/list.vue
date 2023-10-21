@@ -2,9 +2,10 @@
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
+import { findEnumListByType } from '@/api/modules/common/dict'
+import type { DictOption } from '@/api/model/baseModel'
 import crudFile from '@/api/modules/system/file'
-import type { FileParams } from '@/api/modules/system/model/fileModel'
-import type { UploadApiResult } from '@/api/modules/system/model/uploadModel'
+import type { FilePageQuery, FileResultVO } from '@/api/modules/system/model/fileModel'
 import { downloadIds, uploadApi } from '@/api/modules/system/upload'
 import type { DataConfig } from '@/types/global'
 import { downloadFile } from '@/util'
@@ -16,10 +17,12 @@ defineOptions({
 })
 const {
   pagination,
+  search,
   getParams,
   onSizeChange,
   onCurrentChange,
   onSortChange,
+  resetQuery,
 } = usePagination()
 const router = useRouter()
 // const route = useRoute()
@@ -40,12 +43,7 @@ const data = ref<DataConfig>({
     id: '',
   },
   // 搜索
-  search: {
-    title: '',
-    title2: '',
-    title3: '',
-    title4: '',
-  },
+  search,
   searchFold: false,
   // 批量操作
   batch: {
@@ -54,12 +52,15 @@ const data = ref<DataConfig>({
   },
   // 列表数据
   dataList: [],
+  dicts: new Map(),
 })
 
 const table = ref<InstanceType<typeof ElTable>>()
 
 onMounted(() => {
+  getDict()
   getDataList()
+
   if (data.value.formMode === 'router') {
     eventBus.on('get-data-list', () => {
       getDataList()
@@ -78,10 +79,13 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<FileParams>({
+  const params = getParams<FilePageQuery>({
     ...data.value.search,
+  }, {
+    type: 'daterange',
+    name: 'daterange',
+    prop: 'createdTime',
   })
-  data.value.search.title && (params.model.title = data.value.search.title)
   const res = await crudFile.list(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)
@@ -91,7 +95,18 @@ async function getDataList(current?: number) {
     data.value.loading = false
   }, 100)
 }
-
+async function getDict() {
+  const options: DictOption = await findEnumListByType([{
+    type: 'FileStorageType',
+    extendFirst: true,
+  }, {
+    type: 'FileType',
+    extendFirst: true,
+  }])
+  Object.entries(options).forEach(([key, value]) => {
+    data.value.dicts.set(key, value)
+  })
+}
 // 每页数量切换
 function sizeChange(size: number) {
   onSizeChange(size).then(() => getDataList())
@@ -192,8 +207,7 @@ async function onDownload(row?: any) {
   downloadFile(res)
 }
 
-function handleChange(list: UploadApiResult[]) {
-  console.log('@')
+function handleChange(list: FileResultVO[]) {
   ElMessage.info(`已上传文件${JSON.stringify(list.length)}`)
   getDataList()
 }
@@ -212,36 +226,74 @@ function handleChange(list: UploadApiResult[]) {
             :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
             size="default"
           >
-            <el-form-item label="标题">
+            <el-form-item label="原始文件名">
               <el-input
-                v-model="data.search.title" clearable placeholder="请输入，支持模糊查询"
+                v-model="data.search.originalFileName" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
             </el-form-item>
-            <el-form-item v-show="!fold" label="标题2">
+            <el-form-item label="桶">
               <el-input
-                v-model="data.search.title2" clearable placeholder="请输入，支持模糊查询"
+                v-model="data.search.bucket" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
             </el-form-item>
-            <el-form-item v-show="!fold" label="标题3">
+            <el-form-item label="存储类型">
+              <el-select
+                v-model="data.search.storageType" clearable placeholder="请选择" size="default"
+                @change="currentChange()"
+              >
+                <el-option
+                  v-for="item in data.dicts.get('FileStorageType') || []" :key="item.value" :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="文件类型">
+              <el-select
+                v-model="data.search.fileType" clearable placeholder="请选择" size="default"
+                @change="currentChange()"
+              >
+                <el-option
+                  v-for="item in data.dicts.get('FileType') || []" :key="item.value" :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item
+              v-show="!fold" label="文件类型"
+            >
               <el-input
-                v-model="data.search.title3" clearable placeholder="请输入，支持模糊查询"
+                v-model="data.search.contentType" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
             </el-form-item>
-            <el-form-item v-show="!fold" label="标题4">
-              <el-input
-                v-model="data.search.title4" clearable placeholder="请输入，支持模糊查询"
-                @clear="currentChange()" @keydown.enter="currentChange()"
+            <el-form-item v-show="!fold" label="创建时间">
+              <el-date-picker
+                v-model="data.search.daterange"
+                :default-time="[
+                  new Date(2000, 1, 1, 0, 0, 0),
+                  new Date(2000, 2, 1, 23, 59, 59),
+                ]"
+                end-placeholder="结束时间"
+                range-separator=":"
+                start-placeholder="开始时间"
+                style="width: 250px;"
+                type="daterange"
+                value-format="YYYY-MM-DD HH:mm:ss"
+                @change="currentChange()"
               />
             </el-form-item>
+
             <el-form-item>
               <el-button type="primary" @click="currentChange()">
                 <template #icon>
                   <svg-icon name="ep:search" />
                 </template>
                 筛选
+              </el-button>
+              <el-button type="primary" @click="resetQuery()">
+                重置
               </el-button>
               <el-button link type="primary" @click="data.searchFold = !fold">
                 <template #icon>

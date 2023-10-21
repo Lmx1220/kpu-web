@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
+import type { FormConfig } from '#/global'
 import crudDatasourceConfig from '@/api/modules/tools/datasourceConfig'
 
 export interface Props {
@@ -13,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'view',
 })
 
-const data = ref({
+const data = ref<FormConfig>({
   loading: false,
   form: {
     id: props.id,
@@ -62,7 +63,7 @@ const data = ref({
   },
   dicts: new Map(),
 })
-data.value.dicts.set('driverClassName', [{
+data.value.dicts?.set('driverClassName', [{
   label: 'mysql6',
   value: 'com.mysql.cj.jdbc.Driver',
   key: 'mysql6',
@@ -149,7 +150,7 @@ defineExpose({
           placeholder="请选择"
         >
           <el-option
-            v-for="item in data.dicts.get('driverClassName') || []" :key="item.value" :label="item.label"
+            v-for="item in data.dicts?.get('driverClassName') || []" :key="item.value" :label="item.label"
             :value="item.value"
           />
         </el-select>

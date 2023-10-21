@@ -5,7 +5,7 @@ import FormMode from './components/FormMode/index.vue'
 import type { DictOption, Option } from '@/api/model/baseModel'
 import { findDictMapItemListByKey } from '@/api/modules/common/dict'
 import crudLoginLog from '@/api/modules/system/loginLog'
-import type { LoginLogParams } from '@/api/modules/system/model/loginLogModel'
+import type { LoginLogPageQuery } from '@/api/modules/system/model/loginLogModel'
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
@@ -49,7 +49,6 @@ const data = ref<DataConfig>({
   },
   // 搜索
   search,
-  createdTime_between: [],
   searchFold: false,
   // 批量操作
   batch: {
@@ -84,13 +83,15 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<LoginLogParams>({
+  const params = getParams<LoginLogPageQuery>({
     ...data.value.search,
   },
+  {
+    type: 'daterange',
+    name: 'daterange',
+    prop: 'createdTime',
+  },
   )
-  if (data.value.createdTime_between) {
-    params.extra.createdTime_between = data.value.createdTime_between
-  }
   const res = await crudLoginLog.list(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)
@@ -266,7 +267,7 @@ async function getDict() {
             </el-form-item>
             <el-form-item v-show="!fold" label="创建时间">
               <el-date-picker
-                v-model="data.createdTime_between"
+                v-model="data.search.daterange"
                 :default-time="[
                   new Date(2000, 1, 1, 0, 0, 0),
                   new Date(2000, 2, 1, 23, 59, 59),
@@ -277,6 +278,7 @@ async function getDict() {
                 style="width: 250px;"
                 type="daterange"
                 value-format="YYYY-MM-DD HH:mm:ss"
+                @change="currentChange()"
               />
             </el-form-item>
 

@@ -1,10 +1,10 @@
-import type {StyleValue} from 'vue'
+import {FormRules} from "element-plus";
 import type {RouteRecordRaw} from 'vue-router'
 
-type RecursiveRequired<T> = {
+declare type RecursiveRequired<T> = {
     [P in keyof T]-?: RecursiveRequired<T[P]>
 }
-type RecursivePartial<T> = {
+declare type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>
 }
 
@@ -553,13 +553,13 @@ declare namespace App {
 }
 
 declare global {
-    declare type Recordable<T = any> = Record<string, T>;
-    declare type Id<T = any> = Record<string, T> & {
-        id: string
+     type Recordable<T = any> = Record<any, T>;
+     type Id<T = any> = Record<string, T> & {
+        id?: string
     };
 
 }
-declare type DataConfig<SEARCH = RecursiveRequired, T = Id> = Recordable & {
+declare type DataConfig<SEARCH = any, T = any> = Record<any, any> & {
     loading?: boolean
     tableAutoHeight: boolean
     formMode: 'router' | 'dialog' | 'drawer'
@@ -582,3 +582,10 @@ declare type DataConfig<SEARCH = RecursiveRequired, T = Id> = Recordable & {
     dataList: T[]
     dicts?: Map
 }
+declare type FormConfig<T = any> = Recordable & {
+    loading?: boolean
+    form:T,
+    rules: FormRules<typeof T>
+    dicts?: Map<string,any>
+}
+

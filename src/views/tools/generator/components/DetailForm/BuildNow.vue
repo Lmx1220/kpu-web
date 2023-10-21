@@ -2,7 +2,7 @@
 import { ElMessage } from 'element-plus'
 import type { DictOption } from '@/api/model/baseModel'
 import { findEnumListByType } from '@/api/modules/common/dict'
-import { downloadZip, generatorCode, getDefFileOverrideStrategy, getFieldTemplate } from '@/api/modules/tools/genTable'
+import { downloadZip, generatorCode, getFieldTemplate, getFileOverrideStrategy } from '@/api/modules/tools/genTable'
 import { downloadFile } from '@/util'
 import { isArray } from '@/util/is'
 
@@ -64,7 +64,7 @@ const fieldTemplate = ref<{
 function getInfo() {
   // data.value.loading = true
 
-  getDefFileOverrideStrategy().then((res) => {
+  getFileOverrideStrategy().then((res) => {
     data.value.form = res
   })
   getFieldTemplate().then((res) => {
@@ -91,7 +91,7 @@ async function onDownloadZip(template: 'WEB_PLUS' | 'BACKEND') {
     }
   }
   catch (e) {
-    console.log(e)
+    console.error(e)
     // if (t.response.data) { console.log(e) }
   }
   finally {

@@ -5,7 +5,7 @@ import { isFunction } from 'lodash-es'
 import { useI18n } from 'vue-i18n'
 import { checkImgType, getBase64WithFile } from './helper'
 import { useUploadType } from './useUpload'
-import type { UploadApiResult } from '@/api/modules/system/model/uploadModel'
+import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 import type { BasicProps } from '@/components/BasicUpload/src/BasicUpload.vue'
 import type { FileItem } from '@/components/BasicUpload/src/types'
 import { UploadResultStatus } from '@/components/BasicUpload/src/types'
@@ -14,7 +14,7 @@ import type { DialogMethods } from '@/components/Dialog/typing'
 import { buildUUID } from '@/util/uuid'
 
 interface Props extends BasicProps {
-  previewFileList?: UploadApiResult[]
+  previewFileList?: FileResultVO[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   maxSize: 2,
 })
 const emits = defineEmits<{
-  'change': [UploadApiResult[]]
+  'change': [FileResultVO[]]
   'register': [DialogMethods, string]
   'delete': [FileItem]
 }>()
@@ -75,7 +75,7 @@ function handleOk() {
   if (isUploadingRef.value) {
     return ElMessage.warning(t('component.upload.saveWarn'))
   }
-  const fileList: UploadApiResult[] = []
+  const fileList: FileResultVO[] = []
 
   for (const item of fileListRef.value) {
     const {
@@ -124,7 +124,7 @@ async function uploadApiByItem(item: FileItem) {
     }
   }
   catch (e) {
-    console.log(e)
+    console.error(e)
     item.status = UploadResultStatus.ERROR
     return {
       success: false,

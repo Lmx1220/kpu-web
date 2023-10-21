@@ -1,9 +1,12 @@
 import type { AxiosProgressEvent } from 'axios'
 import qs from 'qs'
-import type { UploadApiResult } from './model/uploadModel'
-import TimeDelayReq from '@/api/helper/timeDelayReq'
+import type { FileResultVO } from './model/fileModel'
 import type { UploadFileParams } from '#/axios'
-import api from '@/api'
+import TimeDelayReq from '@/api/helper/timeDelayReq'
+import defHttp from '@/api'
+
+const MODULAR = 'file'
+const ServicePrefix = ''
 
 /**
  * @description: Upload interface
@@ -12,17 +15,18 @@ export function uploadApi(
   params: UploadFileParams,
   onUploadProgress: (progressEvent: AxiosProgressEvent) => void,
 ) {
-  return api.uploadFile<UploadApiResult>(
+  return defHttp.uploadFile<FileResultVO>(
     {
-      url: '/proxy/file/anyone/upload',
+      url: `${ServicePrefix}/${MODULAR}/anyone/upload`,
       onUploadProgress,
+      timeout: 60 * 1000,
     },
     params,
   )
 }
 export function downloadIds(ids: string[]) {
-  return api.get({
-    url: '/file/download',
+  return defHttp.get({
+    url: `${ServicePrefix}/${MODULAR}/download`,
     responseType: 'blob',
     params: qs.stringify({
       ids,
@@ -35,8 +39,8 @@ export function downloadIds(ids: string[]) {
 }
 
 export function findUrlById(data: string[]) {
-  return api.post({
-    url: '/file/anyone/findUrlById',
+  return defHttp.post<Record<string, string>>({
+    url: `${ServicePrefix}/${MODULAR}/anyone/findUrlById`,
     data,
   })
 }

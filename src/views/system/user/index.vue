@@ -4,7 +4,7 @@ import { get } from 'lodash-es'
 import BindRoleMode from './components/BindRoleMode.vue'
 import FormMode from './components/FormMode/index.vue'
 import type { DataConfig } from '#/global'
-import type { UserParams } from '@/api/modules/system/model/userModel'
+import type { UserPageQuery } from '@/api/modules/system/model/userModel'
 import crudUser from '@/api/modules/system/user'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
@@ -14,10 +14,12 @@ defineOptions({
 })
 const {
   pagination,
+  search,
   getParams,
   onSizeChange,
   onCurrentChange,
   onSortChange,
+  resetQuery,
 } = usePagination()
 const router = useRouter()
 // const route = useRoute()
@@ -38,15 +40,7 @@ const data = ref<DataConfig>({
     id: '',
   },
   // 搜索
-  search: {
-    username: '',
-    nickName: '',
-    email: '',
-    mobile: '',
-    createdTime_st: '',
-    createdTime_ed: '',
-  },
-  daterange: undefined,
+  search,
   searchFold: true,
   // 批量操作
   batch: {
@@ -79,13 +73,15 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<UserParams>({
+  const params = getParams<UserPageQuery>({
     ...data.value.search,
-  })
-  if (data.value.daterange) {
-    params.extra.createdTime_st = data.value.daterange[0]
-    params.extra.createdTime_ed = data.value.daterange[1]
-  }
+  },
+  {
+    type: 'daterange',
+    name: 'daterange',
+    prop: 'createdTime',
+  },
+  )
   const res = await crudUser.list(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)
@@ -240,7 +236,7 @@ function onResetPassword(row: any) {
             </el-form-item> -->
             <el-form-item v-show="!fold" label="创建时间">
               <el-date-picker
-                v-model="data.daterange"
+                v-model="data.search.daterange"
                 :default-time="[
                   new Date(2000, 1, 1, 0, 0, 0),
                   new Date(2000, 2, 1, 23, 59, 59),
@@ -258,6 +254,9 @@ function onResetPassword(row: any) {
                   <svg-icon name="ep:search" />
                 </template>
                 筛选
+              </el-button>
+              <el-button type="primary" @click="resetQuery()">
+                重置
               </el-button>
               <el-button link type="primary" @click="data.searchFold = !fold">
                 <template #icon>

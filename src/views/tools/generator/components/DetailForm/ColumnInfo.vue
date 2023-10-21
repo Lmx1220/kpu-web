@@ -3,7 +3,7 @@ import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import type { DataConfig } from '#/global'
 import crudGenerator from '@/api/modules/tools/genTableColumn'
-import type { GenTableColumnParams } from '@/api/modules/tools/model/genTableColumnModel'
+import type { GenTableColumnPageQuery } from '@/api/modules/tools/model/genTableColumnModel'
 import { deepClone } from '@/util'
 import usePagination from '@/util/usePagination'
 
@@ -172,7 +172,7 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<GenTableColumnParams>({
+  const params = getParams<GenTableColumnPageQuery>({
     ...data.value.search,
   })
   params.model.tableId = props.id

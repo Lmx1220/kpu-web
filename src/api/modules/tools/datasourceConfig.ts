@@ -1,74 +1,61 @@
-import api from '@/api'
-import type { BasicPageParams } from '@/api/model/baseModel'
-import type {
-  DatasourceConfigListItem,
-  DatasourceConfigPageListGetResultModel,
-  DatasourceConfigParams,
-} from '@/api/modules/tools/model/datasourceConfigModel'
-import { ContentTypeEnum } from '@/enums/httpEnum'
+import type { AxiosRequestConfig } from 'axios'
+import type { DatasourceConfigPageQuery, DatasourceConfigResultVO, DatasourceConfigSaveVO, DatasourceConfigUpdateVO } from './model/datasourceConfigModel'
+import defHttp from '@/api'
+import { ContentTypeEnum, RequestEnum } from '@/enums/httpEnum'
+import type { PageParams, PageResult } from '@/api/model/baseModel'
 
-// 前缀 变量
-const prefix = '/datasourceConfig'
+const MODULAR = 'datasourceConfig'
+const ServicePrefix = ''
 
-export function getListDatasourceConfig(params: BasicPageParams<any> & DatasourceConfigParams) {
-  return api.post<DatasourceConfigPageListGetResultModel>({
-    url: `${prefix}/page`,
-    params,
-  })
-}
-
-export function getListDatasourceConfigQuery(params?: DatasourceConfigParams) {
-  return api.post<DatasourceConfigListItem[]>({
-    url: `${prefix}/query`,
-    params,
-  })
-}
-
-export function detailDatasourceConfig(id: string | number) {
-  return api.get<DatasourceConfigListItem>({
-    url: `${prefix}/detail`,
-    params: {
-      id,
-    },
-  })
-}
-
-export function createDatasourceConfig(data: any) {
-  return api.post<DatasourceConfigListItem>({
-    url: `${prefix}`,
-    data,
-  })
-}
-
-export function editDatasourceConfig(data: any) {
-  return api.put<void>({
-    url: `${prefix}`,
-    data,
-  })
-}
-
-export function deleteDatasourceConfig(ids: string[]) {
-  return api.post<void>({
-    url: `${prefix}/delete`,
-    data: {
-      ids,
-    },
-  })
-}
-
-export function testConnect(id: string) {
-  return api.post({
-    url: `${prefix}/testConnect`,
+export const Api = {
+  Page: { url: `${ServicePrefix}/${MODULAR}/page`, method: RequestEnum.POST } as AxiosRequestConfig,
+  Save: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.POST } as AxiosRequestConfig,
+  Update: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.PUT },
+  Delete: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.DELETE } as AxiosRequestConfig,
+  Query: { url: `${ServicePrefix}/${MODULAR}/query`, method: RequestEnum.POST } as AxiosRequestConfig,
+  Detail: { url: `${ServicePrefix}/${MODULAR}/detail`, method: RequestEnum.GET } as AxiosRequestConfig,
+  Copy: { url: `${ServicePrefix}/${MODULAR}/copy`, method: RequestEnum.POST } as AxiosRequestConfig,
+  TestConnect: {
+    url: `${ServicePrefix}/${MODULAR}/testConnect`,
+    method: RequestEnum.POST,
     headers: {
       'Content-Type': ContentTypeEnum.FORM_URLENCODED,
     },
+  } as AxiosRequestConfig,
+}
+
+export function page(params: PageParams<DatasourceConfigPageQuery>) {
+  return defHttp.request<PageResult<DatasourceConfigResultVO>>({ ...Api.Page, params })
+}
+export function save(params: DatasourceConfigSaveVO) {
+  return defHttp.request<DatasourceConfigResultVO>({ ...Api.Save, params })
+}
+export function update(params: DatasourceConfigUpdateVO) {
+  return defHttp.request<DatasourceConfigResultVO>({ ...Api.Update, params })
+}
+export function remove(params: string[]) {
+  return defHttp.request<boolean>({ ...Api.Delete, params })
+}
+export function query(params: DatasourceConfigPageQuery) {
+  return defHttp.request<DatasourceConfigResultVO[]>({ ...Api.Query, params })
+}
+export function detail(id: string) {
+  return defHttp.request<DatasourceConfigResultVO>({ ...Api.Detail, params: { id } })
+}
+export function copy(id: string) {
+  return defHttp.request<DatasourceConfigResultVO>({ ...Api.Copy, params: { id } })
+}
+
+export function testConnect(id: string) {
+  return defHttp.request({
+    ...Api.TestConnect,
     params: { id },
   })
 }
 export default {
-  list: getListDatasourceConfig,
-  detail: detailDatasourceConfig,
-  create: createDatasourceConfig,
-  edit: editDatasourceConfig,
-  delete: deleteDatasourceConfig,
+  list: page,
+  detail,
+  create: save,
+  edit: update,
+  delete: remove,
 }

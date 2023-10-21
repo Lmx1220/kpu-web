@@ -2,7 +2,7 @@
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
-import type { ParameterParams } from '@/api/modules/system/model/parameterModel'
+import type { ParameterPageQuery } from '@/api/modules/system/model/parameterModel'
 import crudParameter from '@/api/modules/system/parameter'
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus'
@@ -75,7 +75,7 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<ParameterParams>({
+  const params = getParams<ParameterPageQuery>({
     ...data.value.search,
   })
   if (data.value.daterange) {

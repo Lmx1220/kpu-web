@@ -1,28 +1,42 @@
-import type { BasicFetchResult } from '@/api/model/baseModel'
-
-export interface ParameterParams {
-  key?: string
-  name?: string
-  value?: string
-  state?: boolean
+export interface ParameterPageQuery {
+  key?: string // 参数键
+  value?: string // 参数值
+  name?: string // 参数名称
+  remarks?: string // 描述
+  state?: boolean // 状态
+  readonly?: boolean // 内置
 }
 
-export interface ParameterListItem {
+export interface ParameterSaveVO {
+  key?: string // 参数键
+  value?: string // 参数值
+  name?: string // 参数名称
+  remarks?: string // 描述
+  state?: boolean // 状态
+  readonly?: boolean // 内置
+}
+
+export interface ParameterUpdateVO {
   id: string
-  createdTime: string
-  createdBy: number
-  key: string
-  name: string
-  readonly: boolean
-  remarks: string
-  state: boolean
-  updatedTime: string
-  updatedBy: number
-  value: string
+  key?: string // 参数键
+  value?: string // 参数值
+  name?: string // 参数名称
+  remarks?: string // 描述
+  state?: boolean // 状态
+  readonly?: boolean // 内置
 }
 
-/**
- * @description: Get menu return value
- */
-export type ParameterPageListGetResultModel = BasicFetchResult<ParameterListItem>
-export type ParameterListGetResultModel = ParameterListItem[]
+export interface ParameterResultVO {
+  echoMap?: any
+  id?: string // ID
+  createdBy?: string // 创建人id
+  createdTime?: string // 创建时间
+  updatedBy?: string // 更新人id
+  updatedTime?: string // 更新时间
+  key?: string // 参数键
+  value?: string // 参数值
+  name?: string // 参数名称
+  remarks?: string // 描述
+  state?: boolean // 状态
+  readonly?: boolean // 内置
+}

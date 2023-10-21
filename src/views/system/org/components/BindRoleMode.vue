@@ -5,7 +5,7 @@ import usePagination from '@/util/usePagination'
 import crudOrg from '@/api/modules/system/org'
 import { getMyListRole } from '@/api/modules/system/role'
 import { getCategoryColor } from '@/enums/colorEnum'
-import type { RoleParams } from '@/api/modules/system/model/roleModel'
+import type { RolePageQuery } from '@/api/modules/system/model/roleModel'
 import type { DataConfig } from '@/types/global'
 
 export interface Props {
@@ -105,7 +105,7 @@ function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<RoleParams>({
+  const params = getParams<RolePageQuery>({
     ...data.value.search,
     orgId: props.id,
     scopeType: '2',

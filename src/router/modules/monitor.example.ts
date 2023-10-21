@@ -1,12 +1,9 @@
 // import type { RouteRecordRaw } from 'vue-router'
 //
-// function Layout() {
-//   return import('@/layouts/index.vue')
-// }
 // const routes: RouteRecordRaw = {
 //   path: '/monitor',
 //   name: 'monitor',
-//   component: Layout,
+//   component: () => import('@/layouts/index.vue'),
 //   redirect: '/monitor/online',
 //   meta: {
 //     title: '系统监控',

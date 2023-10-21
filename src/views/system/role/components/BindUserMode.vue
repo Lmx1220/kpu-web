@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ElMessage, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
-import type { UserParams } from '@/api/modules/system/model/userModel'
+import type { UserPageQuery } from '@/api/modules/system/model/userModel'
 import crudRole from '@/api/modules/system/role'
-import { getListUser } from '@/api/modules/system/user'
+import { page } from '@/api/modules/system/user'
 import usePagination from '@/util/usePagination'
 import type { DataConfig } from '@/types/global'
 
@@ -106,11 +106,11 @@ function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<UserParams>({
+  const params = getParams<UserPageQuery>({
     ...data.value.search,
     roleId: props.id,
   })
-  getListUser(params).then((res) => {
+  page(params).then((res) => {
     data.value.dataList = get(res, 'records', [])
     pagination.value.total = Number(res.total)
     pagination.value.page = Number(get(res, 'current', 1))

@@ -215,9 +215,15 @@ const useRouteStore = defineStore(
         }
         isGenerate.value = true
       }
-      catch (error) {
-        isGenerate.value = false
-        console.log(error)
+      catch (error: any) {
+        if (error.code === 'ERR_BAD_RESPONSE') {
+          isGenerate.value = true
+        }
+        else {
+          isGenerate.value = false
+        }
+
+        console.error(error)
       }
     }
     // 记录 accessRoutes 路由，用于登出时删除路由

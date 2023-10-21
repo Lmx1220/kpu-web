@@ -4,8 +4,8 @@ import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
 import ImportMode from './components/ImportMode/index.vue'
 import PreviewMode from './components/PreviewMode/index.vue'
+import type { GenTablePageQuery, GenTableResultVO } from '@/api/modules/tools/model/genTableModel'
 import crudGenTable, { downloadZip, generatorCode } from '@/api/modules/tools/genTable'
-import type { GenTableParams } from '@/api/modules/tools/model/genTableModel'
 import { useDialog } from '@/components/Dialog/hooks/useDialog'
 import type { DataConfig } from '@/types/global'
 import { downloadFile } from '@/util'
@@ -23,7 +23,7 @@ const {
   onCurrentChange,
   onSortChange,
   resetQuery,
-} = usePagination()
+} = usePagination<GenTablePageQuery>()
 const router = useRouter()
 // const route = useRoute()
 const defaultQuery = {
@@ -33,7 +33,7 @@ const defaultQuery = {
   author: '',
   daterange: [],
 }
-const data = ref<DataConfig>({
+const data: Ref<DataConfig<GenTablePageQuery, GenTableResultVO>> = ref({
   loading: false,
   tableAutoHeight: true,
   /**
@@ -83,7 +83,7 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<GenTableParams>({
+  const params = getParams<GenTablePageQuery>({
     ...data.value.search,
   },
   {
@@ -143,12 +143,12 @@ function onEdit(row?: any) {
   }
   else {
     if (data.value.batch.selectionDataList.length > 0 && data.value.batch.selectionDataList.length < 2) {
-      ids.push(data.value.batch.selectionDataList[0].id)
+      ids.push(data.value.batch.selectionDataList[0].id ?? '')
       title = `表名：${data.value.batch.selectionDataList[0].name}`
       content = `实体类：${data.value.batch.selectionDataList[0].entityName} 作者：${data.value.batch.selectionDataList[0].author}`
     }
     else {
-      ids = data.value.batch.selectionDataList.map(item => item.id)
+      ids = data.value.batch.selectionDataList.map(item => item.id ?? '')
       const names = data.value.batch.selectionDataList.map(item => item.name)
       title = `批量编辑：${names.join(',')}`
     }
@@ -196,7 +196,7 @@ function onDel(row?: any) {
     ids.push(row.id)
   }
   else {
-    ids = data.value.batch.selectionDataList.map(item => item.id)
+    ids = data.value.batch.selectionDataList.map(item => item.id ?? '')
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
     crudGenTable.delete(ids).then(() => {
@@ -215,7 +215,7 @@ const [registerPreviewMode, { openDialog: openPreviewMode }] = useDialog()
 const btnDisabled = ref(false)
 
 async function downCommand(template: 'WEB_PLUS' | 'BACKEND') {
-  const ids = data.value.batch.selectionDataList.map(item => item.id)
+  const ids = data.value.batch.selectionDataList.map(item => item.id ?? '')
   btnDisabled.value = true
   try {
     const res = await downloadZip(ids, template)
@@ -238,7 +238,7 @@ async function downCommand(template: 'WEB_PLUS' | 'BACKEND') {
 
 async function genCommand(template: 'WEB_PLUS' | 'BACKEND') {
   btnDisabled.value = true
-  const ids = data.value.batch.selectionDataList.map(item => item.id)
+  const ids = data.value.batch.selectionDataList.map(item => item.id ?? '')
 
   try {
     await generatorCode({ ids, template })
@@ -280,7 +280,7 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
     ids.push(row.id)
   }
   else {
-    ids = data.value.batch.selectionDataList.map(item => item.id)
+    ids = data.value.batch.selectionDataList.map(item => item.id ?? '')
   }
   openPreviewMode(undefined, { ids, template })
 }

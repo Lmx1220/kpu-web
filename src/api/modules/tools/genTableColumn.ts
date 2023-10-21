@@ -1,71 +1,66 @@
-import api from '@/api'
-import type { BasicPageParams } from '@/api/model/baseModel'
-import type {
-  GenTableColumnListItem,
-  GenTableColumnPageListGetResultModel,
-  GenTableColumnParams,
-} from '@/api/modules/tools/model/genTableColumnModel'
+import type { AxiosRequestConfig } from 'axios'
+import type { GenTableColumnPageQuery, GenTableColumnResultVO, GenTableColumnSaveVO, GenTableColumnUpdateVO } from './model/genTableColumnModel'
+import defHttp from '@/api'
+import { ContentTypeEnum, RequestEnum } from '@/enums/httpEnum'
+import type { PageParams, PageResult } from '@/api/model/baseModel'
 
-// 前缀 变量
-const prefix = '/genTableColumn'
+const MODULAR = 'genTableColumn'
+const ServicePrefix = ''
 
-export function getListGenTableColumn(params: BasicPageParams<GenTableColumnParams>) {
-  return api.post<GenTableColumnPageListGetResultModel>({
-    url: `${prefix}/page`,
-    params,
-  })
-}
-
-export function detailGenTableColumn(id: string | number) {
-  return api.get<GenTableColumnListItem>({
-    url: `${prefix}/detail`,
-    params: {
-      id,
+export const Api = {
+  Page: { url: `${ServicePrefix}/${MODULAR}/page`, method: RequestEnum.POST } as AxiosRequestConfig,
+  Save: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.POST } as AxiosRequestConfig,
+  Update: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.PUT },
+  Delete: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.DELETE } as AxiosRequestConfig,
+  Query: { url: `${ServicePrefix}/${MODULAR}/query`, method: RequestEnum.POST } as AxiosRequestConfig,
+  Detail: { url: `${ServicePrefix}/${MODULAR}/detail`, method: RequestEnum.GET } as AxiosRequestConfig,
+  Copy: { url: `${ServicePrefix}/${MODULAR}/copy`, method: RequestEnum.POST } as AxiosRequestConfig,
+  SyncField: {
+    url: `${ServicePrefix}/${MODULAR}/syncField`,
+    method: RequestEnum.POST,
+    headers: {
+      'Content-Type': ContentTypeEnum.FORM_URLENCODED,
     },
-  })
+  } as AxiosRequestConfig,
 }
 
-export function createGenTableColumn(data: any) {
-  return api.post<GenTableColumnListItem>({
-    url: `${prefix}`,
-    data,
-  })
+export function page(params: PageParams<GenTableColumnPageQuery>) {
+  return defHttp.request<PageResult<GenTableColumnResultVO>>({ ...Api.Page, params })
 }
-
-export function editGenTableColumn(data: any) {
-  return api.put<void>({
-    url: `${prefix}`,
-    data,
-  })
+export function save(params: GenTableColumnSaveVO) {
+  return defHttp.request<GenTableColumnResultVO>({ ...Api.Save, params })
 }
-
-export function deleteGenTableColumn(ids: string[]) {
-  return api.delete<void>({
-    url: `${prefix}`,
-    data: ids,
-  })
+export function update(params: GenTableColumnUpdateVO) {
+  return defHttp.request<GenTableColumnResultVO>({ ...Api.Update, params })
+}
+export function remove(params: string[]) {
+  return defHttp.request<boolean>({ ...Api.Delete, params })
+}
+export function query(params: GenTableColumnPageQuery) {
+  return defHttp.request<GenTableColumnResultVO[]>({ ...Api.Query, params })
+}
+export function detail(id: string) {
+  return defHttp.request<GenTableColumnResultVO>({ ...Api.Detail, params: { id } })
+}
+export function copy(id: string) {
+  return defHttp.request<GenTableColumnResultVO>({ ...Api.Copy, params: { id } })
 }
 
 export function syncFieldGenTableColumn(data: {
   tableId: string
   id: string
 }) {
-  return api.request<void>({
-    url: `${prefix}/syncField`,
-    params: data,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-    },
-  },
-  )
+  return defHttp.request<void>({
+    ...Api.SyncField,
+    params: { data },
+  })
 }
 
 export default {
-  list: getListGenTableColumn,
-  detail: detailGenTableColumn,
-  create: createGenTableColumn,
-  edit: editGenTableColumn,
-  delete: deleteGenTableColumn,
+  list: page,
+  detail,
+  create: save,
+  edit: update,
+  delete: remove,
   syncField: syncFieldGenTableColumn,
 }

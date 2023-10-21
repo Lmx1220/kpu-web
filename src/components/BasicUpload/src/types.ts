@@ -1,4 +1,4 @@
-import type { UploadApiResult } from '@/api/modules/system/model/uploadModel'
+import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 
 export enum UploadResultStatus {
   SUCCESS = 'success',
@@ -14,7 +14,7 @@ export interface FileItem {
   percent: number
   file: File
   status?: UploadResultStatus
-  responseData?: UploadApiResult
+  responseData?: FileResultVO
   uuid: string
 }
 

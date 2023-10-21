@@ -1,13 +1,15 @@
 import type { RouteRecordRaw } from 'vue-router'
-import Laout from '@/layouts/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 
+function Layout() {
+  return import('@/layouts/index.vue')
+}
 // 系统路由
 const systemRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
-    component: () => Laout,
+    component: Layout,
     redirect: '/',
     meta: {
       title: () => useSettingsStore().settings.home.title,

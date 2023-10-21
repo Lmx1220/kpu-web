@@ -4,7 +4,7 @@ import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
 import type { DictOption, Option } from '@/api/model/baseModel'
 import { findEnumListByType } from '@/api/modules/common/dict'
-import type { OptLogParams } from '@/api/modules/system/model/optLogModel'
+import type { OptLogPageQuery } from '@/api/modules/system/model/optLogModel'
 import crudOptLog from '@/api/modules/system/optLog'
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus'
@@ -84,7 +84,7 @@ async function getDataList(current?: number) {
     pagination.value.page = current
   }
   data.value.loading = true
-  const params = getParams<OptLogParams>({
+  const params = getParams<OptLogPageQuery>({
     ...data.value.search,
   },
   {
