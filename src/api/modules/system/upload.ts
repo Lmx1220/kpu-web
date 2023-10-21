@@ -17,7 +17,7 @@ export function uploadApi(
 ) {
   return defHttp.uploadFile<FileResultVO>(
     {
-      url: `${ServicePrefix}/${MODULAR}/anyone/upload`,
+      url: `/proxy${ServicePrefix}/${MODULAR}/anyone/upload`,
       onUploadProgress,
       timeout: 60 * 1000,
     },
