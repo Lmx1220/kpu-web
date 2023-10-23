@@ -296,59 +296,71 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
       >
         <template #default="{ fold }">
           <el-form
-            :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
+            :model="data.search" class="search-form" inline-message label-suffix="：" label-width="100px"
             size="default"
           >
-            <el-form-item label="表名称">
-              <el-input
-                v-model="data.search.name" clearable placeholder="请输入，支持模糊查询"
-                @clear="currentChange()" @keydown.enter="currentChange()"
-              />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="表描述">
-              <el-input
-                v-model="data.search.comment" clearable placeholder="请输入，支持模糊查询"
-                @clear="currentChange()" @keydown.enter="currentChange()"
-              />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="作者">
-              <el-input
-                v-model="data.search.author" clearable placeholder="请输入，支持模糊查询"
-                @clear="currentChange()" @keydown.enter="currentChange()"
-              />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="创建时间">
-              <el-date-picker
-                v-model="data.search.daterange"
-                :default-time="[
-                  new Date(2000, 1, 1, 0, 0, 0),
-                  new Date(2000, 2, 1, 23, 59, 59),
-                ]"
-                end-placeholder="结束时间"
-                range-separator=":"
-                start-placeholder="开始时间"
-                style="width: 250px;"
-                type="daterange"
-                value-format="YYYY-MM-DD HH:mm:ss"
-              />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="currentChange()">
-                <template #icon>
-                  <svg-icon name="ep:search" />
-                </template>
-                筛选
-              </el-button>
-              <el-button type="primary" @click="resetQuery(defaultQuery)">
-                重置
-              </el-button>
-              <el-button link type="primary" @click="data.searchFold = !fold">
-                <template #icon>
-                  <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
-                </template>
-                {{ fold ? '展开' : '收起' }}
-              </el-button>
-            </el-form-item>
+            <el-row>
+              <el-col :span="6">
+                <el-form-item label="表名称">
+                  <el-input
+                    v-model="data.search.name" clearable placeholder="请输入，支持模糊查询"
+                    @clear="currentChange()" @keydown.enter="currentChange()"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item v-show="!fold" label="表描述">
+                  <el-input
+                    v-model="data.search.comment" clearable placeholder="请输入，支持模糊查询"
+                    @clear="currentChange()" @keydown.enter="currentChange()"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item v-show="!fold" label="作者">
+                  <el-input
+                    v-model="data.search.author" clearable placeholder="请输入，支持模糊查询"
+                    @clear="currentChange()" @keydown.enter="currentChange()"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item v-show="!fold" label="创建时间">
+                  <el-date-picker
+                    v-model="data.search.daterange"
+                    :default-time="[
+                      new Date(2000, 1, 1, 0, 0, 0),
+                      new Date(2000, 2, 1, 23, 59, 59),
+                    ]"
+                    end-placeholder="结束时间"
+                    range-separator=":"
+                    start-placeholder="开始时间"
+                    style="width: 250px;"
+                    type="daterange"
+                    value-format="YYYY-MM-DD HH:mm:ss"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item>
+                  <el-button type="primary" @click="currentChange()">
+                    <template #icon>
+                      <svg-icon name="ep:search" />
+                    </template>
+                    筛选
+                  </el-button>
+                  <el-button type="primary" @click="resetQuery(defaultQuery)">
+                    重置
+                  </el-button>
+                  <el-button link type="primary" @click="data.searchFold = !fold">
+                    <template #icon>
+                      <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                    </template>
+                    {{ fold ? '展开' : '收起' }}
+                  </el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
           </el-form>
         </template>
       </search-bar>

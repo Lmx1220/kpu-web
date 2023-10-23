@@ -234,8 +234,9 @@ function onCancel(row: any) {
 }
 
 function onSave(row: any) {
-  crudGenerator.edit(row).then(() => {
-    onCancel(row)
+  crudGenerator.edit(row).then((res) => {
+    Object.assign(row, res)
+    editData.value = null
     ElMessage.success({
       message: '编辑成功',
       center: true,
@@ -362,7 +363,7 @@ function formatterIsNot(isNot: boolean) {
         </el-table-column>
         <el-table-column fixed label="列名称" prop="name" width="370" />
         <el-table-column fixed label="列类型" prop="type" width="100" />
-        <el-table-column label="列描述" prop="comment" width="800">
+        <el-table-column label="列描述" prop="comment" width="800" show-overflow-tooltip>
           <template #header="{ column }">
             <i class="align-middle required-icon" />
             <svg-icon class="align-middle mr-1" name="ep:edit" />
@@ -383,7 +384,7 @@ function formatterIsNot(isNot: boolean) {
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="文档描述" prop="swaggerComment" width="140">
+        <el-table-column label="文档描述" prop="swaggerComment" width="140" show-overflow-tooltip>
           <template #header="{ column }">
             <i class="align-middle required-icon" />
             <svg-icon class="align-middle mr-1" name="ep:edit" />
@@ -759,7 +760,7 @@ function formatterIsNot(isNot: boolean) {
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="组件" min-width="100" prop="component">
+        <el-table-column label="组件" min-width="140" prop="component" show-overflow-tooltip>
           <template #header="{ column }">
             <i class="align-middle required-icon" />
             <svg-icon class="align-middle mr-1" name="ep:edit" />
@@ -780,7 +781,7 @@ function formatterIsNot(isNot: boolean) {
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="Vxe组组件" min-width="140" prop="vxeComponent">
+        <el-table-column label="Vxe组组件" min-width="140" prop="vxeComponent" show-overflow-tooltip>
           <template #header="{ column }">
             <i class="align-middle required-icon" />
             <svg-icon class="align-middle mr-1" name="ep:edit" />
@@ -801,7 +802,7 @@ function formatterIsNot(isNot: boolean) {
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="字典类型" min-width="100" prop="dictType">
+        <el-table-column label="字典类型" min-width="140" prop="dictType" show-overflow-tooltip>
           <template #header="{ column }">
             <svg-icon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
@@ -817,7 +818,7 @@ function formatterIsNot(isNot: boolean) {
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="Echo" min-width="100" prop="echoStr">
+        <el-table-column label="Echo" min-width="100" prop="echoStr" show-overflow-tooltip>
           <template #header="{ column }">
             <svg-icon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
@@ -833,7 +834,7 @@ function formatterIsNot(isNot: boolean) {
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="枚举" min-width="100" prop="enumStr">
+        <el-table-column label="枚举" min-width="100" prop="enumStr" show-overflow-tooltip>
           <template #header="{ column }">
             <svg-icon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
@@ -865,7 +866,7 @@ function formatterIsNot(isNot: boolean) {
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="提示信息" min-width="100" prop="editHelpMessage">
+        <el-table-column label="提示信息" min-width="100" prop="editHelpMessage" show-overflow-tooltip>
           <template #header="{ column }">
             <svg-icon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
@@ -881,7 +882,7 @@ function formatterIsNot(isNot: boolean) {
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="主页提示信息" min-width="140" prop="indexHelpMessage">
+        <el-table-column label="主页提示信息" min-width="140" prop="indexHelpMessage" show-overflow-tooltip>
           <template #header="{ column }">
             <svg-icon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>

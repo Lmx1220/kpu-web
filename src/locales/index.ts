@@ -11,7 +11,7 @@ import type { App } from 'vue'
 import { createI18n } from 'vue-i18n'
 import useSettingsStore from '@/store/modules/settings'
 
-const modules = import.meta.glob('./lang/zh_CN/**/*.ts', {
+const modules = import.meta.glob('./lang/zh_cn/**/*.ts', {
   as: 'json',
   eager: true,
 })
@@ -44,7 +44,7 @@ export function genMessage(langs: Record<string, any>, prefix = 'lang') {
   return obj
 }
 
-messages['zh-cn'] = defaultsDeep(messages['zh-cn'], genMessage(modules, 'lang/zh_CN'))
+messages['zh-cn'] = defaultsDeep(messages['zh-cn'], genMessage(modules, 'lang/zh_cn'))
 messages.en = defaultsDeep(messages.en, genMessage(modulesEn, 'lang/en'))
 // eslint-disable-next-line import/no-mutable-exports
 export let i18n: ReturnType<typeof createI18n>

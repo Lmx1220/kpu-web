@@ -308,7 +308,7 @@ function onResetPassword(row: any) {
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" />
+        <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
         <el-table-column align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
             <el-button plain size="small" type="primary" @click="onView(scope.row)">

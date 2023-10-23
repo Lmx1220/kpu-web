@@ -89,12 +89,11 @@ const getBindValue = computed((): Recordable => {
     modelValue: visibleRef.value,
     fullscreen: unref(fullscreenRef),
   } as any
-
+  attr.cancelText || (attr.cancelText = cancelText.value)
+  attr.okText || (attr.okText = okText.value)
   if (unref(fullscreenRef)) {
     return omit(attr, ['height', 'title'])
   }
-  attr.cancelText || (attr.cancelText = cancelText.value)
-  attr.okText || (attr.okText = okText.value)
   return omit(attr, 'title')
 })
 
