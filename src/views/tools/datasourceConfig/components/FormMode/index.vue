@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n'
 import type { Props as DetailFormProps } from '../DetailForm/index.vue'
 import DetailForm from '../DetailForm/index.vue'
 
@@ -31,18 +32,9 @@ const myVisible = computed({
 })
 
 const form = ref<InstanceType<typeof DetailForm>>()
-
+const { t } = useI18n()
 const title = computed(() => {
-  switch (props.type) {
-    case 'add':
-      return '新增数据源管理'
-    case 'edit':
-      return '编辑数据源管理'
-    case 'view':
-      return '查看数据源管理'
-    default:
-      return '查看角色'
-  }
+  return `${t(`common.title.${props.type}`)}`
 })
 
 function onSubmit() {
@@ -69,10 +61,10 @@ function onCancel() {
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>
         <el-button size="large" @click="onCancel">
-          取 消
+          {{ t('common.cancelText') }}
         </el-button>
         <el-button size="large" type="primary" @click="onSubmit">
-          确 定
+          {{ t('common.okText') }}
         </el-button>
       </template>
     </el-dialog>
@@ -83,10 +75,10 @@ function onCancel() {
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>
         <el-button size="large" @click="onCancel">
-          取 消
+          {{ t('common.cancelText') }}
         </el-button>
         <el-button size="large" type="primary" @click="onSubmit">
-          确 定
+          {{ t('common.okText') }}
         </el-button>
       </template>
     </el-drawer>

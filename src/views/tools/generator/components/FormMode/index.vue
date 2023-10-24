@@ -1,11 +1,7 @@
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n'
 import type { Props as DetailFormProps } from '../DetailForm/index.vue'
 import DetailForm from '../DetailForm/index.vue'
-
-export interface Props extends DetailFormProps {
-  modelValue?: boolean
-  mode?: 'dialog' | 'drawer' | string
-}
 
 const props = withDefaults(defineProps<Props>(),
   {
@@ -21,6 +17,15 @@ const emits = defineEmits<{
   success: []
 }>()
 
+defineOptions({
+  name: 'FormMode',
+})
+
+export interface Props extends DetailFormProps {
+  modelValue?: boolean
+  mode?: 'dialog' | 'drawer' | string
+}
+
 const myVisible = computed({
   get() {
     return props.modelValue
@@ -31,11 +36,11 @@ const myVisible = computed({
 })
 
 const form = ref<InstanceType<typeof DetailForm>>()
-
+const { t } = useI18n()
 const title = computed(() => {
   switch (props.type) {
     case 'add':
-      return '新增代码生成器'
+      return `${t(`common.title.${props.type}`)}add`
     case 'edit':
       return '编辑代码生成器'
     case 'view':
@@ -69,12 +74,11 @@ function onCancel() {
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>
         <el-button size="large" @click="onCancel">
-          取 消
+          {{ t('common.cancelText') }}
         </el-button>
         <el-button size="large" type="primary" @click="onSubmit">
-          确 定
+          {{ t('common.okText') }}
         </el-button>
-        导入
       </template>
     </el-dialog>
     <el-drawer
@@ -84,10 +88,10 @@ function onCancel() {
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>
         <el-button size="large" @click="onCancel">
-          取 消
+          {{ t('common.cancelText') }}
         </el-button>
         <el-button size="large" type="primary" @click="onSubmit">
-          确 定
+          {{ t('common.okText') }}
         </el-button>
       </template>
     </el-drawer>

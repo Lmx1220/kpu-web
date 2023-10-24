@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n'
 import DetailForm from './components/DetailForm/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import eventBus from '@/util/eventBus'
@@ -10,8 +11,15 @@ const settingsStore = useSettingsStore()
 const route = useRoute()
 const router = useRouter()
 const tabbar = useTabbar()
+const { t } = useI18n()
 const form = ref<InstanceType<typeof DetailForm>>()
 
+const type = computed(() => {
+  return route.params.type as 'add' | 'edit' | 'view'
+})
+const tiltel = computed(() => {
+  return t(`common.title.${type.value}`)
+})
 function onSubmit() {
   form.value?.submit(() => {
     eventBus.emit('get-data-list')
@@ -36,12 +44,12 @@ function goBack() {
 
 <template>
   <div>
-    <page-header :title="route.name === 'routerName' ? '新增数据源管理' : '编辑数据源管理'">
+    <page-header :title="tiltel">
       <el-button round size="default" @click="goBack">
         <template #icon>
           <svg-icon name="ep:arrow-left" />
         </template>
-        返回
+        {{ t('common.back') }}
       </el-button>
     </page-header>
     <page-main>
@@ -49,17 +57,17 @@ function goBack() {
         <el-col :lg="16" :md="24">
           <DetailForm
             :id="route.params.id as string" ref="form"
-            :type="(route.params.type as 'add'|'edit'| 'view'| undefined)"
+            :type="type"
           />
         </el-col>
       </el-row>
     </page-main>
     <fixed-action-bar>
       <el-button size="large" type="primary" @click="onSubmit">
-        提交
+        {{ t('common.okText') }}
       </el-button>
       <el-button size="large" @click="onCancel">
-        取消
+        {{ t('common.cancelText') }}
       </el-button>
     </fixed-action-bar>
   </div>

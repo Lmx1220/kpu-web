@@ -304,7 +304,7 @@ async function onGenerator(template: 'WEB_PLUS' | 'BACKEND') {
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="updateVo" prop="data">
+          <el-form-item label="data" prop="data">
             <el-radio-group v-model="data.form.data">
               <el-radio-button
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"

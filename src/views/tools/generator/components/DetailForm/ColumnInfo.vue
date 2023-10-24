@@ -6,6 +6,7 @@ import crudGenerator from '@/api/modules/tools/genTableColumn'
 import type { GenTableColumnPageQuery } from '@/api/modules/tools/model/genTableColumnModel'
 import { deepClone } from '@/util'
 import usePagination from '@/util/usePagination'
+import yesOrNoEnum from '@/enums/common/yesOrNoEnum'
 
 const props = withDefaults(defineProps<Props>(), {
   id: '',
@@ -65,16 +66,7 @@ const data = ref<DataConfig>({
   dicts: new Map(),
 
 })
-data.value.dicts.set('isNot', [
-  {
-    label: '是',
-    value: true,
-  },
-  {
-    label: '否',
-    value: false,
-  },
-])
+data.value.dicts.set('YesOrNoEnum', yesOrNoEnum.enum())
 data.value.dicts.set('javaType', [
   {
     value: 'String',
@@ -293,8 +285,8 @@ function createFilter(queryString: string) {
   }
 }
 
-function formatterIsNot(isNot: boolean) {
-  return data.value.dicts?.get('isNot').find((item: any) => item.value === isNot)?.label
+function formatterIsNot(yesOrNo: boolean) {
+  return data.value.dicts?.get('YesOrNoEnum').find((item: any) => item.value === yesOrNo)?.label
 }
 </script>
 

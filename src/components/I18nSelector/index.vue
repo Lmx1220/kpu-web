@@ -26,7 +26,7 @@ function languageCommand(command: string) {
 </script>
 
 <template>
-  <el-dropdown class="language-container" size="defalut" @command="languageCommand">
+  <el-dropdown class="language-container" size="default" @command="languageCommand">
     <slot />
     <template #dropdown>
       <el-dropdown-menu>

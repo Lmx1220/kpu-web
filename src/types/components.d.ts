@@ -9,6 +9,9 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ApiCascader: typeof import('./../components/ApiCascader/index.vue')['default']
+    ApiRadioGroup: typeof import('./../components/ApiRadioGroup/index.vue')['default']
+    ApiSelect: typeof import('./../components/ApiSelect/index.vue')['default']
     Auth: typeof import('./../components/Auth/index.vue')['default']
     AuthAll: typeof import('./../components/AuthAll/index.vue')['default']
     BaseDialog: typeof import('./../components/Dialog/BaseDialog.vue')['default']

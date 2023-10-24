@@ -1,18 +1,39 @@
+import { useI18n } from 'vue-i18n'
+
 export enum YesOrNoEnum {
   Yes = 1,
   No = 0,
 }
 export default {
-  dic: [
-    {
-      label: '是',
-      value: true,
-    },
-    {
-      label: '否',
-      value: false,
-    },
-  ],
+  enum: (all = false) => {
+    const { t } = useI18n()
+    return all
+      ? [
+
+          {
+            label: '所有',
+            value: null,
+          },
+          {
+            label: t('kpu.common.yes'),
+            value: true,
+          },
+          {
+            label: t('kpu.common.no'),
+            value: false,
+          },
+        ]
+      : [
+          {
+            label: t('kpu.common.yes'),
+            value: true,
+          },
+          {
+            label: t('kpu.common.no'),
+            value: false,
+          },
+        ]
+  },
   false: '否',
   true: '是',
   yes: false,

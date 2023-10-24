@@ -2,6 +2,7 @@
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { camelCase } from 'lodash-es'
+import yesOrNoEnum from '@/enums/common/yesOrNoEnum'
 import type { FormConfig } from '#/global'
 import type { GenTableUpdateVO } from '@/api/modules/tools/model/genTableModel'
 import { query as getListDatasourceConfigQuery } from '@/api/modules/tools/datasourceConfig'
@@ -290,17 +291,8 @@ const data = ref<FormConfig>({
   },
   dicts: new Map(),
 })
+data.value.dicts?.set('YesOrNoEnum', yesOrNoEnum.enum())
 const form = ref<FormInstance>()
-data.value.dicts?.set('isNot', [
-  {
-    label: '是',
-    value: true,
-  },
-  {
-    label: '否',
-    value: false,
-  },
-])
 const isSingle = computed(() => {
   return !Array.isArray(props.id)
 })
@@ -562,7 +554,7 @@ defineExpose({
         <el-col :lg="24" :xl="24">
           <el-form-item label="@DS" prop="isDs">
             <el-radio-group v-model="data.form.isDs">
-              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -571,7 +563,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="@TenantLine" prop="isTenantLine">
             <el-radio-group v-model="data.form.isTenantLine">
-              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -580,7 +572,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="lombok" prop="isLombok">
             <el-radio-group v-model="data.form.isLombok">
-              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -589,7 +581,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="链式模型" prop="isChain">
             <el-radio-group v-model="data.form.isChain">
-              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -598,7 +590,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="生成字段常量" prop="isColumnConstant">
             <el-radio-group v-model="data.form.isColumnConstant">
-              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -657,7 +649,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="显示新增按钮" prop="addShow">
             <el-radio-group v-model="data.form.addShow">
-              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -666,7 +658,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="显示编辑按钮" prop="editShow">
             <el-radio-group v-model="data.form.editShow">
-              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -675,7 +667,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="显示删除按钮" prop="deleteShow">
             <el-radio-group v-model="data.form.deleteShow">
-              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -684,7 +676,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="显示复制按钮" prop="copyShow">
             <el-radio-group v-model="data.form.copyShow">
-              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>
@@ -693,7 +685,7 @@ defineExpose({
         <el-col :lg="24" :xl="12">
           <el-form-item label="显示详情按钮" prop="viewShow">
             <el-radio-group v-model="data.form.viewShow">
-              <el-radio v-for="(item, index) in data.dicts?.get('isNot')" :key="index" :label="item?.value">
+              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
               </el-radio>
             </el-radio-group>

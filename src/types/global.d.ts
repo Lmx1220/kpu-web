@@ -570,7 +570,7 @@ declare type DataConfig<SEARCH = any, T = any> = Record<any, any> & {
         data?: Partial<Id>
     }
     // 搜索
-    search: SEARCH
+    search: Record<string, any> & SEARCH
     searchFold: boolean
     current?: Partial<Id>
     // 批量操作

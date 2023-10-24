@@ -1,19 +1,23 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import type { FormConfig } from '#/global'
 import crudDatasourceConfig from '@/api/modules/tools/datasourceConfig'
-
-export interface Props {
-  id?: string
-  type?: 'add' | 'edit' | 'view'
-}
 
 const props = withDefaults(defineProps<Props>(), {
   id: '',
   type: 'view',
 })
+defineOptions({
+  name: 'DetailForm',
+})
+export interface Props {
+  id?: string
+  type?: 'add' | 'edit' | 'view'
+}
 
+const { t } = useI18n()
 const data = ref<FormConfig>({
   loading: false,
   form: {
@@ -99,25 +103,20 @@ function getInfo() {
 
 defineExpose({
   submit(callback: any) {
-    form.value?.validate((valid) => {
+    form.value?.validate(async (valid) => {
       if (valid) {
-        if (props.type === 'add') {
-          crudDatasourceConfig.create(data.value.form).then(() => {
-            ElMessage.success({
-              message: '新增成功',
-              center: true,
-            })
-            callback && callback()
+        if (props.type !== 'view') {
+          if (props.type === 'edit') {
+            await crudDatasourceConfig.create(data.value.form)
+          }
+          else {
+            await crudDatasourceConfig.create(data.value.form)
+          }
+          ElMessage.success({
+            message: t(`common.tips.${props.type}Success`),
+            center: true,
           })
-        }
-        else if (props.type === 'edit') {
-          crudDatasourceConfig.edit(data.value.form).then(() => {
-            ElMessage.success({
-              message: '编辑成功',
-              center: true,
-            })
-            callback && callback()
-          })
+          callback && callback()
         }
         else {
           callback && callback(false)

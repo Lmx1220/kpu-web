@@ -52,7 +52,7 @@ export function syncFieldGenTableColumn(data: {
 }) {
   return defHttp.request<void>({
     ...Api.SyncField,
-    params: { data },
+    params: data,
   })
 }
 
