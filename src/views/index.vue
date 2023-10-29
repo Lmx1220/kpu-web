@@ -1,59 +1,73 @@
 <script setup lang="ts">
+import { ElNotification } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { useDialog } from '@/components/Dialog/hooks/useDialog'
-import { useDialogContext } from '@/components/Dialog/hooks/useDialogContext'
+import { ActionEnum } from '@/enums/commonEnum'
+import Vxe from '@/views/vxe.vue'
 
 defineOptions({
   name: 'Home',
 })
 const { t } = useI18n()
-const { t: ti } = useI18nT()
-const msg = ref('Hello, Vue 3.0 + Vite')
-const [register, { openDialog }] = useDialog()
-const loadingRef = ref(false)
 
-function onOpen() {
-  openDialog()
-  // loadingRef.value = true
-  // setTimeout(() => {
-  //   loadingRef.value = false
-  // }, 3000)
+const fileRef = ref<typeof Vxe>()
+onMounted(() => {
+  fileRef.value?.load(ActionEnum.EDIT, '1681934380567625728')
+})
+
+function getFileRef() {
+  return unref(fileRef)
 }
+async function handleSubmit() {
+  try {
+    const errMap = await getFileRef()?.fullValidate()
+    if (errMap) {
+      let msgStr = ''
+      Object.values(errMap).forEach((errList: any) => {
+        errList.forEach((params: any) => {
+          const { rowIndex, column, rules } = params
+          rules.forEach((rule: any) => {
+            msgStr += `第 ${rowIndex + 1} 行 ${column.title} 校验错误：${rule.message} <br/>`
+          })
+        })
+      })
+      ElNotification.warning({
+        title: '校验失败',
+        message: h('div', { innerHTML: msgStr }, []),
+        duration: 500,
+      })
+      return
+    }
+    const { insertRecords, removeRecords, updateRecords } = getFileRef().getRecordset()
+    params.insertList = insertRecords
+    params.updateList = updateRecords
+    params.deleteList = removeRecords.map(item => item.id)
 
-const modalFn = useDialogContext()
-
-function onOk() {
-  nextTick(() => {
-    modalFn?.redoDialogHeight?.()
-  })
-}
-
-function visibleChange() {
-  console.log('visibleChange')
+    loading.value = true
+    if (unref(type) !== ActionEnum.VIEW) {
+      if (unref(type) === ActionEnum.EDIT) {
+        await update(params)
+      }
+      else {
+        params.id = null
+        await save(params)
+      }
+      createMessage.success(t(`common.tips.${type.value}Success`))
+    }
+    close()
+    emit('success')
+  }
+  finally {
+    setProps({ confirmLoading: false })
+  }
 }
 </script>
 
 <template>
   <div>
-    {{ msg }}
-    <div>{{ ti("hello") }}</div>
-    <div>{{ t("hello") }}</div>
-    <div>{{ t('component.dialog.maximize') }}</div>
-    <div>{{ t("language") }}</div>
-    <div>{{ t("common.cancelText") }}</div>
-    <el-button @click="onOpen">
-      开启
+    <Vxe ref="fileRef" />
+    <el-button @click="handleSubmit">
+      {{ t('common.saveText') }}
     </el-button>
-    <BaseDialog
-      title="s" :loading="loadingRef" :show-cancel-btn="false" :ok-button-props="{ disabled: true }"
-      loading-tip="加载" @register="register" @ok="onOk" @visibleChange="visibleChange"
-    >
-      <el-form>
-        <el-form-item v-for="index in 100" :key="index" :label="`用户名${index}`">
-          <el-input v-model="msg" />
-        </el-form-item>
-      </el-form>
-    </BaseDialog>
   </div>
 </template>
 

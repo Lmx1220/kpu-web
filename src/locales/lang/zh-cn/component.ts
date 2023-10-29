@@ -28,6 +28,14 @@ export default {
     index: '序号',
     total: '共 {total} 条数据',
   },
+  tree: {
+    selectAll: '选择全部',
+    unSelectAll: '取消选择',
+    expandAll: '展开全部',
+    unExpandAll: '折叠全部',
+    checkStrictly: '层级关联',
+    checkUnStrictly: '层级独立',
+  },
   upload: {
     save: '保存',
     upload: '上传',

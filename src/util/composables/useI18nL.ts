@@ -21,7 +21,7 @@ function getKey(namespace: string | undefined, key: string) {
   return `${namespace}.${key}`
 }
 
-export function useI18nT(namespace?: string): {
+export function useI18nL(namespace?: string): {
   t: I18nGlobalTranslation
 } {
   const normalFn = {

@@ -47,7 +47,10 @@
     "vue-i18n": "^9.5.0",
     "vue-json-pretty": "^2.2.4",
     "vue-router": "^4.2.5",
-    "vue3-blocks-tree": "^0.6.1"
+    "vue3-blocks-tree": "^0.6.1",
+    "vxe-table": "4.5.14-beta.0",
+    "vxe-table-plugin-element": "^3.1.1",
+    "xe-utils": "^3.5.13"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.38.6",

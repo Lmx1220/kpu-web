@@ -27,6 +27,7 @@ export default ({ mode, command }) => {
     base: './',
     server: {
       open: true,
+      host: true,
       port: 9001,
       fs: {
         strict: true,

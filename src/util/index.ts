@@ -132,46 +132,6 @@ const nodeConfig: NodeConfig = {
 
 const createNode = (partialNode: Partial<NodeConfig>): NodeConfig => Object.assign({}, nodeConfig, partialNode)
 
-export function findOrgNode(pId: string, nodes: Array<Record<string, any>>, options: Partial<NodeConfig> = {}): Record<string, any> | null {
-  const defaultOptions: NodeConfig = createNode(options)
-  const {
-    id,
-    name,
-    children,
-  } = defaultOptions
-
-  if (pId === '0') {
-    return {
-      [id]: '0',
-      [name]: '根节点',
-    }
-  }
-
-  if (!pId) {
-    return {
-      [id]: pId,
-      [name]: '根节点',
-    }
-  }
-
-  for (let index = 0; index < nodes.length; index++) {
-    const node = nodes[index]
-
-    if (node[id] === pId) {
-      return node
-    }
-
-    if (node[children]) {
-      const foundNode = findOrgNode(pId, node[children])
-      if (foundNode) {
-        return foundNode
-      }
-    }
-  }
-
-  return null
-}
-
 export function openWindow(
   url: string,
   opt?: { target?: TargetContext | string; noopener?: boolean; noreferrer?: boolean },

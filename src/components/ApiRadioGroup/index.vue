@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { radioGroupEmits } from 'element-plus'
-import { get, omit } from 'lodash-es'
+import { get } from 'lodash-es'
 import type { ApiRadioGroupProps } from './typing'
 
 const props = withDefaults(defineProps<ApiRadioGroupProps>(), {
@@ -14,8 +14,7 @@ defineOptions({
   name: 'ApiRadioGroup',
 })
 const getProps = computed(() => {
-  const newProps = { ...props, ...attrs }
-  return omit(newProps, 'modelValue', 'api', 'params', 'resultField', 'labelField', 'valueField')
+  return { ...props.componentProps, ...attrs }
 })
 const modelValue = computed({
   get() {
@@ -33,6 +32,9 @@ async function getDicts() {
   dicts.value = get(res, props.resultField, [])
 }
 onMounted(() => {
+  if (props.defaultValue && !props.modelValue) {
+    modelValue.value = props.defaultValue
+  }
   getDicts()
 })
 const slots = useSlots()

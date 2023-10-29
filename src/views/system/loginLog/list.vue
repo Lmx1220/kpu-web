@@ -119,7 +119,7 @@ function sortChange({
   onSortChange(prop, order).then(() => getDataList())
 }
 
-function onCreate() {
+function onAdd() {
   if (data.value.formMode === 'router') {
     router.push({
       name: 'SystemLoginLogCreate',

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox, ElTree } from 'element-plus'
 import { onMounted } from 'vue'
+import { findNodeByKey } from '@/util/helper/treeHelper'
 import crudOrg, { treeOrg } from '@/api/modules/system/org'
-import { findOrgNode } from '@/util'
 import BindRoleMode from '@/views/system/org/components/BindRoleMode.vue'
 
 interface Props {
@@ -65,7 +65,7 @@ async function getTreeList() {
 
 function onNodeClick(node: any) {
   dataTree.value.current = node
-  const parent = findOrgNode(node.parentId, dataTree.value.tree)
+  const parent = findNodeByKey(node.parentId, dataTree.value.tree)
   if (parent) {
     dataTree.value.current!.parentId = parent.id
     dataTree.value.current!.parentName = parent.name
@@ -123,7 +123,7 @@ function onChange() {
   emits('change', '2')
 }
 
-function onCreate(row?: any) {
+function onAdd(row?: any) {
   if (row) {
     emits('create', {
       parentId: dataTree.value.current.id,
@@ -144,7 +144,7 @@ function onCreate(row?: any) {
 
 function onEdit(row?: any) {
   if (row) {
-    const parent = findOrgNode(row.parentId, dataTree.value.tree)
+    const parent = findNodeByKey(row.parentId, dataTree.value.tree)
     emits('edit', {
       parentId: parent?.id,
       parentName: parent?.name,
@@ -202,7 +202,7 @@ defineExpose({
       <el-button type="primary" @click="onChange">
         切换
       </el-button>
-      <el-button type="primary" @click="onCreate">
+      <el-button type="primary" @click="onAdd">
         新增根节点
       </el-button>
       <el-button :disabled="!dataTree.batch.selectionDataList.length" type="primary" @click="onDel">
@@ -251,7 +251,7 @@ defineExpose({
             </el-tag>
             {{ node.label }}</span>
           <span v-if="!query" class="tree__actions">
-            <a class="tree__action" @click.stop="onCreate(data)"> 新增 </a>
+            <a class="tree__action" @click.stop="onAdd(data)"> 新增 </a>
             <a class="tree__action" style="margin-left: 8px" @click.stop="onEdit(data)"> 编辑 </a>
             <a class="tree__action" style="margin-left: 8px" @click.stop="onBindRoles(data)"> 绑定 </a>
             <a class="tree__action" style="margin-left: 8px" @click.stop="onDel(data)"> 删除 </a>
@@ -274,12 +274,12 @@ defineExpose({
   padding-right: 8px;
 
   &:hover {
-    .tree__action {
+    .tree__actions {
       visibility: visible;
     }
   }
 
-  .tree__action {
+  .tree__actions {
     margin-left: 4px;
     visibility: hidden;
   }

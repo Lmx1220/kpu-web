@@ -345,7 +345,8 @@ function formatterIsNot(yesOrNo: boolean) {
     <el-form :model="data">
       <ElTable
         ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
-        stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
+        stripe @sort-change="sortChange"
+        @selection-change="data.batch.selectionDataList = $event"
       >
         <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
         <el-table-column align="center" fixed label="#" width="100">

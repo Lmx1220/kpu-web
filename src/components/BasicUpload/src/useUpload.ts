@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { computed, unref } from 'vue'
 
-const { t } = useI18nT()
+const { t } = useI18nL()
 
 export function useUploadType({
   acceptRef,

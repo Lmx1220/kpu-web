@@ -106,7 +106,7 @@ function sortChange({ prop, order }: any) {
   onSortChange(prop, order).then(() => getDataList())
 }
 
-function onCreate() {
+function onAdd() {
   if (data.value.formMode === 'router') {
     router.push({
       name: 'ToolsDatasourceConfigCreate',
@@ -250,7 +250,7 @@ async function onTestConnect(row: any) {
       </search-bar>
       <el-divider border-style="dashed" />
       <el-space wrap>
-        <el-button size="default" type="primary" @click="onCreate">
+        <el-button size="default" type="primary" @click="onAdd">
           <template #icon>
             <svg-icon name="ep:plus" />
           </template>

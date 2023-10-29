@@ -73,13 +73,8 @@ onMounted(() => {
 })
 
 watch(() => [props.id, props.type, props.currentData.id], () => {
-  // data.value.form.id = props.id
-  console.log(current.value)
   form.value?.resetFields()
   Object.assign(data.value.form, current.value)
-  // if (data.value.form.id !== '') {
-  //   getInfo()
-  // }
 }, { immediate: true })
 
 function getInfo() {

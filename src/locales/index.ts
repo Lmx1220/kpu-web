@@ -6,6 +6,10 @@ import elementLocaleJa from 'element-plus/dist/locale/ja.mjs'
 
 import elementLocaleZhCN from 'element-plus/dist/locale/zh-cn.mjs'
 import elementLocaleZhTW from 'element-plus/dist/locale/zh-tw.mjs'
+
+import vxeZhCN from 'vxe-table/lib/locale/lang/zh-CN'
+import vxeEnUS from 'vxe-table/lib/locale/lang/en-US'
+import vxeJaJP from 'vxe-table/lib/locale/lang/ja-JP'
 import { defaultsDeep, set } from 'lodash-es'
 import type { App } from 'vue'
 import { createI18n } from 'vue-i18n'
@@ -19,6 +23,7 @@ const modulesEn = import.meta.glob('./lang/en/**/*.ts', {
   as: 'json',
   eager: true,
 })
+
 export function genMessage(langs: Record<string, any>, prefix = 'lang') {
   const obj: Recordable = {}
 
@@ -44,8 +49,11 @@ export function genMessage(langs: Record<string, any>, prefix = 'lang') {
   return obj
 }
 
+messages['zh-cn'] = defaultsDeep(messages['zh-cn'], vxeZhCN)
 messages['zh-cn'] = defaultsDeep(messages['zh-cn'], genMessage(modules, 'lang/zh-cn'))
 messages.en = defaultsDeep(messages.en, genMessage(modulesEn, 'lang/en'))
+messages.en = defaultsDeep(messages.en, vxeEnUS)
+messages.jp = defaultsDeep(messages.en, vxeJaJP)
 // eslint-disable-next-line import/no-mutable-exports
 export let i18n: ReturnType<typeof createI18n>
 function useI18n(app: App) {
@@ -58,6 +66,7 @@ function useI18n(app: App) {
       lang.includes(key) && settingsStore.setDefaultLang(key)
     }
   }
+  setHtmlPageLang(settingsStore.settings.app.defaultLang)
   i18n = createI18n({
     legacy: false,
     locale: settingsStore.settings.app.defaultLang,
@@ -88,7 +97,9 @@ function getElementLocales() {
   }
   return locales
 }
-
+function setHtmlPageLang(locale: string) {
+  document.querySelector('html')?.setAttribute('lang', locale)
+}
 export {
   useI18n,
   getElementLocales,

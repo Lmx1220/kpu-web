@@ -15,6 +15,7 @@ declare module '@vue/runtime-core' {
     Auth: typeof import('./../components/Auth/index.vue')['default']
     AuthAll: typeof import('./../components/AuthAll/index.vue')['default']
     BaseDialog: typeof import('./../components/Dialog/BaseDialog.vue')['default']
+    BasicTree: typeof import('./../components/BasicTree/index.vue')['default']
     BasicUpload: typeof import('./../components/BasicUpload/src/BasicUpload.vue')['default']
     BlocksTree: typeof import('./../components/BlocksTree/index.vue')['default']
     CodeEdite: typeof import('./../components/CodeEdite/index.vue')['default']

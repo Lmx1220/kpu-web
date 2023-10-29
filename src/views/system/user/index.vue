@@ -113,7 +113,7 @@ function sortChange({
   )
 }
 
-function onCreate() {
+function onAdd() {
   if (data.value.formMode === 'router') {
     router.push({
       name: 'routerName',
@@ -270,7 +270,7 @@ function onResetPassword(row: any) {
       </search-bar>
       <el-divider border-style="dashed" />
       <el-space wrap>
-        <el-button size="default" type="primary" @click="onCreate">
+        <el-button size="default" type="primary" @click="onAdd">
           <template #icon>
             <svg-icon name="ep:plus" />
           </template>

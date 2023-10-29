@@ -61,7 +61,7 @@ function getDataList() {
     data.value.loading = false
   })
 }
-function onCreate(row?: Menu.raw) {
+function onAdd(row?: Menu.raw) {
   if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
     tabbar.open({
       name: 'SystemMenuCreate',
@@ -150,7 +150,7 @@ function onMove(row: Menu.raw) {
     <page-header title="菜单管理" />
     <page-main>
       <el-space>
-        <el-button type="primary" @click="onCreate()">
+        <el-button type="primary" @click="onAdd()">
           <template #icon>
             <svg-icon name="ep:plus" />
           </template>
@@ -220,7 +220,7 @@ function onMove(row: Menu.raw) {
           <template #default="scope">
             <el-button
               v-show="scope.row.resourceType === '10'" v-auth="'authority:menu:add'" link plain size="small"
-              type="info" @click="onCreate(scope.row)"
+              type="info" @click="onAdd(scope.row)"
             >
               新增导航
             </el-button>

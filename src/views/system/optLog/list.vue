@@ -142,7 +142,7 @@ function filterChange(filters: any) {
   getDataList(1)
 }
 
-function onCreate() {
+function onAdd() {
   if (data.value.formMode === 'router') {
     router.push({
       name: 'SystemOptLogCreate',

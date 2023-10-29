@@ -1,9 +1,28 @@
-const opt = Object.prototype.toString
+import XEUtils from 'xe-utils'
 
-export function isArray(obj: any): obj is any[] {
-  return opt.call(obj) === '[object Array]'
+const toString = Object.prototype.toString
+
+export function is(val: unknown, type: string) {
+  return toString.call(val) === `[object ${type}]`
+}
+export function isFile(obj: any): obj is File {
+  return toString.call(obj) === '[object File]'
 }
 
+export function isBlob(obj: any): obj is Blob {
+  return toString.call(obj) === '[object Blob]'
+}
+export function isEmptyObject(obj: any): boolean {
+  return isObject(obj) && Object.keys(obj).length === 0
+}
+
+export function isExist(obj: any): boolean {
+  return obj || obj === 0
+}
+
+export function isUndefined(obj: any): obj is undefined {
+  return obj === undefined
+}
 export function isDef<T = unknown>(val?: T): val is T {
   return typeof val !== 'undefined'
 }
@@ -12,8 +31,8 @@ export function isUnDef<T = unknown>(val?: T): val is T {
   return !isDef(val)
 }
 
-export function isObject(obj: any): obj is { [key: string]: any } {
-  return opt.call(obj) === '[object Object]'
+export function isObject(val: any): val is Record<any, any> {
+  return val !== null && is(val, 'Object')
 }
 
 export function isEmpty<T = unknown>(val: T): val is T {
@@ -32,46 +51,70 @@ export function isEmpty<T = unknown>(val: T): val is T {
   return false
 }
 
-export function isString(obj: any): obj is string {
-  return opt.call(obj) === '[object String]'
+export function isDate(val: unknown): val is Date {
+  return is(val, 'Date')
 }
 
-export function isNumber(obj: any): obj is number {
-  return opt.call(obj) === '[object Number]' && obj === obj; // eslint-disable-line
+export function isNull(val: unknown): val is null {
+  return val === null
 }
 
-export function isRegExp(obj: any) {
-  return opt.call(obj) === '[object RegExp]'
+export function isNullAndUnDef(val: unknown): val is null | undefined {
+  return isUnDef(val) && isNull(val)
 }
 
-export function isFile(obj: any): obj is File {
-  return opt.call(obj) === '[object File]'
+export function isNullOrUnDef(val: unknown): val is null | undefined {
+  return isUnDef(val) || isNull(val)
 }
 
-export function isBlob(obj: any): obj is Blob {
-  return opt.call(obj) === '[object Blob]'
+export function isNumber(val: unknown): val is number {
+  return is(val, 'Number')
 }
 
-export function isUndefined(obj: any): obj is undefined {
-  return obj === undefined
+export function isPromise<T = any>(val: unknown): val is Promise<T> {
+  return is(val, 'Promise') && isObject(val) && isFunction(val.then) && isFunction(val.catch)
 }
 
-export function isNull(obj: any): obj is null {
-  return obj === null
+export function isString(val: unknown): val is string {
+  return is(val, 'String')
 }
 
-export function isFunction(obj: any): obj is (...args: any[]) => any {
-  return typeof obj === 'function'
+export function isFunction(val: unknown): val is Function {
+  return typeof val === 'function'
 }
 
-export function isEmptyObject(obj: any): boolean {
-  return isObject(obj) && Object.keys(obj).length === 0
+export function isBoolean(val: unknown): val is boolean {
+  return is(val, 'Boolean')
 }
 
-export function isExist(obj: any): boolean {
-  return obj || obj === 0
+export function isRegExp(val: unknown): val is RegExp {
+  return is(val, 'RegExp')
 }
 
-export function isWindow(el: any): el is Window {
-  return el === window
+export function isArray(val: any): val is Array<any> {
+  return val && Array.isArray(val)
+}
+
+export function isWindow(val: any): val is Window {
+  return typeof window !== 'undefined' && is(val, 'Window')
+}
+
+export function isElement(val: unknown): val is Element {
+  return isObject(val) && !!val.tagName
+}
+
+export function isMap(val: unknown): val is Map<any, any> {
+  return is(val, 'Map')
+}
+
+export const isServer = typeof window === 'undefined'
+
+export const isClient = !isServer
+
+export function isUrl(path: string): boolean {
+  const reg = /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?/
+  return reg.test(path)
+}
+export function eqEmptyValue(cellValue: any) {
+  return cellValue === '' || XEUtils.eqNull(cellValue)
 }

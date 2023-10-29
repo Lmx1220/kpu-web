@@ -31,7 +31,7 @@ const emits = defineEmits<{
   'cancel': [Event?]
   'ok': [Event]
 }>()
-const { t } = useI18nT()
+const { t } = useI18nL()
 const cancelText = computed(() => {
   return t('common.cancelText')
 })

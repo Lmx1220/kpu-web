@@ -6,8 +6,7 @@ import type { PageParams, PageResult } from '@/api/model/baseModel'
 
 const MODULAR = 'dictItem'
 const ServicePrefix = ''
-
-export const Api = {
+export const Api: Record<string, any> = {
   Page: { url: `${ServicePrefix}/${MODULAR}/page`, method: RequestEnum.POST } as AxiosRequestConfig,
   Save: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.POST } as AxiosRequestConfig,
   Update: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.PUT },

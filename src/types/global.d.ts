@@ -1,3 +1,4 @@
+import {ActionEnum} from "@/enums/commonEnum";
 import {FormRules} from "element-plus";
 import type {RouteRecordRaw} from 'vue-router'
 
@@ -563,10 +564,10 @@ declare type DataConfig<SEARCH = any, T = any> = Record<any, any> & {
     loading?: boolean
     tableAutoHeight: boolean
     formMode: 'router' | 'dialog' | 'drawer'
-    formModeProps: {
+    formModeProps: Record<string, any> & {
         visible: boolean
         id: string
-        type?: 'add' | 'edit' | 'view'
+        type?: ActionEnum
         data?: Partial<Id>
     }
     // 搜索
@@ -587,5 +588,18 @@ declare type FormConfig<T = any> = Recordable & {
     form:T,
     rules: FormRules<typeof T>
     dicts?: Map<string,any>
+}
+declare type TreeConfig<T = any> = Recordable & {
+    tableAutoHeight: boolean,
+    // 详情
+    formModeProps: {
+        id: string
+        type?: ActionEnum
+        parent:  Record<string, any> & T,
+        data:  Record<string, any> & T,
+    },
+    batch: {
+        selectionDataList: [],
+    },
 }
 

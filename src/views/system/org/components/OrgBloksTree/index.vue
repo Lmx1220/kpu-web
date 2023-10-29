@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { onMounted } from 'vue'
+import { findNodeByKey } from '@/util/helper/treeHelper'
 import type { DataConfig } from '#/global'
 import crudOrg from '@/api/modules/system/org'
-import { findOrgNode } from '@/util'
 
 const emits = defineEmits<{
   create: [any]
@@ -69,7 +69,7 @@ function onChange() {
   emits('change', '1')
 }
 
-function onCreate() {
+function onAdd() {
   if (data.value.current?.id) {
     emits('create', {
       parentId: data.value.current.id,
@@ -116,7 +116,7 @@ function onNodeClick(event: any, node: any) {
   event && event.stopPropagation()
   if (node && node.id) {
     data.value.current = node
-    const parent = findOrgNode(node.parentId, data.value.dataTree.children)
+    const parent = findNodeByKey(node.parentId, data.value.dataTree.children)
     if (parent) {
       data.value.current!.parentId = parent.id
       data.value.current!.parentName = parent.name
@@ -148,7 +148,7 @@ defineExpose({
       <el-button type="primary" @click="onChange">
         切换
       </el-button>
-      <el-button :disabled="data.current?.id === undefined" type="primary" @click="onCreate">
+      <el-button :disabled="data.current?.id === undefined" type="primary" @click="onAdd">
         新增
       </el-button>
       <el-button :disabled="data.current?.id === '' || data.current?.id === undefined" @click="onEdit(data.current)">

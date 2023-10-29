@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { get, omit } from 'lodash-es'
+import { get } from 'lodash-es'
 import type { ApiSelectProps } from './typing'
 
 const props = withDefaults(defineProps<ApiSelectProps>(), {
@@ -17,8 +17,7 @@ defineOptions({
   name: 'ApiSelect',
 })
 const getProps = computed(() => {
-  const newProps = { ...props, ...attrs }
-  return omit(newProps, 'modelValue', 'api', 'params', 'resultField', 'labelField', 'valueField')
+  return { ...props.componentProps, ...attrs }
 })
 const modelValue = computed({
   get() {
@@ -45,6 +44,9 @@ async function getDicts() {
   }
 }
 onMounted(() => {
+  if (props.defaultValue && !props.modelValue) {
+    modelValue.value = props.defaultValue
+  }
   getDicts()
 })
 const slots = useSlots()

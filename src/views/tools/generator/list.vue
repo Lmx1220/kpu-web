@@ -116,7 +116,7 @@ function sortChange({ prop, order }: any) {
   onSortChange(prop, order).then(() => getDataList())
 }
 
-function onCreate() {
+function onAdd() {
   if (data.value.formMode === 'router') {
     router.push({
       name: 'ToolsGeneratorCreate',

@@ -58,7 +58,7 @@ async function getDataList() {
   treeRef.value?.getDataList()
 }
 
-function onCreate(row: any) {
+function onAdd(row: any) {
   if (data.value.formMode === 'router') {
     router.push({
       name: 'SystemOrgCreate',
@@ -151,11 +151,11 @@ const title = computed(() => {
       <LayoutContainer hide-left-side-toggle left-side-width="50%">
         <template #leftSide>
           <OrgBloksTree
-            v-if="data.treeType === '2'" ref="treeRef" @change="changeDisplay" @create="onCreate" @edit="onEdit"
+            v-if="data.treeType === '2'" ref="treeRef" @change="changeDisplay" @create="onAdd" @edit="onEdit"
             @select="onView"
           />
           <OrgManagement
-            v-if="data.treeType === '1'" ref="treeRef" @change="changeDisplay" @create="onCreate" @edit="onEdit"
+            v-if="data.treeType === '1'" ref="treeRef" @change="changeDisplay" @create="onAdd" @edit="onEdit"
             @select="onView"
           />
         </template>
