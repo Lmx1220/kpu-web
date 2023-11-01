@@ -96,7 +96,7 @@ vue3-vite-ts
 ├── package.json // 依赖
 ├── plopfile.js // plop配置
 ├── pnpm-lock.yaml // pnpm依赖
-├── postcss.config.cjs // postcss配置
+├── postcss.config.js // postcss配置
 ├── README.md // 说明
 ├── scss.template.hbs // scss模板
 ├── tsconfig.json // ts配置
