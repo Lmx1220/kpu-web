@@ -245,7 +245,7 @@ function onDel(row?: any) {
           </ElForm>
         </template>
       </SearchBar>
-      <ElDivider border-style="dashed" />
+      <ElDivider border-style="dashed" class="my-4" />
       <ElSpace wrap>
         <ElButton size="default" type="primary" @click="onAdd">
           <template #icon>
@@ -261,7 +261,7 @@ function onDel(row?: any) {
         </ElButton>
       </ElSpace>
       <ElTable
-        ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
+        ref="table" v-loading="data.loading" :data="data.dataList" border class="my-4" height="100%" highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
         <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
@@ -323,8 +323,12 @@ function onDel(row?: any) {
   .page-main {
     flex: 1;
     overflow: auto;
-    display: flex;
-    flex-direction: column;
+    :deep(.main-container){
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+    }
 
     .search-container {
       margin-bottom: 0;

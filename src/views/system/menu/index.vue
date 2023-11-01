@@ -5,11 +5,11 @@ import useSettingsStore from '@/store/modules/settings'
 import type { DataConfig, Menu } from '@/types/global'
 import Move from '@/views/system/menu/components/move.vue'
 
-const auth = useAuth()
-
 defineOptions({
   name: 'MenuList',
 })
+
+const auth = useAuth()
 
 const router = useRouter()
 const tabbar = useTabbar()
@@ -101,10 +101,11 @@ function onEdit(row: Menu.raw) {
 }
 function onDel(row: Menu.raw) {
   ElMessageBox.confirm(`确认删除「${row.title}」吗？`, '确认信息').then(() => {
-    crudMenu.detail(row.id).then(() => {
+    debugger
+    crudMenu.delete([row.id]).then(() => {
       getDataList()
       ElMessage.success({
-        message: '模拟删除成功',
+        message: '删除成功',
         center: true,
       })
     })
@@ -147,30 +148,30 @@ function onMove(row: Menu.raw) {
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="菜单管理" />
-    <page-main>
-      <el-space>
-        <el-button type="primary" @click="onAdd()">
+    <PageHeader title="菜单管理" />
+    <PageMain>
+      <ElSpace>
+        <ElButton type="primary" @click="onAdd()">
           <template #icon>
-            <svg-icon name="ep:plus" />
+            <SvgIcon name="ep:plus" />
           </template>
           新增主导航
-        </el-button>
-      </el-space>
-      <el-table
-        v-loading="data.loading" class="list-table" :data="data.dataList" row-key="id" default-expand-all border
+        </ElButton>
+      </ElSpace>
+      <ElTable
+        v-loading="data.loading" class="my-4" :data="data.dataList" row-key="id" default-expand-all border
         stripe highlight-current-row height="100%"
       >
-        <el-table-column prop="title" label="标题" min-width="200" fixed="left" />
+        <ElTableColumn prop="title" label="标题" min-width="200" fixed="left" />
 
-        <el-table-column prop="path" label="路由" width="200">
+        <ElTableColumn prop="path" label="路由" width="200">
           <template #default="scope">
             <span :title="scope.row.path">
               {{ scope.row.path }}
             </span>
           </template>
-        </el-table-column>
-        <el-table-column prop="component" label="页面组件" width="200">
+        </ElTableColumn>
+        <ElTableColumn prop="component" label="页面组件" width="200">
           <template #default="scope">
             <ElTag v-if="scope.row.component === 'Layout'">
               {{ scope.row.component }}
@@ -179,20 +180,20 @@ function onMove(row: Menu.raw) {
               {{ scope.row.component }}
             </span>
           </template>
-        </el-table-column>
-        <el-table-column prop="icon" label="图标" width="90" align="center">
+        </ElTableColumn>
+        <ElTableColumn prop="icon" label="图标" width="90" align="center">
           <template #default="scope">
             <div style="display: flex; justify-content: center;">
-              <svg-icon v-if="scope.row.icon" :name="scope.row.icon" style="font-size: 24px;" />
+              <SvgIcon v-if="scope.row.icon" :name="scope.row.icon" style="font-size: 24px;" />
             </div>
           </template>
-        </el-table-column>
-        <el-table-column prop="activeIcon" label="激活图标" width="90" align="center">
+        </ElTableColumn>
+        <ElTableColumn prop="activeIcon" label="激活图标" width="90" align="center">
           <template #default="scope">
-            <svg-icon v-if="scope.row.activeIcon" :name="scope.row.activeIcon" style="font-size: 24px;" />
+            <SvgIcon v-if="scope.row.activeIcon" :name="scope.row.activeIcon" style="font-size: 24px;" />
           </template>
-        </el-table-column>
-        <el-table-column prop="sidebar" label="菜单" width="80" align="center">
+        </ElTableColumn>
+        <ElTableColumn prop="sidebar" label="菜单" width="80" align="center">
           <template #default="scope">
             <ElTag
               v-if="typeof scope.row.meta.sidebar === 'boolean'"
@@ -201,8 +202,8 @@ function onMove(row: Menu.raw) {
               {{ scope.row.meta.sidebar ? '显示' : '隐藏' }}
             </ElTag>
           </template>
-        </el-table-column>
-        <el-table-column prop="breadcrumb" label="面包屑" width="80" align="center">
+        </ElTableColumn>
+        <ElTableColumn prop="breadcrumb" label="面包屑" width="80" align="center">
           <template #default="scope">
             <ElTag
               v-if="typeof scope.row.meta.breadcrumb === 'boolean'"
@@ -211,49 +212,49 @@ function onMove(row: Menu.raw) {
               {{ scope.row.meta.breadcrumb ? '显示' : '隐藏' }}
             </ElTag>
           </template>
-        </el-table-column>
+        </ElTableColumn>
         <!-- <el-table-column prop="sortValue" label="排序" min-width="80" fixed="right" /> -->
-        <el-table-column
+        <ElTableColumn
           v-if="auth.auth(['authority:menu:add', 'authority:menu:edit', 'authority:menu:delete'])"
           align="center" fixed="right" label="操作" width="350"
         >
           <template #default="scope">
-            <el-button
+            <ElButton
               v-show="scope.row.resourceType === '10'" v-auth="'authority:menu:add'" link plain size="small"
               type="info" @click="onAdd(scope.row)"
             >
               新增导航
-            </el-button>
-            <el-button v-auth="'authority:menu:edit'" link size="small" type="primary" @click="onEdit(scope.row)">
+            </ElButton>
+            <ElButton v-auth="'authority:menu:edit'" link size="small" type="primary" @click="onEdit(scope.row)">
               编辑
-            </el-button>
-            <el-button v-auth="'authority:menu:del'" link size="small" type="danger" @click="onDel(scope.row)">
+            </ElButton>
+            <ElButton v-auth="'authority:menu:delete'" link size="small" type="danger" @click="onDel(scope.row)">
               删除
-            </el-button>
+            </ElButton>
             <!--            <el-button v-auth="'authority:menu:edit'" type="danger" size="small"> -->
             <!--              上移 -->
             <!--            </el-button> -->
-            <el-popconfirm title="是否上移?" @confirm="onMoveUp(scope.row)">
+            <ElPopconfirm title="是否上移?" @confirm="onMoveUp(scope.row)">
               <template #reference>
-                <el-button v-auth="'authority:menu:edit'" link size="small" type="danger">
+                <ElButton v-auth="'authority:menu:edit'" link size="small" type="danger">
                   上移
-                </el-button>
+                </ElButton>
               </template>
-            </el-popconfirm>
-            <el-popconfirm title="是否下移?" @confirm="onMoveDown(scope.row)">
+            </ElPopconfirm>
+            <ElPopconfirm title="是否下移?" @confirm="onMoveDown(scope.row)">
               <template #reference>
-                <el-button v-auth="'authority:menu:edit'" link size="small" type="danger">
+                <ElButton v-auth="'authority:menu:edit'" link size="small" type="danger">
                   下移
-                </el-button>
+                </ElButton>
               </template>
-            </el-popconfirm>
-            <el-button v-auth="'authority:menu:edit'" link size="small" type="danger" @click="onMove(scope.row)">
+            </ElPopconfirm>
+            <ElButton v-auth="'authority:menu:edit'" link size="small" type="danger" @click="onMove(scope.row)">
               移动
-            </el-button>
+            </ElButton>
           </template>
-        </el-table-column>
-      </el-table>
-    </page-main>
+        </ElTableColumn>
+      </ElTable>
+    </PageMain>
     <Move :id="moveDialog.id" v-model="moveDialog.visible" :data="moveDialog.data" @success="getDataList" />
   </div>
 </template>
@@ -267,21 +268,18 @@ function onMove(row: Menu.raw) {
   flex-direction: column;
 
   .page-main {
-    // 让 page-main 的高度自适应
     flex: 1;
     overflow: auto;
-    display: flex;
-    flex-direction: column;
+    :deep(.main-container){
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   .page-header {
     margin-bottom: 0
   }
-}
-
-:deep(.el-table td.el-table__cell div) {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 </style>

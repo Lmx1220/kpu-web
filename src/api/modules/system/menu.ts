@@ -1,4 +1,5 @@
 import api from '@/api'
+import { RequestEnum } from '@/enums/httpEnum.ts'
 
 // 前缀 变量
 const prefix = '/resource'
@@ -35,11 +36,10 @@ export default {
     url: `${prefix}`,
     data,
   }),
-  delete: <T>(id: string) => api.post<T>({
-    url: `${prefix}/delete`,
-    data: {
-      id,
-    },
+  delete: <T>(params: string[]) => api.request<T>({
+    method: RequestEnum.DELETE,
+    url: `${prefix}`,
+    params,
   }),
   resourceAuthTree,
   moveUp: <T>(id: string) => api.post<T>({

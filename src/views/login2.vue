@@ -4,6 +4,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import storage from '@/util/storage'
 import useUserStore from '@/store/modules/user'
+import Copyright from '@/layouts/components/Copyright/index.vue'
 
 defineOptions({
   name: 'Login',

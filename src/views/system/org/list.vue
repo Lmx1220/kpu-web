@@ -202,8 +202,12 @@ const title = computed(() => {
   .page-main {
     flex: 1;
     overflow: auto;
-    display: flex;
-    flex-direction: column;
+    :deep(.main-container){
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+    }
 
     .flex-container {
       position: static;

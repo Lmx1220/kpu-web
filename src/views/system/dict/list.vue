@@ -158,88 +158,88 @@ function onDel(row?: any) {
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="字典管理" />
+    <PageHeader title="字典管理" />
     <div class="page-main">
       <LayoutContainer right-side-width="60%">
-        <search-bar :fold="data.searchFold" :show-toggle="false">
+        <SearchBar :fold="data.searchFold" :show-toggle="false">
           <template #default>
-            <el-form
+            <ElForm
               :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
               size="default"
             >
-              <el-form-item label="标识">
-                <el-input
+              <ElFormItem label="标识">
+                <ElInput
                   v-model="data.search.key" clearable placeholder="请输入标识，支持模糊查询"
                   @clear="currentChange()"
                   @keydown.enter="currentChange()"
                 />
-              </el-form-item>
-              <el-form-item label="名称">
-                <el-input
+              </ElFormItem>
+              <ElFormItem label="名称">
+                <ElInput
                   v-model="data.search.name" clearable placeholder="请输入名称，支持模糊查询"
                   @clear="currentChange()"
                   @keydown.enter="currentChange()"
                 />
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="currentChange()">
+              </ElFormItem>
+              <ElFormItem>
+                <ElButton type="primary" @click="currentChange()">
                   <template #icon>
-                    <svg-icon name="ep:search" />
+                    <SvgIcon name="ep:search" />
                   </template>
                   筛选
-                </el-button>
-              </el-form-item>
-            </el-form>
+                </ElButton>
+              </ElFormItem>
+            </ElForm>
           </template>
-        </search-bar>
-        <el-divider border-style="dashed" />
-        <el-space wrap>
-          <el-button size="default" type="primary" @click="onAdd">
+        </SearchBar>
+        <ElDivider border-style="dashed" />
+        <ElSpace wrap>
+          <ElButton size="default" type="primary" @click="onAdd">
             <template #icon>
-              <svg-icon name="ep:plus" />
+              <SvgIcon name="ep:plus" />
             </template>
             新增
-          </el-button>
-          <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
+          </ElButton>
+          <ElButton :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
             <template #icon>
-              <svg-icon name="ep:delete" />
+              <SvgIcon name="ep:delete" />
             </template>
             删除
-          </el-button>
-        </el-space>
+          </ElButton>
+        </ElSpace>
         <ElTable
           ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
           stripe @sort-change="sortChange"
           @current-change="data.current = $event || {}"
           @selection-change="data.batch.selectionDataList = $event"
         >
-          <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
-          <el-table-column align="center" label="序号" width="100">
+          <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
+          <ElTableColumn align="center" label="序号" width="100">
             <template #default="{ $index }">
               {{ (pagination.size * (pagination.page - 1)) + $index + 1 }}
             </template>
-          </el-table-column>
-          <el-table-column align="center" label="名称" prop="name" />
-          <el-table-column align="center" label="状态" prop="state" width="80">
+          </ElTableColumn>
+          <ElTableColumn align="center" label="名称" prop="name" />
+          <ElTableColumn align="center" label="状态" prop="state" width="80">
             <template #default="{ row }">
-              <el-tag :type="row.state ? 'success' : 'danger'">
+              <ElTag :type="row.state ? 'success' : 'danger'">
                 {{ row.state ? '启用' : '禁用' }}
-              </el-tag>
+              </ElTag>
             </template>
-          </el-table-column>
+          </ElTableColumn>
 
-          <el-table-column align="center" fixed="right" label="操作" width="150">
+          <ElTableColumn align="center" fixed="right" label="操作" width="150">
             <template #default="scope">
-              <el-button plain size="small" type="primary" @click.stop="onEdit(scope.row)">
+              <ElButton plain size="small" type="primary" @click.stop="onEdit(scope.row)">
                 编 辑
-              </el-button>
-              <el-button plain size="small" type="danger" @click.stop="onDel(scope.row)">
+              </ElButton>
+              <ElButton plain size="small" type="danger" @click.stop="onDel(scope.row)">
                 删 除
-              </el-button>
+              </ElButton>
             </template>
-          </el-table-column>
+          </ElTableColumn>
         </ElTable>
-        <el-pagination
+        <ElPagination
           :current-page="pagination.page" :hide-on-single-page="false" :layout="pagination.layout"
           :page-size="pagination.size" :page-sizes="pagination.sizes" :total="pagination.total" background
           class="pagination" @size-change="sizeChange" @current-change="currentChange"
@@ -275,8 +275,12 @@ function onDel(row?: any) {
   .page-main {
     flex: 1;
     overflow: auto;
-    display: flex;
-    flex-direction: column;
+    :deep(.main-container){
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+    }
 
     .flex-container {
       position: static;

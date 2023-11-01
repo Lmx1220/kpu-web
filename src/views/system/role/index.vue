@@ -277,7 +277,7 @@ async function getDict() {
           </ElButton>
         </ElSpace>
         <ElTable
-          ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%"
+          ref="table" v-loading="data.loading" :data="data.dataList" border class="my-4" height="100%"
           highlight-current-row stripe @sort-change="sortChange"
           @current-change="data.current = $event || {}"
           @selection-change="data.batch.selectionDataList = $event"
@@ -364,8 +364,12 @@ async function getDict() {
   .page-main {
     flex: 1;
     overflow: auto;
-    display: flex;
-    flex-direction: column;
+    :deep(.main-container){
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+    }
 
     .flex-container {
       position: static;

@@ -17,7 +17,6 @@ declare module 'vue' {
     BasicUpload: typeof import('./../components/BasicUpload/src/BasicUpload.vue')['default']
     BlocksTree: typeof import('./../components/BlocksTree/index.vue')['default']
     CodeEdite: typeof import('./../components/CodeEdite/index.vue')['default']
-    Copyright: typeof import('./../components/Copyright/index.vue')['default']
     DialogFooter: typeof import('./../components/Dialog/components/DialogFooter.vue')['default']
     DialogHeader: typeof import('./../components/Dialog/components/DialogHeader.vue')['default']
     DialogWrapper: typeof import('./../components/Dialog/components/DialogWrapper.vue')['default']

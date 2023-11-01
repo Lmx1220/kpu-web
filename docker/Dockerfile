@@ -9,7 +9,7 @@ FROM nginx
 MAINTAINER lmx <2538381255@qq.com>
 
 #应用构建成功后的文件被复制到镜像内
-COPY ./../dist /usr/share/nginx/html/form-kpu/
+COPY ./dist /usr/share/nginx/html/form-kpu/
 
 #拷贝.conf文件到镜像下，替换掉原有的nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf

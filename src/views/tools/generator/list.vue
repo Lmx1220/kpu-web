@@ -365,7 +365,7 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
           </ElForm>
         </template>
       </SearchBar>
-      <ElDivider border-style="dashed" />
+      <ElDivider class="my-4" border-style="dashed" />
       <ElSpace wrap>
         <ElButton :disabled="!data.batch.selectionDataList.length" size="default" type="danger" @click="onDel()">
           <template #icon>
@@ -438,7 +438,7 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
         </ElDropdown>
       </ElSpace>
       <ElTable
-        ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
+        ref="table" v-loading="data.loading" :data="data.dataList" border class="my-4" height="100%" highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
         <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
@@ -529,8 +529,12 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
   .page-main {
     flex: 1;
     overflow: auto;
-    display: flex;
-    flex-direction: column;
+    :deep(.main-container){
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+    }
 
     .search-container {
       margin-bottom: 0;

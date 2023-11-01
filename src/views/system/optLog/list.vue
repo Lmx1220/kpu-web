@@ -331,7 +331,7 @@ async function getDict() {
           </ElForm>
         </template>
       </SearchBar>
-      <ElDivider border-style="dashed" />
+      <ElDivider border-style="dashed" class="my-4" />
       <ElSpace wrap>
         <ElButton :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
           <template #icon>
@@ -377,7 +377,7 @@ async function getDict() {
         </ElDropdown>
       </ElSpace>
       <ElTable
-        ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%"
+        ref="table" v-loading="data.loading" :data="data.dataList" border class="my-4" height="100%"
         highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
@@ -454,8 +454,12 @@ async function getDict() {
   .page-main {
     flex: 1;
     overflow: auto;
-    display: flex;
-    flex-direction: column;
+    :deep(.main-container){
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+    }
 
     .search-container {
       margin-bottom: 0;
