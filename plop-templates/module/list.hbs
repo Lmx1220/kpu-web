@@ -121,7 +121,7 @@ function onCreate() {
   else {
     data.value.formModeProps.id = ''
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'add'
+    data.value.formModeProps.type = ActionEnum.ADD
   }
 }
 
@@ -137,7 +137,7 @@ function onEdit(row: any) {
   } else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'edit'
+    data.value.formModeProps.type = ActionEnum.EDIT
   }
 }
 
@@ -147,13 +147,13 @@ function onView(row: any) {
       name: '{{properCase componentDetailName }}Detail',
       params: {
         id: row.id,
-        type: 'view',
+        type: ActionEnum.VIEW
       },
     })
   } else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'view'
+    data.value.formModeProps.type = ActionEnum.VIEW
   }
 }
 

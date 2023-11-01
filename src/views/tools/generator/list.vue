@@ -11,6 +11,7 @@ import type { DataConfig } from '@/types/global'
 import { downloadFile } from '@/util'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
   name: 'ToolsGeneratorList',
@@ -128,7 +129,7 @@ function onAdd() {
   else {
     data.value.formModeProps.id = ''
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'add'
+    data.value.formModeProps.type = ActionEnum.ADD
   }
 }
 
@@ -169,7 +170,7 @@ function onEdit(row?: any) {
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'edit'
+    data.value.formModeProps.type = ActionEnum.EDIT
   }
 }
 
@@ -179,14 +180,14 @@ function onView(row: any) {
       name: 'ToolsGeneratorDetail',
       params: {
         id: row.id,
-        type: 'view',
+        type: ActionEnum.VIEW,
       },
     })
   }
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'view'
+    data.value.formModeProps.type = ActionEnum.VIEW
   }
 }
 
@@ -288,45 +289,45 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="代码生成器" />
-    <page-main>
-      <search-bar
+    <PageHeader title="代码生成器" />
+    <PageMain>
+      <SearchBar
         :fold="data.searchFold"
         :show-toggle="false"
       >
         <template #default="{ fold }">
-          <el-form
+          <ElForm
             :model="data.search" class="search-form" inline-message label-suffix="：" label-width="100px"
             size="default"
           >
-            <el-row>
-              <el-col :span="6">
-                <el-form-item label="表名称">
-                  <el-input
+            <ElRow>
+              <ElCol :span="6">
+                <ElFormItem label="表名称">
+                  <ElInput
                     v-model="data.search.name" clearable placeholder="请输入，支持模糊查询"
                     @clear="currentChange()" @keydown.enter="currentChange()"
                   />
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item v-show="!fold" label="表描述">
-                  <el-input
+                </ElFormItem>
+              </ElCol>
+              <ElCol :span="6">
+                <ElFormItem v-show="!fold" label="表描述">
+                  <ElInput
                     v-model="data.search.comment" clearable placeholder="请输入，支持模糊查询"
                     @clear="currentChange()" @keydown.enter="currentChange()"
                   />
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item v-show="!fold" label="作者">
-                  <el-input
+                </ElFormItem>
+              </ElCol>
+              <ElCol :span="6">
+                <ElFormItem v-show="!fold" label="作者">
+                  <ElInput
                     v-model="data.search.author" clearable placeholder="请输入，支持模糊查询"
                     @clear="currentChange()" @keydown.enter="currentChange()"
                   />
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item v-show="!fold" label="创建时间">
-                  <el-date-picker
+                </ElFormItem>
+              </ElCol>
+              <ElCol :span="6">
+                <ElFormItem v-show="!fold" label="创建时间">
+                  <ElDatePicker
                     v-model="data.search.daterange"
                     :default-time="[
                       new Date(2000, 1, 1, 0, 0, 0),
@@ -339,167 +340,167 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
                     type="daterange"
                     value-format="YYYY-MM-DD HH:mm:ss"
                   />
-                </el-form-item>
-              </el-col>
-              <el-col :span="24">
-                <el-form-item>
-                  <el-button type="primary" @click="currentChange()">
+                </ElFormItem>
+              </ElCol>
+              <ElCol :span="24">
+                <ElFormItem>
+                  <ElButton type="primary" @click="currentChange()">
                     <template #icon>
-                      <svg-icon name="ep:search" />
+                      <SvgIcon name="ep:search" />
                     </template>
                     筛选
-                  </el-button>
-                  <el-button type="primary" @click="resetQuery(defaultQuery)">
+                  </ElButton>
+                  <ElButton type="primary" @click="resetQuery(defaultQuery)">
                     重置
-                  </el-button>
-                  <el-button link type="primary" @click="data.searchFold = !fold">
+                  </ElButton>
+                  <ElButton link type="primary" @click="data.searchFold = !fold">
                     <template #icon>
-                      <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                      <SvgIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
                     </template>
                     {{ fold ? '展开' : '收起' }}
-                  </el-button>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
+                  </ElButton>
+                </ElFormItem>
+              </ElCol>
+            </ElRow>
+          </ElForm>
         </template>
-      </search-bar>
-      <el-divider border-style="dashed" />
-      <el-space wrap>
-        <el-button :disabled="!data.batch.selectionDataList.length" size="default" type="danger" @click="onDel()">
+      </SearchBar>
+      <ElDivider border-style="dashed" />
+      <ElSpace wrap>
+        <ElButton :disabled="!data.batch.selectionDataList.length" size="default" type="danger" @click="onDel()">
           <template #icon>
-            <svg-icon name="ep:delete" />
+            <SvgIcon name="ep:delete" />
           </template>
           删除
-        </el-button>
-        <el-button size="default" type="primary" @click="() => openImportMode()">
+        </ElButton>
+        <ElButton size="default" type="primary" @click="() => openImportMode()">
           <template #icon>
-            <svg-icon name="ri:upload-cloud-2-line" />
+            <SvgIcon name="ri:upload-cloud-2-line" />
           </template>
           导入
-        </el-button>
-        <el-button :disabled="!data.batch.selectionDataList.length" size="default" type="primary" @click="onEdit()">
+        </ElButton>
+        <ElButton :disabled="!data.batch.selectionDataList.length" size="default" type="primary" @click="onEdit()">
           <template #icon>
-            <svg-icon name="ri:upload-cloud-2-line" />
+            <SvgIcon name="ri:upload-cloud-2-line" />
           </template>
           编辑
-        </el-button>
-        <el-button
+        </ElButton>
+        <ElButton
           :disabled="!data.batch.selectionDataList.length" size="default" type="primary"
           @click="() => onPreview('BACKEND')"
         >
           <template #icon>
-            <svg-icon name="ri:upload-cloud-2-line" />
+            <SvgIcon name="ri:upload-cloud-2-line" />
           </template>
           预览
-        </el-button>
-        <el-dropdown
+        </ElButton>
+        <ElDropdown
           trigger="click"
           @command="downCommand"
         >
-          <el-button :disabled="btnDisabled || !data.batch.selectionDataList.length" size="default" type="primary">
+          <ElButton :disabled="btnDisabled || !data.batch.selectionDataList.length" size="default" type="primary">
             <template #icon>
-              <svg-icon name="ri:upload-cloud-2-line" />
+              <SvgIcon name="ri:upload-cloud-2-line" />
             </template>
             下载
-          </el-button>
+          </ElButton>
           <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item command="WEB_PLUS">
+            <ElDropdownMenu>
+              <ElDropdownItem command="WEB_PLUS">
                 前端
-              </el-dropdown-item>
-              <el-dropdown-item command="BACKEND">
+              </ElDropdownItem>
+              <ElDropdownItem command="BACKEND">
                 后端
-              </el-dropdown-item>
-            </el-dropdown-menu>
+              </ElDropdownItem>
+            </ElDropdownMenu>
           </template>
-        </el-dropdown>
-        <el-dropdown
+        </ElDropdown>
+        <ElDropdown
           trigger="click"
           @command="genCommand"
         >
-          <el-button :disabled="btnDisabled || !data.batch.selectionDataList.length" size="default" type="primary">
+          <ElButton :disabled="btnDisabled || !data.batch.selectionDataList.length" size="default" type="primary">
             <template #icon>
-              <svg-icon name="ri:upload-cloud-2-line" />
+              <SvgIcon name="ri:upload-cloud-2-line" />
             </template>
             生成
-          </el-button>
+          </ElButton>
           <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item command="WEB_PLUS">
+            <ElDropdownMenu>
+              <ElDropdownItem command="WEB_PLUS">
                 前端
-              </el-dropdown-item>
-              <el-dropdown-item command="BACKEND">
+              </ElDropdownItem>
+              <ElDropdownItem command="BACKEND">
                 后端
-              </el-dropdown-item>
-            </el-dropdown-menu>
+              </ElDropdownItem>
+            </ElDropdownMenu>
           </template>
-        </el-dropdown>
-      </el-space>
+        </ElDropdown>
+      </ElSpace>
       <ElTable
         ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
-        <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
-        <el-table-column align="center" label="序号" width="100">
+        <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
+        <ElTableColumn align="center" label="序号" width="100">
           <template #default="{ $index }">
             {{ (pagination.size * (pagination.page - 1)) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column label="表名称" prop="name" />
-        <el-table-column label="表描述" prop="comment" />
-        <el-table-column label="实体类名称" prop="entityName" />
-        <el-table-column label="作者" prop="author" />
-        <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
-        <el-table-column align="center" fixed="right" label="操作" width="250">
+        </ElTableColumn>
+        <ElTableColumn label="表名称" prop="name" />
+        <ElTableColumn label="表描述" prop="comment" />
+        <ElTableColumn label="实体类名称" prop="entityName" />
+        <ElTableColumn label="作者" prop="author" />
+        <ElTableColumn align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
+        <ElTableColumn align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button plain size="default" text title="修改" type="primary" @click="onEdit(scope.row)">
-              <svg-icon name="ep:edit" />
-            </el-button>
-            <el-button plain size="default" text title="删除" type="danger" @click="onDel(scope.row)">
-              <svg-icon name="ep:delete" />
-            </el-button>
-            <el-popconfirm title="确定同步该表的字段吗？" @confirm="onSync(scope.row)">
+            <ElButton plain size="default" text title="修改" type="primary" @click="onEdit(scope.row)">
+              <SvgIcon name="ep:edit" />
+            </ElButton>
+            <ElButton plain size="default" text title="删除" type="danger" @click="onDel(scope.row)">
+              <SvgIcon name="ep:delete" />
+            </ElButton>
+            <ElPopconfirm title="确定同步该表的字段吗？" @confirm="onSync(scope.row)">
               <template #reference>
-                <el-button plain size="default" text title="同步" type="primary">
-                  <svg-icon name="ant-design:cloud-sync-outlined" />
-                </el-button>
+                <ElButton plain size="default" text title="同步" type="primary">
+                  <SvgIcon name="ant-design:cloud-sync-outlined" />
+                </ElButton>
               </template>
-            </el-popconfirm>
-            <el-dropdown>
-              <el-button size="default" text type="primary">
-                <svg-icon name="ep:more-filled" />
-              </el-button>
+            </ElPopconfirm>
+            <ElDropdown>
+              <ElButton size="default" text type="primary">
+                <SvgIcon name="ep:more-filled" />
+              </ElButton>
               <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="BACKEND" @click="() => onPreview('BACKEND', scope.row)">
-                    <svg-icon name="ant-design:search-outlined" />
+                <ElDropdownMenu>
+                  <ElDropdownItem command="BACKEND" @click="() => onPreview('BACKEND', scope.row)">
+                    <SvgIcon name="ant-design:search-outlined" />
                     预览后端
-                  </el-dropdown-item>
-                  <el-dropdown-item command="WEB_PLUS" @click="() => onPreview('WEB_PLUS', scope.row)">
-                    <svg-icon name="ant-design:search-outlined" />
+                  </ElDropdownItem>
+                  <ElDropdownItem command="WEB_PLUS" @click="() => onPreview('WEB_PLUS', scope.row)">
+                    <SvgIcon name="ant-design:search-outlined" />
                     预览前端
-                  </el-dropdown-item>
-                  <el-dropdown-item @click="onDownload(scope.row, 'BACKEND')">
-                    <svg-icon name="ri:download-2-line" />
+                  </ElDropdownItem>
+                  <ElDropdownItem @click="onDownload(scope.row, 'BACKEND')">
+                    <SvgIcon name="ri:download-2-line" />
                     覆盖生成后端
-                  </el-dropdown-item>
-                  <el-dropdown-item @click="onDownload(scope.row, 'WEB_PLUS')">
-                    <svg-icon name="ri:download-2-line" />
+                  </ElDropdownItem>
+                  <ElDropdownItem @click="onDownload(scope.row, 'WEB_PLUS')">
+                    <SvgIcon name="ri:download-2-line" />
                     覆盖生成前端
-                  </el-dropdown-item>
-                </el-dropdown-menu>
+                  </ElDropdownItem>
+                </ElDropdownMenu>
               </template>
-            </el-dropdown>
+            </ElDropdown>
           </template>
-        </el-table-column>
+        </ElTableColumn>
       </ElTable>
-      <el-pagination
+      <ElPagination
         :current-page="pagination.page" :hide-on-single-page="false" :layout="pagination.layout"
         :page-size="pagination.size" :page-sizes="pagination.sizes" :total="pagination.total"
         background class="pagination" @size-change="sizeChange" @current-change="currentChange"
       />
-    </page-main>
+    </PageMain>
     <FormMode
       v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
       v-model="data.formModeProps.visible" :mode="data.formMode" @success="getDataList"

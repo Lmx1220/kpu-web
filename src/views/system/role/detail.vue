@@ -2,6 +2,7 @@
 import useSettingsStore from '@/store/modules/settings'
 import eventBus from '@/util/eventBus'
 import DetailForm from '@/views/system/role/components/DetailForm/index.vue'
+import type { ActionEnum } from '@/enums/commonEnum.ts'
 
 const settingsStore = useSettingsStore()
 const route = useRoute()
@@ -33,32 +34,32 @@ function goBack() {
 
 <template>
   <div>
-    <page-header :title="route.name === 'routerName' ? '新增角色' : '编辑角色'">
-      <el-button size="default" round @click="goBack">
+    <PageHeader :title="route.name === 'routerName' ? '新增角色' : '编辑角色'">
+      <ElButton size="default" round @click="goBack">
         <template #icon>
-          <svg-icon name="ep:arrow-left" />
+          <SvgIcon name="ep:arrow-left" />
         </template>
         返回
-      </el-button>
-    </page-header>
-    <page-main>
-      <el-row>
-        <el-col :md="24" :lg="16">
+      </ElButton>
+    </PageHeader>
+    <PageMain>
+      <ElRow>
+        <ElCol :md="24" :lg="16">
           <DetailForm
             :id="route.params.id as string" ref="form"
-            :type="(route.params.type as 'add'|'edit'| 'view'| undefined)"
+            :type="route.params.type as ActionEnum"
           />
-        </el-col>
-      </el-row>
-    </page-main>
-    <fixed-action-bar>
-      <el-button type="primary" size="large" @click="onSubmit">
+        </ElCol>
+      </ElRow>
+    </PageMain>
+    <FixedActionBar>
+      <ElButton type="primary" size="large" @click="onSubmit">
         提交
-      </el-button>
-      <el-button size="large" @click="onCancel">
+      </ElButton>
+      <ElButton size="large" @click="onCancel">
         取消
-      </el-button>
-    </fixed-action-bar>
+      </ElButton>
+    </FixedActionBar>
   </div>
 </template>
 

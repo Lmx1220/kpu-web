@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type {SubMenuItemProps} from './types'
-import {rootMenuInjectionKey} from './types'
+import type { SubMenuItemProps } from './types'
+import { rootMenuInjectionKey } from './types'
 import useI18nTitle from '@/util/composables/useI18nTitle.ts'
 
 const props = withDefaults(

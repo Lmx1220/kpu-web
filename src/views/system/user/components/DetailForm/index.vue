@@ -6,10 +6,11 @@ import { findDictMapItemListByKey } from '@/api/modules/common/dict'
 import { treeOrg } from '@/api/modules/system/org'
 import crudUser from '@/api/modules/system/user'
 import stautsEnum from '@/enums/stautsEnum'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 export interface Props {
   id?: string
-  type?: 'add' | 'edit' | 'view'
+  type?: ActionEnum
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -104,7 +105,7 @@ defineExpose({
   submit(callback: any) {
     form.value?.validate((valid) => {
       if (valid) {
-        if (props.type === 'add') {
+        if (props.type === ActionEnum.ADD) {
           crudUser.create(data.value.form).then(() => {
             ElMessage.success({
               message: '新增成功',
@@ -113,7 +114,7 @@ defineExpose({
             callback && callback()
           })
         }
-        else if (props.type === 'edit') {
+        else if (props.type === ActionEnum.EDIT) {
           crudUser.edit(data.value.form).then(() => {
             ElMessage.success({
               message: '编辑成功',
@@ -133,79 +134,79 @@ defineExpose({
 
 <template>
   <div v-loading="data.loading">
-    <el-form ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
-      <el-divider content-position="left">
+    <ElForm ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
+      <ElDivider content-position="left">
         基本信息
-      </el-divider>
-      <el-row>
-        <el-row :gutter="30" style="padding: 20px;">
-          <el-col v-show="!(type === 'edit')" :lg="24" :xl="12">
-            <el-form-item label="用户账号" prop="username">
-              <el-input v-model="data.form.username" :disabled="type === 'view'" placeholder="请输入用户账号" />
-            </el-form-item>
-          </el-col>
-          <el-col :lg="24" :xl="12">
-            <el-form-item label="昵称" prop="nickName">
-              <el-input v-model="data.form.nickName" :disabled="type === 'view'" placeholder="请输入用户昵称" />
-            </el-form-item>
-          </el-col>
-          <el-col :lg="24" :xl="12">
-            <el-form-item label="状态" prop="state">
-              <el-radio-group v-model="data.form.state" :disabled="type === 'view'">
-                <el-radio-button v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
+      </ElDivider>
+      <ElRow>
+        <ElRow :gutter="30" style="padding: 20px;">
+          <ElCol v-show="!(type === ActionEnum.EDIT)" :lg="24" :xl="12">
+            <ElFormItem label="用户账号" prop="username">
+              <ElInput v-model="data.form.username" :disabled="type === ActionEnum.VIEW" placeholder="请输入用户账号" />
+            </ElFormItem>
+          </ElCol>
+          <ElCol :lg="24" :xl="12">
+            <ElFormItem label="昵称" prop="nickName">
+              <ElInput v-model="data.form.nickName" :disabled="type === ActionEnum.VIEW" placeholder="请输入用户昵称" />
+            </ElFormItem>
+          </ElCol>
+          <ElCol :lg="24" :xl="12">
+            <ElFormItem label="状态" prop="state">
+              <ElRadioGroup v-model="data.form.state" :disabled="type === ActionEnum.VIEW">
+                <ElRadioButton v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
                   {{ item.label }}
-                </el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-divider content-position="left">
+                </ElRadioButton>
+              </ElRadioGroup>
+            </ElFormItem>
+          </ElCol>
+        </ElRow>
+        <ElDivider content-position="left">
           用户信息
-        </el-divider>
-        <el-form-item label="手机号" prop="mobile">
-          <el-input v-model="data.form.mobile" :disabled="type === 'view'" placeholder="请输入手机号" />
-        </el-form-item>
-        <el-form-item label="性别" prop="sex">
-          <el-radio-group v-model="data.form.sex" :disabled="type === 'view'">
-            <el-radio v-for="(item, index) in data.dicts.get('SEX')" :key="index" :label="item?.value">
+        </ElDivider>
+        <ElFormItem label="手机号" prop="mobile">
+          <ElInput v-model="data.form.mobile" :disabled="type === ActionEnum.VIEW" placeholder="请输入手机号" />
+        </ElFormItem>
+        <ElFormItem label="性别" prop="sex">
+          <ElRadioGroup v-model="data.form.sex" :disabled="type === ActionEnum.VIEW">
+            <ElRadio v-for="(item, index) in data.dicts.get('SEX')" :key="index" :label="item?.value">
               {{ item?.label }}
-            </el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="民族" prop="nation">
-          <el-select
-            v-model="data.form.nation" :disabled="type === 'view'" clearable placeholder="请选择"
+            </ElRadio>
+          </ElRadioGroup>
+        </ElFormItem>
+        <ElFormItem label="民族" prop="nation">
+          <ElSelect
+            v-model="data.form.nation" :disabled="type === ActionEnum.VIEW" clearable placeholder="请选择"
             size="default"
           >
-            <el-option
+            <ElOption
               v-for="item in data.dicts.get('NATION') || []"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="学历" prop="education">
-          <el-select
-            v-model="data.form.education" :disabled="type === 'view'" clearable placeholder="请选择"
+          </ElSelect>
+        </ElFormItem>
+        <ElFormItem label="学历" prop="education">
+          <ElSelect
+            v-model="data.form.education" :disabled="type === ActionEnum.VIEW" clearable placeholder="请选择"
             size="default"
           >
-            <el-option
+            <ElOption
               v-for="item in data.dicts.get('EDUCATION') || []"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             />
-          </el-select>
-        </el-form-item>
-        <el-divider content-position="left">
+          </ElSelect>
+        </ElFormItem>
+        <ElDivider content-position="left">
           职位信息
-        </el-divider>
-        <el-form-item label="部门" prop="positionStatus">
-          <el-tree-select
+        </ElDivider>
+        <ElFormItem label="部门" prop="positionStatus">
+          <ElTreeSelect
             v-model="data.form.orgIdList"
             :data="data.orgTree"
-            :disabled="type === 'view'"
+            :disabled="type === ActionEnum.VIEW"
             :max-collapse-tags="3"
             :props="{
               children: 'children',
@@ -222,35 +223,35 @@ defineExpose({
             style="width: 250px"
             value-key="id"
           />
-        </el-form-item>
-        <el-form-item label="岗位" prop="org">
-          <el-select
-            v-model="data.form.positionId" :disabled="type === 'view'" clearable placeholder="请选择"
+        </ElFormItem>
+        <ElFormItem label="岗位" prop="org">
+          <ElSelect
+            v-model="data.form.positionId" :disabled="type === ActionEnum.VIEW" clearable placeholder="请选择"
             size="default"
           >
-            <el-option
+            <ElOption
               v-for="item in data.dicts.get('POSITION_STATUS') || []"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="职位状态" prop="positionStatus">
-          <el-select
-            v-model="data.form.positionStatus" :disabled="type === 'view'" clearable placeholder="请选择"
+          </ElSelect>
+        </ElFormItem>
+        <ElFormItem label="职位状态" prop="positionStatus">
+          <ElSelect
+            v-model="data.form.positionStatus" :disabled="type === ActionEnum.VIEW" clearable placeholder="请选择"
             size="default"
           >
-            <el-option
+            <ElOption
               v-for="item in data.dicts.get('POSITION_STATUS') || []"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             />
-          </el-select>
-        </el-form-item>
-      </el-row>
-    </el-form>
+          </ElSelect>
+        </ElFormItem>
+      </ElRow>
+    </ElForm>
   </div>
 </template>
 

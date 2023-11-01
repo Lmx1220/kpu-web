@@ -18,6 +18,7 @@ const useUserStore = defineStore(
     const menuStore = useMenuStore()
 
     const account = ref(storage.local.get('account') ?? '')
+    const avatar = ref(storage.local.get('avatar') ?? '')
     const token = ref(storage.local.get('token') ?? '')
     const failure_time = ref(storage.local.get('failure_time') ?? '')
     const permissions = ref<string[]>([])
@@ -25,7 +26,7 @@ const useUserStore = defineStore(
     const isLogin = computed(() => {
       let retn = false
       if (token.value) {
-        if (new Date().getTime() < parseInt(failure_time.value) * 1000) {
+        if (new Date().getTime() < Number.parseInt(failure_time.value) * 1000) {
           retn = true
         }
       }
@@ -108,6 +109,7 @@ const useUserStore = defineStore(
     }
     return {
       account,
+      avatar,
       token,
       permissions,
       isLogin,

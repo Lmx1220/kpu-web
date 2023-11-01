@@ -10,7 +10,7 @@ export interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   id: '',
-  type: 'view',
+  type: ActionEnum.VIEW
 })
 
 const data = ref({
@@ -50,7 +50,7 @@ defineExpose({
   submit(callback: any) {
     form.value?.validate((valid) => {
       if (valid) {
-        if (props.type === 'add') {
+        if (props.type === ActionEnum.ADD) {
           crud{{properCase moduleName}}.create(data.value.form).then(() => {
             ElMessage.success({
               message: '新增成功',
@@ -58,7 +58,7 @@ defineExpose({
             })
             callback && callback()
           })
-        } else if (props.type === 'edit') {
+        } else if (props.type === ActionEnum.EDIT) {
           crud{{properCase moduleName}}.edit(data.value.form).then(() => {
             ElMessage.success({
               message: '编辑成功',
@@ -79,7 +79,7 @@ defineExpose({
   <div v-loading="data.loading">
     <el-form ref="form" :model="data.form" :rules="data.rules" label-width="120px" label-suffix="：">
       <el-form-item label="标题" prop="title">
-        <el-input v-model="data.form.title" :disabled="type === 'view'" placeholder="请输入"/>
+        <el-input v-model="data.form.title" :disabled="type === ActionEnum.VIEW" placeholder="请输入"/>
       </el-form-item>
     </el-form>
   </div>

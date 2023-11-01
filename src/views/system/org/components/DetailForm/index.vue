@@ -5,16 +5,17 @@ import crudOrg from '@/api/modules/system/org'
 import stautsEnum from '@/enums/stautsEnum'
 import type { DictOption, Option } from '@/api/model/baseModel'
 import { findDictMapItemListByKey } from '@/api/modules/common/dict'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 export interface Props {
   id?: string
-  type?: 'add' | 'edit' | 'view'
+  type?: ActionEnum
   currentData: { [key: string]: any }
 }
 
 const props = withDefaults(defineProps<Props>(), {
   id: '',
-  type: 'view',
+  type: ActionEnum.ADD,
   currentData: () => ({
     id: '',
     label: '',
@@ -24,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits<{
   'update:type': [
-    value?: 'add' | 'edit' | 'view',
+    value?: ActionEnum,
   ]
 }>()
 const current = computed(() => props.currentData)
@@ -103,7 +104,7 @@ defineExpose({
   submit(callback: any) {
     form.value?.validate((valid) => {
       if (valid) {
-        if (props.type === 'add') {
+        if (props.type === ActionEnum.ADD) {
           crudOrg.create(data.value.form).then(() => {
             ElMessage.success({
               message: '新增成功',
@@ -113,7 +114,7 @@ defineExpose({
             callback && callback()
           })
         }
-        else if (props.type === 'edit') {
+        else if (props.type === ActionEnum.EDIT) {
           crudOrg.edit(data.value.form).then(() => {
             ElMessage.success({
               message: '编辑成功',
@@ -134,44 +135,44 @@ defineExpose({
 
 <template>
   <div v-loading="data.loading">
-    <el-form ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
-      <el-form-item label="父机构" prop="parentName">
-        <el-input v-model="data.form.parentName" disabled placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="data.form.name" :disabled="type === 'view'" placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="类型" prop="type">
-        <el-radio-group v-model="data.form.type" :disabled="type === 'view'">
-          <el-radio-button v-for="(item, index) in data.dicts.get('ORG_TYPE') || []" :key="index" :label="item.value">
+    <ElForm ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
+      <ElFormItem label="父机构" prop="parentName">
+        <ElInput v-model="data.form.parentName" disabled placeholder="请输入" />
+      </ElFormItem>
+      <ElFormItem label="名称" prop="name">
+        <ElInput v-model="data.form.name" :disabled="type === ActionEnum.VIEW" placeholder="请输入" />
+      </ElFormItem>
+      <ElFormItem label="类型" prop="type">
+        <ElRadioGroup v-model="data.form.type" :disabled="type === ActionEnum.VIEW">
+          <ElRadioButton v-for="(item, index) in data.dicts.get('ORG_TYPE') || []" :key="index" :label="item.value">
             {{ item.label }}
-          </el-radio-button>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="简称" prop="abbreviation">
-        <el-input v-model="data.form.abbreviation" :disabled="type === 'view'" placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="状态" prop="state">
-        <el-radio-group v-model="data.form.state" :disabled="type === 'view'">
-          <el-radio-button v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
+          </ElRadioButton>
+        </ElRadioGroup>
+      </ElFormItem>
+      <ElFormItem label="简称" prop="abbreviation">
+        <ElInput v-model="data.form.abbreviation" :disabled="type === ActionEnum.VIEW" placeholder="请输入" />
+      </ElFormItem>
+      <ElFormItem label="状态" prop="state">
+        <ElRadioGroup v-model="data.form.state" :disabled="type === ActionEnum.VIEW">
+          <ElRadioButton v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
             {{ item.label }}
-          </el-radio-button>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="排序" prop="sortValue">
-        <el-input-number
+          </ElRadioButton>
+        </ElRadioGroup>
+      </ElFormItem>
+      <ElFormItem label="排序" prop="sortValue">
+        <ElInputNumber
           v-model="data.form.sortValue"
-          :disabled="type === 'view'"
+          :disabled="type === ActionEnum.VIEW"
           controls-position="right"
         />
-      </el-form-item>
-      <el-form-item label="备注" prop="remarks">
-        <el-input
-          v-model="data.form.remarks" :autosize="{ minRows: 2, maxRows: 4 }" :disabled="type === 'view'"
-          :placeholder="type === 'view' ? '' : '请输入备注'" type="textarea"
+      </ElFormItem>
+      <ElFormItem label="备注" prop="remarks">
+        <ElInput
+          v-model="data.form.remarks" :autosize="{ minRows: 2, maxRows: 4 }" :disabled="type === ActionEnum.VIEW"
+          :placeholder="type === ActionEnum.VIEW ? '' : '请输入备注'" type="textarea"
         />
-      </el-form-item>
-    </el-form>
+      </ElFormItem>
+    </ElForm>
   </div>
 </template>
 

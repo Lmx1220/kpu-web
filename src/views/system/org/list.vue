@@ -4,6 +4,7 @@ import eventBus from '@/util/eventBus'
 import DetailForm from '@/views/system/org/components/DetailForm/index.vue'
 import OrgBloksTree from '@/views/system/org/components/OrgBloksTree/index.vue'
 import OrgManagement from '@/views/system/org/components/OrgManagement/index.vue'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
   name: 'SystemOrgList',
@@ -70,7 +71,7 @@ function onAdd(row: any) {
   else {
     data.value.formModeProps.id = ''
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'add'
+    data.value.formModeProps.type = ActionEnum.ADD
     if (data.value.current?.id) {
       data.value.formModeProps.data = {
         parentId: row.id,
@@ -103,7 +104,7 @@ function onEdit(row: any) {
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'edit'
+    data.value.formModeProps.type = ActionEnum.EDIT
     data.value.formModeProps.data = row
   }
 }
@@ -114,14 +115,14 @@ function onView(row: any) {
       name: 'SystemOrgDetail',
       params: {
         id: row.id,
-        type: 'view',
+        type: ActionEnum.VIEW,
       },
     })
   }
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'view'
+    data.value.formModeProps.type = ActionEnum.VIEW
     data.value.formModeProps.data = row
   }
 }
@@ -146,7 +147,7 @@ const title = computed(() => {
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="组织" />
+    <PageHeader title="组织" />
     <div class="page-main">
       <LayoutContainer hide-left-side-toggle left-side-width="50%">
         <template #leftSide>
@@ -161,18 +162,18 @@ const title = computed(() => {
         </template>
         <template #default>
           <div v-show="data.formModeProps.type">
-            <page-header :title="title" />
+            <PageHeader :title="title" />
             <DetailForm
               :id="data.formModeProps.data?.id " ref="form" v-model:type="data.formModeProps.type"
               :current-data="data.formModeProps.data"
             />
-            <div v-if="data.formModeProps.type !== 'view'" class="flex justify-center">
-              <el-button type="primary" @click="form?.reset()">
+            <div v-if="data.formModeProps.type !== ActionEnum.VIEW" class="flex justify-center">
+              <ElButton type="primary" @click="form?.reset()">
                 重置
-              </el-button>
-              <el-button type="primary" @click="form?.submit(() => { getDataList() })">
+              </ElButton>
+              <ElButton type="primary" @click="form?.submit(() => { getDataList() })">
                 保存
-              </el-button>
+              </ElButton>
             </div>
           </div>
           <div v-show="!data.formModeProps.type" class="container">

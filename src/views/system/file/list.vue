@@ -11,6 +11,7 @@ import type { DataConfig } from '@/types/global'
 import { downloadFile } from '@/util'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
   name: 'SystemFileList',
@@ -137,7 +138,7 @@ function onAdd() {
   else {
     data.value.formModeProps.id = ''
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'add'
+    data.value.formModeProps.type = ActionEnum.ADD
   }
 }
 
@@ -154,7 +155,7 @@ function onEdit(row: any) {
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'edit'
+    data.value.formModeProps.type = ActionEnum.EDIT
   }
 }
 
@@ -164,14 +165,14 @@ function onView(row: any) {
       name: 'SystemFileDetail',
       params: {
         id: row.id,
-        type: 'view',
+        type: ActionEnum.VIEW,
       },
     })
   }
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'view'
+    data.value.formModeProps.type = ActionEnum.VIEW
   }
 }
 
@@ -215,61 +216,61 @@ function handleChange(list: FileResultVO[]) {
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="文件管理" />
-    <page-main>
-      <search-bar
+    <PageHeader title="文件管理" />
+    <PageMain>
+      <SearchBar
         :fold="data.searchFold"
         :show-toggle="false"
       >
         <template #default="{ fold }">
-          <el-form
+          <ElForm
             :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
             size="default"
           >
-            <el-form-item label="原始文件名">
-              <el-input
+            <ElFormItem label="原始文件名">
+              <ElInput
                 v-model="data.search.originalFileName" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item label="桶">
-              <el-input
+            </ElFormItem>
+            <ElFormItem label="桶">
+              <ElInput
                 v-model="data.search.bucket" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item label="存储类型">
-              <el-select
+            </ElFormItem>
+            <ElFormItem label="存储类型">
+              <ElSelect
                 v-model="data.search.storageType" clearable placeholder="请选择" size="default"
                 @change="currentChange()"
               >
-                <el-option
+                <ElOption
                   v-for="item in data.dicts.get('FileStorageType') || []" :key="item.value" :label="item.label"
                   :value="item.value"
                 />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="文件类型">
-              <el-select
+              </ElSelect>
+            </ElFormItem>
+            <ElFormItem label="文件类型">
+              <ElSelect
                 v-model="data.search.fileType" clearable placeholder="请选择" size="default"
                 @change="currentChange()"
               >
-                <el-option
+                <ElOption
                   v-for="item in data.dicts.get('FileType') || []" :key="item.value" :label="item.label"
                   :value="item.value"
                 />
-              </el-select>
-            </el-form-item>
-            <el-form-item
+              </ElSelect>
+            </ElFormItem>
+            <ElFormItem
               v-show="!fold" label="文件类型"
             >
-              <el-input
+              <ElInput
                 v-model="data.search.contentType" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="创建时间">
-              <el-date-picker
+            </ElFormItem>
+            <ElFormItem v-show="!fold" label="创建时间">
+              <ElDatePicker
                 v-model="data.search.daterange"
                 :default-time="[
                   new Date(2000, 1, 1, 0, 0, 0),
@@ -283,30 +284,30 @@ function handleChange(list: FileResultVO[]) {
                 value-format="YYYY-MM-DD HH:mm:ss"
                 @change="currentChange()"
               />
-            </el-form-item>
+            </ElFormItem>
 
-            <el-form-item>
-              <el-button type="primary" @click="currentChange()">
+            <ElFormItem>
+              <ElButton type="primary" @click="currentChange()">
                 <template #icon>
-                  <svg-icon name="ep:search" />
+                  <SvgIcon name="ep:search" />
                 </template>
                 筛选
-              </el-button>
-              <el-button type="primary" @click="resetQuery()">
+              </ElButton>
+              <ElButton type="primary" @click="resetQuery()">
                 重置
-              </el-button>
-              <el-button link type="primary" @click="data.searchFold = !fold">
+              </ElButton>
+              <ElButton link type="primary" @click="data.searchFold = !fold">
                 <template #icon>
-                  <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                  <SvgIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
                 </template>
                 {{ fold ? '展开' : '收起' }}
-              </el-button>
-            </el-form-item>
-          </el-form>
+              </ElButton>
+            </ElFormItem>
+          </ElForm>
         </template>
-      </search-bar>
-      <el-divider border-style="dashed" />
-      <el-space wrap>
+      </SearchBar>
+      <ElDivider border-style="dashed" />
+      <ElSpace wrap>
         <BasicUpload
           :api="uploadApi"
           :max-number="10"
@@ -315,54 +316,54 @@ function handleChange(list: FileResultVO[]) {
           :upload-params="{ bizType: 'BASE_FILE' }"
           @change="handleChange"
         />
-        <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
+        <ElButton :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
           <template #icon>
-            <svg-icon name="ep:delete" />
+            <SvgIcon name="ep:delete" />
           </template>
           删除
-        </el-button>
-        <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDownload()">
+        </ElButton>
+        <ElButton :disabled="!data.batch.selectionDataList.length" size="default" @click="onDownload()">
           <template #icon>
-            <svg-icon name="ep:" />
+            <SvgIcon name="ep:" />
           </template>
           下载
-        </el-button>
-      </el-space>
+        </ElButton>
+      </ElSpace>
       <ElTable
         ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
-        <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
-        <el-table-column align="center" label="文件预览" prop="path">
+        <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
+        <ElTableColumn align="center" label="文件预览" prop="path">
           <template #default="{ row }">
             <ThumbUrl :file-id="row.id" :file-type="row.fileType" :original-file-name="row.originalFileName" />
           </template>
-        </el-table-column>
-        <el-table-column align="center" label="原始文件名" prop="originalFileName" />
-        <el-table-column align="center" label="桶" prop="bucket" width="100" />
-        <el-table-column align="center" label="业务类型" prop="bizType" />
-        <el-table-column align="center" label="存储类型" prop="echoMap.storageType" width="100" />
-        <el-table-column align="center" label="文件类型" prop="echoMap.fileType" width="100" />
-        <el-table-column align="center" label="文件类型" prop="contentType" />
-        <el-table-column align="center" label="大小" prop="size" width="100" />
-        <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
-        <el-table-column align="center" fixed="right" label="操作" width="250">
+        </ElTableColumn>
+        <ElTableColumn align="center" label="原始文件名" prop="originalFileName" />
+        <ElTableColumn align="center" label="桶" prop="bucket" width="100" />
+        <ElTableColumn align="center" label="业务类型" prop="bizType" />
+        <ElTableColumn align="center" label="存储类型" prop="echoMap.storageType" width="100" />
+        <ElTableColumn align="center" label="文件类型" prop="echoMap.fileType" width="100" />
+        <ElTableColumn align="center" label="文件类型" prop="contentType" />
+        <ElTableColumn align="center" label="大小" prop="size" width="100" />
+        <ElTableColumn align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
+        <ElTableColumn align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button plain size="small" text @click="onDownload(scope.row)">
+            <ElButton plain size="small" text @click="onDownload(scope.row)">
               下载
-            </el-button>
-            <el-button plain size="small" text type="danger" @click="onDel(scope.row)">
+            </ElButton>
+            <ElButton plain size="small" text type="danger" @click="onDel(scope.row)">
               删除
-            </el-button>
+            </ElButton>
           </template>
-        </el-table-column>
+        </ElTableColumn>
       </ElTable>
-      <el-pagination
+      <ElPagination
         :current-page="pagination.page" :hide-on-single-page="false" :layout="pagination.layout"
         :page-size="pagination.size" :page-sizes="pagination.sizes" :total="pagination.total"
         background class="pagination" @size-change="sizeChange" @current-change="currentChange"
       />
-    </page-main>
+    </PageMain>
     <FormMode
       v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
       v-model="data.formModeProps.visible" :mode="data.formMode" @success="getDataList"

@@ -5,6 +5,10 @@ import { findNodeByKey } from '@/util/helper/treeHelper'
 import type { DataConfig } from '#/global'
 import crudOrg from '@/api/modules/system/org'
 
+defineOptions({
+  name: 'OrgBloksTree',
+})
+
 const emits = defineEmits<{
   create: [any]
   edit: [any]
@@ -12,10 +16,6 @@ const emits = defineEmits<{
   change: [string]
   select: [any]
 }>()
-
-defineOptions({
-  name: 'OrgBloksTree',
-})
 
 const data = ref<DataConfig>({
   loading: false,
@@ -139,29 +139,29 @@ defineExpose({
 </script>
 
 <template>
-  <blocks-tree
+  <BlocksTree
     v-loading="data.loading" :data="data.dataTree"
     :tree-props="{ label: 'name', expand: 'expand', children: 'children', key: 'id' }"
     @node-click="onNodeClick"
   >
     <template #operation>
-      <el-button type="primary" @click="onChange">
+      <ElButton type="primary" @click="onChange">
         切换
-      </el-button>
-      <el-button :disabled="data.current?.id === undefined" type="primary" @click="onAdd">
+      </ElButton>
+      <ElButton :disabled="data.current?.id === undefined" type="primary" @click="onAdd">
         新增
-      </el-button>
-      <el-button :disabled="data.current?.id === '' || data.current?.id === undefined" @click="onEdit(data.current)">
+      </ElButton>
+      <ElButton :disabled="data.current?.id === '' || data.current?.id === undefined" @click="onEdit(data.current)">
         编辑
-      </el-button>
-      <el-button
+      </ElButton>
+      <ElButton
         :disabled="data.current?.id === '' || data.current?.id === undefined" class="mr-2"
         @click="onDel(data.current)"
       >
         删除
-      </el-button>
+      </ElButton>
     </template>
-  </blocks-tree>
+  </BlocksTree>
 </template>
 
 <style lang="scss" scoped>

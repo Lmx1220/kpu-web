@@ -2,6 +2,7 @@
 import DetailForm from './components/DetailForm/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import eventBus from '@/util/eventBus'
+import type { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
   name: 'ToolsGeneratorDetail',
@@ -118,7 +119,7 @@ const id = computed(() => {
         <ElCol :lg="24" :md="24">
           <DetailForm
             :id="id" ref="form"
-            :type="(route.params.type as 'add'|'edit'| 'view'| undefined)"
+            :type="route.params.type as ActionEnum"
           />
         </ElCol>
       </ElRow>

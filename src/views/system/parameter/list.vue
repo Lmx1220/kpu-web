@@ -7,6 +7,7 @@ import crudParameter from '@/api/modules/system/parameter'
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
   name: 'SystemParameterList',
@@ -122,7 +123,7 @@ function onAdd() {
   else {
     data.value.formModeProps.id = ''
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'add'
+    data.value.formModeProps.type = ActionEnum.ADD
   }
 }
 
@@ -139,7 +140,7 @@ function onEdit(row: any) {
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'edit'
+    data.value.formModeProps.type = ActionEnum.EDIT
   }
 }
 
@@ -149,14 +150,14 @@ function onView(row: any) {
       name: 'routerName',
       params: {
         id: row.id,
-        type: 'view',
+        type: ActionEnum.VIEW,
       },
     })
   }
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'view'
+    data.value.formModeProps.type = ActionEnum.VIEW
   }
 }
 
@@ -183,37 +184,37 @@ function onDel(row?: any) {
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="参数配置" />
-    <page-main>
-      <search-bar
+    <PageHeader title="参数配置" />
+    <PageMain>
+      <SearchBar
         :fold="data.searchFold"
         :show-toggle="false"
       >
         <template #default="{ fold }">
-          <el-form
+          <ElForm
             :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
             size="default"
           >
-            <el-form-item label="参数名称">
-              <el-input
+            <ElFormItem label="参数名称">
+              <ElInput
                 v-model="data.search.name" clearable placeholder="请输入参数名称，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="参数键">
-              <el-input
+            </ElFormItem>
+            <ElFormItem v-show="!fold" label="参数键">
+              <ElInput
                 v-model="data.search.key" clearable placeholder="请输入参数键，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="参数值">
-              <el-input
+            </ElFormItem>
+            <ElFormItem v-show="!fold" label="参数值">
+              <ElInput
                 v-model="data.search.value" clearable placeholder="请输入参数值，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="创建时间">
-              <el-date-picker
+            </ElFormItem>
+            <ElFormItem v-show="!fold" label="创建时间">
+              <ElDatePicker
                 v-model="data.daterange"
                 :default-time="[
                   new Date(2000, 1, 1, 0, 0, 0),
@@ -226,76 +227,76 @@ function onDel(row?: any) {
                 type="daterange"
                 value-format="YYYY-MM-DD HH:mm:ss"
               />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="currentChange()">
+            </ElFormItem>
+            <ElFormItem>
+              <ElButton type="primary" @click="currentChange()">
                 <template #icon>
-                  <svg-icon name="ep:search" />
+                  <SvgIcon name="ep:search" />
                 </template>
                 筛选
-              </el-button>
-              <el-button link type="primary" @click="data.searchFold = !fold">
+              </ElButton>
+              <ElButton link type="primary" @click="data.searchFold = !fold">
                 <template #icon>
-                  <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                  <SvgIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
                 </template>
                 {{ fold ? '展开' : '收起' }}
-              </el-button>
-            </el-form-item>
-          </el-form>
+              </ElButton>
+            </ElFormItem>
+          </ElForm>
         </template>
-      </search-bar>
-      <el-divider border-style="dashed" />
-      <el-space wrap>
-        <el-button size="default" type="primary" @click="onAdd">
+      </SearchBar>
+      <ElDivider border-style="dashed" />
+      <ElSpace wrap>
+        <ElButton size="default" type="primary" @click="onAdd">
           <template #icon>
-            <svg-icon name="ep:plus" />
+            <SvgIcon name="ep:plus" />
           </template>
           新增
-        </el-button>
-        <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
+        </ElButton>
+        <ElButton :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
           <template #icon>
-            <svg-icon name="ep:delete" />
+            <SvgIcon name="ep:delete" />
           </template>
           删除
-        </el-button>
-      </el-space>
+        </ElButton>
+      </ElSpace>
       <ElTable
         ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
-        <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
-        <el-table-column align="center" label="参数名称" prop="name" />
-        <el-table-column align="center" label="参数键" prop="key" />
-        <el-table-column align="center" label="参数值" prop="value" />
-        <el-table-column align="center" label="状态" prop="state" width="80">
+        <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
+        <ElTableColumn align="center" label="参数名称" prop="name" />
+        <ElTableColumn align="center" label="参数键" prop="key" />
+        <ElTableColumn align="center" label="参数值" prop="value" />
+        <ElTableColumn align="center" label="状态" prop="state" width="80">
           <template #default="{ row }">
-            <el-tag :type="row.state ? 'success' : 'danger'">
+            <ElTag :type="row.state ? 'success' : 'danger'">
               {{ row.state ? '启用' : '禁用' }}
-            </el-tag>
+            </ElTag>
           </template>
-        </el-table-column>
-        <el-table-column align="center" label="备注" prop="remarks" show-overflow-tooltip width="250" />
-        <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" />
-        <el-table-column align="center" fixed="right" label="操作" width="250">
+        </ElTableColumn>
+        <ElTableColumn align="center" label="备注" prop="remarks" show-overflow-tooltip width="250" />
+        <ElTableColumn align="center" label="创建时间" prop="createdTime" sortable="custom" />
+        <ElTableColumn align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button plain size="small" type="primary" @click="onView(scope.row)">
+            <ElButton plain size="small" type="primary" @click="onView(scope.row)">
               查 看
-            </el-button>
-            <el-button plain size="small" type="primary" @click="onEdit(scope.row)">
+            </ElButton>
+            <ElButton plain size="small" type="primary" @click="onEdit(scope.row)">
               编 辑
-            </el-button>
-            <el-button plain size="small" type="danger" @click="onDel(scope.row)">
+            </ElButton>
+            <ElButton plain size="small" type="danger" @click="onDel(scope.row)">
               删 除
-            </el-button>
+            </ElButton>
           </template>
-        </el-table-column>
+        </ElTableColumn>
       </ElTable>
-      <el-pagination
+      <ElPagination
         :current-page="pagination.page" :hide-on-single-page="false" :layout="pagination.layout"
         :page-size="pagination.size" :page-sizes="pagination.sizes" :total="pagination.total"
         background class="pagination" @size-change="sizeChange" @current-change="currentChange"
       />
-    </page-main>
+    </PageMain>
     <FormMode
       v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
       v-model="data.formModeProps.visible" :mode="data.formMode" @success="getDataList"

@@ -5,15 +5,15 @@ import { findEnumListByType } from '@/api/modules/common/dict'
 import { downloadZip, generatorCode, getFieldTemplate, getFileOverrideStrategy } from '@/api/modules/tools/genTable'
 import { downloadFile } from '@/util'
 import { isArray } from '@/util/is'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
-const props = withDefaults(defineProps<Props>(), {
-  id: '',
-  type: 'view',
-})
 defineOptions({
   name: 'BuildNow',
 })
-
+const props = withDefaults(defineProps<Props>(), {
+  id: '',
+  type: ActionEnum.ADD,
+})
 interface Props {
   id?: string | string[]
 }
@@ -120,153 +120,153 @@ async function onGenerator(template: 'WEB_PLUS' | 'BACKEND') {
 
 <template>
   <div>
-    <el-form label-width="100">
-      <page-header title="后端" />
-      <el-row>
-        <el-col :span="8">
-          <el-form-item label="entity" prop="entity">
-            <el-radio-group v-model="data.form.entity">
-              <el-radio-button
+    <ElForm label-width="100">
+      <PageHeader title="后端" />
+      <ElRow>
+        <ElCol :span="8">
+          <ElFormItem label="entity" prop="entity">
+            <ElRadioGroup v-model="data.form.entity">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="saveVo" prop="saveVo">
-            <el-radio-group v-model="data.form.saveVo">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="saveVo" prop="saveVo">
+            <ElRadioGroup v-model="data.form.saveVo">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="updateVo" prop="updateVo">
-            <el-radio-group v-model="data.form.updateVo">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="updateVo" prop="updateVo">
+            <ElRadioGroup v-model="data.form.updateVo">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="resultVo" prop="resultVo">
-            <el-radio-group v-model="data.form.resultVo">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="resultVo" prop="resultVo">
+            <ElRadioGroup v-model="data.form.resultVo">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="pageQuery" prop="pageQuery">
-            <el-radio-group v-model="data.form.pageQuery">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="pageQuery" prop="pageQuery">
+            <ElRadioGroup v-model="data.form.pageQuery">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="Enum" prop="enum">
-            <el-radio-group v-model="data.form.enum">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="Enum" prop="enum">
+            <ElRadioGroup v-model="data.form.enum">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="sql" prop="sql">
-            <el-radio-group v-model="data.form.sql">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="sql" prop="sql">
+            <ElRadioGroup v-model="data.form.sql">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="xml" prop="xml">
-            <el-radio-group v-model="data.form.xml">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="xml" prop="xml">
+            <ElRadioGroup v-model="data.form.xml">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="mapper" prop="mapper">
-            <el-radio-group v-model="data.form.mapper">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="mapper" prop="mapper">
+            <ElRadioGroup v-model="data.form.mapper">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="manager" prop="manager">
-            <el-radio-group v-model="data.form.manager">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="manager" prop="manager">
+            <ElRadioGroup v-model="data.form.manager">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="service" prop="service">
-            <el-radio-group v-model="data.form.service">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="service" prop="service">
+            <ElRadioGroup v-model="data.form.service">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="controller" prop="controller">
-            <el-radio-group v-model="data.form.controller">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="controller" prop="controller">
+            <ElRadioGroup v-model="data.form.controller">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
         <!--        <el-col :span="8"> -->
         <!--          <el-form-item label="Echo常量" prop="echoList"> -->
         <!--            <el-radio-group v-model="data.form.echoList"> -->
@@ -276,109 +276,109 @@ async function onGenerator(template: 'WEB_PLUS' | 'BACKEND') {
         <!--            </el-radio-group> -->
         <!--          </el-form-item> -->
         <!--        </el-col> -->
-      </el-row>
-      <page-header title="前端" />
-      <el-row>
-        <el-col :span="8">
-          <el-form-item label="index" prop="index">
-            <el-radio-group v-model="data.form.index">
-              <el-radio-button
+      </ElRow>
+      <PageHeader title="前端" />
+      <ElRow>
+        <ElCol :span="8">
+          <ElFormItem label="index" prop="index">
+            <ElRadioGroup v-model="data.form.index">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="edit" prop="edit">
-            <el-radio-group v-model="data.form.edit">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="edit" prop="edit">
+            <ElRadioGroup v-model="data.form.edit">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="data" prop="data">
-            <el-radio-group v-model="data.form.data">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="data" prop="data">
+            <ElRadioGroup v-model="data.form.data">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="Api" prop="api">
-            <el-radio-group v-model="data.form.api">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="Api" prop="api">
+            <ElRadioGroup v-model="data.form.api">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="Model" prop="model">
-            <el-radio-group v-model="data.form.model">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="Model" prop="model">
+            <ElRadioGroup v-model="data.form.model">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="langEn" prop="langEn">
-            <el-radio-group v-model="data.form.langEn">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="langEn" prop="langEn">
+            <ElRadioGroup v-model="data.form.langEn">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="langZh" prop="langZh">
-            <el-radio-group v-model="data.form.langZh">
-              <el-radio-button
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :span="8">
+          <ElFormItem label="langZh" prop="langZh">
+            <ElRadioGroup v-model="data.form.langZh">
+              <ElRadioButton
                 v-for="(item, index) in data.dicts.get('FileOverrideStrategyEnum') || []" :key="index"
                 :label="item.value"
               >
                 {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row class="justify-center">
-        <el-button v-loading="btnLoading" @click="onDownloadZip('WEB_PLUS')">
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+      </ElRow>
+      <ElRow class="justify-center">
+        <ElButton v-loading="btnLoading" @click="onDownloadZip('WEB_PLUS')">
           下载前端
-        </el-button>
-        <el-button v-loading="btnLoading" @click="onDownloadZip('BACKEND')">
+        </ElButton>
+        <ElButton v-loading="btnLoading" @click="onDownloadZip('BACKEND')">
           下载后端
-        </el-button>
-        <el-button v-loading="btnLoading" type="primary" @click="onGenerator('WEB_PLUS')">
+        </ElButton>
+        <ElButton v-loading="btnLoading" type="primary" @click="onGenerator('WEB_PLUS')">
           生成前端
-        </el-button>
-        <el-button v-loading="btnLoading" type="primary" @click="onGenerator('BACKEND')">
+        </ElButton>
+        <ElButton v-loading="btnLoading" type="primary" @click="onGenerator('BACKEND')">
           生成后端
-        </el-button>
-      </el-row>
-    </el-form>
+        </ElButton>
+      </ElRow>
+    </ElForm>
   </div>
 </template>
 

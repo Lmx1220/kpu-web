@@ -1,6 +1,7 @@
 import mitt from 'mitt'
 
-interface Events {
+interface MittTypes {
+  [key: string | symbol]: any
   /**
    * 应用设置弹窗
    */
@@ -22,4 +23,4 @@ interface Events {
   'global-preferences-toggle': undefined
 }
 
-export default mitt<Events>()
+export default mitt<MittTypes>()

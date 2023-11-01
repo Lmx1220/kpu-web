@@ -7,6 +7,7 @@ import type { DatasourceConfigPageQuery } from '@/api/modules/tools/model/dataso
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
   name: 'ToolsDatasourceConfigList',
@@ -118,7 +119,7 @@ function onAdd() {
   else {
     data.value.formModeProps.id = ''
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'add'
+    data.value.formModeProps.type = ActionEnum.ADD
   }
 }
 
@@ -135,7 +136,7 @@ function onEdit(row: any) {
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'edit'
+    data.value.formModeProps.type = ActionEnum.EDIT
   }
 }
 
@@ -145,14 +146,14 @@ function onView(row: any) {
       name: 'ToolsDatasourceConfigDetail',
       params: {
         id: row.id,
-        type: 'view',
+        type: ActionEnum.VIEW,
       },
     })
   }
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'view'
+    data.value.formModeProps.type = ActionEnum.VIEW
   }
 }
 
@@ -184,37 +185,37 @@ async function onTestConnect(row: any) {
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="数据源管理" />
-    <page-main>
-      <search-bar
+    <PageHeader title="数据源管理" />
+    <PageMain>
+      <SearchBar
         :fold="data.searchFold"
         :show-toggle="false"
       >
         <template #default="{ fold }">
-          <el-form
+          <ElForm
             :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
             size="default"
           >
-            <el-form-item label="名称">
-              <el-input
+            <ElFormItem label="名称">
+              <ElInput
                 v-model="data.search.name" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="账号">
-              <el-input
+            </ElFormItem>
+            <ElFormItem v-show="!fold" label="账号">
+              <ElInput
                 v-model="data.search.username" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="链接">
-              <el-input
+            </ElFormItem>
+            <ElFormItem v-show="!fold" label="链接">
+              <ElInput
                 v-model="data.search.url" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="创建时间">
-              <el-date-picker
+            </ElFormItem>
+            <ElFormItem v-show="!fold" label="创建时间">
+              <ElDatePicker
                 v-model="data.search.daterange"
                 :default-time="[
                   new Date(2000, 1, 1, 0, 0, 0),
@@ -227,78 +228,78 @@ async function onTestConnect(row: any) {
                 type="daterange"
                 value-format="YYYY-MM-DD HH:mm:ss"
               />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="currentChange()">
+            </ElFormItem>
+            <ElFormItem>
+              <ElButton type="primary" @click="currentChange()">
                 <template #icon>
-                  <svg-icon name="ep:search" />
+                  <SvgIcon name="ep:search" />
                 </template>
                 筛选
-              </el-button>
-              <el-button type="primary" @click="resetQuery(defaultQuery)">
+              </ElButton>
+              <ElButton type="primary" @click="resetQuery(defaultQuery)">
                 重置
-              </el-button>
-              <el-button link type="primary" @click="data.searchFold = !fold">
+              </ElButton>
+              <ElButton link type="primary" @click="data.searchFold = !fold">
                 <template #icon>
-                  <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                  <SvgIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
                 </template>
                 {{ fold ? '展开' : '收起' }}
-              </el-button>
-            </el-form-item>
-          </el-form>
+              </ElButton>
+            </ElFormItem>
+          </ElForm>
         </template>
-      </search-bar>
-      <el-divider border-style="dashed" />
-      <el-space wrap>
-        <el-button size="default" type="primary" @click="onAdd">
+      </SearchBar>
+      <ElDivider border-style="dashed" />
+      <ElSpace wrap>
+        <ElButton size="default" type="primary" @click="onAdd">
           <template #icon>
-            <svg-icon name="ep:plus" />
+            <SvgIcon name="ep:plus" />
           </template>
           新增
-        </el-button>
-        <el-button :disabled="!data.batch.selectionDataList.length" size="default" type="danger" @click="onDel()">
+        </ElButton>
+        <ElButton :disabled="!data.batch.selectionDataList.length" size="default" type="danger" @click="onDel()">
           <template #icon>
-            <svg-icon name="ep:delete" />
+            <SvgIcon name="ep:delete" />
           </template>
           删除
-        </el-button>
-      </el-space>
+        </ElButton>
+      </ElSpace>
       <ElTable
         ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
-        <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
-        <el-table-column label="名称" prop="name" />
-        <el-table-column label="账号" prop="username" />
-        <el-table-column label="密码" prop="password">
+        <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
+        <ElTableColumn label="名称" prop="name" />
+        <ElTableColumn label="账号" prop="username" />
+        <ElTableColumn label="密码" prop="password">
           ***
-        </el-table-column>
-        <el-table-column label="驱动" min-width="160" prop="driverClassName" show-overflow-tooltip />
-        <el-table-column label="链接" min-width="200" prop="url" show-overflow-tooltip />
-        <el-table-column label="创建时间" prop="createdTime" sortable="custom" width="180" />
-        <el-table-column align="center" fixed="right" label="操作" width="250">
+        </ElTableColumn>
+        <ElTableColumn label="驱动" min-width="160" prop="driverClassName" show-overflow-tooltip />
+        <ElTableColumn label="链接" min-width="200" prop="url" show-overflow-tooltip />
+        <ElTableColumn label="创建时间" prop="createdTime" sortable="custom" width="180" />
+        <ElTableColumn align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
             <!--            <el-button plain size="small" type="primary" @click="onView(scope.row)"> -->
             <!--              查 看 -->
             <!--            </el-button> -->
-            <el-button plain size="default" text title="修改" type="primary" @click="onEdit(scope.row)">
-              <svg-icon name="ep:edit" />
-            </el-button>
-            <el-button plain size="small" text title="测试" type="primary" @click="onTestConnect(scope.row)">
-              <svg-icon name="ant-design:bug-outlined" />
-            </el-button>
-            <el-button plain size="default" text title="删除" type="danger" @click="onDel(scope.row)">
-              <svg-icon name="ep:delete" />
-            </el-button>
+            <ElButton plain size="default" text title="修改" type="primary" @click="onEdit(scope.row)">
+              <SvgIcon name="ep:edit" />
+            </ElButton>
+            <ElButton plain size="small" text title="测试" type="primary" @click="onTestConnect(scope.row)">
+              <SvgIcon name="ant-design:bug-outlined" />
+            </ElButton>
+            <ElButton plain size="default" text title="删除" type="danger" @click="onDel(scope.row)">
+              <SvgIcon name="ep:delete" />
+            </ElButton>
           </template>
-        </el-table-column>
+        </ElTableColumn>
       </ElTable>
-      <el-pagination
+      <ElPagination
         :current-page="pagination.page" :hide-on-single-page="false" :layout="pagination.layout"
         :page-size="pagination.size" :page-sizes="pagination.sizes" :total="pagination.total"
         background class="pagination" @size-change="sizeChange" @current-change="currentChange"
       />
-    </page-main>
+    </PageMain>
     <FormMode
       v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
       v-model="data.formModeProps.visible" :mode="data.formMode" :type="data.formModeProps.type"

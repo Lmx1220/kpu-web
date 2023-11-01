@@ -37,27 +37,10 @@ async function handleSubmit() {
       })
       return
     }
-    const { insertRecords, removeRecords, updateRecords } = getFileRef().getRecordset()
-    params.insertList = insertRecords
-    params.updateList = updateRecords
-    params.deleteList = removeRecords.map(item => item.id)
-
-    loading.value = true
-    if (unref(type) !== ActionEnum.VIEW) {
-      if (unref(type) === ActionEnum.EDIT) {
-        await update(params)
-      }
-      else {
-        params.id = null
-        await save(params)
-      }
-      createMessage.success(t(`common.tips.${type.value}Success`))
-    }
-    close()
-    emit('success')
+    const { insertRecords, removeRecords, updateRecords } = getFileRef()?.getRecordset()
   }
-  finally {
-    setProps({ confirmLoading: false })
+  catch (e) {
+    console.error(e)
   }
 }
 </script>
@@ -65,9 +48,9 @@ async function handleSubmit() {
 <template>
   <div>
     <Vxe ref="fileRef" />
-    <el-button @click="handleSubmit">
+    <ElButton @click="handleSubmit">
       {{ t('common.saveText') }}
-    </el-button>
+    </ElButton>
   </div>
 </template>
 

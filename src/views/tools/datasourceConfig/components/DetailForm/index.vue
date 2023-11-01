@@ -4,17 +4,18 @@ import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import type { FormConfig } from '#/global'
 import crudDatasourceConfig from '@/api/modules/tools/datasourceConfig'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
-const props = withDefaults(defineProps<Props>(), {
-  id: '',
-  type: 'view',
-})
 defineOptions({
   name: 'DetailForm',
 })
+const props = withDefaults(defineProps<Props>(), {
+  id: '',
+  type: ActionEnum.ADD,
+})
 export interface Props {
   id?: string
-  type?: 'add' | 'edit' | 'view'
+  type?: ActionEnum
 }
 
 const { t } = useI18n()
@@ -105,8 +106,8 @@ defineExpose({
   submit(callback: any) {
     form.value?.validate(async (valid) => {
       if (valid) {
-        if (props.type !== 'view') {
-          if (props.type === 'edit') {
+        if (props.type !== ActionEnum.VIEW) {
+          if (props.type === ActionEnum.EDIT) {
             await crudDatasourceConfig.create(data.value.form)
           }
           else {
@@ -129,32 +130,32 @@ defineExpose({
 
 <template>
   <div v-loading="data.loading">
-    <el-form ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="data.form.name" :disabled="type === 'view'" placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="账号" prop="username">
-        <el-input v-model="data.form.username" :disabled="type === 'view'" placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="data.form.password" :disabled="type === 'view'" placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="链接" prop="url">
-        <el-input v-model="data.form.url" :disabled="type === 'view'" placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="驱动" prop="driverClassName">
-        <el-select
+    <ElForm ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
+      <ElFormItem label="名称" prop="name">
+        <ElInput v-model="data.form.name" :disabled="type === ActionEnum.VIEW" placeholder="请输入" />
+      </ElFormItem>
+      <ElFormItem label="账号" prop="username">
+        <ElInput v-model="data.form.username" :disabled="type === ActionEnum.VIEW" placeholder="请输入" />
+      </ElFormItem>
+      <ElFormItem label="密码" prop="password">
+        <ElInput v-model="data.form.password" :disabled="type === ActionEnum.VIEW" placeholder="请输入" />
+      </ElFormItem>
+      <ElFormItem label="链接" prop="url">
+        <ElInput v-model="data.form.url" :disabled="type === ActionEnum.VIEW" placeholder="请输入" />
+      </ElFormItem>
+      <ElFormItem label="驱动" prop="driverClassName">
+        <ElSelect
           v-model="data.form.driverClassName" clearable
-          :disabled="type === 'view'"
+          :disabled="type === ActionEnum.VIEW"
           placeholder="请选择"
         >
-          <el-option
+          <ElOption
             v-for="item in data.dicts?.get('driverClassName') || []" :key="item.value" :label="item.label"
             :value="item.value"
           />
-        </el-select>
-      </el-form-item>
-    </el-form>
+        </ElSelect>
+      </ElFormItem>
+    </ElForm>
   </div>
 </template>
 

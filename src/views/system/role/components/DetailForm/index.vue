@@ -6,15 +6,16 @@ import { findDictMapItemListByKey } from '@/api/modules/common/dict'
 
 import crudRole from '@/api/modules/system/role'
 import stautsEnum from '@/enums/stautsEnum'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 export interface Props {
   id: string
-  type?: 'add' | 'edit' | 'view'
+  type?: ActionEnum
 
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  type: 'view',
+  type: ActionEnum.ADD,
 })
 
 const data = ref({
@@ -85,7 +86,7 @@ defineExpose({
   submit(callback: any) {
     form.value?.validate((valid) => {
       if (valid) {
-        if (props.type === 'add') {
+        if (props.type === ActionEnum.ADD) {
           crudRole.create(data.value.form).then(() => {
             ElMessage.success({
               message: '新增成功',
@@ -94,7 +95,7 @@ defineExpose({
             callback && callback()
           })
         }
-        else if (props.type === 'edit') {
+        else if (props.type === ActionEnum.EDIT) {
           crudRole.edit(data.value.form).then(() => {
             ElMessage.success({
               message: '编辑成功',
@@ -114,34 +115,34 @@ defineExpose({
 
 <template>
   <div v-loading="data.loading">
-    <el-form ref="form" :model="data.form" :rules="data.rules" label-width="120px" label-suffix="：">
-      <el-form-item label="编码" prop="code">
-        <el-input v-model="data.form.code" :disabled="type === 'view'" placeholder="请输入编码" />
-      </el-form-item>
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="data.form.name" :disabled="type === 'view'" placeholder="请输入名称" />
-      </el-form-item>
-      <el-form-item label="角色类别" prop="category">
-        <el-radio-group v-model="data.form.category" :disabled="type === 'view'">
-          <el-radio v-for="(item, index) in data.dicts.get('ROLE_CATEGORY')" :key="index" :label="item?.value">
+    <ElForm ref="form" :model="data.form" :rules="data.rules" label-width="120px" label-suffix="：">
+      <ElFormItem label="编码" prop="code">
+        <ElInput v-model="data.form.code" :disabled="type === ActionEnum.VIEW" placeholder="请输入编码" />
+      </ElFormItem>
+      <ElFormItem label="名称" prop="name">
+        <ElInput v-model="data.form.name" :disabled="type === ActionEnum.VIEW" placeholder="请输入名称" />
+      </ElFormItem>
+      <ElFormItem label="角色类别" prop="category">
+        <ElRadioGroup v-model="data.form.category" :disabled="type === ActionEnum.VIEW">
+          <ElRadio v-for="(item, index) in data.dicts.get('ROLE_CATEGORY')" :key="index" :label="item?.value">
             {{ item?.label }}
-          </el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="备注" prop="remarks">
-        <el-input
-          v-model="data.form.remarks" :autosize="{ minRows: 2, maxRows: 4 }" :disabled="type === 'view'"
-          :placeholder="type === 'view' ? '' : '请输入备注'" type="textarea"
+          </ElRadio>
+        </ElRadioGroup>
+      </ElFormItem>
+      <ElFormItem label="备注" prop="remarks">
+        <ElInput
+          v-model="data.form.remarks" :autosize="{ minRows: 2, maxRows: 4 }" :disabled="type === ActionEnum.VIEW"
+          :placeholder="type === ActionEnum.VIEW ? '' : '请输入备注'" type="textarea"
         />
-      </el-form-item>
-      <el-form-item label="状态" prop="state">
-        <el-radio-group v-model="data.form.state" :disabled="type === 'view'">
-          <el-radio-button v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
+      </ElFormItem>
+      <ElFormItem label="状态" prop="state">
+        <ElRadioGroup v-model="data.form.state" :disabled="type === ActionEnum.VIEW">
+          <ElRadioButton v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
             {{ item.label }}
-          </el-radio-button>
-        </el-radio-group>
-      </el-form-item>
-    </el-form>
+          </ElRadioButton>
+        </ElRadioGroup>
+      </ElFormItem>
+    </ElForm>
   </div>
 </template>
 

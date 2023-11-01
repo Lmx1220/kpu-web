@@ -191,49 +191,49 @@ defineExpose({
 </script>
 
 <template>
-  <el-space alignment="center" style="margin-bottom: 8px;" wrap>
+  <ElSpace alignment="center" style="margin-bottom: 8px;" wrap>
     <template v-if="query">
-      <el-button @click="onReset">
+      <ElButton @click="onReset">
         重置
-      </el-button>
-      <el-checkbox v-model="dataTree.search.isChild" label="本级及子级" @change="getTreeList()" />
+      </ElButton>
+      <ElCheckbox v-model="dataTree.search.isChild" label="本级及子级" @change="getTreeList()" />
     </template>
     <template v-else>
-      <el-button type="primary" @click="onChange">
+      <ElButton type="primary" @click="onChange">
         切换
-      </el-button>
-      <el-button type="primary" @click="onAdd">
+      </ElButton>
+      <ElButton type="primary" @click="onAdd">
         新增根节点
-      </el-button>
-      <el-button :disabled="!dataTree.batch.selectionDataList.length" type="primary" @click="onDel">
+      </ElButton>
+      <ElButton :disabled="!dataTree.batch.selectionDataList.length" type="primary" @click="onDel">
         删除
-      </el-button>
+      </ElButton>
     </template>
-  </el-space>
+  </ElSpace>
   <div class="title flex items-center">
     <div class="flex-1 flex items-center cursor-pointer">
-      <el-input v-model="filterText" class="mr-1 ml-5 " placeholder="搜素">
+      <ElInput v-model="filterText" class="mr-1 ml-5 " placeholder="搜素">
         <template #append>
-          <svg-icon name="i-ep:search" />
+          <SvgIcon name="i-ep:search" />
         </template>
-      </el-input>
-      <el-dropdown class="inline" @command="handleCommand">
-        <svg-icon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
+      </ElInput>
+      <ElDropdown class="inline" @command="handleCommand">
+        <SvgIcon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
         <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item command="expand">
+          <ElDropdownMenu>
+            <ElDropdownItem command="expand">
               展开全部
-            </el-dropdown-item>
-            <el-dropdown-item command="fold">
+            </ElDropdownItem>
+            <ElDropdownItem command="fold">
               折叠全部
-            </el-dropdown-item>
-          </el-dropdown-menu>
+            </ElDropdownItem>
+          </ElDropdownMenu>
         </template>
-      </el-dropdown>
+      </ElDropdown>
     </div>
   </div>
-  <el-divider />
-  <el-scrollbar v-loading="dataTree.loading">
+  <ElDivider />
+  <ElScrollbar v-loading="dataTree.loading">
     <ElTree
       ref="treeRef" :data="dataTree.tree" :expand-on-click-node="false" :filter-node-method="filterNode"
       :props="defaultProps" :show-checkbox="!query" check-strictly class="filter-tree" default-expand-all highlight-current
@@ -246,9 +246,9 @@ defineExpose({
           class="custom-tree-node"
         >
           <span>
-            <el-tag :type="data.type === '01' ? 'danger' : ''" class="mr-1">
+            <ElTag :type="data.type === '01' ? 'danger' : ''" class="mr-1">
               {{ data?.echoMap?.type }} {{ data.type }}
-            </el-tag>
+            </ElTag>
             {{ node.label }}</span>
           <span v-if="!query" class="tree__actions">
             <a class="tree__action" @click.stop="onAdd(data)"> 新增 </a>
@@ -260,7 +260,7 @@ defineExpose({
       </template>
     </ElTree>
     <BindRoleMode :id="bindRole.id" v-model="bindRole.visible" @success="getTreeList()" />
-  </el-scrollbar>
+  </ElScrollbar>
 </template>
 
 <style lang="scss" scoped>

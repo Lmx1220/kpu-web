@@ -3,18 +3,18 @@ import BuildNow from '@/views/tools/generator/components/DetailForm/BuildNow.vue
 import CodePreview from '@/views/tools/generator/components/DetailForm/CodePreview.vue'
 import ColumnInfo from '@/views/tools/generator/components/DetailForm/ColumnInfo.vue'
 import GenInfo from '@/views/tools/generator/components/DetailForm/GenInfo.vue'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
-const props = withDefaults(defineProps<Props>(), {
-  id: '',
-  type: 'view',
-})
 defineOptions({
   name: 'DetailForm',
 })
-
+const props = withDefaults(defineProps<Props>(), {
+  id: '',
+  type: ActionEnum.ADD,
+})
 export interface Props {
   id?: string | string[]
-  type?: 'add' | 'edit' | 'view'
+  type?: ActionEnum
 }
 
 const { activeStatus } = inject('activeStatus') as {

@@ -4,15 +4,16 @@ import { ElMessage } from 'element-plus'
 import type { DictOption, Option } from '@/api/model/baseModel'
 import { findEnumListByType } from '@/api/modules/common/dict'
 import crudOptLog from '@/api/modules/system/optLog'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 export interface Props {
   id?: string
-  type?: 'add' | 'edit' | 'view'
+  type?: ActionEnum
 }
 
 const props = withDefaults(defineProps<Props>(), {
   id: '',
-  type: 'view',
+  type: ActionEnum.ADD,
 })
 
 const data = ref({
@@ -91,7 +92,7 @@ defineExpose({
   submit(callback: any) {
     form.value?.validate((valid) => {
       if (valid) {
-        if (props.type === 'add') {
+        if (props.type === ActionEnum.ADD) {
           crudOptLog.create(data.value.form).then(() => {
             ElMessage.success({
               message: '模拟新增成功',
@@ -100,7 +101,7 @@ defineExpose({
             callback && callback()
           })
         }
-        else if (props.type === 'edit') {
+        else if (props.type === ActionEnum.EDIT) {
           crudOptLog.edit(data.value.form).then(() => {
             ElMessage.success({
               message: '模拟编辑成功',
@@ -120,78 +121,78 @@ defineExpose({
 
 <template>
   <div v-loading="data.loading">
-    <el-form ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
-      <el-form-item label="操作IP" prop="requestIp">
-        <el-input v-model="data.form.requestIp" :disabled="type === 'view'" placeholder="" />
-      </el-form-item>
-      <el-form-item label="登录状态" prop="type">
-        <el-select
-          v-model="data.form.type" :disabled="type === 'view'" clearable placeholder="" size="default"
+    <ElForm ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
+      <ElFormItem label="操作IP" prop="requestIp">
+        <ElInput v-model="data.form.requestIp" :disabled="type === ActionEnum.VIEW" placeholder="" />
+      </ElFormItem>
+      <ElFormItem label="登录状态" prop="type">
+        <ElSelect
+          v-model="data.form.type" :disabled="type === ActionEnum.VIEW" clearable placeholder="" size="default"
         >
-          <el-option
+          <ElOption
             v-for="item in data.dicts.get('LogType') || []" :key="item.value" :label="item.label"
             :value="item.value"
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="操作人" prop="nickName">
-        <el-input v-model="data.form.nickName" :disabled="type === 'view'" placeholder="" />
-      </el-form-item>
-      <el-form-item label="操作描述" prop="description">
-        <el-input
-          v-model="data.form.description" :autosize="{ minRows: 2, maxRows: 4 }" :disabled="type === 'view'"
+        </ElSelect>
+      </ElFormItem>
+      <ElFormItem label="操作人" prop="nickName">
+        <ElInput v-model="data.form.nickName" :disabled="type === ActionEnum.VIEW" placeholder="" />
+      </ElFormItem>
+      <ElFormItem label="操作描述" prop="description">
+        <ElInput
+          v-model="data.form.description" :autosize="{ minRows: 2, maxRows: 4 }" :disabled="type === ActionEnum.VIEW"
           placeholder="" type="textarea"
         />
-      </el-form-item>
-      <el-form-item label="请求地址" prop="requestUri">
-        <el-input
-          v-model="data.form.requestUri" :disabled="type === 'view'" placeholder=""
+      </ElFormItem>
+      <ElFormItem label="请求地址" prop="requestUri">
+        <ElInput
+          v-model="data.form.requestUri" :disabled="type === ActionEnum.VIEW" placeholder=""
         />
-      </el-form-item>
-      <el-form-item label="请求类型" prop="httpMethod">
-        <el-select
-          v-model="data.form.httpMethod" :disabled="type === 'view'" clearable placeholder="" size="default"
+      </ElFormItem>
+      <ElFormItem label="请求类型" prop="httpMethod">
+        <ElSelect
+          v-model="data.form.httpMethod" :disabled="type === ActionEnum.VIEW" clearable placeholder="" size="default"
         >
-          <el-option
+          <ElOption
             v-for="item in data.dicts.get('HttpMethod') || []" :key="item.value" :label="item.label"
             :value="item.value"
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="类路径" prop="classPath">
-        <el-input v-model="data.form.classPath" :disabled="type === 'view'" placeholder="" />
-      </el-form-item>
-      <el-form-item label="请求方法" prop="actionMethod">
-        <el-input v-model="data.form.actionMethod" :disabled="type === 'view'" placeholder="" />
-      </el-form-item>
-      <el-form-item label="参数" prop="params">
-        <json-preview :data="data.form.params" :disabled="type === 'view'" />
-      </el-form-item>
-      <el-form-item label="返回结果" prop="result">
-        <json-preview v-if="data.form.result" :data="data.form.result" :disabled="type === 'view'" />
-      </el-form-item>
-      <el-form-item label="异常日志" prop="exDetail">
-        <code-edite
+        </ElSelect>
+      </ElFormItem>
+      <ElFormItem label="类路径" prop="classPath">
+        <ElInput v-model="data.form.classPath" :disabled="type === ActionEnum.VIEW" placeholder="" />
+      </ElFormItem>
+      <ElFormItem label="请求方法" prop="actionMethod">
+        <ElInput v-model="data.form.actionMethod" :disabled="type === ActionEnum.VIEW" placeholder="" />
+      </ElFormItem>
+      <ElFormItem label="参数" prop="params">
+        <JsonPreview :data="data.form.params" :disabled="type === ActionEnum.VIEW" />
+      </ElFormItem>
+      <ElFormItem label="返回结果" prop="result">
+        <JsonPreview v-if="data.form.result" :data="data.form.result" :disabled="type === ActionEnum.VIEW" />
+      </ElFormItem>
+      <ElFormItem label="异常日志" prop="exDetail">
+        <CodeEdite
           :code="data.form.exDetail" :config="{ disabled: true, height: '200px' }" mode="java"
           theme="oneDark"
         />
-      </el-form-item>
-      <el-form-item label="开始时间" prop="startTime">
-        <el-input v-model="data.form.startTime" :disabled="type === 'view'" placeholder="" />
-      </el-form-item>
-      <el-form-item label="完成时间" prop="finishTime">
-        <el-input v-model="data.form.finishTime" :disabled="type === 'view'" placeholder="" />
-      </el-form-item>
-      <el-form-item label="消耗时间" prop="consumingTime">
-        <el-input v-model="data.form.consumingTime" :disabled="type === 'view'" placeholder="" />
-      </el-form-item>
-      <el-form-item label="浏览器请求头" prop="ua">
-        <el-input
-          v-model="data.form.ua" :autosize="{ minRows: 2, maxRows: 4 }" :disabled="type === 'view'" placeholder=""
+      </ElFormItem>
+      <ElFormItem label="开始时间" prop="startTime">
+        <ElInput v-model="data.form.startTime" :disabled="type === ActionEnum.VIEW" placeholder="" />
+      </ElFormItem>
+      <ElFormItem label="完成时间" prop="finishTime">
+        <ElInput v-model="data.form.finishTime" :disabled="type === ActionEnum.VIEW" placeholder="" />
+      </ElFormItem>
+      <ElFormItem label="消耗时间" prop="consumingTime">
+        <ElInput v-model="data.form.consumingTime" :disabled="type === ActionEnum.VIEW" placeholder="" />
+      </ElFormItem>
+      <ElFormItem label="浏览器请求头" prop="ua">
+        <ElInput
+          v-model="data.form.ua" :autosize="{ minRows: 2, maxRows: 4 }" :disabled="type === ActionEnum.VIEW" placeholder=""
           type="textarea"
         />
-      </el-form-item>
-    </el-form>
+      </ElFormItem>
+    </ElForm>
   </div>
 </template>
 

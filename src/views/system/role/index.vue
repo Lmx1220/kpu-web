@@ -13,6 +13,7 @@ import BindUserMode from '@/views/system/role/components/BindUserMode.vue'
 import FormMode from '@/views/system/role/components/FormMode/index.vue'
 import MenuTree from '@/views/system/role/components/MenuTree.vue'
 import type { DataConfig } from '@/types/global'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
   name: 'SystemRoleList',
@@ -124,7 +125,7 @@ function onAdd() {
   else {
     data.value.formModeProps.id = ''
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'add'
+    data.value.formModeProps.type = ActionEnum.ADD
   }
 }
 
@@ -141,7 +142,7 @@ function onEdit(row: any) {
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'edit'
+    data.value.formModeProps.type = ActionEnum.EDIT
   }
 }
 
@@ -151,14 +152,14 @@ function onView(row: any) {
       name: 'routerName',
       params: {
         id: row.id,
-        type: 'view',
+        type: ActionEnum.VIEW,
       },
     })
   }
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'view'
+    data.value.formModeProps.type = ActionEnum.VIEW
   }
 }
 
@@ -205,127 +206,127 @@ async function getDict() {
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="角色管理" />
+    <PageHeader title="角色管理" />
     <div class="page-main">
       <LayoutContainer right-side-width="50%">
-        <search-bar :fold="data.searchFold" :show-toggle="false">
+        <SearchBar :fold="data.searchFold" :show-toggle="false">
           <template #default="{ fold }">
-            <el-form
+            <ElForm
               :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
               size="default"
             >
-              <el-form-item label="名称">
-                <el-input
+              <ElFormItem label="名称">
+                <ElInput
                   v-model="data.search.name" clearable placeholder="请输入名称，支持模糊查询" @clear="currentChange()"
                   @keydown.enter="currentChange()"
                 />
-              </el-form-item>
-              <el-form-item label="角色类别">
-                <el-select
+              </ElFormItem>
+              <ElFormItem label="角色类别">
+                <ElSelect
                   v-model="data.search.category" clearable placeholder="请选择" size="default"
                   @change="currentChange()"
                 >
-                  <el-option
+                  <ElOption
                     v-for="item in data.dicts.get('ROLE_CATEGORY') || []" :key="item.value" :label="item.label"
                     :value="item.value"
                   />
-                </el-select>
-              </el-form-item>
-              <el-form-item v-show="!fold" label="状态">
-                <el-select
+                </ElSelect>
+              </ElFormItem>
+              <ElFormItem v-show="!fold" label="状态">
+                <ElSelect
                   v-model="data.search.state" clearable placeholder="请选择" size="default"
                   @change="currentChange()"
                 >
-                  <el-option
+                  <ElOption
                     v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.label"
                     :value="item.value"
                   />
-                </el-select>
-              </el-form-item>
+                </ElSelect>
+              </ElFormItem>
 
-              <el-form-item>
-                <el-button type="primary" @click="currentChange()">
+              <ElFormItem>
+                <ElButton type="primary" @click="currentChange()">
                   <template #icon>
-                    <svg-icon name="ep:search" />
+                    <SvgIcon name="ep:search" />
                   </template>
                   筛选
-                </el-button>
-                <el-button link type="primary" @click="data.searchFold = !fold">
+                </ElButton>
+                <ElButton link type="primary" @click="data.searchFold = !fold">
                   <template #icon>
-                    <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                    <SvgIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
                   </template>
                   {{ fold ? '展开' : '收起' }}
-                </el-button>
-              </el-form-item>
-            </el-form>
+                </ElButton>
+              </ElFormItem>
+            </ElForm>
           </template>
-        </search-bar>
-        <el-divider border-style="dashed" />
-        <el-space wrap>
-          <el-button size="default" type="primary" @click="onAdd">
+        </SearchBar>
+        <ElDivider border-style="dashed" />
+        <ElSpace wrap>
+          <ElButton size="default" type="primary" @click="onAdd">
             <template #icon>
-              <svg-icon name="ep:plus" />
+              <SvgIcon name="ep:plus" />
             </template>
             新增
-          </el-button>
-          <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
+          </ElButton>
+          <ElButton :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
             <template #icon>
-              <svg-icon name="ep:delete" />
+              <SvgIcon name="ep:delete" />
             </template>
             删除
-          </el-button>
-        </el-space>
+          </ElButton>
+        </ElSpace>
         <ElTable
           ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%"
           highlight-current-row stripe @sort-change="sortChange"
           @current-change="data.current = $event || {}"
           @selection-change="data.batch.selectionDataList = $event"
         >
-          <el-table-column v-if="data.batch.enable" align="center" type="selection" />
-          <el-table-column label="名称" prop="name">
+          <ElTableColumn v-if="data.batch.enable" align="center" type="selection" />
+          <ElTableColumn label="名称" prop="name">
             <template #default="scope">
-              <el-tag :type="getCategoryColor(scope.row.category)">
+              <ElTag :type="getCategoryColor(scope.row.category)">
                 {{ scope.row.echoMap.category }}
-              </el-tag>
+              </ElTag>
               {{ scope.row.name }}
             </template>
-          </el-table-column>
-          <el-table-column align="center" label="状态" prop="state" width="80px">
+          </ElTableColumn>
+          <ElTableColumn align="center" label="状态" prop="state" width="80px">
             <template #default="scope">
-              <el-tag v-if="scope.row.state" type="success">
+              <ElTag v-if="scope.row.state" type="success">
                 启用
-              </el-tag>
-              <el-tag v-else type="danger">
+              </ElTag>
+              <ElTag v-else type="danger">
                 禁用
-              </el-tag>
+              </ElTag>
             </template>
-          </el-table-column>
-          <el-table-column align="center" fixed="right" label="操作" width="250">
+          </ElTableColumn>
+          <ElTableColumn align="center" fixed="right" label="操作" width="250">
             <template #default="scope">
-              <el-button plain size="small" type="primary" @click="onView(scope.row)">
+              <ElButton plain size="small" type="primary" @click="onView(scope.row)">
                 <template #icon>
-                  <svg-icon name="ep:view" />
+                  <SvgIcon name="ep:view" />
                 </template>
-              </el-button>
-              <el-button plain size="small" type="primary" @click="onEdit(scope.row)">
+              </ElButton>
+              <ElButton plain size="small" type="primary" @click="onEdit(scope.row)">
                 <template #icon>
-                  <svg-icon name="ep:edit" />
+                  <SvgIcon name="ep:edit" />
                 </template>
-              </el-button>
-              <el-divider direction="vertical" />
-              <el-button plain size="small" type="danger" @click="onDel(scope.row)">
+              </ElButton>
+              <ElDivider direction="vertical" />
+              <ElButton plain size="small" type="danger" @click="onDel(scope.row)">
                 <template #icon>
-                  <svg-icon name="ep:delete" />
+                  <SvgIcon name="ep:delete" />
                 </template>
-              </el-button>
-              <el-divider direction="vertical" />
-              <el-button bg plain size="small" text type="primary" @click="onBindUsers(scope.row)">
+              </ElButton>
+              <ElDivider direction="vertical" />
+              <ElButton bg plain size="small" text type="primary" @click="onBindUsers(scope.row)">
                 绑定用户
-              </el-button>
+              </ElButton>
             </template>
-          </el-table-column>
+          </ElTableColumn>
         </ElTable>
-        <el-pagination
+        <ElPagination
           :current-page="pagination.page" :hide-on-single-page="false" :layout="pagination.layout"
           :page-size="pagination.size" :page-sizes="pagination.sizes" :total="pagination.total" background
           class="pagination" @size-change="sizeChange" @current-change="currentChange"

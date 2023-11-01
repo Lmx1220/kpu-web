@@ -9,6 +9,7 @@ import type { LoginLogPageQuery } from '@/api/modules/system/model/loginLogModel
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
   name: 'SystemLoginLogList',
@@ -131,7 +132,7 @@ function onAdd() {
   else {
     data.value.formModeProps.id = ''
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'add'
+    data.value.formModeProps.type = ActionEnum.ADD
   }
 }
 
@@ -150,7 +151,7 @@ function onEdit(row: any) {
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'edit'
+    data.value.formModeProps.type = ActionEnum.EDIT
   }
 }
 
@@ -162,14 +163,14 @@ function onView(row: any) {
         id: row.id,
       },
       query: {
-        type: 'view',
+        type: ActionEnum.VIEW,
       },
     })
   }
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'view'
+    data.value.formModeProps.type = ActionEnum.VIEW
   }
 }
 
@@ -219,54 +220,54 @@ async function getDict() {
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="登录日志" />
-    <page-main>
-      <search-bar
+    <PageHeader title="登录日志" />
+    <PageMain>
+      <SearchBar
         :fold="data.searchFold"
         :show-toggle="false"
       >
         <template #default="{ fold }">
-          <el-form
+          <ElForm
             :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
             size="default"
           >
-            <el-form-item label="登录状态">
-              <el-select
+            <ElFormItem label="登录状态">
+              <ElSelect
                 v-model="data.search.status" clearable placeholder="请选择" size="default"
                 @change="currentChange()"
               >
-                <el-option
+                <ElOption
                   v-for="item in data.dicts.get('LoginStatusEnum') || []" :key="item.value" :label="item.label"
                   :value="item.value"
                 />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="登录IP">
-              <el-input
+              </ElSelect>
+            </ElFormItem>
+            <ElFormItem label="登录IP">
+              <ElInput
                 v-model="data.search.requestIp" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item label="登录账号">
-              <el-input
+            </ElFormItem>
+            <ElFormItem label="登录账号">
+              <ElInput
                 v-model="data.search.username" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="登录昵称">
-              <el-input
+            </ElFormItem>
+            <ElFormItem v-show="!fold" label="登录昵称">
+              <ElInput
                 v-model="data.search.nickName" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="登录描述">
-              <el-input
+            </ElFormItem>
+            <ElFormItem v-show="!fold" label="登录描述">
+              <ElInput
                 v-model="data.search.description" clearable placeholder="请输入，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item v-show="!fold" label="创建时间">
-              <el-date-picker
+            </ElFormItem>
+            <ElFormItem v-show="!fold" label="创建时间">
+              <ElDatePicker
                 v-model="data.search.daterange"
                 :default-time="[
                   new Date(2000, 1, 1, 0, 0, 0),
@@ -280,116 +281,116 @@ async function getDict() {
                 value-format="YYYY-MM-DD HH:mm:ss"
                 @change="currentChange()"
               />
-            </el-form-item>
+            </ElFormItem>
 
-            <el-form-item>
-              <el-button type="primary" @click="currentChange()">
+            <ElFormItem>
+              <ElButton type="primary" @click="currentChange()">
                 <template #icon>
-                  <svg-icon name="ep:search" />
+                  <SvgIcon name="ep:search" />
                 </template>
                 筛选
-              </el-button>
-              <el-button type="primary" @click="resetQuery(defaultQuery)">
+              </ElButton>
+              <ElButton type="primary" @click="resetQuery(defaultQuery)">
                 重置
-              </el-button>
-              <el-button link type="primary" @click="data.searchFold = !fold">
+              </ElButton>
+              <ElButton link type="primary" @click="data.searchFold = !fold">
                 <template #icon>
-                  <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                  <SvgIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
                 </template>
                 {{ fold ? '展开' : '收起' }}
-              </el-button>
-            </el-form-item>
-          </el-form>
+              </ElButton>
+            </ElFormItem>
+          </ElForm>
         </template>
-      </search-bar>
-      <el-divider border-style="dashed" />
-      <el-space wrap>
-        <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
+      </SearchBar>
+      <ElDivider border-style="dashed" />
+      <ElSpace wrap>
+        <ElButton :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
           <template #icon>
-            <svg-icon name="ep:delete" />
+            <SvgIcon name="ep:delete" />
           </template>
           删除
-        </el-button>
-        <el-dropdown trigger="click" @command="onCommand">
-          <el-button size="default">
+        </ElButton>
+        <ElDropdown trigger="click" @command="onCommand">
+          <ElButton size="default">
             清除日志
-          </el-button>
+          </ElButton>
           <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item :command="1">
+            <ElDropdownMenu>
+              <ElDropdownItem :command="1">
                 保留一个月
-              </el-dropdown-item>
-              <el-dropdown-item :command="2">
+              </ElDropdownItem>
+              <ElDropdownItem :command="2">
                 保留三个月
-              </el-dropdown-item>
-              <el-dropdown-item :command="3">
+              </ElDropdownItem>
+              <ElDropdownItem :command="3">
                 保留六个月
-              </el-dropdown-item>
-              <el-dropdown-item :command="4">
+              </ElDropdownItem>
+              <ElDropdownItem :command="4">
                 保留一年
-              </el-dropdown-item>
-              <el-dropdown-item :command="5">
+              </ElDropdownItem>
+              <ElDropdownItem :command="5">
                 保留一千条
-              </el-dropdown-item>
-              <el-dropdown-item :command="6">
+              </ElDropdownItem>
+              <ElDropdownItem :command="6">
                 保留一万条
-              </el-dropdown-item>
-              <el-dropdown-item :command="7">
+              </ElDropdownItem>
+              <ElDropdownItem :command="7">
                 保留三万条
-              </el-dropdown-item>
-              <el-dropdown-item :command="8">
+              </ElDropdownItem>
+              <ElDropdownItem :command="8">
                 保留十万条
-              </el-dropdown-item>
-              <el-dropdown-item :command="9">
+              </ElDropdownItem>
+              <ElDropdownItem :command="9">
                 清空所有
-              </el-dropdown-item>
-            </el-dropdown-menu>
+              </ElDropdownItem>
+            </ElDropdownMenu>
           </template>
-        </el-dropdown>
-      </el-space>
+        </ElDropdown>
+      </ElSpace>
       <ElTable
         ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%"
         highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
-        <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
-        <el-table-column align="center" label="序号" width="100">
+        <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
+        <ElTableColumn align="center" label="序号" width="100">
           <template #default="{ $index }">
             {{ (pagination.size * (pagination.page - 1)) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column align="center" label="登录IP" prop="requestIp" width="150" />
-        <el-table-column align="center" label="登录人昵称" prop="nickName" width="150" />
-        <el-table-column align="center" label="登录人账号" prop="username" width="150" />
-        <el-table-column align="center" label="登录描述" prop="description" width="150" />
-        <el-table-column align="center" label="登录时间" prop="loginDate" width="120" />
-        <el-table-column align="center" label="浏览器名称" prop="browser" width="120" />
-        <el-table-column align="center" label="浏览器版本" prop="browserVersion" width="120" />
-        <el-table-column align="center" label="操作系统" prop="operatingSystem" width="100" />
-        <el-table-column align="center" label="登录地点" prop="location" width="150" />
-        <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
-        <el-table-column align="center" fixed="right" label="操作" width="150">
+        </ElTableColumn>
+        <ElTableColumn align="center" label="登录IP" prop="requestIp" width="150" />
+        <ElTableColumn align="center" label="登录人昵称" prop="nickName" width="150" />
+        <ElTableColumn align="center" label="登录人账号" prop="username" width="150" />
+        <ElTableColumn align="center" label="登录描述" prop="description" width="150" />
+        <ElTableColumn align="center" label="登录时间" prop="loginDate" width="120" />
+        <ElTableColumn align="center" label="浏览器名称" prop="browser" width="120" />
+        <ElTableColumn align="center" label="浏览器版本" prop="browserVersion" width="120" />
+        <ElTableColumn align="center" label="操作系统" prop="operatingSystem" width="100" />
+        <ElTableColumn align="center" label="登录地点" prop="location" width="150" />
+        <ElTableColumn align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
+        <ElTableColumn align="center" fixed="right" label="操作" width="150">
           <template #default="scope">
-            <el-button size="small" text type="primary" @click="onView(scope.row)">
+            <ElButton size="small" text type="primary" @click="onView(scope.row)">
               <template #icon>
-                <svg-icon name="ep:view" />
+                <SvgIcon name="ep:view" />
               </template>
-            </el-button>
-            <el-divider direction="vertical" />
-            <el-button size="small" text type="danger" @click="onDel(scope.row)">
+            </ElButton>
+            <ElDivider direction="vertical" />
+            <ElButton size="small" text type="danger" @click="onDel(scope.row)">
               <template #icon>
-                <svg-icon name="ep:delete" />
+                <SvgIcon name="ep:delete" />
               </template>
-            </el-button>
+            </ElButton>
           </template>
-        </el-table-column>
+        </ElTableColumn>
       </ElTable>
-      <el-pagination
+      <ElPagination
         :current-page="pagination.page" :hide-on-single-page="false" :layout="pagination.layout"
         :page-size="pagination.size" :page-sizes="pagination.sizes" :total="pagination.total"
         background class="pagination" @size-change="sizeChange" @current-change="currentChange"
       />
-    </page-main>
+    </PageMain>
     <FormMode
       v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
       v-model="data.formModeProps.visible" :mode="data.formMode" @success="getDataList"

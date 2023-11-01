@@ -8,6 +8,7 @@ import type { UserPageQuery } from '@/api/modules/system/model/userModel'
 import crudUser from '@/api/modules/system/user'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
   name: 'SystemUserList',
@@ -141,7 +142,7 @@ function onEdit(row: any) {
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'edit'
+    data.value.formModeProps.type = ActionEnum.EDIT
   }
 }
 
@@ -151,14 +152,14 @@ function onView(row: any) {
       name: 'routerName',
       params: {
         id: row.id,
-        type: 'view',
+        type: ActionEnum.VIEW,
       },
     })
   }
   else {
     data.value.formModeProps.id = row.id
     data.value.formModeProps.visible = true
-    data.value.formModeProps.type = 'view'
+    data.value.formModeProps.type = ActionEnum.VIEW
   }
 }
 
@@ -199,29 +200,29 @@ function onResetPassword(row: any) {
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <page-header title="用户管理" />
-    <page-main>
-      <search-bar
+    <PageHeader title="用户管理" />
+    <PageMain>
+      <SearchBar
         :fold="data.searchFold"
         :show-toggle="false"
       >
         <template #default="{ fold }">
-          <el-form
+          <ElForm
             :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
             size="default"
           >
-            <el-form-item label="用户账号">
-              <el-input
+            <ElFormItem label="用户账号">
+              <ElInput
                 v-model="data.search.username" clearable placeholder="请输入用户账号，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
-            <el-form-item label="昵称">
-              <el-input
+            </ElFormItem>
+            <ElFormItem label="昵称">
+              <ElInput
                 v-model="data.search.nickName" clearable placeholder="请输入昵称，支持模糊查询"
                 @clear="currentChange()" @keydown.enter="currentChange()"
               />
-            </el-form-item>
+            </ElFormItem>
             <!-- <el-form-item label="邮箱">
               <el-input
                 v-model="data.search.email" placeholder="请输入邮箱，支持模糊查询" clearable
@@ -234,8 +235,8 @@ function onResetPassword(row: any) {
                 @keydown.enter="currentChange()" @clear="currentChange()"
               />
             </el-form-item> -->
-            <el-form-item v-show="!fold" label="创建时间">
-              <el-date-picker
+            <ElFormItem v-show="!fold" label="创建时间">
+              <ElDatePicker
                 v-model="data.search.daterange"
                 :default-time="[
                   new Date(2000, 1, 1, 0, 0, 0),
@@ -247,101 +248,101 @@ function onResetPassword(row: any) {
                 type="daterange"
                 value-format="YYYY-MM-DD HH:mm:ss"
               />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="currentChange()">
+            </ElFormItem>
+            <ElFormItem>
+              <ElButton type="primary" @click="currentChange()">
                 <template #icon>
-                  <svg-icon name="ep:search" />
+                  <SvgIcon name="ep:search" />
                 </template>
                 筛选
-              </el-button>
-              <el-button type="primary" @click="resetQuery()">
+              </ElButton>
+              <ElButton type="primary" @click="resetQuery()">
                 重置
-              </el-button>
-              <el-button link type="primary" @click="data.searchFold = !fold">
+              </ElButton>
+              <ElButton link type="primary" @click="data.searchFold = !fold">
                 <template #icon>
-                  <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                  <SvgIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
                 </template>
                 {{ fold ? '展开' : '收起' }}
-              </el-button>
-            </el-form-item>
-          </el-form>
+              </ElButton>
+            </ElFormItem>
+          </ElForm>
         </template>
-      </search-bar>
-      <el-divider border-style="dashed" />
-      <el-space wrap>
-        <el-button size="default" type="primary" @click="onAdd">
+      </SearchBar>
+      <ElDivider border-style="dashed" />
+      <ElSpace wrap>
+        <ElButton size="default" type="primary" @click="onAdd">
           <template #icon>
-            <svg-icon name="ep:plus" />
+            <SvgIcon name="ep:plus" />
           </template>
           新增
-        </el-button>
-        <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
+        </ElButton>
+        <ElButton :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
           删除
-        </el-button>
-      </el-space>
+        </ElButton>
+      </ElSpace>
       <ElTable
         ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table"
         height="100%"
         highlight-current-row
         stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
-        <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
-        <el-table-column align="center" label="序号" width="100">
+        <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
+        <ElTableColumn align="center" label="序号" width="100">
           <template #default="{ $index }">
             {{ (pagination.size * (pagination.page - 1)) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column align="center" label="用户账号" prop="username" />
-        <el-table-column align="center" label="名称" prop="nickName" />
-        <el-table-column align="center" label="邮箱" prop="email" />
-        <el-table-column align="center" label="手机号" prop="mobile" />
-        <el-table-column align="center" column-key="sex" label="性别" prop="sex" sortable="custom">
+        </ElTableColumn>
+        <ElTableColumn align="center" label="用户账号" prop="username" />
+        <ElTableColumn align="center" label="名称" prop="nickName" />
+        <ElTableColumn align="center" label="邮箱" prop="email" />
+        <ElTableColumn align="center" label="手机号" prop="mobile" />
+        <ElTableColumn align="center" column-key="sex" label="性别" prop="sex" sortable="custom">
           <template #default="{ row }">
             {{ row.echoMap.sex }}
           </template>
-        </el-table-column>
-        <el-table-column align="center" label="状态" prop="state">
+        </ElTableColumn>
+        <ElTableColumn align="center" label="状态" prop="state">
           <template #default="{ row }">
-            <el-tag :type="row.state ? 'success' : 'danger'">
+            <ElTag :type="row.state ? 'success' : 'danger'">
               {{ row.state ? '启用' : '禁用' }}
-            </el-tag>
+            </ElTag>
           </template>
-        </el-table-column>
-        <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
-        <el-table-column align="center" fixed="right" label="操作" width="250">
+        </ElTableColumn>
+        <ElTableColumn align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
+        <ElTableColumn align="center" fixed="right" label="操作" width="250">
           <template #default="scope">
-            <el-button plain size="small" type="primary" @click="onView(scope.row)">
+            <ElButton plain size="small" type="primary" @click="onView(scope.row)">
               查 看
-            </el-button>
-            <el-button plain size="small" type="primary" @click="onBindRoles(scope.row)">
+            </ElButton>
+            <ElButton plain size="small" type="primary" @click="onBindRoles(scope.row)">
               绑定角色
-            </el-button>
-            <el-dropdown>
-              <svg-icon class="mr-1 ml-1" flip="both" name="ep:more-filled" />
+            </ElButton>
+            <ElDropdown>
+              <SvgIcon class="mr-1 ml-1" flip="both" name="ep:more-filled" />
               <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="edit" @click.stop="onEdit(scope.row)">
+                <ElDropdownMenu>
+                  <ElDropdownItem command="edit" @click.stop="onEdit(scope.row)">
                     编辑
-                  </el-dropdown-item>
-                  <el-dropdown-item command="resetPassword" divided @click.stop="onResetPassword(scope.row)">
+                  </ElDropdownItem>
+                  <ElDropdownItem command="resetPassword" divided @click.stop="onResetPassword(scope.row)">
                     重置密码
-                  </el-dropdown-item>
-                  <el-dropdown-item command="del" divided @click.stop="onDel(scope.row)">
+                  </ElDropdownItem>
+                  <ElDropdownItem command="del" divided @click.stop="onDel(scope.row)">
                     删除
-                  </el-dropdown-item>
-                </el-dropdown-menu>
+                  </ElDropdownItem>
+                </ElDropdownMenu>
               </template>
-            </el-dropdown>
+            </ElDropdown>
           </template>
-        </el-table-column>
+        </ElTableColumn>
       </ElTable>
-      <el-pagination
+      <ElPagination
         :current-page="pagination.page" :hide-on-single-page="false" :layout="pagination.layout"
         :page-size="pagination.size" :page-sizes="pagination.sizes" :total="pagination.total"
         background class="pagination" @size-change="sizeChange" @current-change="currentChange"
       />
-    </page-main>
+    </PageMain>
     <FormMode
       v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
       v-model="data.formModeProps.visible" :mode="data.formMode" :type="data.formModeProps.type"

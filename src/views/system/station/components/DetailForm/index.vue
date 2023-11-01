@@ -4,15 +4,16 @@ import { ElMessage } from 'element-plus'
 import crudStation from '@/api/modules/system/station'
 import stautsEnum from '@/enums/stautsEnum'
 import { treeOrg } from '@/api/modules/system/org'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 export interface Props {
   id?: string
-  type?: 'add' | 'edit' | 'view'
+  type?: ActionEnum
 }
 
 const props = withDefaults(defineProps<Props>(), {
   id: '',
-  type: 'view',
+  type: ActionEnum.VIEW,
   parentCurrent: () => ({}),
 })
 
@@ -70,7 +71,7 @@ defineExpose({
   submit(callback: any) {
     form.value?.validate((valid) => {
       if (valid) {
-        if (props.type === 'add') {
+        if (props.type === ActionEnum.ADD) {
           crudStation.create(data.value.form).then(() => {
             ElMessage.success({
               message: '新增成功',
@@ -79,7 +80,7 @@ defineExpose({
             callback && callback()
           })
         }
-        else if (props.type === 'edit') {
+        else if (props.type === ActionEnum.EDIT) {
           crudStation.edit(data.value.form).then(() => {
             ElMessage.success({
               message: '编辑成功',
@@ -99,15 +100,15 @@ defineExpose({
 
 <template>
   <div v-loading="data.loading">
-    <el-form ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="data.form.name" :disabled="type === 'view'" placeholder="请输入" />
-      </el-form-item>
-      <el-form-item label="所属机构" prop="orgId">
-        <el-tree-select
+    <ElForm ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
+      <ElFormItem label="名称" prop="name">
+        <ElInput v-model="data.form.name" :disabled="type === ActionEnum.VIEW" placeholder="请输入" />
+      </ElFormItem>
+      <ElFormItem label="所属机构" prop="orgId">
+        <ElTreeSelect
           v-model="data.form.orgId"
           :data="tree"
-          :disabled="type === 'view'"
+          :disabled="type === ActionEnum.VIEW"
           :props="{
             children: 'children',
             label: 'name',
@@ -119,21 +120,21 @@ defineExpose({
           show-checkbox
           value-key="id"
         />
-      </el-form-item>
-      <el-form-item label="状态" prop="state">
-        <el-radio-group v-model="data.form.state" :disabled="type === 'view'">
-          <el-radio-button v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
+      </ElFormItem>
+      <ElFormItem label="状态" prop="state">
+        <ElRadioGroup v-model="data.form.state" :disabled="type === ActionEnum.VIEW">
+          <ElRadioButton v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
             {{ item.label }}
-          </el-radio-button>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="备注" prop="remarks">
-        <el-input
-          v-model="data.form.remarks" :autosize="{ minRows: 2, maxRows: 4 }" :disabled="type === 'view'"
-          :placeholder="type === 'view' ? '' : '请输入备注'" type="textarea"
+          </ElRadioButton>
+        </ElRadioGroup>
+      </ElFormItem>
+      <ElFormItem label="备注" prop="remarks">
+        <ElInput
+          v-model="data.form.remarks" :autosize="{ minRows: 2, maxRows: 4 }" :disabled="type === ActionEnum.VIEW"
+          :placeholder="type === ActionEnum.VIEW ? '' : '请输入备注'" type="textarea"
         />
-      </el-form-item>
-    </el-form>
+      </ElFormItem>
+    </ElForm>
   </div>
 </template>
 

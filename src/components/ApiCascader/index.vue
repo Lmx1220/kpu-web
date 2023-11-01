@@ -1,7 +1,7 @@
 <!-- #Todo 待完成 -->
 <script lang="ts" setup>
-import {get, omit} from 'lodash-es'
-import type {ApiCascader} from './typing'
+import { get, omit } from 'lodash-es'
+import type { ApiCascader } from './typing'
 
 defineOptions({
   name: 'ApiCascader',

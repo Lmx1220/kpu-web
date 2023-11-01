@@ -4,15 +4,16 @@ import { ElMessage } from 'element-plus'
 import type { FormConfig } from '#/global'
 import stautsEnum from '@/enums/stautsEnum'
 import crudParameter from '@/api/modules/system/parameter'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 export interface Props {
   id?: string
-  type?: 'add' | 'edit' | 'view'
+  type?: ActionEnum
 }
 
 const props = withDefaults(defineProps<Props>(), {
   id: '',
-  type: 'view',
+  type: ActionEnum.ADD,
 })
 
 const data = ref<FormConfig>({
@@ -96,30 +97,30 @@ defineExpose({
 
 <template>
   <div v-loading="data.loading">
-    <el-form ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
-      <el-form-item label="参数名称" prop="name">
-        <el-input v-model="data.form.name" :disabled="type === 'view'" placeholder="请输入参数名称" />
-      </el-form-item>
-      <el-form-item label="参数键" prop="key">
-        <el-input v-model="data.form.key" :disabled="type === 'view'" placeholder="请输入参数键" />
-      </el-form-item>
-      <el-form-item label="参数值" prop="value">
-        <el-input v-model="data.form.value" :disabled="type === 'view'" placeholder="请输入参数值" />
-      </el-form-item>
-      <el-form-item label="备注" prop="remarks">
-        <el-input
-          v-model="data.form.remarks" :autosize="{ minRows: 2, maxRows: 4 }" :disabled="type === 'view'"
-          :placeholder="type === 'view' ? '' : '请输入备注'" type="textarea"
+    <ElForm ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
+      <ElFormItem label="参数名称" prop="name">
+        <ElInput v-model="data.form.name" :disabled="type === ActionEnum.VIEW" placeholder="请输入参数名称" />
+      </ElFormItem>
+      <ElFormItem label="参数键" prop="key">
+        <ElInput v-model="data.form.key" :disabled="type === ActionEnum.VIEW" placeholder="请输入参数键" />
+      </ElFormItem>
+      <ElFormItem label="参数值" prop="value">
+        <ElInput v-model="data.form.value" :disabled="type === ActionEnum.VIEW" placeholder="请输入参数值" />
+      </ElFormItem>
+      <ElFormItem label="备注" prop="remarks">
+        <ElInput
+          v-model="data.form.remarks" :autosize="{ minRows: 2, maxRows: 4 }" :disabled="type === ActionEnum.VIEW"
+          :placeholder="type === ActionEnum.VIEW ? '' : '请输入备注'" type="textarea"
         />
-      </el-form-item>
-      <el-form-item label="状态" prop="state">
-        <el-radio-group v-model="data.form.state" :disabled="type === 'view'">
-          <el-radio-button v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
+      </ElFormItem>
+      <ElFormItem label="状态" prop="state">
+        <ElRadioGroup v-model="data.form.state" :disabled="type === ActionEnum.VIEW">
+          <ElRadioButton v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
             {{ item.label }}
-          </el-radio-button>
-        </el-radio-group>
-      </el-form-item>
-    </el-form>
+          </ElRadioButton>
+        </ElRadioGroup>
+      </ElFormItem>
+    </ElForm>
   </div>
 </template>
 

@@ -48,12 +48,14 @@ export function genMessage(langs: Record<string, any>, prefix = 'lang') {
   })
   return obj
 }
+if (messages) {
+  messages['zh-cn'] = defaultsDeep(messages['zh-cn'], vxeZhCN)
+  messages['zh-cn'] = defaultsDeep(messages['zh-cn'], genMessage(modules, 'lang/zh-cn'))
+  messages.en = defaultsDeep(messages.en, genMessage(modulesEn, 'lang/en'))
+  messages.en = defaultsDeep(messages.en, vxeEnUS)
+  messages.jp = defaultsDeep(messages.en, vxeJaJP)
+}
 
-messages['zh-cn'] = defaultsDeep(messages['zh-cn'], vxeZhCN)
-messages['zh-cn'] = defaultsDeep(messages['zh-cn'], genMessage(modules, 'lang/zh-cn'))
-messages.en = defaultsDeep(messages.en, genMessage(modulesEn, 'lang/en'))
-messages.en = defaultsDeep(messages.en, vxeEnUS)
-messages.jp = defaultsDeep(messages.en, vxeJaJP)
 // eslint-disable-next-line import/no-mutable-exports
 export let i18n: ReturnType<typeof createI18n>
 function useI18n(app: App) {
