@@ -47,10 +47,12 @@ async function handleSubmit() {
 
 <template>
   <div>
-    <Vxe ref="fileRef" />
-    <ElButton @click="handleSubmit">
-      {{ t('common.saveText') }}
-    </ElButton>
+    <PageMain class="kpu-j-vxe-table">
+      <Vxe ref="fileRef" />
+      <ElButton @click="handleSubmit">
+        {{ t('common.saveText') }}
+      </ElButton>
+    </PageMain>
   </div>
 </template>
 
