@@ -126,7 +126,7 @@ const activeName = ref('message')
           </div>
         </div>
       </OverlayScrollbarsComponent>
-      <RouterLink :to="{ name: 'personalNotification' }">
+      <RouterLink :to="{ name: 'personalNotification' }" custom>
         <div class="py-4 text-center text-sm text-stone-5 cursor-pointer">
           进入待办列表
         </div>
