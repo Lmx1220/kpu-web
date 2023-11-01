@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { useTimeoutFn } from '@vueuse/core'
-import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-vue'
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+import {useTimeoutFn} from '@vueuse/core'
+import type {OverlayScrollbarsComponentRef} from 'overlayscrollbars-vue'
+import {OverlayScrollbarsComponent} from 'overlayscrollbars-vue'
 import Item from './item.vue'
-import type { SubMenuProps } from './types'
-import { rootMenuInjectionKey } from './types'
+import type {SubMenuProps} from './types'
+import {rootMenuInjectionKey} from './types'
 
 defineOptions({
   name: 'SubMenu',
@@ -190,7 +190,7 @@ function handleMouseleave() {
           'bg-[var(--g-sub-sidebar-bg)]': rootMenu.isMenuPopup,
           'ring-1 ring-stone-2 dark:ring-stone-8 shadow-xl fixed z-3000 w-[200px]': rootMenu.isMenuPopup,
           'mx-2': rootMenu.isMenuPopup && (rootMenu.props.mode === 'vertical' || level !== 0),
-          'rounded-2 py-1': rootMenu.props.rounded && transitionEvent.isMenuPopup,
+          'rounded-2 py-1': rootMenu.props.rounded && rootMenu.isMenuPopup,
         }" :options="{ scrollbars: { visibility: 'hidden' } }" class="sub-menu"
         defer
       >

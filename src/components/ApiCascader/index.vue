@@ -1,8 +1,11 @@
 <!-- #Todo 待完成 -->
 <script lang="ts" setup>
-import { get, omit } from 'lodash-es'
-import type { ApiCascader } from './typing'
+import {get, omit} from 'lodash-es'
+import type {ApiCascader} from './typing'
 
+defineOptions({
+  name: 'ApiCascader',
+})
 const props = withDefaults(defineProps<ApiCascader>(), {
   resultField: 'data',
   labelField: 'label',
@@ -14,9 +17,6 @@ const props = withDefaults(defineProps<ApiCascader>(), {
 })
 const emit = defineEmits(['change', 'update:modelValue'])
 const attrs = useAttrs()
-defineOptions({
-  name: 'ApiCascader',
-})
 const getProps = computed(() => {
   const newProps = { ...props, ...attrs }
   return omit(newProps, 'modelValue', 'api', 'params', 'resultField', 'labelField', 'valueField')
@@ -66,7 +66,7 @@ function filterMethod(query: string) {
 </script>
 
 <template>
-  <el-calendar v-model="modelValue" :options="dicts" v-bind="getProps" @change="(val) => emit('change', val)" />
+  <!--  <el-calendar v-model="modelValue" :options="dicts" v-bind="getProps" @change="(val) => emit('change', val)" /> -->
 </template>
 
 <style scoped lang="scss">

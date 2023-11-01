@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { SubMenuItemProps } from './types'
-import { rootMenuInjectionKey } from './types'
+import type {SubMenuItemProps} from './types'
+import {rootMenuInjectionKey} from './types'
 import useI18nTitle from '@/util/composables/useI18nTitle.ts'
 
 const props = withDefaults(
@@ -78,11 +78,11 @@ defineExpose({
           {{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}
         </span>
         <HBadge
-          v-if="props.item.meta.badge"
+          v-if="props.item.meta?.badge"
           :class="{
             'opacity-0': rootMenu.isMenuPopup && level === 0,
           }"
-          :value="typeof props.item.meta.badge == 'function' ? props.item.meta.badge() : props.item.meta.badge"
+          :value="typeof props.item.meta?.badge == 'function' ? props.item.meta?.badge() : props.item.meta?.badge"
           class="badge"
         />
       </div>

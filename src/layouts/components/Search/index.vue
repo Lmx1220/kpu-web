@@ -1,19 +1,19 @@
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
+import {useI18n} from 'vue-i18n'
 import hotkeys from 'hotkeys-js'
-import type { RouteRecordRaw } from 'vue-router'
-import { Dialog, DialogDescription, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-vue'
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+import type {RouteRecordRaw} from 'vue-router'
+import {Dialog, DialogDescription, DialogPanel, TransitionChild, TransitionRoot} from '@headlessui/vue'
+import type {OverlayScrollbarsComponentRef} from 'overlayscrollbars-vue'
+import {OverlayScrollbarsComponent} from 'overlayscrollbars-vue'
 import Breadcrumb from '../Breadcrumb/index.vue'
 import BreadcrumbItem from '../Breadcrumb/item.vue'
-import type { Tabbar } from '@/types/global'
+import type {Tabbar} from '@/types/global'
 import useSettingsStore from '@/store/modules/settings'
 import useRouteStore from '@/store/modules/route'
 import useTabbarStore from '@/store/modules/tabbar'
 
 // import useMenuStore from '@/store/modules/menu'
-import { deepClone, isExternalLink, resolveRoutePath } from '@/util'
+import {deepClone, isExternalLink, resolveRoutePath} from '@/util'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 import eventBus from '@/util/eventBus'
 
@@ -52,6 +52,7 @@ interface listTypes {
   icon?: string
   title?: string | (() => string)
   link?: string
+  i18n?: string
   breadcrumb: any[]
 }
 
@@ -92,10 +93,8 @@ const resultList: Ref<listTypes[]> = computed(() => {
 const input = ref<HTMLInputElement>()
 watch(() => isShow.value, (val) => {
   if (val) {
-    // document.querySelector('body')?.classList.add('hidden')
-    if (searchResultItemRef.value) {
-      searchResultItemRef.value.scrollTop = 0
-    }
+    searchInput.value = ''
+    actived.value = -1
     // 当搜索显示的时候绑定上、下、回车快捷键，隐藏的时候再解绑。另外当 input 处于 focus 状态时，采用 vue 来绑定键盘事件
     hotkeys('up', keyUp)
     hotkeys('down', keyDown)
@@ -192,7 +191,7 @@ function getSourceList(arr: RouteRecordRaw[], path?: string, icon?: string, base
         })
         sourceList.value.push({
           icon: item.meta?.icon ?? icon,
-          title: item.meta?.title ?? '',
+          title: typeof item.meta?.title === 'function' ? item.meta.title() : item.meta?.title ?? '',
           i18n: item.meta?.i18n,
           link: isExternalLink(item.path) ? `${path}${item.path}` : undefined,
           breadcrumb,
@@ -207,7 +206,7 @@ function getTabbarList(tabbarList: Tabbar.recordRaw[]) {
   tabbarList.forEach((item) => {
     sourceList.value.push({
       icon: item.icon,
-      title: item.title || '',
+      title: typeof item.title === 'function' ? item.title() : item.title || '',
       path: item.fullPath,
       i18n: item.i18n,
       breadcrumb: [],

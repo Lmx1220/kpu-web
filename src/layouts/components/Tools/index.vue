@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
-import { useFullscreen } from '@vueuse/core'
+import {useI18n} from 'vue-i18n'
+import {useFullscreen} from '@vueuse/core'
 import Notification from './Notification/index.vue'
 import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
@@ -8,6 +8,7 @@ import useUserStore from '@/store/modules/user'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 import useMainPage from '@/util/composables/useMainPage'
 import useNotificationStore from '@/store/modules/notification'
+import useViewTransition from '@/util/composables/useViewTransition.ts'
 
 defineOptions({
   name: 'Tools',
@@ -26,6 +27,40 @@ const mainPage = useMainPage()
 const notificationStore = useNotificationStore()
 notificationStore.init()
 const { isFullscreen, toggle } = useFullscreen()
+const avatarError = ref(false)
+watch(() => userStore.avatar, () => {
+  if (avatarError.value) {
+    avatarError.value = false
+  }
+})
+
+function toggleColorScheme(event: MouseEvent) {
+  const { startViewTransition } = useViewTransition(() => {
+    settingsStore.setColorScheme(settingsStore.settings.app.colorScheme === 'dark' ? 'light' : 'dark')
+  })
+  startViewTransition()?.ready.then(() => {
+    const x = event.clientX
+    const y = event.clientY
+    const endRadius = Math.hypot(
+      Math.max(x, innerWidth - x),
+      Math.max(y, innerHeight - y),
+    )
+    const clipPath = [
+      `circle(0px at ${x}px ${y}px)`,
+      `circle(${endRadius}px at ${x}px ${y}px)`,
+    ]
+    document.documentElement.animate(
+      {
+        clipPath: settingsStore.settings.app.colorScheme !== 'dark' ? clipPath : clipPath.reverse(),
+      },
+      {
+        duration: 300,
+        easing: 'ease-out',
+        pseudoElement: settingsStore.settings.app.colorScheme !== 'dark' ? '::view-transition-new(root)' : '::view-transition-old(root)',
+      },
+    )
+  })
+}
 </script>
 
 <template>
