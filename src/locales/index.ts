@@ -90,7 +90,7 @@ function getElementLocales() {
       case 'en':
         Object.assign(locales[key], elementLocaleEn, { labelName: 'English' })
         break
-      case 'ja':
+      case 'jp':
         Object.assign(locales[key], elementLocaleJa, { labelName: '日本語' })
         break
     }

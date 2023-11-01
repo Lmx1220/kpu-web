@@ -4,6 +4,8 @@ import Sortable from 'sortablejs'
 import hotkeys from 'hotkeys-js'
 import { useI18n } from 'vue-i18n'
 import { ElMessageBox } from 'element-plus'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+import { useMagicKeys } from '@vueuse/core'
 import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar'
 import storage from '@/util/storage'
@@ -19,7 +21,7 @@ defineOptions({
 
 const route = useRoute()
 const router = useRouter()
-
+const altKey = useMagicKeys({ reactive: true })
 const settingsStore = useSettingsStore()
 const tabbarStore = useTabbarStore()
 const tabbar = useTabbar()
@@ -40,7 +42,7 @@ const hasTabbarRightSideCanClose = computed(() => tabbar.checkCloseRightSide())
 const isShowMoreAction = computed(() => tabbarStore.list.length > 1 && (hasTabbarOtherSideCanClose.value || hasTabbarLeftSideCanClose.value || hasTabbarRightSideCanClose.value))
 const tabs = ref()
 const tabContainer = ref()
-const dropdownTabContainer = ref()
+const dropdownTabContainerRef = ref()
 
 const tabbarList = ref<any[]>([])
 function addTabbarList(tabbar: any) {
@@ -247,7 +249,6 @@ function onTabbarContextmenu(event: MouseEvent, routeItem: Tabbar.recordRaw) {
   })
 }
 function iconName(enableIcon: boolean, icon: string | undefined, activeIcon: string | undefined) {
-  // eslint-disable-next-line no-mixed-operators
   return !enableIcon && icon || enableIcon && activeIcon || icon || ''
 }
 onMounted(() => {
@@ -306,16 +307,16 @@ onUnmounted(
         [`tabs-${settingsStore.settings.tabbar.style}`]: settingsStore.settings.tabbar.style,
       }" @mousewheel.prevent="handlerMouserScroll"
     >
-      <transition-group
+      <TransitionGroup
         ref="tabContainer" :name="!isDragging ? 'tabbar' : undefined" tag="div" class="tab-container"
         :class="{ dragging: isDragging }"
       >
         <div
-          v-for="element in tabbarStore.list" :key="element.tabId" :ref="addTabbarList" class="tab" :class="{
+          v-for="(element, index) in tabbarStore.list" :key="element.tabId" :ref="addTabbarList" :class="{
             'tab-ontop': settingsStore.settings.topbar.switchTabbarAndToolbar,
             'actived': element.tabId === activedTabId,
             'no-drag': element.isPermanent || element.isPin,
-          }"
+          }" class="tab"
           :title="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element.title)"
           @click="router.push(`${element.fullPath}`)" @dblclick="settingsStore.setMainPageMaximize()"
           @contextmenu="onTabbarContextmenu($event, element)"
@@ -324,12 +325,12 @@ onUnmounted(
           <div class="tab-background" />
           <div class="tab-content">
             <div
-              :key="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element?.title)"
+              :key="element.tabId"
               class="title"
             >
-              <svg-icon
+              <SvgIcon
                 v-if="settingsStore.settings.tabbar.enableIcon && iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
-                :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)" class="title-icon"
+                :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)" class="icon"
               />
               {{
                 settingsStore.titleFirst && element.tabId === activedTabId ? element.title
@@ -337,51 +338,64 @@ onUnmounted(
               }}
             </div>
 
-            <svg-icon
+            <SvgIcon
               v-if="!element.isPermanent && element.isPin" class="action-icon"
               name="i-ri:pushpin-2-fill" @click.stop="tabbarStore.unPin(`${element.tabId}`)"
             />
 
-            <svg-icon
+            <SvgIcon
               v-else-if="!element.isPermanent && tabbarStore.list.length > 1" class="action-icon"
               name="i-ri:close-fill" @click.stop="tabbar.closeById(`${element.tabId}`)"
             />
+            <div v-show="altKey.alt && index < 9" class="hotkey-number">
+              {{ index + 1 }}
+            </div>
             <div class="drag-handle" />
           </div>
         </div>
-      </transition-group>
+      </TransitionGroup>
     </div>
     <div v-if="isShowMoreAction" class="more-action">
-      <el-dropdown
-        ref="dropdownTabContainer" popper-class="tabbar-dropdown" placement="bottom-end"
-      >
-        <svg-icon name="i-ri:arrow-down-s-fill" />
+      <HDropdown placement="bottom-end" popper-class="tabbar-dropdown">
+        <SvgIcon class="icon" name="i-ri:arrow-down-s-fill" />
         <template #dropdown>
           <div class="quick-button">
-            <button v-if="settingsStore.settings.navSearch.enable" class="button" @click="actionCommand('search-tabs')">
-              <svg-icon name="i-ep:search" />
+            <button
+              v-if="settingsStore.settings.navSearch.enable" :title="t('app.tabbar.searchTabs')" class="button"
+              @click="actionCommand('search-tabs')"
+            >
+              <SvgIcon name="i-ep:search" />
             </button>
             <button
               class="button" :disabled="!tabbar.checkCloseOtherSide(activedTabId)"
+              :title="t('app.tabbar.closeOtherSide')"
               @click="actionCommand('other-side')"
             >
-              <svg-icon name="i-ep:close" />
+              <SvgIcon name="i-ep:close" />
             </button>
             <button
               class="button" :disabled="!tabbar.checkCloseLeftSide(activedTabId)"
+              :title="t('app.tabbar.closeLeftSide')"
               @click="actionCommand('left-side')"
             >
-              <svg-icon name="i-ph:arrow-line-left" />
+              <SvgIcon name="i-ph:arrow-line-left" />
             </button>
             <button
               class="button" :disabled="!tabbar.checkCloseRightSide(activedTabId)"
+              :title="t('app.tabbar.closeRightSide')"
               @click="actionCommand('right-side')"
             >
-              <svg-icon name="i-ph:arrow-line-right" />
+              <SvgIcon name="i-ph:arrow-line-right" />
             </button>
           </div>
-          <el-scrollbar height="300px">
-            <div class="tabs">
+          <OverlayScrollbarsComponent
+            :options="{ scrollbars: { autoHide: 'leave', autoHideDelay: 300 } }" class="max-h-[300px]" defer
+          >
+            <TransitionGroup
+              ref="dropdownTabContainerRef"
+              :class="{ dragging: isDragging }" :name="!isDragging ? 'dropdown-tab' : undefined"
+              class="tabs" tag="div"
+            >
               <div
                 v-for="element in tabbarStore.list" :key="element.tabId" class="tab" :class="{
                   'tab-ontop': settingsStore.settings.topbar.switchTabbarAndToolbar,
@@ -394,7 +408,7 @@ onUnmounted(
                   :title="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element.title)"
                   @click="router.push(`${element.fullPath}`)"
                 >
-                  <svg-icon
+                  <SvgIcon
                     v-if="settingsStore.settings.tabbar.enableIcon && iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
                     class="title-icon"
                     :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
@@ -402,95 +416,133 @@ onUnmounted(
                   {{ settingsStore.titleFirst && element.tabId === activedTabId ? element.title
                     : generateI18nTitle(element.i18n, element.title) }}
                 </div>
-                <svg-icon
+                <SvgIcon
                   class="action-icon" name="i-ri:close-fill"
                   @click.stop="tabbar.closeById(`${element.tabId}`)"
                 />
               </div>
-            </div>
-          </el-scrollbar>
+            </TransitionGroup>
+          </OverlayScrollbarsComponent>
         </template>
-      </el-dropdown>
+      </hdropdown>
     </div>
   </div>
 </template>
 
 <style lang="scss">
-.mx-context-menu {
-  position: fixed;
-  background-color: var(--el-bg-color-overlay);
-  box-shadow: var(--el-box-shadow-dark);
+.mx-menu-ghost-host {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  overflow: hidden;
+  pointer-events: none;
 
-  .mx-context-menu-items .mx-context-menu-item {
-    transition: background-color 0.3s;
+  &.fullscreen {
+    position: fixed;
+  }
+}
 
-    &:not(.disabled):hover {
-      cursor: pointer;
-      background-color: var(--el-fill-color);
-    }
+.mx-menu-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: var(--mx-menu-backgroud);
+  padding: 5px 0;
 
-    .text {
-      display: flex;
-      align-items: center;
-      color: var(--el-text-color-primary);
+  &.mini {
+    flex-grow: 0;
+  }
 
-      .icon {
-        width: 1em;
-        margin-right: 10px;
-        color: var(--el-text-color-primary);
+  .mx-menu-bar-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .mx-menu-bar-item {
+    padding: 2px 8px;
+    border-radius: 5px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    background-color: var(--mx-menu-backgroud);
+    color: var(--mx-menu-text);
+
+    &:hover {
+      background-color: var(--mx-menu-hover-backgroud);
+      color: var(--mx-menu-hover-text);
+
+      .mx-menu-bar-icon-menu {
+        fill: var(--mx-menu-hover-text);
       }
     }
 
-    &.disabled .text,
-    &.disabled .text .icon {
-      color: var(--el-text-color-placeholder);
+    &.active, &:active {
+      background-color: var(--mx-menu-active-backgroud);
+      color: var(--mx-menu-active-text);
+    }
+
+    &.active .mx-menu-bar-icon-menu, &:active .mx-menu-bar-icon-menu {
+      fill: var(--mx-menu-active-text);
     }
   }
 
-  .mx-context-menu-item-sperator {
-    background-color: var(--el-bg-color-overlay);
+  .mx-menu-bar-icon-menu {
+    fill: var(--mx-menu-text);
+    width: var(--mx-menu-icon-size);
+    height: var(--mx-menu-icon-size);
+  }
 
-    &::after {
-      background-color: var(--el-border-color);
-    }
+  &.flat .mx-menu-bar-item {
+    border-radius: 0;
   }
 }
 .mx-menu-ghost-host {
-  z-index: 1000;
+  --at-apply: z-100;
+
   .mx-context-menu {
-    position: fixed;
-    background-color: var(--g-app-bg);
-    box-shadow: var(--el-box-shadow);
-    .mx-context-menu-items {
-      .mx-context-menu-item {
-        transition: background-color .3s;
-        &:not(.disabled):hover {
-          cursor: pointer;
-          background-color: var(--el-fill-color);
-        }
-        span {
-          color: var(--el-text-color-primary);
-        }
-        .icon {
-          width: 1em;
-          margin-right: 10px;
-          color: var(--el-text-color-primary);
-        }
-        &.disabled  {
-          .icon,span{
-            color: var(--el-text-color-disabled);
-          }
-        }
+    --at-apply: flex ring-stone-3
+
+    dark:ring-stone-7 bg-[
+
+  var(--g-container-bg) ];
+
+    .mx-context-menu-items .mx-context-menu-item {
+      --at-apply: transition;
+
+      &:not(.disabled):hover {
+        --at-apply: cursor-pointer bg-stone-1
+        dark: bg-stone-9;
+      }
+
+      span {
+        --at-apply: color-initial;
+      }
+
+      .icon {
+        --at-apply: w-4 m-r- [10px] color-initial;
+      }
+
+      .disabled span, .disabled .icon {
+        --at-apply: opacity-25;
       }
     }
+
     .mx-context-menu-item-sperator {
-      background-color: var(--g-app-bg);
+      --at-apply: bg- [var(--g-container-bg)];
+
       &:after {
-        background-color: var(--el-border-color);
+        --at-apply: bg-stone-2
+        dark: bg-stone-7;
       }
     }
   }
+
 }
+
 .tabbar-dropdown {
   .quick-button {
     padding: 15px 15px 10px;
@@ -509,12 +561,12 @@ onUnmounted(
       cursor: pointer;
       outline: none;
       border: none;
-      background-color: var(--el-fill-color);
-      transition: var(--el-transition-color), background-color .3s;
-
+      background-color: var(--g-bg);
+      transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+      transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+      transition-duration: .15s;
       &:hover:not(:disabled) {
-        color: var(--el-color-primary);
-        background-color: var(--el-fill-color-light);
+        --at-apply: color-ui-primary;
       }
 
       &:disabled {
@@ -531,14 +583,10 @@ onUnmounted(
     width: 200px;
     padding: 0 0 10px;
 
-    .el-scrollbar__wrap {
-      overscroll-behavior: contain;
-    }
-
     &:not(.dragging) {
       .tab:hover {
         &:not(.actived) {
-          background-color: var(--el-fill-color);
+          background-color: var(--g-bg);
         }
 
         .action-icon {
@@ -557,7 +605,7 @@ onUnmounted(
       transition: background-color .3s;
 
       &.actived {
-        background-color: var(--el-fill-color-darker);
+        background-color: var(--g-bg);
       }
 
       &.ghost {
@@ -566,9 +614,9 @@ onUnmounted(
 
       &:hover {
         .title {
+          opacity: 1;
           margin-right: 20px;
-          mask-image: linear-gradient(to right, #000 calc(100% - 44px), transparent);
-          color: var(--el-text-color-primary);
+          mask-image: linear-gradient(to right, #000 calc(100% - 44px), transparent)
         }
       }
 
@@ -577,6 +625,10 @@ onUnmounted(
       }
 
       .title {
+        opacity: .7;
+        transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+        transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+        transition-duration: .15s;
         position: relative;
         display: flex;
         align-items: center;
@@ -586,10 +638,8 @@ onUnmounted(
         white-space: nowrap;
         cursor: pointer;
         mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
-        color: var(--el-text-color-regular);
-        transition: var(--el-transition-color), width .3s;
 
-        .icon {
+        .i {
           margin-right: 5px;
           font-size: 16px
         }
@@ -597,6 +647,9 @@ onUnmounted(
       }
 
       .action-icon {
+        transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+        transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+        transition-duration: .15s;
         position: absolute;
         z-index: 10;
         top: 50%;
@@ -609,10 +662,9 @@ onUnmounted(
         opacity: 0;
         pointer-events: all;
         color: var(--g-tabbar-tab-color);
-        transition: var(--el-transition-color), var(--el-transition-fade);
-
         &:hover {
-          background-color: var(--el-fill-color-darker)
+          --at-apply: ring-stone-3
+          dark: ring-stone-7
         }
       }
 
@@ -622,10 +674,14 @@ onUnmounted(
 </style>
 
 <style lang="scss" scoped>
+[data-overlayscrollbars-viewport] {
+  overscroll-behavior: contain
+}
+
 .tabbar-container {
   position: relative;
   height: var(--g-tabbar-height);
-  background-color: var(--g-tabbar-bg);
+  background-color: var(--g-bg);
   transition: background-color 0.3s;
 
   .tabs {
@@ -687,9 +743,9 @@ onUnmounted(
           user-select: none;
         }
 
-        &:last-child {
-          margin-right: 30px;
-        }
+        //&:last-child {
+        //  margin-right: 30px;
+        //}
 
         &.actived {
           z-index: 5;
@@ -747,9 +803,9 @@ onUnmounted(
           height: 100%;
           pointer-events: none;
 
-          svg {
-            display: none;
-          }
+          //svg {
+          //  display: none;
+          //}
         }
 
         .tab-content {
@@ -767,34 +823,57 @@ onUnmounted(
             flex: 1;
             overflow: hidden;
             white-space: nowrap;
-            mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);
+            mask-image: linear-gradient(to right, #000 calc(100% - 20px), transparent);
             color: var(--g-tabbar-tab-color);
-            transition: var(--el-transition-color);
+            transition: margin-right .3s;
+
+            &:has(+.action-icon) {
+              margin-right: 28px;
+            }
+
+            .icon {
+              margin-right: 5px;
+            }
           }
 
-          .drag-handle {
-            position: absolute;
-            z-index: 9;
-            inset: 0;
-          }
+          //.drag-handle {
+          //  position: absolute;
+          //  z-index: 9;
+          //  inset: 0;
+          //}
 
           .action-icon {
             position: absolute;
             z-index: 10;
             top: 50%;
-            right: 6px;
-            margin-top: -9px;
+            right: .5em;
+            transform: translateY(-50%);
             width: 1.5em;
             height: 1.5em;
             border-radius: 50%;
             font-size: 12px;
             color: var(--g-tabbar-tab-color);
-            transition: var(--el-transition-color);
-
             &:hover {
               background-color: var(--el-fill-color);
+              --at-apply: ring-1 ring-stone-3
+
+              dark:ring-stone-7 bg-[
+
+            var(--g-bg) ];
             }
           }
+
+          .hotkey-number {
+            --at-apply: ring-1 ring-stone-3
+
+            dark:ring-stone-7 flex-center absolute z-10 top-1\/2 right-[
+
+            0.5em ] -translate-y-1\/2 w-6 h-6 border-rd-1\/2 font-size- [12px] color- [var(--g-tabbar-tab-color)] bg- [var(--g-bg)];
+          }
+        }
+
+        .drag-handle {
+          --at-apply: absolute z-9 top-0 right-0 bottom-0 left-0;
         }
       }
     }
@@ -817,10 +896,6 @@ onUnmounted(
                 box-shadow: 0 0 0 20px var(--g-tabbar-tab-hover-bg);
               }
             }
-
-            .tab-background>svg .tab-geometry {
-              fill: var(--g-tabbar-tab-hover-bg);
-            }
           }
         }
 
@@ -840,10 +915,6 @@ onUnmounted(
 
           &:not(.actived) .tab-background {
             opacity: 0;
-
-            >svg .tab-geometry {
-              transition: fill 0.3s;
-            }
           }
 
           .tab-background {
@@ -872,17 +943,6 @@ onUnmounted(
               right: -20px;
               clip-path: inset(50% 50% 0 -10px);
             }
-
-            svg {
-              display: block;
-              width: 100%;
-              height: 100%;
-
-              .tab-geometry {
-                fill: var(--g-tabbar-tab-hover-bg);
-                transition: fill 0.3s;
-              }
-            }
           }
 
           &.actived {
@@ -892,31 +952,16 @@ onUnmounted(
 
             .tab-background {
               opacity: 1;
-              background-color: var(--g-tabbar-tab-active-bg);
+              background-color: var(--g-container-bg);
 
               &::before,
               &::after {
-                box-shadow: 0 0 0 20px var(--g-tabbar-tab-active-bg);
+                box-shadow: 0 0 0 20px var(--g-container-bg);
               }
             }
 
-            .tab-background>svg .tab-geometry {
-              fill: var(--g-tabbar-tab-active-bg);
-            }
           }
 
-          .tab-content {
-            .title {
-              &:has( + .action-icon) {
-                margin-right: 28px
-              }
-
-              .icon {
-                margin-right: 5px;
-              }
-
-            }
-          }
         }
       }
     }
@@ -948,7 +993,7 @@ onUnmounted(
 
           &.actived {
             .tab-background {
-              background-color: var(--g-tabbar-tab-active-bg);
+              background-color: var(--g-container-bg);
             }
           }
         }
@@ -1015,7 +1060,7 @@ onUnmounted(
               &::before {
                 height: calc(100% - 2px);
                 bottom: 2px;
-                background-color: var(--g-tabbar-tab-active-bg);
+                background-color: var(--g-container-bg);
               }
 
               &::after {
@@ -1039,18 +1084,10 @@ onUnmounted(
     justify-content: center;
     height: 100%;
     width: 50px;
-    background-image: linear-gradient(to right, transparent, var(--g-tabbar-bg));
+    background-image: linear-gradient(to right, transparent, var(--g-bg));
 
     .icon {
-      width: 1.5em;
-      height: 1.5em;
-      border-radius: 5px;
-      font-size: 16px;
-      color: var(--el-text-color-primary);
-      background-color: var(--g-app-bg);
-      box-shadow: var(--el-box-shadow-light);
-      transition: background-color 0.3s, var(--el-transition-color), var(--el-transition-box-shadow);
-      cursor: pointer;
+      --at-apply: color- [var(--el-text-color-primary)] bg- [var(--g-container-bg)] shadow ring transition w-6 h-6 border-rd- [5px] font-size- [16px] cursor-pointer;
     }
   }
 }
@@ -1082,6 +1119,27 @@ onUnmounted(
 
   .tabbar-move {
     transition: transform 0.3s;
+  }
+}
+
+.tabbar-dropdown .dropdown-tab-enter-from,
+.tabbar-dropdown .dropdown-tab-leave-to {
+  opacity: 0;
+  transform: translateY(-30px)
+}
+
+.tabbar-dropdown {
+  .dropdown-tab-enter-active {
+    transition: all .3s
+  }
+
+  .dropdown-tab-leave-active {
+    position: absolute !important;
+    transition: all .3s
+  }
+
+  .dropdown-tab-move[data-v-5cbb47a6] {
+    transition: transform .3s
   }
 }
 </style>

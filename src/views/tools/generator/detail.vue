@@ -94,35 +94,35 @@ const id = computed(() => {
 
 <template>
   <div class="toolsGeneratorDetail">
-    <page-header :title="route.query?.title as string">
-      <el-button round size="default" @click="goBack">
+    <PageHeader :title="route.query?.title as string">
+      <ElButton round size="default" @click="goBack">
         <template #icon>
-          <svg-icon name="ep:arrow-left" />
+          <SvgIcon name="ep:arrow-left" />
         </template>
         返回
-      </el-button>
+      </ElButton>
       <template v-if="route.query.content" #content>
         {{ route.query.content }}
       </template>
-    </page-header>
+    </PageHeader>
     <div class="steps">
-      <el-steps
+      <ElSteps
         :active="activeStatus.active" :process-status="activeStatus.processStatus" align-center
         finish-status="success"
       >
-        <el-step v-for="(item, index) in steps" :key="index" :title="item.title" @click="onStep(index)" />
-      </el-steps>
+        <ElStep v-for="(item, index) in steps" :key="index" :title="item.title" @click="onStep(index)" />
+      </ElSteps>
     </div>
-    <page-main>
-      <el-row>
-        <el-col :lg="24" :md="24">
+    <PageMain>
+      <ElRow>
+        <ElCol :lg="24" :md="24">
           <DetailForm
             :id="id" ref="form"
             :type="(route.params.type as 'add'|'edit'| 'view'| undefined)"
           />
-        </el-col>
-      </el-row>
-    </page-main>
+        </ElCol>
+      </ElRow>
+    </PageMain>
     <!--    <fixed-action-bar> -->
     <!--      <el-button type="primary" size="large" @click="onSubmit"> -->
     <!--        提交 -->
@@ -144,7 +144,7 @@ const id = computed(() => {
   .steps {
     margin-bottom: 20px;
     padding: 0 16px 20px;
-    background-color: var(--g-app-bg);
+    background-color: var(--g-container-bg);
     transition: background-color 0.3s;
   }
 }

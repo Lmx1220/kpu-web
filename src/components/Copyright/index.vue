@@ -12,7 +12,7 @@ const settingsStore = useSettingsStore()
 <template>
   <footer v-if="route.meta.copyright ?? settingsStore.settings.copyright.enable" class="copyright">
     <span>Copyright</span>
-    <svg-icon name="i-ri:copyright-line" style="font-size: 18px;" />
+    <SvgIcon name="i-ri:copyright-line" style="font-size: 18px;" />
     <span v-if="settingsStore.settings.copyright.dates">{{ settingsStore.settings.copyright.dates }}</span>
     <template v-if="settingsStore.settings.copyright.company">
       <a

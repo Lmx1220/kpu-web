@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { icons } from '@/iconify'
 
+defineOptions({
+  name: 'IconPicker',
+})
+
 const props = withDefaults(
   defineProps<{
     modelValue: string
@@ -17,10 +21,6 @@ const emits = defineEmits<{
     value: string,
   ]
 }>()
-
-defineOptions({
-  name: 'IconPicker',
-})
 
 const myValue = ref('')
 watch(() => props.modelValue, (value) => {
@@ -89,14 +89,14 @@ function removeIcon() {
 </script>
 
 <template>
-  <svg-icon
+  <SvgIcon
     :class="{ empty: myValue === '', [`icon-picker--${size}`]: true }" :name="myValue !== '' ? myValue : 'i-ep:plus'"
     class="icon-picker" @click="dialogVisible = true"
   />
-  <el-dialog v-model="dialogVisible" width="600px" :show-close="true" append-to-body>
+  <ElDialog v-model="dialogVisible" :show-close="true" append-to-body width="600px">
     <div class="icon-picker-dialog-body">
-      <el-tabs v-model="activeName" tab-position="left" class="demo-tabs" @tab-change="handleTabChange">
-        <el-tab-pane v-for="item in icons" :key="item.prefix" :name="item.prefix">
+      <ElTabs v-model="activeName" class="demo-tabs" tab-position="left" @tab-change="handleTabChange">
+        <ElTabPane v-for="item in icons" :key="item.prefix" :name="item.prefix">
           <template #label>
             <div class="icon-label">
               <div class="name">
@@ -107,29 +107,32 @@ function removeIcon() {
               </div>
             </div>
           </template>
-        </el-tab-pane>
-      </el-tabs>
+        </ElTabPane>
+      </ElTabs>
       <div class="main-container">
         <div class="search-bar">
-          <el-input v-model="search" size="large" placeholder="搜索..." clearable>
+          <ElInput v-model="search" clearable placeholder="搜索..." size="large">
             <template #prefix>
-              <svg-icon name="i-ep:search" />
+              <SvgIcon name="i-ep:search" />
             </template>
-          </el-input>
+          </ElInput>
         </div>
         <div class="list-icon">
-          <svg-icon class="list-icon-item empty" name="i-ep:delete" @click="removeIcon" />
-          <svg-icon
+          <SvgIcon class="list-icon-item empty" name="i-ep:delete" @click="removeIcon" />
+          <SvgIcon
             v-for="(icon, index) in currentIconList" :key="index" :name="`${activeName}:${icon}`"
             class="list-icon-item" @click="chooseIcon(`${activeName}:${icon}`)"
             @mouseout="hidePreviewIcon" @mouseover="showPreviewIcon(`${activeName}:${icon}`, index + 1)"
           />
-          <svg-icon :class="previewIcon && previewIconPosition" :name="previewIcon" class="list-icon-preview-item" />
+          <SvgIcon :class="previewIcon && previewIconPosition" :name="previewIcon" class="list-icon-preview-item" />
         </div>
-        <el-pagination v-model:current-page="pagination.page" layout="prev, pager, next" :page-size="pagination.pageSize" :total="iconList.length" :pager-count="5" background />
+        <ElPagination
+          v-model:current-page="pagination.page" :page-size="pagination.pageSize" :pager-count="5"
+          :total="iconList.length" background layout="prev, pager, next"
+        />
       </div>
     </div>
-  </el-dialog>
+  </ElDialog>
 </template>
 
 <style lang="scss" scoped>

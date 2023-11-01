@@ -26,146 +26,83 @@ const mainPage = useMainPage()
 const notificationStore = useNotificationStore()
 notificationStore.init()
 const { isFullscreen, toggle } = useFullscreen()
-
-function userCommand(command: string) {
-  switch (command) {
-    case 'home':
-      router.push({
-        name: 'home',
-      })
-      break
-    case 'setting':
-      router.push({
-        name: 'personalSetting',
-      })
-      break
-    case 'preferences':
-      eventBus.emit('global-preferences-toggle')
-      break
-    case 'hotkeys':
-      eventBus.emit('global-hotkeys-intro-toggle')
-      break
-    case 'logout':
-      userStore.logout().then(() => {
-        router.push({
-          name: 'login',
-        })
-      })
-      break
-  }
-}
 </script>
 
 <template>
-  <div class="tools">
-    <div class="buttons">
-      <span v-if="settingsStore.settings.navSearch.enable" class="item" @click="eventBus.emit('global-search-toggle', 'menu')">
-        <svg-icon name="i-ri:search-line" />
+  <div class="tools flex items-center gap-4 px-4 whitespace-nowrap">
+    <span
+      v-if="settingsStore.settings.navSearch.enable && settingsStore.mode === 'pc'"
+      class="group inline-flex items-center gap-1 px-2 py-1.5 rounded-2 text-dark dark:text-white bg-stone-1 dark:bg-stone-9 ring-inset ring-stone-3 dark:ring-stone-7 hover:ring-1 cursor-pointer transition"
+      @click="eventBus.emit('global-search-toggle')"
+    >
+      <SvgIcon name="ri:search-line" />
+      <span class="text-sm text-stone-5 group-hover:text-dark dark:group-hover:text-white transition">搜索</span>
+      <HKbd
+        v-if="settingsStore.settings.navSearch.enableHotkeys"
+        class="ml-2"
+      >{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }} S</HKbd>
+    </span>
+    <div class="flex items-center empty:hidden">
+      <span
+        v-if="settingsStore.settings.navSearch.enable && settingsStore.mode === 'mobile'" class="item"
+        @click="eventBus.emit('global-search-toggle')"
+      >
+        <SvgIcon name="ri:search-line" />
       </span>
-      <el-popover v-if="settingsStore.settings.toolbar.enableNotification" trigger="hover" :show-after="200" placement="bottom" :width="350">
-        <Notification />
-        <template #reference>
-          <span class="item">
-            <el-badge :hidden="notificationStore.total <= 0" type="primary" :value="notificationStore.total" :max="99">
-              <svg-icon name="i-ri:notification-3-line" />
-            </el-badge>
-          </span>
+      <HDropdown v-if="settingsStore.settings.toolbar.enableNotification" class="item">
+        <HBadge :value="notificationStore.total > 9 ? true : notificationStore.total">
+          <SvgIcon name="i-ri:notification-3-line" />
+        </HBadge>
+        <template #dropdown>
+          <Notification />
         </template>
-      </el-popover>
-      <i18n-selector>
-        <span class="item">
-          <svg-icon name="i-ri:translate" />
-        </span>
-      </i18n-selector>
+      </HDropdown>
+      <I18nSelector class="item">
+        <SvgIcon name="i-ri:translate" />
+      </I18nSelector>
       <span v-if="settingsStore.mode === 'pc' && settingsStore.settings.toolbar.enableFullscreen" class="item" @click="toggle">
-        <svg-icon :name="isFullscreen ? 'i-ri:fullscreen-exit-line' : 'i-ri:fullscreen-line'" />
+        <SvgIcon :name="isFullscreen ? 'ri:fullscreen-exit-line' : 'ri:fullscreen-line'" />
       </span>
       <span v-if="settingsStore.settings.toolbar.enablePageReload" class="item" @click="mainPage.reload()">
-        <svg-icon name="i-iconoir:refresh-double" />
+        <SvgIcon name="iconoir:refresh-double" />
       </span>
-      <span v-if="settingsStore.settings.toolbar.enableColorScheme" class="item" @click="settingsStore.setColorScheme(settingsStore.settings.app.colorScheme === 'dark' ? 'light' : 'dark')">
-        <svg-icon :name="settingsStore.settings.app.colorScheme === 'light' ? 'i-ri:sun-line' : 'i-ri:moon-line'" />
+      <span v-if="settingsStore.settings.toolbar.enableColorScheme" class="item" @click="toggleColorScheme">
+        <SvgIcon :name="settingsStore.settings.app.colorScheme === 'light' ? 'ri:sun-line' : 'ri:moon-line'" />
       </span>
     </div>
-    <el-dropdown class="user-container" size="default" @command="userCommand">
-      <div class="user-wrapper">
-        <el-avatar size="small">
-          <svg-icon name="i-ep:user-filled" />
-        </el-avatar>
+    <HDropdownMenu
+      :items="[
+        [
+          { label: generateI18nTitle('route.home', settingsStore.settings.home.title), handle: () => router.push({ name: 'home' }), hide: !settingsStore.settings.home.enable },
+          { label: t('app.profile'), handle: () => router.push({ name: 'personalSetting' }) },
+          { label: t('app.preferences'),
+            handle: () => eventBus.emit('global-preferences-toggle'),
+            hide: !settingsStore.settings.app.enableUserPreferences,
+          },
+        ],
+        [
+          { label: t('app.hotkeys'), handle: () => eventBus.emit('global-hotkeys-intro-toggle'), hide: settingsStore.mode !== 'pc' },
+        ],
+        [
+          { label: t('app.logout'), handle: () => userStore.logout() },
+        ],
+      ]"
+    >
+      <div cursor-pointer flex-center gap-1>
+        <img
+          v-if="userStore.avatar && !avatarError" :onerror="() => (avatarError = true)" :src="userStore.avatar"
+          class="w-[24px] h-[24px] rounded-full"
+        >
+        <SvgIcon v-else :size="24" class="text-gray-400" name="carbon:user-avatar-filled-alt" />
         {{ userStore.account }}
-        <svg-icon name="i-ep:caret-bottom" />
+        <SvgIcon name="ep:caret-bottom" />
       </div>
-      <template #dropdown>
-        <el-dropdown-menu class="user-dropdown">
-          <el-dropdown-item v-if="settingsStore.settings.home.enable" command="home">
-            {{ generateI18nTitle('route.home', settingsStore.settings.home.title) }}
-          </el-dropdown-item>
-          <el-dropdown-item command="setting">
-            {{ t('app.profile') }}
-          </el-dropdown-item>
-          <el-dropdown-item v-if="settingsStore.settings.app.enableUserPreferences" command="preferences">
-            {{ t('app.preferences') }}
-          </el-dropdown-item>
-          <el-dropdown-item v-if="settingsStore.mode === 'pc'" divided command="hotkeys">
-            {{ t('app.hotkeys') }}
-          </el-dropdown-item>
-          <el-dropdown-item divided command="logout">
-            {{ t('app.logout') }}
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown>
+    </HDropdownMenu>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.tools {
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    white-space: nowrap;
-
-    .buttons {
-        margin-right: 20px;
-
-        .item {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            height: 26px;
-            width: 34px;
-            cursor: pointer;
-            vertical-align: middle;
-
-          .icon {
-            color: var(--el-text-color-primary);
-            transition: var(--el-transition-color);
-          }
-
-            .el-badge {
-                display: flex;
-                align-items: center;
-            }
-        }
-    }
-
-    :deep(.language-container) {
-        font-size: 16px;
-    }
-
-    :deep(.user-container) {
-        display: inline-block;
-        height: 24px;
-        line-height: 24px;
-        cursor: pointer;
-
-        .user-wrapper {
-            .el-avatar {
-                vertical-align: middle;
-                margin-top: -2px;
-                margin-right: 4px;
-            }
-        }
-    }
+.item {
+  --at-apply: flex px-2 py-1 cursor-pointer;
 }
 </style>

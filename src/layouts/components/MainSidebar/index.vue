@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import Logo from '../Logo/index.vue'
-import SidebarItem from '../SidebarItem/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 import useMenu from '@/util/composables/useMenu'
+import MainMenu from '@/layouts/components/Menu/index.vue'
 
 defineOptions({
   name: 'MainSidebar',
@@ -17,7 +17,7 @@ const { switchTo } = useMenu()
 </script>
 
 <template>
-  <transition name="main-sidebar">
+  <Transition name="main-sidebar">
     <div
       v-if="['side', 'only-side'].includes(settingsStore.settings.menu.menuMode) || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.menuMode !== 'single')"
       class="main-sidebar-container"
@@ -25,98 +25,78 @@ const { switchTo } = useMenu()
       <Logo :show-title="false" class="sidebar-logo" />
       <div
         v-if="settingsStore.settings.menu.menuMode === 'side' || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.menuMode !== 'single')"
-        class="nav" :class="{
-          [`nav-fill-${settingsStore.settings.menu.menuFillStyle}`]: settingsStore.settings.menu.menuFillStyle !== '',
-          [`nav-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
-        }"
+        :class="{
+          [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
+        }" class="menu flex flex-col of-hidden transition-all"
       >
         <template v-for="(item, index) in menuStore.allMenus">
           <div
-            v-if="item.children && item.children.length !== 0" :key="index" class="item-container"
-            :class="{ active: index === menuStore.actived }"
+            v-if="item.children && item.children.length !== 0" :key="index" :class="{
+              'active': index === menuStore.actived,
+              'px-2 py-1': settingsStore.settings.menu.isRounded,
+            }"
+            class="menu-item relative transition-all"
           >
             <div
-              class="item" :title="generateI18nTitle(item.meta?.i18n, item.meta?.title)"
+              :class="{
+                'text-[var(--g-main-sidebar-menu-active-color)]! bg-[var(--g-main-sidebar-menu-active-bg)]!': index === menuStore.actived,
+                'rounded-2': settingsStore.settings.menu.isRounded,
+              }"
+              :title="generateI18nTitle(item.meta?.i18n, item.meta?.title)"
+              class="menu-item-container w-full h-full flex justify-between items-center gap-1 px-2! py-4 transition-all cursor-pointer group text-[var(--g-main-sidebar-menu-color)] hover:(text-[var(--g-main-sidebar-menu-hover-color)] bg-[var(--g-main-sidebar-menu-hover-bg)])"
               @click="switchTo(index)"
             >
-              <svg-icon v-if="item.meta?.icon" :name="item.meta.icon" />
-              <span>{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
+              <div class="inline-flex flex-col justify-center items-center flex-1 gap-[2px] w-full">
+                <SvgIcon
+                  v-if="item.meta?.icon" :name="item.meta.icon" :size="20"
+                  async class="menu-item-container-icon transition-transform group-hover:scale-120"
+                />
+                <span
+                  class="flex-1 text-sm w-full text-center truncate transition-width transition-height transition-opacity"
+                >{{
+                  generateI18nTitle(item.meta?.i18n, item.meta?.title)
+                }}</span>
+              </div>
             </div>
           </div>
         </template>
       </div>
       <!-- 侧边栏精简模式 -->
-      <el-menu
-        v-else-if="settingsStore.settings.menu.menuMode === 'only-side'" collapse :default-active="route.meta.activeMenu || route.path" class="fa-menu" :class="{
-          [`nav-fill-${settingsStore.settings.menu.menuFillStyle}`]: settingsStore.settings.menu.menuFillStyle !== '',
-          [`nav-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
+      <MainMenu
+        v-else-if="settingsStore.settings.menu.menuMode === 'only-side'"
+        :class="{
+          [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
         }"
-      >
-        <template v-for="(route, index) in menuStore.allMenus">
-          <SidebarItem v-if="route.meta?.sidebar !== false" :key="index" :item="route" />
-        </template>
-      </el-menu>
+        :menu="menuStore.allMenus"
+        :rounded="settingsStore.settings.menu.isRounded"
+        :value="route.meta.activeMenu || route.path"
+        class="menu" collapse
+        show-collapse-name
+      />
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <style lang="scss" scoped>
 .main-sidebar-container {
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
   position: relative;
   z-index: 1;
-  width: calc(var(--g-main-sidebar-width) - 1px);
+  width: var(--g-main-sidebar-width);
   color: var(--g-main-sidebar-menu-color);
   background-color: var(--g-main-sidebar-bg);
   box-shadow: 1px 0 0 0 var(--g-border-color);
-  transition: background-color .3s, var(--el-transition-color), var(--el-transition-box-shadow);
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
+  transition: background-color .3s, color .3s, box-shadow .3s;
   .sidebar-logo {
     background-color: var(--g-main-sidebar-bg);
-    transition: background-color .3s
+    transition: background-color .3s;
   }
 
-  .nav-fill {
-    &-radius {
-      .item-container {
-        margin-bottom: 5px;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-
-        .item {
-          border-radius: 5px;
-          margin: 0 10px;
-        }
-      }
-
-      .sidebar-item {
-        margin-bottom: 5px;
-
-        &:last-child {
-          margin-right: 0;
-        }
-
-        :deep(.el-sub-menu__title .item) {
-          border-radius: 5px;
-          margin: 0 10px;
-        }
-      }
-    }
-  }
-
-  .nav-active {
+  .menu-active {
     &-arrow {
       .item-container::before,
-      .sidebar-item :deep(.el-sub-menu__title::before) {
+      :deep(.menu-item::before) {
         content: "";
         opacity: 0;
         right: -5px;
@@ -131,30 +111,30 @@ const { switchTo } = useMenu()
       }
 
       .item-container.active::before,
-      .sidebar-item :deep(.is-active .el-sub-menu__title::before) {
+      :deep(.menu-item.active::before) {
         opacity: 1;
-        right: 0;
+        right: 8px;
       }
     }
 
     &-line {
       .item-container::before,
-      .sidebar-item :deep(.el-sub-menu__title::before) {
+      :deep(.menu-item::before) {
         content: "";
         opacity: 0;
-        left: 8px;
+        left: 6px;
         width: 4px;
         height: 0;
         border-radius: 2px;
         background-color: var(--g-main-sidebar-menu-active-bg);
         box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
-        transition: all 0.3s;
+        transition: all .3s;
 
         @include position-center(y);
       }
 
       .item-container.active::before,
-      .sidebar-item :deep(.is-active .el-sub-menu__title::before) {
+      :deep(.menu-item.active::before) {
         opacity: 1;
         height: 20px;
       }
@@ -162,7 +142,7 @@ const { switchTo } = useMenu()
 
     &-dot {
       .item-container::before,
-      .sidebar-item :deep(.el-sub-menu__title::before) {
+      :deep(.menu-item::before) {
         content: "";
         opacity: 0;
         left: 0;
@@ -175,140 +155,53 @@ const { switchTo } = useMenu()
 
         @include position-center(y);
       }
-
       .item-container.active::before,
-      .sidebar-item :deep(.is-active .el-sub-menu__title::before) {
+      :deep(.menu-item.active::before) {
         opacity: 1;
-        left: 5px;
+        left: 4px;
       }
     }
   }
 
-  .nav {
-    width: inherit;
-    padding-top: var(--g-sidebar-logo-height);
+  .menu {
+    flex: 1;
+    width: initial;
+    overflow: hidden auto;
+    overscroll-behavior: contain;
+    // firefox隐藏滚动条
+    scrollbar-width: none;
 
-    .item-container {
-      position: relative;
-      display: flex;
-      transition: var(--el-transition-all);
+    // chrome隐藏滚动条
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
-      .item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        width: 100%;
+    :deep(.menu-item) {
+      .menu-item-container {
         height: 60px;
         padding: 0 5px;
-        cursor: pointer;
         color: var(--g-main-sidebar-menu-color);
-        background-color: var(--g-main-sidebar-bg);
-        transition: var(--el-transition-all), background-color 0.3s, var(--el-transition-color);
+        background-color: var(--g-main-sidebar-menu-bg);
 
-        &:hover {
-          color: var(--g-main-sidebar-menu-hover-color);
-          background-color: var(--g-main-sidebar-menu-hover-bg);
-        }
-
-        .icon {
-          font-size: 24px;
-        }
-
-        span {
-          font-size: 14px;
-          text-align: center;
-          word-break: break-all;
-
-          @include text-overflow(1, false);
+        .menu-item-container-icon {
+          transform: scale(1);
+          font-size: 24px !important;
         }
       }
 
-      &.active .item {
-        color: var(--g-main-sidebar-menu-active-color);
-        background-color: var(--g-main-sidebar-menu-active-bg);
+      &:hover .menu-item-container {
+        color: var(--g-main-sidebar-menu-hover-color);
+        background-color: var(--g-main-sidebar-menu-hover-bg)
       }
+
+      &.active .menu-item-container {
+        color: var(--g-main-sidebar-menu-active-color) !important;
+        background-color: var(--g-main-sidebar-menu-active-bg) !important
+      }
+
     }
   }
 
-  .fa-menu {
-    padding-top: var(--g-sidebar-logo-height);
-    border-right: none;
-    width: initial;
-    background-color: var(--g-main-sidebar-bg);
-    transition: background-color .3s;
-
-    .sidebar-item {
-      transition: all 0.3s;
-    }
-
-    :deep(.el-sub-menu.is-active) {
-      .el-sub-menu__title {
-        background-color: initial !important;
-
-        .item {
-          color: var(--g-main-sidebar-menu-active-color) !important;
-          background-color: var(--g-main-sidebar-menu-active-bg) !important;
-        }
-      }
-    }
-
-    :deep(.el-sub-menu__title) {
-      padding: 0;
-      height: initial;
-
-      &:hover {
-        background-color: initial !important;
-      }
-
-      .item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        text-align: center;
-        width: 100%;
-        height: 60px;
-        line-height: initial;
-        padding: 0 5px !important;
-        color: var(--g-main-sidebar-menu-color) !important;
-        transition: all 0.3s;
-
-        &:hover {
-          color: var(--g-main-sidebar-menu-hover-color) !important;
-          background-color: var(--g-main-sidebar-menu-hover-bg) !important;
-
-          .icon {
-            transform: scale(1);
-          }
-        }
-
-        .icon {
-          margin: 0 auto;
-          font-size: 24px;
-          vertical-align: middle;
-          color: inherit;
-        }
-
-        .title {
-          flex: initial;
-          margin: initial;
-          height: initial;
-          line-height: initial;
-          text-align: center;
-          font-size: 14px;
-          word-break: break-all;
-          white-space: initial;
-
-          @include text-overflow(1, false);
-        }
-      }
-
-      .el-sub-menu__icon-arrow {
-        display: none;
-      }
-    }
-  }
 }
 
 // 主侧边栏动画
@@ -319,6 +212,6 @@ const { switchTo } = useMenu()
 
 .main-sidebar-enter-from,
 .main-sidebar-leave-to {
-  transform: translateX(calc(var(--g-main-sidebar-width) * -1));
+  transform: translate(calc(var(--g-main-sidebar-width) * -1))
 }
 </style>

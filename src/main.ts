@@ -2,17 +2,25 @@ import './util/baidu'
 import './util/system.copyright'
 
 import ElemnetPlus from 'element-plus'
+import '@/assets/styles/element-plus.scss'
+
 import VXETable from 'vxe-table'
 import VXETablePluginElement from 'vxe-table-plugin-element'
 import 'vxe-table-plugin-element/dist/style.css'
+import 'overlayscrollbars/overlayscrollbars.css'
+
+import FloatingVue from 'floating-vue'
 import App from './App.vue'
 
 // 加载 iconify 图标
+
 import errorLog from './util/error.log'
 import { downloadAndInstall } from '@/iconify'
 import icons from '@/iconify/index.json'
 
 import 'uno.css'
+
+import 'virtual:uno.css'
 
 // 全局样式
 import '@/assets/styles/globals.scss'
@@ -28,6 +36,7 @@ import directive from '@/directive'
 // 加载svg图标
 import 'virtual:svg-icons-register'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
+import 'floating-vue/dist/style.css'
 
 const app = createApp(App)
 
@@ -36,7 +45,6 @@ if (icons.useType === 'offline') {
     downloadAndInstall(info)
   }
 }
-
 VXETable.setup({
   // 对组件内置的提示语进行国际化翻译
   size: 'medium',
@@ -115,7 +123,9 @@ VXETable.setup({
     pageSize: 10,
     pageSizes: [10, 20, 50, 100, 500, 1e3, 5e3],
   },
-  i18n: (key: any, args: any) => i18n.global.t(key, args),
+  // eslint-disable-next-line ts/ban-ts-comment
+  // @ts-expect-error
+  i18n: (key: any, ...args: any) => i18n.global.t(key, args),
 })
 VXETable.use(VXETablePluginElement)
 
@@ -126,5 +136,6 @@ app.use(directive)
 errorLog(app)
 
 app.use(ElemnetPlus)
+app.use(FloatingVue)
 app.use(VXETable)
 app.mount('#app')

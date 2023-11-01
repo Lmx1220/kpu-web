@@ -2,7 +2,8 @@ import type { RecursiveRequired, Settings } from '#/global'
 
 const globalSettingsDefault: RecursiveRequired<Settings.all> = {
   app: {
-    theme: 'default',
+    lightTheme: 'light',
+    darkTheme: 'dark',
     colorScheme: 'light',
     elementSize: 'default',
     defaultLang: '',
@@ -31,7 +32,7 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
   menu: {
     // baseOn: 'frontend',
     menuMode: 'side',
-    menuFillStyle: '',
+    isRounded: false,
     menuActiveStyle: '',
     switchMainMenuAndPageJump: false,
     subMenuUniqueOpened: true,

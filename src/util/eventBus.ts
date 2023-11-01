@@ -1,7 +1,6 @@
 import mitt from 'mitt'
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type Events = {
+interface Events {
   /**
    * 应用设置弹窗
    */

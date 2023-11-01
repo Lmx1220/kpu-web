@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+defineOptions({
+  name: 'ListLayout',
+})
 const props = withDefaults(
   defineProps<{
     enableLeftSide?: boolean
@@ -17,10 +20,6 @@ const props = withDefaults(
 
   },
 )
-defineOptions({
-  name: 'LayoutContainer',
-})
-
 // 侧边栏是否折叠
 const leftSideVisiable = ref(true)
 const rightSideVisiable = ref(true)
@@ -43,16 +42,26 @@ const enabledRightSide = computed(() => {
       <slot name="leftSide" />
     </div>
     <div class="main">
-      <svg-icon
+      <div
         v-if="enabledLeftSide && !hideLeftSideToggle"
-        :name="leftSideVisiable ? 'i-ep:caret-left' : 'i-ep:caret-right'" class="left-side-icon"
-        @click="leftSideVisiable = !leftSideVisiable"
-      />
-      <svg-icon
+        class="left-side-icon z-1 flex-center w-6 h-6 rounded-1/2 absolute top-1/2 -left-3 bg-[var(--g-container-bg)] cursor-pointer"
+      >
+        <SvgIcon
+          :name="leftSideVisiable ? 'i-ep:caret-left' : 'i-ep:caret-right'"
+          class="op-30 hover:op-100 transition-opacity"
+          @click="leftSideVisiable = !leftSideVisiable"
+        />
+      </div>
+      <div
         v-if="enabledRightSide && !hideRightSideToggle"
-        :name="rightSideVisiable ? 'i-ep:caret-right' : 'i-ep:caret-left'" class="right-side-icon"
-        @click="rightSideVisiable = !rightSideVisiable"
-      />
+        class="right-side-icon z-1 flex-center w-6 h-6 rounded-1/2 absolute top-1/2 -right-3 bg-[var(--g-container-bg)] cursor-pointer"
+      >
+        <SvgIcon
+          :name="rightSideVisiable ? 'i-ep:caret-right' : 'i-ep:caret-left'"
+          class="op-30 hover:op-100 transition-opacity"
+          @click="rightSideVisiable = !rightSideVisiable"
+        />
+      </div>
       <div class="main-container">
         <slot name="default" />
       </div>
@@ -79,11 +88,10 @@ const enabledRightSide = computed(() => {
   .right-side,
   .main {
     --container-padding: 15px;
-
     height: 100%;
     padding: var(--container-padding);
-    background-color: var(--g-app-bg);
-    transition: background-color 0.3s;
+    background-color: var(--g-container-bg);
+    transition: background-color .3s;
   }
 
   .left-side {
@@ -102,33 +110,6 @@ const enabledRightSide = computed(() => {
     flex: 1;
     position: relative;
     width: 100%;
-
-    .left-side-icon,
-    .right-side-icon {
-      z-index: 1;
-      font-size: 18px;
-      background-color: var(--g-app-bg);
-      color: var(--el-text-color-placeholder);
-      transition: background-color 0.3s, var(--el-transition-color);
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      cursor: pointer;
-
-      @include position-center(y);
-
-      &:hover {
-        color: var(--el-text-color-regular);
-      }
-    }
-
-    .left-side-icon {
-      left: -10px;
-    }
-
-    .right-side-icon {
-      right: -10px;
-    }
 
     .main-container {
       position: absolute;

@@ -13,6 +13,8 @@ const { locale } = useI18n()
 const settingsStore = useSettingsStore()
 
 const locales = computed(() => getElementLocales())
+
+const localesOptions = computed(() => Object.keys(locales.value).map(item => ({ label: locales.value[item].labelName, disabled: settingsStore.settings.app.defaultLang === item, handle: () => languageCommand(item) })))
 // 生成国际化标题
 const { generateI18nTitle } = useI18nTitle()
 
@@ -26,14 +28,9 @@ function languageCommand(command: string) {
 </script>
 
 <template>
-  <el-dropdown class="language-container" size="default" @command="languageCommand">
+  <HDropdownMenu
+    :items="[localesOptions]"
+  >
     <slot />
-    <template #dropdown>
-      <el-dropdown-menu>
-        <el-dropdown-item v-for="(item, index) in locales" :key="index" :disabled="settingsStore.settings.app.defaultLang === item.name" :command="item.name">
-          {{ item.labelName }}
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </template>
-  </el-dropdown>
+  </HDropdownMenu>
 </template>

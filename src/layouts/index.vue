@@ -86,18 +86,18 @@ onUnmounted(() => {
               v-show="settingsStore.mainPageMaximizeStatus" class="exit-main-page-maximize"
               @click="settingsStore.setMainPageMaximize()"
             >
-              <svg-icon name="i-ri:logout-box-line" />
+              <SvgIcon name="i-ri:logout-box-line" />
             </div>
             <RouterView v-slot="{ Component, route }">
               <!--              <transition name="main" mode="out-in" appear> -->
-              <transition
+              <Transition
                 :name="settingsStore.settings.mainPage.enableTransition ? settingsStore.settings.mainPage.transitionMode : ''"
                 mode="out-in" appear
               >
                 <KeepAlive :include="keepAliveStore.list">
                   <component :is="Component" :key="route.fullPath" />
                 </KeepAlive>
-              </transition>
+              </Transition>
             </RouterView>
             <IframeView v-show="isIframe && !isLink" />
             <LinkView v-if="isLink" />
@@ -105,12 +105,12 @@ onUnmounted(() => {
           <Copyright />
         </div>
       </div>
-      <el-backtop :right="20" :bottom="20" title="回到顶部" />
+      <ElBacktop :bottom="20" :right="20" title="回到顶部" />
     </div>
     <Search />
     <HotkeysIntro />
-    <div v-if="settingsStore.settings.app.enableAppSetting">
-      <svg-icon class="app-setting" name="ep:setting" @click="eventBus.emit('global-app-setting-toggle')" />
+    <div v-if="settingsStore.settings.app.enableAppSetting" class="app-setting">
+      <SvgIcon class="icon" name="ep:setting" @click="eventBus.emit('global-app-setting-toggle')" />
       <AppSetting />
     </div>
   </div>
@@ -123,9 +123,8 @@ onUnmounted(() => {
   }
 }
 
-[data-app-width-mode="adaption-min-width"] {
-  width: var(--g-app-width);
-  min-width: 100%;
+[data-app-width-mode="adaption-min-width"] #app-main {
+  width: max(var(--g-app-width), 100%);
 }
 
 [data-app-width-mode="center"] {
@@ -136,8 +135,7 @@ onUnmounted(() => {
 
 [data-app-width-mode="center-max-width"] {
   #app-main {
-    width: var(--g-app-width);
-    max-width: 100%;
+    width: min(var(--g-app-width), 100%);
   }
 }
 
@@ -177,7 +175,6 @@ onUnmounted(() => {
 #app-main {
   height: 100%;
   margin: 0 auto;
-  transition: var(--el-transition-all);
 
   &.main-page-maximize {
     header,
@@ -212,7 +209,6 @@ onUnmounted(() => {
   position: relative;
   width: 100%;
   height: 100%;
-  box-shadow: -1px 0 0 0 var(--g-box-shadow-color);
   transition: padding-top 0.3s;
 
   .sidebar-container {
@@ -221,8 +217,9 @@ onUnmounted(() => {
     top: 0;
     bottom: 0;
     display: flex;
-    transition: transform 0.3s, top 0.3s;
     width: calc(var(--g-main-sidebar-actual-width) + var(--g-sub-sidebar-actual-width));
+    box-shadow: -1px 0 0 0 var(--g-border-color), 1px 0 0 0 var(--g-border-color);
+    transition: width .3s, transform .3s, box-shadow .3s, top .3s
   }
 
   .sidebar-mask {
@@ -254,9 +251,9 @@ onUnmounted(() => {
     flex-direction: column;
     min-height: 100%;
     margin-left: calc(var(--g-main-sidebar-actual-width) + var(--g-sub-sidebar-actual-width));
-    background-color: var(--g-main-bg);
+    background-color: var(--g-bg);
     box-shadow: -1px 0 0 0 var(--g-border-color), 1px 0 0 0 var(--g-border-color);
-    transition: margin-left .3s, background-color .3s, var(--el-transition-box-shadow);
+    transition: margin-left .3s, background-color .3s, box-shadow .3s;
 
     .main {
       height: 100%;
@@ -266,6 +263,13 @@ onUnmounted(() => {
       transition: 0.3s;
 
       .exit-main-page-maximize {
+        --at-apply: bg-stone-7 color-stone-3
+        dark: bg-stone-3
+        dark: color-stone-7;
+        opacity: .5;
+        transition-property: opacity;
+        transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+        transition-duration: .15s;
         position: fixed;
         z-index: 1000;
         right: -40px;
@@ -274,16 +278,12 @@ onUnmounted(() => {
         height: 80px;
         border-radius: 50%;
         cursor: pointer;
-        background-color: var(--el-overlay-color-lighter);
-        color: #eee;
-        transition: background-color .3s, var(--el-transition-color);
 
         &:hover {
-          background-color: var(--el-overlay-color-light);
-          color: #fff
+          opacity: 1
         }
 
-        .icon {
+        i {
           position: absolute;
           bottom: 16px;
           left: 16px;
@@ -316,10 +316,6 @@ header:not(.header-leave-active)+.wrapper {
     :deep(.sidebar-logo) {
       display: none;
     }
-
-    :deep(.el-menu) {
-      padding-top: 0
-    }
   }
 
   .main-container {
@@ -335,7 +331,10 @@ header:not(.header-leave-active)+.wrapper {
 }
 
 .app-setting {
+  @apply bg-ui-primary color-white dark:color-dark ;
   position: fixed;
+  align-items: center;
+  justify-content: center;
   z-index: 10;
   right: 0;
   top: calc(50% + 250px);
@@ -344,11 +343,10 @@ header:not(.header-leave-active)+.wrapper {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   font-size: 24px;
-  color: #fff;
-  background-color: var(--el-color-primary);
   cursor: pointer;
+  display: flex;
 
-  i {
+  .icon {
     animation: rotate 5s linear infinite;
   }
 }
@@ -363,26 +361,15 @@ header:not(.header-leave-active)+.wrapper {
   }
 }
 
-// #TODO 未完成 侧边栏动画待查
-// 主内容区动画
-.fade-enter-active,
-.slide-left-enter-active,
-.slide-right-enter-active,
-.slide-top-enter-active,
-.slide-bottom-enter-active {
-  transition: .2s;
+.fade-enter-active, .slide-left-enter-active, .slide-right-enter-active, .slide-top-enter-active, .slide-bottom-enter-active {
+  transition: 0.2s;
 }
 
-.fade-leave-active,
-.slide-left-leave-active,
-.slide-right-leave-active,
-.slide-top-leave-active,
-.slide-bottom-leave-active {
-  transition: .15s;
+.fade-leave-active, .slide-left-leave-active, .slide-right-leave-active, .slide-top-leave-active, .slide-bottom-leave-active {
+  transition: 0.15s;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
 
@@ -391,8 +378,7 @@ header:not(.header-leave-active)+.wrapper {
   margin-left: 20px;
 }
 
-.slide-left-leave-to,
-.slide-right-enter-from {
+.slide-left-leave-to, .slide-right-enter-from {
   opacity: 0;
   margin-left: -20px;
 }
@@ -407,8 +393,7 @@ header:not(.header-leave-active)+.wrapper {
   margin-top: 20px;
 }
 
-.slide-top-leave-to,
-.slide-bottom-enter-from {
+.slide-top-leave-to, .slide-bottom-enter-from {
   opacity: 0;
   margin-top: -20px;
 }

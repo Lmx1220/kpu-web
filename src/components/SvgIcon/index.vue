@@ -2,6 +2,9 @@
 import { Icon } from '@iconify/vue'
 import { useType } from '@/iconify/index.json'
 
+defineOptions({
+  name: 'SvgIcon',
+})
 const props = withDefaults(
   defineProps<{
     name: string
@@ -14,9 +17,6 @@ const props = withDefaults(
   {
     async: false,
   })
-defineOptions({
-  name: 'SvgIcon',
-})
 const outputType = computed(() => {
   if (props.name.indexOf('i-') === 0) {
     return (props.async || useType === 'offline') ? 'svg' : 'css'
@@ -69,7 +69,7 @@ const style = computed(() => {
 </script>
 
 <template>
-  <i :style="style" class="icon">
+  <i :style="style" class="h-[1em] w-[1em] leading-[1em] flex-inline justify-center items-center relative fill-current">
     <i v-if="outputType === 'css'" :class="outputName" />
     <Icon v-else-if="outputType === 'svg'" :icon="outputName" />
     <svg v-else aria-hidden="true">
@@ -79,19 +79,5 @@ const style = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-.icon {
-  height: 1em;
-  width: 1em;
-  line-height: 1em;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  fill: currentcolor;
 
-  svg {
-    height: 1em;
-    width: 1em
-  }
-}
 </style>

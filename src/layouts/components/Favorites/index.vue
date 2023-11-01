@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Sortable from 'sortablejs'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import useFavoritesStore from '@/store/modules/favorites'
 
 defineOptions({
@@ -11,18 +12,11 @@ const router = useRouter()
 const favoritesStore = useFavoritesStore()
 const { generateI18nTitle } = useI18nTitle()
 const favoritesContainer = ref()
-const isDragging = ref(false)
 watch(() => favoritesContainer.value, (value) => {
-  value && new Sortable(favoritesContainer.value.$el, {
+  value && new Sortable(favoritesContainer.value, {
     animation: 200,
-    ghostClass: 'ghost',
-    draggable: '.item',
-    onStart: () => {
-      isDragging.value = true
-    },
-    onEnd: () => {
-      isDragging.value = false
-    },
+    ghostClass: 'draggable-ghost',
+    draggable: '.draggable-item',
     onUpdate: (e: Sortable.SortableEvent) => {
       if (e.newIndex && e.oldIndex) {
         favoritesStore.sort(e.newIndex, e.oldIndex)
@@ -33,182 +27,76 @@ watch(() => favoritesContainer.value, (value) => {
 </script>
 
 <template>
-  <div class="favorites-container">
-    <div class="title-bar">
-      <div class="title">
+  <div class="favorites-container w-80">
+    <div class="flex items-center justify-between px-4 py-3">
+      <div class="text-sm font-bold">
         我的收藏夹
       </div>
-      <div v-show="favoritesStore.canAdd(route.fullPath)" class="icons">
-        <svg-icon
-          v-if="favoritesStore.isAdd(route.fullPath)" name="i-mdi:star-remove" title="从收藏夹移除"
+      <template v-if="!favoritesStore.canAdd(route.fullPath)">
+        <SvgIcon
+          v-if="favoritesStore.isAdd(route.fullPath)" class="text-xl cursor-pointer" name="mdi:star-remove"
+          title="从收藏夹移除"
           @click="favoritesStore.remove(route.fullPath)"
         />
-        <svg-icon v-else name="i-mdi:star-plus-outline" title="添加到收藏夹" @click="favoritesStore.add(route)" />
-      </div>
+
+        <SvgIcon
+          v-else class="text-xl cursor-pointer" name="mdi:star-plus-outline" title="添加到收藏夹"
+          @click="favoritesStore.add(route)"
+        />
+      </template>
     </div>
-    <el-scrollbar v-if="favoritesStore.list.length > 0" :max-height="300">
-      <TransitionGroup
-        ref="favoritesContainer" :name="isDragging ? '' : 'dropdown-tab'" tag="div" class="list"
-        :class="{ dragging: isDragging }"
-      >
+    <OverlayScrollbarsComponent
+      v-if="favoritesStore.list.length > 0"
+      :options=" {
+        scrollbars: {
+          autoHide: 'leave',
+          autoHideDelay: 300,
+        },
+      }"
+      class="max-h-220px" defer
+    >
+      <div ref="favoritesContainer" class="flex items-center justify-between flex-wrap gap-2 px-4 pb-4">
         <div
-          v-for="favorites in favoritesStore.list" :key="favorites.fullPath" class="item"
+          v-for="favorites in favoritesStore.list" :key="favorites.fullPath"
+          class="draggable-item relative w-[calc(50%-0.25rem)] px-2 py-2 flex items-center gap-1 rounded cursor-pointer ring-1 ring-inset ring-stone-3 dark:ring-stone-7 hover:bg-stone-1 dark:hover:bg-dark/50"
           :title="generateI18nTitle(favorites.i18n, favorites.title)"
           @click="router.push(favorites.fullPath)"
         >
-          <svg-icon :name="favorites.icon ?? ''" />
-          <el-text class="name" truncated>
+          <SvgIcon :name="favorites.icon ?? ''" :size="18" />
+          <div class="name flex-1 pe-4 truncate">
             {{ generateI18nTitle(favorites.i18n, favorites.title) }}
-          </el-text>
-          <svg-icon class="delete" name="i-ep:delete" @click.stop="favoritesStore.remove(route.fullPath)" />
+          </div>
+          <SvgIcon
+            :size="14"
+            class="!absolute right-1 w-6 h-5 rounded-full text-stone-3 dark:text-stone-7 hover:text-stone-7 dark:hover:text-stone-3" name="ep:delete" @click.stop="favoritesStore.remove(favorites.fullPath)"
+          />
         </div>
-      </TransitionGroup>
-    </el-scrollbar>
-    <div v-else class="empty">
-      <svg-icon name="i-tabler:mood-empty" />
-      <ElText>
+      </div>
+    </OverlayScrollbarsComponent>
+    <div v-else flex="center col" py-6 text-stone-5>
+      <SvgIcon :size="40" name="i-tabler:mood-empty" />
+      <p m-2 text-base>
         收藏夹是空的
-      </ElText>
-      <ElText v-show="favoritesStore.canAdd(route.fullPath)" class="tips">
+      </p>
+      <p v-show="favoritesStore.canAdd(route.fullPath)" flex-center m-0 op-75 text-sm>
         点击右上角
-        <svg-icon name="i-mdi:star-plus-outline" />
+        <SvgIcon :size="20" dark:text-stone-4 mx-1 name="mdi:star-plus-outline" text-stone-6 />
         将当前页面添加到收藏夹
-      </ElText>
+      </p>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.favorites-container {
-  width: 300px;
+[data-overlayscrollbars-viewport] {
+  overscroll-behavior: contain
+}
 
-  .el-scrollbar__wrap {
-    width: 100%;
-    overscroll-behavior: contain;
-  }
+.draggable-ghost {
+  opacity: 0
+}
 
-  .title-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 40px;
-    padding: 0 12px;
-    margin-bottom: -6px;
-
-    .title {
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .icons {
-      display: flex;
-      align-items: center;
-
-      .icon {
-        font-size: 20px;
-        cursor: pointer;
-      }
-    }
-
-  }
-
-  :deep(.el-scrollbar__wrap) {
-    width: 100%;
-    overscroll-behavior: contain
-  }
-
-  .list {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding: 0 12px;
-    margin-bottom: 6px;
-
-    .item {
-      position: relative;
-      width: calc(50% - 6px);
-      height: 36px;
-      padding: 0 8px;
-      margin: 5px 0;
-      display: flex;
-      align-items: center;
-      border: 1px solid var(--el-border-color);
-      border-radius: 4px;
-      background-color: var(--el-bg-color);
-      cursor: pointer;
-      transition: var(--el-transition-color), var(--el-transition-border);
-
-      &:hover {
-        border: 1px solid var(--el-color-primary);
-      }
-
-      &.ghost {
-        opacity: 0;
-      }
-
-      * {
-        user-select: none;
-      }
-
-      .icon {
-        font-size: 18px;
-      }
-
-      .name {
-        flex: 1;
-        margin: 0 16px 0 8px;
-        color: var(--el-text-color-primary);
-        mask-image: linear-gradient(to right, #000 calc(100% - 20px), transparent);
-      }
-
-      .delete {
-        position: absolute;
-        right: 5px;
-        width: 1.5em;
-        height: 1.5em;
-        border-radius: 50%;
-        font-size: 14px;
-        color: var(--el-text-color-disabled);
-        transition: var(--el-transition-color), background-color .3s;
-
-        &:hover {
-          color: var(--el-text-color-primary);
-          background-color: var(--el-fill-color);
-        }
-      }
-
-    }
-  }
-
-  .empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px 0;
-    color: var(--el-text-color-placeholder);
-
-    .icon {
-      font-size: 40px;
-    }
-
-    .el-text {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      color: var(--el-text-color-placeholder);
-
-      &.tips {
-        color: var(--el-text-color-disabled);
-      }
-
-      .icon {
-        margin: 0 4px;
-        font-size: 18px;
-        color: var(--el-text-color-primary);
-      }
-    }
-  }
+.name {
+  mask-image: linear-gradient(to right, #000 calc(100% - 80px), transparent)
 }
 </style>

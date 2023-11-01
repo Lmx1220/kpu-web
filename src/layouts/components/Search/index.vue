@@ -2,6 +2,11 @@
 import { useI18n } from 'vue-i18n'
 import hotkeys from 'hotkeys-js'
 import type { RouteRecordRaw } from 'vue-router'
+import { Dialog, DialogDescription, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-vue'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+import Breadcrumb from '../Breadcrumb/index.vue'
+import BreadcrumbItem from '../Breadcrumb/item.vue'
 import type { Tabbar } from '@/types/global'
 import useSettingsStore from '@/store/modules/settings'
 import useRouteStore from '@/store/modules/route'
@@ -12,32 +17,62 @@ import { deepClone, isExternalLink, resolveRoutePath } from '@/util'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 import eventBus from '@/util/eventBus'
 
-interface SourceRouteMeta {
-  icon?: string
-  title: string | Function
-  i18n?: string
-  link?: string
-  path: string
-  breadcrumb: { i18n?: string; title: string }[]
-}
 defineOptions({
   name: 'Search',
 })
+const overlayTransitionClass = ref({
+  enter: 'ease-in-out duration-500',
+  enterFrom: 'opacity-0',
+  enterTo: 'opacity-100',
+  leave: 'ease-in-out duration-500',
+  leaveFrom: 'opacity-100',
+  leaveTo: 'opacity-0',
+})
+
+const transitionClass = computed(() => {
+  return {
+    enter: 'ease-out duration-300',
+    enterFrom: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95',
+    enterTo: 'opacity-100 translate-y-0 sm:scale-100',
+    leave: 'ease-in duration-200',
+    leaveFrom: 'opacity-100 translate-y-0 sm:scale-100',
+    leaveTo: 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95',
+  }
+})
+
+const router = useRouter()
 const { t } = useI18n()
 const settingsStore = useSettingsStore()
 const routeStore = useRouteStore()
 const tabbarStore = useTabbarStore()
 // const menuStore = useMenuStore()
 
-const searchItems: Ref<HTMLDivElement[]> = ref([])
+interface listTypes {
+  path: string
+  icon?: string
+  title?: string | (() => string)
+  link?: string
+  breadcrumb: any[]
+}
+
 const switchType = ref()
 
 const { generateI18nTitle } = useI18nTitle()
 const isShow = ref(false)
+
 const searchInput = ref('')
-const sourceList: Ref<SourceRouteMeta[]> = ref([])
+const sourceList: Ref<listTypes[]> = ref([])
 const actived = ref(-1)
-const resultList: Ref<SourceRouteMeta[]> = computed(() => {
+const isScrollbarsInit = ref(false)
+
+const searchInputRef = ref()
+const searchResultRef = ref<OverlayScrollbarsComponentRef>()
+const searchResultItemRef = ref<HTMLElement[]>([])
+onBeforeUpdate(() => {
+  searchResultItemRef.value = []
+})
+
+const resultList: Ref<listTypes[]> = computed(() => {
   let result = []
   result = sourceList.value.filter((item) => {
     let flag = false
@@ -54,13 +89,12 @@ const resultList: Ref<SourceRouteMeta[]> = computed(() => {
   })
   return result
 })
-const search = ref<HTMLDivElement>()
 const input = ref<HTMLInputElement>()
 watch(() => isShow.value, (val) => {
   if (val) {
     // document.querySelector('body')?.classList.add('hidden')
-    if (search.value) {
-      search.value.scrollTop = 0
+    if (searchResultItemRef.value) {
+      searchResultItemRef.value.scrollTop = 0
     }
     // 当搜索显示的时候绑定上、下、回车快捷键，隐藏的时候再解绑。另外当 input 处于 focus 状态时，采用 vue 来绑定键盘事件
     hotkeys('up', keyUp)
@@ -107,9 +141,7 @@ onMounted(() => {
   toSearch()
 })
 function toSwitchType(val: string | number | boolean) {
-  setTimeout(() => {
-    input.value && input.value.focus()
-  }, 500)
+  input.value && input.value.focus()
   toSearch(val as string)
 }
 function toSearch(_switchType = 'menu') {
@@ -162,7 +194,7 @@ function getSourceList(arr: RouteRecordRaw[], path?: string, icon?: string, base
           icon: item.meta?.icon ?? icon,
           title: item.meta?.title ?? '',
           i18n: item.meta?.i18n,
-          link: isExternalLink(item.path) ? item.path : `${path}${item.path}`,
+          link: isExternalLink(item.path) ? `${path}${item.path}` : undefined,
           breadcrumb,
           path: resolveRoutePath(`${path}`, item.path),
         })
@@ -203,119 +235,158 @@ function keyDown() {
 }
 function keyEnter() {
   if (actived.value !== -1) {
-    searchItems.value[actived.value].click()
+    searchResultItemRef.value[actived.value].click()
   }
 }
 function handleScroll() {
-  let scrollTo = 0
-  if (actived.value !== -1) {
-    scrollTo = search.value?.scrollTop || 0
-    const activedOffsetTop = searchItems.value[actived.value].offsetTop
-    const activedClientHeight = searchItems.value[actived.value].clientHeight
-    const searchScrollTop = search.value?.scrollTop || 0
-    const searchClientHeight = search.value?.clientHeight || 0
-    if (activedOffsetTop + activedClientHeight > searchScrollTop + searchClientHeight) {
-      scrollTo = activedOffsetTop + activedClientHeight - searchClientHeight
+  if (searchResultRef.value) {
+    const contentDom = searchResultRef.value.osInstance()!.elements().content
+    let scrollTo = 0
+    if (actived.value !== -1) {
+      scrollTo = contentDom.scrollTop
+      const activedOffsetTop = searchResultItemRef.value.find(item => Number.parseInt(item.dataset.index!) === actived.value)?.offsetTop ?? 0
+      const activedClientHeight = searchResultItemRef.value.find(item => Number.parseInt(item.dataset.index!) === actived.value)?.clientHeight ?? 0
+      const searchScrollTop = contentDom.scrollTop
+      const searchClientHeight = contentDom.clientHeight
+      if (activedOffsetTop + activedClientHeight > searchScrollTop + searchClientHeight) {
+        scrollTo = activedOffsetTop + activedClientHeight - searchClientHeight
+      }
+      else if (activedOffsetTop <= searchScrollTop) {
+        scrollTo = activedOffsetTop
+      }
     }
-    else if (activedOffsetTop <= searchScrollTop) {
-      scrollTo = activedOffsetTop
-    }
+    contentDom.scrollTo({
+      top: scrollTo,
+    })
   }
-  search.value && search.value.scrollTo({
-    top: scrollTo,
-  })
+}
+
+function pageJump(path: listTypes['path'], link: listTypes['link']) {
+  if (link) {
+    window.open(link, '_blank')
+  }
+  else {
+    router.push(path)
+  }
+  isShow.value = false
 }
 </script>
 
 <template>
-  <div id="search" :class="{ searching: isShow }" @click="isShow && eventBus.emit('global-search-toggle')">
-    <div class="container">
-      <div class="search-box" @click.stop>
-        <div class="switch-type">
-          <el-radio-group v-model="switchType" size="large" @change="toSwitchType">
-            <el-radio-button label="menu">
-              {{ t('app.search.type.menu') }}
-            </el-radio-button>
-            <el-radio-button label="tab">
-              {{ t('app.search.type.tab') }}
-            </el-radio-button>
-          </el-radio-group>
-        </div>
-        <el-input
-          ref="input" v-model="searchInput" :placeholder="t('app.search.input')" clearable
-          @keydown.esc="eventBus.emit('global-search-toggle')" @keydown.up.prevent="keyUp" @keydown.down.prevent="keyDown"
-          @keydown.enter.prevent="keyEnter"
-        >
-          <template #prefix>
-            <svg-icon name="i-ep:search" />
-          </template>
-        </el-input>
-        <div v-if="settingsStore.mode === 'pc'" class="tips">
-          <div class="tip">
-            <el-tag type="info" size="large">
-              {{ settingsStore.os === 'mac' ? '⌘' : 'Ctrl' }} + S
-            </el-tag>
-            <el-tag type="info" size="large">
-              {{ t('app.search.alt_s') }}
-            </el-tag>
-          </div>
-          <div class="tip">
-            <el-tag type="info" size="large">
-              <svg-icon name="i-ant-design:caret-up-filled" />
-            </el-tag>
-            <el-tag type="info" size="large">
-              <svg-icon name="i-ant-design:caret-down-filled" />
-            </el-tag>
-            <el-tag type="info" size="large">
-              {{ t('app.search.up_down') }}
-            </el-tag>
-          </div>
-          <div class="tip">
-            <el-tag type="info" size="large">
-              <svg-icon name="i-ion:md-return-left" />
-            </el-tag>
-            <el-tag type="info" size="large">
-              {{ t('app.search.enter') }}
-            </el-tag>
-          </div>
-          <div class="tip">
-            <el-tag type="info" size="large">
-              ESC
-            </el-tag>
-            <el-tag type="info" size="large">
-              {{ t('app.search.esc') }}
-            </el-tag>
-          </div>
-        </div>
-      </div>
-      <div ref="search" class="result" :class="{ mobile: settingsStore.mode === 'mobile' }">
-        <router-link
-          v-for="(item, index) in resultList" :key="item.path" v-slot="{ href, navigate }" custom
-          :to="isShow ? item.path : ''"
-        >
-          <a
-            ref="searchItems" :href="isExternalLink(item.path) ? item.path : href" class="item"
-            :class="{ actived: index === actived }" :target="isExternalLink(item.path) ? '_blank' : '_self'"
-            @click="navigate" @mouseover="actived = index"
-          >
-            <div class="icon">
-              <svg-icon v-if="item.icon" :name="item.icon" />
-            </div>
-            <div class="info">
-              <div class="title">{{ generateI18nTitle(item.i18n, item.title) }}</div>
-              <div class="breadcrumb">
-                <span v-for="(bc, bcIndex) in item.breadcrumb" :key="bcIndex">
-                  {{ generateI18nTitle(bc.i18n, bc.title) }}
-                  <svg-icon name="i-ep:arrow-right" />
-                </span>
+  <TransitionRoot :show="isShow" as="template" @after-leave="isScrollbarsInit = false">
+    <Dialog
+      :initial-focus="searchInputRef" class="fixed inset-0 flex z-2000"
+      @close="isShow && eventBus.emit('global-search-toggle')"
+    >
+      <TransitionChild as="template" v-bind="overlayTransitionClass">
+        <div class="fixed inset-0 transition-opacity bg-stone-200/75 dark:bg-stone-8/75 backdrop-blur-sm" />
+      </TransitionChild>
+      <div class="fixed inset-0">
+        <div class="flex h-full items-end sm:items-center justify-center text-center p-4 sm:p-0">
+          <TransitionChild as="template" v-bind="transitionClass">
+            <DialogPanel class="relative text-left w-full sm:max-w-2xl h-full max-h-4/5 flex flex-col">
+              <HTabList
+                v-model="switchType"
+                :options="[
+                  { label: t('app.search.type.menu'), value: 'menu' },
+                  { label: t('app.search.type.tab'), value: 'tab' },
+                ]"
+                class="mb-4 flex!" @change="toSwitchType"
+                @click.stop="() => {}"
+              />
+              <div class="flex flex-col bg-white dark:bg-stone-8 rounded-xl shadow-xl overflow-y-auto">
+                <div border-b="~ solid stone-2 dark:stone-7" class="flex items-center px-4 py-3">
+                  <SvgIcon :size="18" class="text-stone-5" name="ep:search" />
+                  <input
+                    ref="searchInputRef" v-model="searchInput" class="w-full focus:outline-none border-0 rounded-md placeholder-stone-4 dark:placeholder-stone-5 text-base px-3 bg-transparent text-dark dark:text-white"
+                    placeholder="搜索页面，支持标题、URL模糊查询"
+                    @keydown.esc="eventBus.emit('global-search-toggle')" @keydown.up.prevent="keyUp"
+                    @keydown.down.prevent="keyDown" @keydown.enter.prevent="keyEnter"
+                  >
+                </div>
+                <DialogDescription class="relative m-0 of-y-hidden">
+                  <OverlayScrollbarsComponent
+                    ref="searchResultRef"
+                    :options="{ scrollbars: { autoHide: 'leave', autoHideDelay: 300 } }"
+                    class="h-full" @os-initialized="isScrollbarsInit = true"
+                  >
+                    <template v-if="isScrollbarsInit">
+                      <template v-if="resultList.length > 0">
+                        <a
+                          v-for="(item, index) in resultList" :key="item.path" ref="searchResultItemRef"
+                          :class="{ 'bg-stone-2/40 dark:bg-stone-7/40': index === actived }"
+                          :data-index="index" class="flex items-center cursor-pointer"
+                          @click="pageJump(item.path, item.link)" @mouseover="actived = index"
+                        >
+                          <SvgIcon
+                            v-if="item.icon" :class="{ 'scale-120 text-ui-primary': index === actived }" :name="item.icon" :size="20"
+                            class="basis-16 transition"
+                          />
+                          <div
+                            border-l="~ solid stone-2 dark:stone-7"
+                            class="flex-1 flex flex-col gap-1 px-4 py-3 truncate"
+                          >
+                            <div class="text-base font-bold truncate">{{
+                              generateI18nTitle(item.i18n, item.title)
+                            }}
+                            </div>
+                            <Breadcrumb v-if="item.breadcrumb.length" class="truncate">
+                              <BreadcrumbItem v-for="(bc, bcIndex) in item.breadcrumb" :key="bcIndex" class="text-xs">
+                                {{ generateI18nTitle(bc.i18n, bc.title) }}
+                              </BreadcrumbItem>
+                            </Breadcrumb>
+                          </div>
+                        </a>
+                      </template>
+                      <template v-else>
+                        <div flex="center col" py-6 text-stone-5>
+                          <SvgIcon :size="40" name="tabler:mood-empty" />
+                          <p m-2 text-base>
+                            没有找到你想要的
+                          </p>
+                        </div>
+                      </template>
+                    </template>
+                  </OverlayScrollbarsComponent>
+                </DialogDescription>
+                <div
+                  v-if="settingsStore.mode === 'pc'" border-t="~ solid stone-2 dark:stone-7"
+                  class="px-4 py-3 flex justify-between"
+                >
+                  <div class="flex gap-8">
+                    <div class="inline-flex items-center gap-1 text-xs">
+                      <HKbd>
+                        <SvgIcon :size="14" name="ion:md-return-left" />
+                      </HKbd>
+                      <span>访问</span>
+                    </div>
+                    <div class="inline-flex items-center gap-1 text-xs">
+                      <HKbd>
+                        <SvgIcon :size="14" name="ant-design:caret-up-filled" />
+                      </HKbd>
+                      <HKbd>
+                        <SvgIcon :size="14" name="ant-design:caret-down-filled" />
+                      </HKbd>
+                      <span>切换</span>
+                    </div>
+                  </div>
+                  <div
+                    v-if="settingsStore.settings.navSearch.enableHotkeys"
+                    class="inline-flex items-center gap-1 text-xs"
+                  >
+                    <HKbd>
+                      ESC
+                    </HKbd>
+                    <span>退出</span>
+                  </div>
+                </div>
               </div>
-              <div class="path">{{ item.path }}</div>
-            </div>
-          </a>
-        </router-link>
+            </DialogPanel>
+          </TransitionChild>
+        </div>
       </div>
-    </div>
-  </div>
+    </Dialog>
+  </TransitionRoot>
 </template>
 
 <style lang="scss" scoped>

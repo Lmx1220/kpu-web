@@ -42,37 +42,17 @@ const useSettingsStore = defineStore(
       }
     }
 
-    watch(() => settings.value.app.colorScheme, (val) => {
-      if (val === '') {
-        val = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-        settings.value.app.colorScheme = val
-      }
-      switch (val) {
+    watch(() => [settings.value.app.colorScheme, settings.value.app.lightTheme, settings.value.app.darkTheme], ([colorScheme, lightTheme, darkTheme]) => {
+      switch (colorScheme) {
         case 'dark':
           document.documentElement.classList.add('dark')
+          document.body.setAttribute('data-theme', darkTheme)
           break
         case 'light':
           document.documentElement.classList.remove('dark')
+          document.body.setAttribute('data-theme', lightTheme)
           break
       }
-    }, {
-      immediate: true,
-    })
-    watch(mode, (val) => {
-      switch (val) {
-        case 'pc':
-          settings.value.menu.subMenuCollapse = subMenuCollapseLastStatus.value
-          break
-        case 'mobile':
-          settings.value.menu.subMenuCollapse = true
-          break
-      }
-      document.body.setAttribute('data-mode', val)
-    }, {
-      immediate: true,
-    })
-    watch(() => settings.value.app.theme, (val) => {
-      document.body.setAttribute('data-theme', val)
     }, {
       immediate: true,
     })

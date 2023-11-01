@@ -17,8 +17,8 @@ const toolbar = computed(() => {
 })
 
 const topbar = computed(() => {
-  const tabbarHeight = settingsStore.settings.tabbar.enable ? parseInt(getComputedStyle(document.documentElement || document.body).getPropertyValue('--g-tabbar-height')) : 0
-  const toolbarHeight = toolbar.value ? parseInt(getComputedStyle(document.documentElement || document.body).getPropertyValue('--g-toolbar-height')) : 0
+  const tabbarHeight = settingsStore.settings.tabbar.enable ? Number.parseInt(getComputedStyle(document.documentElement || document.body).getPropertyValue('--g-tabbar-height')) : 0
+  const toolbarHeight = toolbar.value ? Number.parseInt(getComputedStyle(document.documentElement || document.body).getPropertyValue('--g-toolbar-height')) : 0
   return tabbarHeight + toolbarHeight
 })
 
@@ -62,8 +62,8 @@ watch(scrollTop, (value, oldValue) => {
   top: 0;
   display: flex;
   flex-direction: column;
-  transition: width .3s, top .3s, transform .3s, var(--el-transition-box-shadow);
-
+  box-shadow: 0 1px 0 0 var(--g-border-color);
+  transition: width .3s, top .3s, transform .3s, box-shadow .3s;
   &.topbar-fixed,
   &.topbar-sticky {
     position: fixed;
@@ -75,12 +75,12 @@ watch(scrollTop, (value, oldValue) => {
 
   &.topbar-sticky {
     &.hide {
-      top: calc((var(--g-tabbar-height) + var(--g-toolbar-height)) * -1) !important
+      top: calc((var(--g-tabbar-height) + var(--g-toolbar-height)) * -1) !important;
     }
   }
 
   &.switch-tabbar-toolbar {
-    flex-direction: column-reverse
+    flex-direction: column-reverse;
   }
 }
 </style>

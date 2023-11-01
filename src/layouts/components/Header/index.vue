@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import Logo from '../Logo/index.vue'
 import Tools from '../Tools/index.vue'
-import SidebarItem from '../SidebarItem/index.vue'
+import MainMenu from '../Menu/index.vue'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
 import useMenu from '@/util/composables/useMenu'
 
 defineOptions({
-  name: 'Headers',
+  name: 'LayoutHeader',
 })
 const route = useRoute()
 const settingsStore = useSettingsStore()
@@ -16,374 +16,285 @@ const menuStore = useMenuStore()
 const { switchTo } = useMenu()
 
 const { generateI18nTitle } = useI18nTitle()
+const menuRef = ref()
+
+function handlerMouserScroll(event: any) {
+  menuRef.value.scrollBy({
+    left: (event.deltaY || event.detail) > 0 ? 50 : -50,
+  })
+}
 </script>
 
 <template>
-  <transition name="header">
+  <Transition name="header">
     <header v-if="settingsStore.mode === 'pc' && ['head', 'only-head'].includes(settingsStore.settings.menu.menuMode)">
       <div class="header-container">
         <div class="main">
-          <Logo />
+          <Logo class="title" title="" />
           <!-- 顶部模式 -->
-          <div
-            v-if="settingsStore.settings.menu.menuMode === 'head'"
-            class="nav" :class="{
-              [`nav-fill-${settingsStore.settings.menu.menuFillStyle}`]: settingsStore.settings.menu.menuFillStyle !== '',
-              [`nav-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
-            }"
-          >
-            <template v-for="(item, index) in menuStore.allMenus" :key="index">
-              <div v-if="item.children && item.children.length !== 0" class="item-container" :class="{ active: index === menuStore.actived }">
-                <div class="item" @click="switchTo(index)">
-                  <svg-icon v-if="item.meta?.icon" :name="item.meta.icon" />
-                  <span>{{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}</span>
+          <div ref="menuRef" class="menu-container" @mousewheel.prevent="handlerMouserScroll">
+            <div
+              v-if="settingsStore.settings.menu.menuMode === 'head'"
+
+              :class="{
+                [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
+              }" class="menu flex of-hidden transition-all"
+            >
+              <template v-for="(item, index) in menuStore.allMenus" :key="index">
+                <div
+                  v-if="item.children && item.children.length !== 0" :class="{ 'active': index === menuStore.actived, 'px-1 py-2': settingsStore.settings.menu.isRounded }"
+                  class="menu-item relative transition-all"
+                >
+                  <div
+                    :class="{
+                      'text-[var(--g-header-menu-active-color)]! bg-[var(--g-header-menu-active-bg)]!': index === menuStore.actived,
+                      'rounded-2': settingsStore.settings.menu.isRounded,
+                    }"
+                    class="menu-item-container w-full h-full flex justify-between items-center gap-1 px-5 py-4 transition-all cursor-pointer group text-[var(--g-header-menu-color)] hover:text-[var(--g-header-menu-hover-color)] hover:bg-[var(--g-header-menu-hover-bg)]"
+                    @click="switchTo(index)"
+                  >
+                    <div class="inline-flex flex-col justify-center items-center flex-1">
+                      <SvgIcon
+                        v-if="item.meta?.icon" :name="item.meta.icon"
+                        async
+                        class="menu-item-container-icon transition-transform group-hover:scale-120"
+                        size="20"
+                      />
+                      <span
+                        class="flex-1 text-sm w-full text-center truncate transition-width transition-height transition-opacity"
+                      >{{
+                        generateI18nTitle(item.meta?.i18n, item.meta?.title)
+                      }}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </template>
+              </template>
+            </div>
+            <!-- 顶部精简模式 -->
+            <MainMenu
+              v-else-if="settingsStore.settings.menu.menuMode === 'only-head'" :class="{
+                [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
+              }"
+              :menu="menuStore.allMenus"
+              :rounded="settingsStore.settings.menu.isRounded"
+              :value="route.meta.activeMenu || route.path"
+              class="menu" mode="horizontal"
+              show-collapse-name
+            />
           </div>
-          <!-- 顶部精简模式 -->
-          <el-menu
-            v-else-if="settingsStore.settings.menu.menuMode === 'only-head'" mode="horizontal" :default-active="route.meta.activeMenu || route.path" class="el-menu-nav" :class="{
-              [`nav-fill-${settingsStore.settings.menu.menuFillStyle}`]: settingsStore.settings.menu.menuFillStyle !== '',
-              [`nav-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
-            }"
-          >
-            <template v-for="(route, index) in menuStore.allMenus">
-              <SidebarItem v-if="route.meta?.sidebar !== false" :key="index" :item="route" />
-            </template>
-          </el-menu>
         </div>
         <Tools />
       </div>
     </header>
-  </transition>
+  </Transition>
 </template>
 
 <style lang="scss" scoped>
 [data-app-width-mode="center"],
 [data-app-width-mode="center-max-width"] {
-    header {
-        width: var(--g-app-width);
-        max-width: 100%;
-    }
+  header {
+    width: var(--g-app-width);
+    max-width: 100%;
+  }
 }
 
 header {
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    right: 0;
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+  height: var(--g-header-height);
+  color: var(--g-header-color);
+  background-color: var(--g-header-bg);
+  box-shadow: -1px 0 0 0 var(--g-border-color), 1px 0 0 0 var(--g-border-color), 0 1px 0 0 var(--g-border-color);
+  transition: background-color .3s;
+
+  .header-container {
+    width: var(--g-header-width);
+    height: 100%;
+    margin: 0 auto;
     display: flex;
     align-items: center;
-    margin: 0 auto;
-    padding: 0 20px;
-    width: 100%;
-    height: var(--g-header-height);
-    color: var(--g-header-color);
-    background-color: var(--g-header-bg);
-    box-shadow: -1px 0 0 0 var(--g-border-color), 1px 0 0 0 var(--g-border-color);
-    transition: var(--el-transition-all), background-color 0.3s;
+    justify-content: space-between;
 
+    .main {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      height: 100%;
+
+      .menu-active {
+        &-arrow {
+          .item-container:before,
+          :deep(.menu-item):before {
+            content: "";
+            opacity: 0;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-right: 5px solid transparent;
+            border-left: 5px solid transparent;
+            border-bottom: 5px solid var(--g-header-bg);
+            transition: all .3s;
+
+            @include position-center(x);
+          }
+
+          .item-container.active::before,
+          :deep(.menu-item).active:before {
+            opacity: 1;
+            bottom: 8px;
+          }
+        }
+
+        &-line {
+          .item-container:before,
+          :deep(.menu-item):before {
+            content: "";
+            opacity: 0;
+            bottom: 6px;
+            width: 0;
+            height: 4px;
+            border-radius: 2px;
+            background-color: var(--g-header-menu-active-bg);
+            box-shadow: 0 0 0 1px var(--g-header-bg);
+            transition: all .3s;
+
+            @include position-center(x);
+          }
+
+          .item-container.active::before,
+          :deep(.menu-item).active:before {
+            opacity: 1;
+            width: 20px;
+          }
+        }
+
+        &-dot {
+          .item-container:before,
+          :deep(.menu-item):before {
+            content: "";
+            opacity: 0;
+            bottom: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--g-header-menu-active-bg);
+            box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
+            transition: all .3s;
+
+            @include position-center(x);
+          }
+
+          .item-container.active::before,
+          :deep(.menu-item).active:before {
+            opacity: 1;
+            bottom: 4px;
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: $g-header-width) {
     .header-container {
-        width: var(--g-header-width);
-        height: 100%;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+      width: 100%;
+    }
+  }
 
-        .main {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            height: 100%;
+  :deep(a.title) {
+    position: relative;
+    width: inherit;
+    height: inherit;
+    padding: inherit;
+    background-color: inherit;
 
-            .nav-fill {
-                &-radius {
-                    .item-container {
-                        margin-right: 5px;
-
-                        &:last-child {
-                            margin-right: 0;
-                        }
-
-                        .item {
-                            border-radius: 5px;
-                            margin: 10px 0;
-                        }
-                    }
-
-                    .sidebar-item {
-                        margin-right: 5px;
-
-                        &:last-child {
-                            margin-right: 0;
-                        }
-
-                        :deep(.el-sub-menu__title .item) {
-                            height: calc(100% - 20px);
-                            border-radius: 5px;
-                            margin: 10px 0;
-                        }
-                    }
-                }
-            }
-
-            .nav-active {
-                &-arrow {
-                    .item-container::before,
-                    .sidebar-item :deep(.el-sub-menu__title::before) {
-                        content: "";
-                        opacity: 0;
-                        bottom: -5px;
-                        width: 0;
-                        height: 0;
-                        border-right: 5px solid transparent;
-                        border-left: 5px solid transparent;
-                        border-bottom: 5px solid var(--g-sub-sidebar-bg);
-                        transition: all 0.3s;
-
-                        @include position-center(x);
-                    }
-
-                    .item-container.active::before,
-                    .sidebar-item :deep(.is-active .el-sub-menu__title::before) {
-                        opacity: 1;
-                        bottom: 0;
-                    }
-                }
-
-                &-line {
-                    .item-container::before,
-                    .sidebar-item :deep(.el-sub-menu__title::before) {
-                        content: "";
-                        opacity: 0;
-                        bottom: 8px;
-                        width: 0;
-                        height: 4px;
-                        border-radius: 2px;
-                        background-color: var(--g-header-menu-active-bg);
-                        box-shadow: 0 0 0 1px var(--g-header-bg);
-                        transition: all 0.3s;
-
-                        @include position-center(x);
-                    }
-
-                    .item-container.active::before,
-                    .sidebar-item :deep(.is-active .el-sub-menu__title::before) {
-                        opacity: 1;
-                        width: 20px;
-                    }
-                }
-
-                &-dot {
-                    .item-container::before,
-                    .sidebar-item :deep(.el-sub-menu__title::before) {
-                        content: "";
-                        opacity: 0;
-                        bottom: 0;
-                        width: 10px;
-                        height: 10px;
-                        border-radius: 50%;
-                        background-color: var(--g-header-menu-active-bg);
-                        box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
-                        transition: all 0.3s;
-
-                        @include position-center(x);
-                    }
-
-                    .item-container.active::before,
-                    .sidebar-item :deep(.is-active .el-sub-menu__title::before) {
-                        opacity: 1;
-                        bottom: 5px;
-                    }
-                }
-            }
-        }
+    .logo {
+      width: 50px;
+      height: 50px;
     }
 
-    @media screen and (max-width: $g-header-width) {
-        .header-container {
-            width: 100%;
-        }
+    span {
+      font-size: 24px;
+      letter-spacing: 1px;
+      color: var(--g-header-color);
+    }
+  }
+
+  .menu-container {
+    flex: 1;
+    margin: 0 30px;
+    padding: 0 20px;
+    height: 100%;
+    overflow-x: auto;
+    mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none
     }
 
-    :deep(a.title) {
-        position: relative;
-        width: inherit;
-        height: inherit;
-        padding: inherit;
-        background-color: inherit;
-
-        .logo {
-            width: 50px;
-            height: 50px;
-        }
-
-        span {
-            font-size: 24px;
-            letter-spacing: 1px;
-            color: var(--g-header-color);
-        }
+    .menu {
+      display: inline-flex;
+      height: 100%;
+      background-color: var(--g-header-bg);
     }
 
-    .nav {
-        display: flex;
-        height: 100%;
-        margin-left: 50px;
+    :deep(.menu-item) {
+      .menu-item-container {
+        width: 80px;
+        padding: 0 5px;
+        color: var(--g-header-menu-color);
+        background-color: var(--g-header-menu-bg);
 
-        .item-container {
-            position: relative;
-            display: flex;
-            width: initial;
-            transition: var(--el-transition-all);
-
-            .item {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                padding: 0 5px;
-                width: 80px;
-                cursor: pointer;
-                color: var(--g-header-menu-color);
-                background-color: var(--g-header-bg);
-                transition: var(--el-transition-all), background-color 0.3s, var(--el-transition-color);
-
-                &:hover {
-                    color: var(--g-header-menu-hover-color);
-                    background-color: var(--g-header-menu-hover-bg);
-                }
-
-              .icon {
-                font-size: 24px;
-              }
-
-                span {
-                    text-align: center;
-                    word-break: break-all;
-
-                    @include text-overflow(1, false);
-                }
-            }
-
-            &.active .item {
-                color: var(--g-header-menu-active-color);
-                background-color: var(--g-header-menu-active-bg);
-            }
-        }
-    }
-
-    .el-menu-nav {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        height: 100%;
-        margin-left: 50px;
-        border-bottom: none;
-        background-color: inherit;
-
-        .sidebar-item {
-            transition: all 0.3s;
+        &:hover {
+          color: var(--g-header-menu-hover-color);
+          background-color: var(--g-header-menu-hover-bg);
         }
 
-        .sidebar-item,
-        :deep(.el-sub-menu),
-        :deep(.el-sub-menu__title) {
-            height: 100%;
-            display: flex;
-            align-items: center;
+        .menu-item-container-icon {
+          transform: scale(1);
+          font-size: 24px !important
         }
 
-        :deep(.el-sub-menu.is-active) {
-            .el-sub-menu__title {
-                background-color: initial !important;
-
-                .item {
-                    color: var(--g-header-menu-active-color) !important;
-                    background-color: var(--g-header-menu-active-bg) !important;
-                }
-            }
-        }
-
-        :deep(.el-sub-menu__title) {
-            padding: 0;
-            width: initial;
-
-            &:hover {
-                background-color: initial !important;
-            }
-
-            .item {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                padding: 0 5px;
-                width: 80px;
-                height: 100%;
-                line-height: initial;
-                color: var(--g-header-menu-color) !important;
-                transition: all 0.3s;
-
-                &:hover {
-                    color: var(--g-header-menu-hover-color) !important;
-                    background-color: var(--g-header-menu-hover-bg) !important;
-
-                  .icon {
-                    transform: scale(1);
-                  }
-                }
-
-              .icon {
-                margin: 0 auto;
-                font-size: 24px;
-                vertical-align: middle;
-                color: inherit;
-              }
-
-                .title {
-                    flex: initial;
-                    margin: initial;
-                    height: initial;
-                    line-height: initial;
-                    text-align: center;
-                    font-size: 16px;
-                    word-break: break-all;
-                    white-space: initial;
-
-                    @include text-overflow(1, false);
-                }
-            }
-
-            .el-sub-menu__icon-arrow {
-                display: none;
-            }
-        }
-    }
-
-    :deep(.tools) {
-        padding: 0;
-
-      .buttons .item .icon {
-        color: var(--g-header-color);
       }
 
-        .user-container {
-            font-size: 16px;
-            color: var(--g-header-color);
-        }
+      .active .menu-item-container {
+        color: var(--g-header-menu-active-color);
+        background-color: var(--g-header-menu-active-bg)
+      }
     }
+  }
+
+  :deep(.tools) {
+    padding: 0;
+
+    .buttons .item .icon {
+      color: var(--g-header-color);
+    }
+
+    .user-container {
+      font-size: 16px;
+      color: var(--g-header-color);
+    }
+  }
 }
+
 // 头部动画
 .header-enter-active,
 .header-leave-active {
-    transition: transform 0.3s;
+  transition: transform 0.3s;
 }
 
 .header-enter-from,
 .header-leave-to {
-    transform: translateY(calc(var(--g-header-height) * -1));
+  transform: translateY(calc(var(--g-header-height) * -1));
 }
 </style>
