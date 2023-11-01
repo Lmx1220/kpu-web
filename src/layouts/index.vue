@@ -263,9 +263,7 @@ onUnmounted(() => {
       transition: 0.3s;
 
       .exit-main-page-maximize {
-        --at-apply: bg-stone-7 color-stone-3
-        dark: bg-stone-3
-        dark: color-stone-7;
+        --at-apply: bg-stone-7 color-stone-3 dark:bg-stone-3 dark:color-stone-7;
         opacity: .5;
         transition-property: opacity;
         transition-timing-function: cubic-bezier(.4, 0, .2, 1);

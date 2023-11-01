@@ -105,7 +105,7 @@ function pathCompile(path: string) {
 
 <style lang="scss" scoped>
 .toolbar-container {
-  --at-apply: flex items-center justify-between h- [var(--g-toolbar-height)] bg- [var(--g-container-bg)];
+  --at-apply: flex items-center justify-between h-[var(--g-toolbar-height)] bg-[var(--g-container-bg)];
   transition: background-color 0.3s;
 
   .left-box {
@@ -130,8 +130,7 @@ function pathCompile(path: string) {
               background-color: rgba(41, 37, 36, .8);
             }
             &.is-link:hover {
-              --at-apply: bg-stone-2
-              dark: bg-stone-8;
+              --at-apply: bg-stone-2 dark:bg-stone-8;
             }
           }
 
@@ -144,8 +143,7 @@ function pathCompile(path: string) {
 
             &:not(:first-child) {
               .text {
-                --at-apply: bg-stone-2
-                dark: bg-stone-8;
+                --at-apply: bg-stone-2 dark:bg-stone-8;
                 border-radius: 0 6px 6px 0;
               }
             }

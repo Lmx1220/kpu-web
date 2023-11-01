@@ -504,18 +504,13 @@ onUnmounted(
   --at-apply: z-100;
 
   .mx-context-menu {
-    --at-apply: flex ring-stone-3
-
-    dark:ring-stone-7 bg-[
-
-  var(--g-container-bg) ];
+    --at-apply: flex ring-stone-3 dark:ring-stone-7 bg-[var(--g-container-bg)];
 
     .mx-context-menu-items .mx-context-menu-item {
       --at-apply: transition;
 
       &:not(.disabled):hover {
-        --at-apply: cursor-pointer bg-stone-1
-        dark: bg-stone-9;
+        --at-apply: cursor-pointer bg-stone-1 dark:bg-stone-9;
       }
 
       span {
@@ -523,7 +518,7 @@ onUnmounted(
       }
 
       .icon {
-        --at-apply: w-4 m-r- [10px] color-initial;
+        --at-apply: w-4 m-r-10px color-initial;
       }
 
       .disabled span, .disabled .icon {
@@ -532,11 +527,10 @@ onUnmounted(
     }
 
     .mx-context-menu-item-sperator {
-      --at-apply: bg- [var(--g-container-bg)];
+      --at-apply: bg-[var(--g-container-bg)];
 
       &:after {
-        --at-apply: bg-stone-2
-        dark: bg-stone-7;
+        --at-apply: bg-stone-2 dark:bg-stone-7;
       }
     }
   }
@@ -663,8 +657,7 @@ onUnmounted(
         pointer-events: all;
         color: var(--g-tabbar-tab-color);
         &:hover {
-          --at-apply: ring-stone-3
-          dark: ring-stone-7
+          --at-apply: ring-stone-3 dark:ring-stone-7
         }
       }
 
@@ -855,20 +848,12 @@ onUnmounted(
             color: var(--g-tabbar-tab-color);
             &:hover {
               background-color: var(--el-fill-color);
-              --at-apply: ring-1 ring-stone-3
-
-              dark:ring-stone-7 bg-[
-
-            var(--g-bg) ];
+              --at-apply: ring-1 ring-stone-3 dark:ring-stone-7 bg-[var(--g-bg)];
             }
           }
 
           .hotkey-number {
-            --at-apply: ring-1 ring-stone-3
-
-            dark:ring-stone-7 flex-center absolute z-10 top-1\/2 right-[
-
-            0.5em ] -translate-y-1\/2 w-6 h-6 border-rd-1\/2 font-size- [12px] color- [var(--g-tabbar-tab-color)] bg- [var(--g-bg)];
+            --at-apply: ring-1 ring-stone-3 dark:ring-stone-7 flex-center absolute z-10 top-1\/2 right-[0.5em] -translate-y-1\/2 w-6 h-6 border-rd-1\/2 font-size-12px color-[var(--g-tabbar-tab-color)] bg-[var(--g-bg)];
           }
         }
 
@@ -1087,7 +1072,7 @@ onUnmounted(
     background-image: linear-gradient(to right, transparent, var(--g-bg));
 
     .icon {
-      --at-apply: color- [var(--el-text-color-primary)] bg- [var(--g-container-bg)] shadow ring transition w-6 h-6 border-rd- [5px] font-size- [16px] cursor-pointer;
+      --at-apply: color-[var(--el-text-color-primary)] bg-[var(--g-container-bg)] shadow ring transition w-6 h-6 border-rd-5px font-size-16px cursor-pointer;
     }
   }
 }

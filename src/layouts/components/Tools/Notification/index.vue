@@ -141,12 +141,10 @@ const activeName = ref('message')
 }
 
 .list {
-  --at-apply: border-block-1 border-block border-block-stone-2
-  dark: border-block-stone-7 border-block-solid;
+  --at-apply: border-block-1 border-block border-block-stone-2 dark:border-block-stone-7 border-block-solid;
 
   .item {
-    --at-apply: flex cursor-pointer items-center gap-3 border-b-1 border-b-stone-2
-    dark: border-b-stone-7 border-b-solid p-y-4 px-3;
+    --at-apply: flex cursor-pointer items-center gap-3 border-b-1 border-b-stone-2 dark:border-b-stone-7 border-b-solid p-y-4 px-3;
 
     &:last-child {
       --at-apply: border-b-0;
@@ -154,12 +152,11 @@ const activeName = ref('message')
 
     &:hover {
       --un-bg-opacity: 1;
-      --at-apply: bg-stone-1
-      dark: bg-dark/50;
+      --at-apply: bg-stone-1 dark:bg-dark/50;
     }
 
     i {
-      --at-apply: w-6 min-w-6 h-6 border-rd- [9999px] bg-blue-400 font-size-3 leading-4 color-white;
+      --at-apply: w-6 min-w-6 h-6 border-rd-9999px bg-blue-400 font-size-3 leading-4 color-white;
 
       &.service {
         --at-apply: bg-green;
