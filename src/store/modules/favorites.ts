@@ -33,27 +33,26 @@ const useFavoritesStore = defineStore(
       }
       return flag
     }
-    function pin(route: RouteRecordRaw[], path: string | undefined) {
-      const routes: RouteRecordRedirectOption[] = []
-      route.forEach((item) => {
-        if (item.meta?.sidebar !== false) {
-          if (item.children && hasChildren(item)) {
-            routes.push(...pin(item.children, resolveRoutePath(`${path}`, item.path)))
+    function generateRoutePaths(route: RouteRecordRaw[], currentPath: string = '') {
+      const routePaths: RouteRecordRedirectOption[] = []
+      route.forEach((route) => {
+        if (route.meta?.sidebar !== false) {
+          if (route.children && hasChildren(route)) {
+            routePaths.push(...generateRoutePaths(route.children, resolveRoutePath(currentPath, route.path)))
           }
           else {
-            (item.redirect ?? resolveRoutePath(`${path}`, item.path))
-            && routes.push(item.redirect ?? resolveRoutePath(`${path}`, item.path))
+            routePaths.push(route.redirect || resolveRoutePath(currentPath, route.path))
           }
         }
-      },
-      )
-      return routes
+      })
+      return routePaths
     }
+
     const routeList = computed(() => {
       const routes: RouteRecordRedirectOption[] = []
       if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
         routeStore.routes.forEach((route) => {
-          route.children && routes.push(...pin(route.children, undefined))
+          route.children && routes.push(...generateRoutePaths(route.children))
         })
       }
 
@@ -72,7 +71,7 @@ const useFavoritesStore = defineStore(
         fullPath: route.fullPath,
         title: meta?.title,
         i18n: meta?.i18n,
-        icon: meta?.icon ?? meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon,
+        icon: meta?.icon || meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon,
       })
       updateStorage()
     }

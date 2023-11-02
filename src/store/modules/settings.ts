@@ -1,6 +1,6 @@
 import { defaultsDeep } from 'lodash-es'
 import type { RouteMeta } from 'vue-router'
-import type { RecursiveRequired, Settings } from '#/global'
+import type { CustomTitleList, RecursiveRequired, Settings } from '#/global'
 import settingsCustom from '@/settings'
 import settingsDefault from '@/settings.default'
 
@@ -80,11 +80,31 @@ const useSettingsStore = defineStore(
         os.value = 'linux'
         break
     }
+    const customTitleList = ref<CustomTitleList[]>([])
     // 页面标题
     const title = ref<RouteMeta['title']>()
     // 当同时设置了 i18n 时，页面标题的展示优先级，默认为 i18n
     const titleFirst = ref(false)
     // 设置网页标题
+    function setCustomTitle(fullPath: string, _title?: string) {
+      const index = customTitleList.value.findIndex(item => item.fullPath === fullPath)
+      if (index > -1) {
+        customTitleList.value[index].title = _title
+      }
+      else {
+        customTitleList.value.push({
+          fullPath,
+          title: _title,
+        })
+      }
+    }
+
+    function resetCustomTitle(fullPath: string) {
+      const index = customTitleList.value.findIndex(item => item.fullPath === fullPath)
+      if (index > -1) {
+        customTitleList.value.splice(index, 1)
+      }
+    }
     function setTitle(_title: RouteMeta['title'], _titleFirst: boolean) {
       title.value = _title
       titleFirst.value = _titleFirst
@@ -106,12 +126,16 @@ const useSettingsStore = defineStore(
     function setMainPageMaximize(status?: boolean) {
       mainPageMaximizeStatus.value = status ?? !mainPageMaximizeStatus.value
     }
+
     return {
       settings,
       os,
       title,
       titleFirst,
       setTitle,
+      customTitleList,
+      resetCustomTitle,
+      setCustomTitle,
       mode,
       setMode,
       subMenuCollapseLastStatus,

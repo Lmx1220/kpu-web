@@ -38,21 +38,34 @@ const breadcrumbList = computed(() => {
   if (settingsStore.settings.home.enable) {
     breadcrumbList.push({
       path: '/',
-      title: settingsStore.settings.home.title,
-      i18n: 'route.home',
+      title: generateI18nTitle('route.home',settingsStore.settings.home.title),
     })
   }
   if (route.name !== 'home' && settingsStore.settings.breadcrumb.enableMainMenu && !['single'].includes(settingsStore.settings.menu.menuMode)) {
     const index = menuStore.allMenus.findIndex(item => item.children.some(p => route.fullPath.indexOf(`${p.path}/`) === 0 || route.fullPath === p.path))
-    menuStore.allMenus[index]?.meta && breadcrumbList.push({
-      path: '',
-      title: menuStore.allMenus[index]?.meta?.title,
-      i18n: menuStore.allMenus[index]?.meta?.i18n,
-    })
+    const parentMenu = menuStore.allMenus[index]
+    if (parentMenu?.meta) {
+      breadcrumbList.push({
+        path: '',
+        title: generateI18nTitle(parentMenu.meta?.i18n, parentMenu.meta?.title),
+      })
+    }
   }
   if (route.meta.breadcrumbNeste) {
-    breadcrumbList.push(...route.meta.breadcrumbNeste.filter(item => item.hide === false))
+    route.meta.breadcrumbNeste.forEach((item) => {
+      if (item.hide === false) {
+        breadcrumbList.push({
+          path: item.path,
+          title: generateI18nTitle(item.i18n, item.title),
+        })
+      }
+    })
+    const customTitle = settingsStore.customTitleList.find(customTitle => customTitle.fullPath === route.fullPath)
+    if (customTitle) {
+      customTitle.title && (breadcrumbList[breadcrumbList.length - 1].title = customTitle.title)
+    }
   }
+
   return breadcrumbList
 })
 
@@ -88,13 +101,8 @@ function pathCompile(path: string) {
         }"
       >
         <TransitionGroup name="breadcrumb">
-          <BreadcrumbItem
-            v-for="(item, index) in breadcrumbList" :key="JSON.stringify(item)"
-            :to="index < breadcrumbList.length - 1 ? pathCompile(item.path) : ''"
-          >
-            {{
-              index < breadcrumbList.length - 1 ? generateI18nTitle(item.i18n, item.title) : settingsStore.titleFirst
-                ? settingsStore.title : generateI18nTitle(item.i18n, item.title) }}
+          <BreadcrumbItem v-for="(item, index) in breadcrumbList" :key="`${index}_${item.path}_${item.title}`" :to="index < breadcrumbList.length - 1 && item.path !== '' ? pathCompile(item.path) : ''">
+            {{ item.title }}
           </BreadcrumbItem>
         </TransitionGroup>
       </Breadcrumb>

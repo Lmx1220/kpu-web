@@ -434,13 +434,18 @@ declare module 'vue-router' {
     breadcrumbNeste?: Route.breadcrumb[]
   }
 }
-
+interface CustomTitleList {
+  fullPath: string
+  title?: string
+}
 declare namespace Route {
   interface recordMainRaw {
     meta?: {
       title?: string | Function
       icon?: string
       auth?: string | string[]
+      customTitleList: CustomTitleList[]
+
     }
     children: RouteRecordRaw[]
   }
@@ -541,6 +546,7 @@ declare namespace Tabbar {
     icon?: string
     activeIcon?: string
     name: string[]
+    customTitleList: CustomTitleList[]
     isPin: boolean
     isPermanent: boolean
   }

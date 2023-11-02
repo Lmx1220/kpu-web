@@ -32,7 +32,7 @@ watch(() => favoritesContainer.value, (value) => {
       <div class="text-sm font-bold">
         我的收藏夹
       </div>
-      <template v-if="!favoritesStore.canAdd(route.fullPath)">
+      <template v-if="favoritesStore.canAdd(route.fullPath)">
         <SvgIcon
           v-if="favoritesStore.isAdd(route.fullPath)" class="text-xl cursor-pointer" name="mdi:star-remove"
           title="从收藏夹移除"
@@ -64,6 +64,7 @@ watch(() => favoritesContainer.value, (value) => {
         >
           <SvgIcon :name="favorites.icon ?? ''" :size="18" />
           <div class="name flex-1 pe-4 truncate">
+            {{favorites.icon }}
             {{ generateI18nTitle(favorites.i18n, favorites.title) }}
           </div>
           <SvgIcon

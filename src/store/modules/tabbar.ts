@@ -1,4 +1,5 @@
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
+import { cloneDeep } from 'lodash-es'
 import useSettingsStore from './settings'
 import useUserStore from './user'
 import useRouteStore from './route'
@@ -7,6 +8,7 @@ import useIframeStore from './iframe'
 import storage from '@/util/storage'
 import type { Tabbar } from '@/types/global'
 import api from '@/api'
+import { deepClone } from '@/util'
 
 const useTabbarStore = defineStore(
   // 唯一ID
@@ -36,6 +38,8 @@ const useTabbarStore = defineStore(
               title: typeof route.meta.title === 'function' ? route.meta.title() : route.meta.title,
               activeIcon: route.meta.activeIcon,
               name: route.name ? [String(route.name)] : [],
+              i18n: route.meta.i18n,
+              customTitleList: [],
               isPin: false,
               isPermanent: true,
             })
@@ -57,6 +61,7 @@ const useTabbarStore = defineStore(
                 i18n: route.meta.i18n,
                 iframe: route.meta.iframe,
                 name: route.name ? [String(route.name)] : [],
+                customTitleList: [],
                 isPin: false,
                 isPermanent: true,
               })
@@ -75,6 +80,7 @@ const useTabbarStore = defineStore(
               i18n: items.meta.i18n,
               iframe: items.meta.iframe,
               name: items.name ? [String(items.name)] : [],
+              customTitleList: [],
               isPin: false,
               isPermanent: true,
             })
@@ -105,8 +111,8 @@ const useTabbarStore = defineStore(
             tabbar.title = typeof meta?.title === 'function' ? meta.title() : meta?.title
             tabbar.i18n = meta?.i18n
             tabbar.iframe = meta?.iframe
-            tabbar.icon = meta?.icon ?? meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon
-            tabbar.activeIcon = meta?.activeIcon ?? meta?.breadcrumbNeste?.findLast(item => item.activeIcon)?.activeIcon
+            tabbar.icon = meta?.icon || meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon
+            tabbar.activeIcon = meta?.activeIcon || meta?.breadcrumbNeste?.findLast(item => item.activeIcon)?.activeIcon
           }
           else {
             const tabbar = {
@@ -117,9 +123,10 @@ const useTabbarStore = defineStore(
               title: typeof meta?.title === 'function' ? meta.title() : meta?.title,
               i18n: meta?.i18n,
               iframe: meta?.iframe,
-              icon: meta?.icon ?? meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon,
-              activeIcon: meta?.activeIcon ?? meta?.breadcrumbNeste?.findLast(item => item.activeIcon)?.activeIcon,
+              icon: meta?.icon || meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon,
+              activeIcon: meta?.activeIcon || meta?.breadcrumbNeste?.findLast(item => item.activeIcon)?.activeIcon,
               name: names,
+              customTitleList: [],
               isPin: false,
               isPermanent: false,
             }
@@ -332,23 +339,61 @@ const useTabbarStore = defineStore(
         }
       })
     }
+    function setCustomTitle({ tabId, title }: { tabId: string;title?: string }) {
+      list.value.forEach((item) => {
+        if (item.tabId === tabId) {
+          const customTitle = item.customTitleList.find(title => title.fullPath === item.fullPath)
+          if (customTitle) {
+            customTitle.title = title
+          }
+          else {
+            item.customTitleList.push({
+              fullPath: item.fullPath,
+              title,
+            })
+          }
+        }
+      })
+      updateStorage()
+    }
+    function resetCustomTitle(tabId: string) {
+      list.value.forEach((item) => {
+        if (item.tabId === tabId) {
+          const index = list.value.findIndex(title => item.fullPath === title.fullPath)
+          if (index > -1) {
+            list.value.splice(index, 1)
+          }
+        }
+      })
+      updateStorage()
+    }
+
     async function updateStorage() {
       if (settingsStore.settings.tabbar.storageTo === 'local') {
         const tabbarPinData = storage.local.has('tabbarPinData') ? JSON.parse(`${storage.local.get('tabbarPinData')}`) : {}
-        tabbarPinData[userStore.account] = list.value.filter(item => item.isPin)
+        tabbarPinData[userStore.account] = cloneDeep(list.value.filter(item => item.isPin)).map((item) => {
+          item.customTitleList = []
+          return item
+        })
         storage.local.set('tabbarPinData', JSON.stringify(tabbarPinData))
       }
       else {
         settingsStore.settings.tabbar.storageTo === 'server' && await api.post({
           url: '/member/tabbar/edit',
           data: {
-            tabbar: JSON.stringify(list.value.filter(item => item.isPin)),
+            tabbar: JSON.stringify(cloneDeep(list.value.filter(item => item.isPin)).map((item) => {
+              item.customTitleList = []
+              return item
+            })),
           },
         })
       }
       if (settingsStore.settings.tabbar.enableMemory) {
         const tabbarTempData = storage.session.has('tabbarTempData') ? JSON.parse(`${storage.session.get('tabbarTempData')}`) : {}
-        tabbarTempData[userStore.account] = list.value.filter(item => !item.isPin && !item.isPermanent)
+        tabbarTempData[userStore.account] = deepClone(list.value.filter(item => !item.isPin && !item.isPermanent)).map((item) => {
+          item.customTitleList = []
+          return item
+        })
         storage.session.set('tabbarTempData', JSON.stringify(tabbarTempData))
       }
     }
@@ -382,6 +427,8 @@ const useTabbarStore = defineStore(
       clean,
       sort,
       editTitle,
+      setCustomTitle,
+      resetCustomTitle,
       recoveryStorage,
     }
   },

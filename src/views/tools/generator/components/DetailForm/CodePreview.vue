@@ -136,7 +136,7 @@ function highlightedCode(code: string, key: any) {
 
 <template>
   <div>
-    <el-tabs v-model="data.activeName" class="demo-tabs" stretch @tab-change="handleChange">
+    <el-tabs v-model="data.activeName" class="demo-tabs" @tab-change="handleChange">
       <el-tab-pane v-for="item in data.tableList" :key="item.id" :label="item.name" :name="item.id" />
     </el-tabs>
     <el-button-group>
@@ -153,7 +153,7 @@ function highlightedCode(code: string, key: any) {
       </template>
       刷新
     </el-button>
-    <el-tabs v-model="code" class="demo-tabs min-h-[400px]" stretch>
+    <el-tabs v-model="code" class="demo-tabs min-h-[400px]" >
       <el-tab-pane v-for="(code, key) in data.templateObj[data.template] || {}" :key="key" :label="getKey(key)">
         <pre>
           <el-button v-if="isSupported" class="float-left" text @click="onCopy(code)">

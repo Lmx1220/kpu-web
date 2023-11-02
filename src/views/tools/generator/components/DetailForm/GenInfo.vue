@@ -420,7 +420,7 @@ function onGen(type: string) {
       ElMessage.warning('请先输入前端应用名、前端模块名、实体类名')
       return
     }
-    data.value.form[`${type}Auth`] = `${plusApplicationName}:${plusModuleName}:${entityName}:${type}`
+    data.value.form[`${type}Auth`] = `${plusApplicationName}/${plusModuleName.replaceAll('/',':')}:${entityName}:${type}`
   }
 }
 
@@ -625,7 +625,10 @@ defineExpose({
         </el-col>
         <el-col :lg="24" :xl="12">
           <el-form-item label="前端模块名" prop="plusModuleName">
-            <el-input v-model="data.form.plusModuleName" clearable />
+            <el-input v-model="data.form.plusModuleName" clearable >
+              <template #prepend>/</template>
+              <template #append>/</template>
+            </el-input>
           </el-form-item>
         </el-col>
         <el-col :lg="24" :xl="12">

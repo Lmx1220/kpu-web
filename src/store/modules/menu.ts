@@ -16,12 +16,23 @@ const useMenuStore = defineStore(
       children: [],
     }])
     const actived = ref(0)
+    // 将多级导航的每一级 path 都转换为完整路径
+    function convertToFullPath(menu: any[], path: string = '') {
+      return menu.map((item) => {
+        item.path = resolveRoutePath(path, item.path)
+        if (item.children) {
+          item.children = convertToFullPath(item.children, item.path)
+        }
+        return item
+      })
+    }
     // 完整导航数据
     const allMenus = computed(() => {
       let returnMenus: Menu.recordMainRaw[] = [{
         meta: {},
         children: [],
       }]
+
       if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
         if (settingsStore.settings.menu.menuMode === 'single') {
           returnMenus[0].children = []
@@ -32,6 +43,7 @@ const useMenuStore = defineStore(
         else {
           returnMenus = routeStore.routes as Menu.recordMainRaw[]
         }
+        returnMenus.map(item => convertToFullPath(item.children))
       }
       else {
         returnMenus = menus.value

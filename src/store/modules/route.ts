@@ -44,6 +44,7 @@ const useRouteStore = defineStore(
           tmpBreadcrumb.push({
             path: childrenBaseUrl,
             title: route.meta?.title,
+            i18n: route.meta?.i18n,
             icon: route.meta?.icon,
             activeIcon: route.meta?.activeIcon,
             hide: !route.meta?.breadcrumb && route.meta?.breadcrumb === false,

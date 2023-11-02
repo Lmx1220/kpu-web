@@ -317,7 +317,7 @@ onUnmounted(
             'actived': element.tabId === activedTabId,
             'no-drag': element.isPermanent || element.isPin,
           }" class="tab"
-          :title="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element.title)"
+          :title="element.customTitleList?.find((item) => item.fullPath === item.fullPath)?.title || generateI18nTitle(element.i18n, element.title)"
           @click="router.push(`${element.fullPath}`)" @dblclick="settingsStore.setMainPageMaximize()"
           @contextmenu="onTabbarContextmenu($event, element)"
         >
@@ -333,8 +333,7 @@ onUnmounted(
                 :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)" class="icon"
               />
               {{
-                settingsStore.titleFirst && element.tabId === activedTabId ? element.title
-                : generateI18nTitle(element.i18n, element.title)
+                element.customTitleList?.find((item) => item.fullPath === item.fullPath)?.title || generateI18nTitle(element.i18n, element.title)
               }}
             </div>
 
@@ -405,7 +404,7 @@ onUnmounted(
               >
                 <div
                   class="title"
-                  :title="settingsStore.titleFirst && element.tabId === activedTabId ? typeof element.title === 'function' ? element.title() : element.title : generateI18nTitle(element.i18n, element.title)"
+                  :title="element.customTitleList?.find((item:any) => item.fullPath === item.fullPath)?.title || generateI18nTitle(element.i18n, element.title)"
                   @click="router.push(`${element.fullPath}`)"
                 >
                   <SvgIcon
@@ -413,8 +412,9 @@ onUnmounted(
                     class="title-icon"
                     :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
                   />
-                  {{ settingsStore.titleFirst && element.tabId === activedTabId ? element.title
-                    : generateI18nTitle(element.i18n, element.title) }}
+                  {{
+                    element.customTitleList?.find((item:any) => item.fullPath === item.fullPath)?.title || generateI18nTitle(element.i18n, element.title)
+                  }}
                 </div>
                 <SvgIcon
                   class="action-icon" name="i-ri:close-fill"

@@ -101,7 +101,6 @@ function onEdit(row: Menu.raw) {
 }
 function onDel(row: Menu.raw) {
   ElMessageBox.confirm(`确认删除「${row.title}」吗？`, '确认信息').then(() => {
-    debugger
     crudMenu.delete([row.id]).then(() => {
       getDataList()
       ElMessage.success({
