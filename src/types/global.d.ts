@@ -444,7 +444,7 @@ declare namespace Route {
       title?: string | Function
       icon?: string
       auth?: string | string[]
-      customTitleList: CustomTitleList[]
+      customTitleList?: CustomTitleList[]
 
     }
     children: RouteRecordRaw[]
