@@ -8,7 +8,7 @@ import type { GenTableUpdateVO } from '@/api/modules/tools/model/genTableModel'
 import { query as getListDatasourceConfigQuery } from '@/api/modules/tools/datasourceConfig'
 import type { DictOption } from '@/api/model/baseModel'
 import { findEnumListByType } from '@/api/modules/common/dict'
-import { resourceAuthTree } from '@/api/modules/system/menu'
+import { resourceAuthTree } from '@/api/modules/system/resource.ts'
 import crudGenerator from '@/api/modules/tools/genTable'
 
 export interface Props {
@@ -332,7 +332,7 @@ async function getDict() {
   Object.entries(options).forEach(([key, value]) => {
     data.value.dicts?.set(key, value)
   })
-  resourceAuthTree().then((res) => {
+  resourceAuthTree().then((res:any) => {
     data.value.dicts?.set('menuList', res)
   })
   getListDatasourceConfigQuery({}).then((records) => {

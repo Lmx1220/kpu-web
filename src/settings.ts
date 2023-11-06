@@ -10,7 +10,7 @@ const globalSettings: Settings.all = {
     darkTheme: 'dark',
     colorScheme: 'light',
     elementSize: 'default',
-    defaultLang: '',
+    defaultLang: undefined,
     enableProgress: true,
     storagePrefix: 'fa_',
     enableWatermark: false,

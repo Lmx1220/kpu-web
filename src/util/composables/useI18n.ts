@@ -24,11 +24,15 @@ function getKey(namespace: string | undefined, key: string) {
 
 export function useI18n(namespace?: string): {
   t: I18nGlobalTranslation
+  te: Function
 } {
   const normalFn = {
     t: (key: string) => {
       return getKey(namespace, key)
     },
+    te: (key: string) =>{
+      return getKey(namespace, key)
+    }
   }
 
   if (!i18n) {

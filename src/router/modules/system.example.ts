@@ -34,7 +34,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'menu',
       name: 'menu',
-      redirect: '/system/menu',
+      redirect: '/system/resource',
       meta: {
         title: '菜单管理',
         i18n: 'route.general.menu.root',
@@ -45,7 +45,7 @@ const routes: RouteRecordRaw = {
           {
             path: '',
             name: 'menuList',
-            component: () => import('@/views/system/menu/index.vue'),
+            component: () => import('@/views/system/resource/index.vue'),
             meta: {
               title: '菜单列表',
               badge: 'PRO',
@@ -57,12 +57,12 @@ const routes: RouteRecordRaw = {
           {
             path: 'detail',
             name: 'menuCreate',
-            component: () => import('@/views/system/menu/detail.vue'),
+            component: () => import('@/views/system/resource/detail.vue'),
             meta: {
               title: '新增导航',
               i18n: 'route.general.menu.create',
               sidebar: false,
-              activeMenu: '/system/menu',
+              activeMenu: '/system/resource',
               cache: true,
               noCache: 'menuList',
               copyright: false,
@@ -72,12 +72,12 @@ const routes: RouteRecordRaw = {
           {
             path: 'detail/:id',
             name: 'menuEdit',
-            component: () => import('@/views/system/menu/detail.vue'),
+            component: () => import('@/views/system/resource/detail.vue'),
             meta: {
               title: '编辑导航',
               i18n: 'route.general.menu.edit',
               sidebar: false,
-              activeMenu: '/system/menu',
+              activeMenu: '/system/resource',
               cache: true,
               noCache: 'menuList',
               copyright: false,

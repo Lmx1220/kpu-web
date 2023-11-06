@@ -6,7 +6,7 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     darkTheme: 'dark',
     colorScheme: 'light',
     elementSize: 'default',
-    defaultLang: '',
+    defaultLang: 'zh-cn',
     enableProgress: false,
     enableErrorLog: false,
     enablePermission: false,

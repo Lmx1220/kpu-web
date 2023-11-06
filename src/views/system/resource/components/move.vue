@@ -61,6 +61,7 @@ const defaultProps = {
   label: 'label',
   disabled: 'disabled',
 }
+const { t } = useI18n()
 const filterText = ref('')
 const treeRef = ref<InstanceType<typeof ElTree>>()
 
