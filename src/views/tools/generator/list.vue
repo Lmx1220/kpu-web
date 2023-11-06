@@ -5,7 +5,7 @@ import FormMode from './components/FormMode/index.vue'
 import ImportMode from './components/ImportMode/index.vue'
 import PreviewMode from './components/PreviewMode/index.vue'
 import type { GenTablePageQuery, GenTableResultVO } from '@/api/modules/tools/model/genTableModel'
-import crudGenTable, { downloadZip, generatorCode } from '@/api/modules/tools/genTable'
+import crudGenTable, { downloadZip, generatorCode, syncFieldGenTable } from '@/api/modules/tools/genTable'
 import { useDialog } from '@/components/Dialog/hooks/useDialog'
 import type { DataConfig } from '@/types/global'
 import { downloadFile } from '@/util'
@@ -92,7 +92,7 @@ async function getDataList(current?: number) {
     name: 'daterange',
     prop: 'createdTime',
   })
-  const res = await crudGenTable.list(params)
+  const res = await crudGenTable.page(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)
   pagination.value.page = Number(get(res, 'current', 1))
@@ -115,22 +115,6 @@ function currentChange(page = 1) {
 // 字段排序
 function sortChange({ prop, order }: any) {
   onSortChange(prop, order).then(() => getDataList())
-}
-
-function onAdd() {
-  if (data.value.formMode === 'router') {
-    router.push({
-      name: 'ToolsGeneratorCreate',
-      params: {
-        type: 'add',
-      },
-    })
-  }
-  else {
-    data.value.formModeProps.id = ''
-    data.value.formModeProps.visible = true
-    data.value.formModeProps.type = ActionEnum.ADD
-  }
 }
 
 function onEdit(row?: any) {
@@ -174,23 +158,6 @@ function onEdit(row?: any) {
   }
 }
 
-function onView(row: any) {
-  if (data.value.formMode === 'router') {
-    router.push({
-      name: 'ToolsGeneratorDetail',
-      params: {
-        id: row.id,
-        type: ActionEnum.VIEW,
-      },
-    })
-  }
-  else {
-    data.value.formModeProps.id = row.id
-    data.value.formModeProps.visible = true
-    data.value.formModeProps.type = ActionEnum.VIEW
-  }
-}
-
 function onDel(row?: any) {
   let ids: string[] = []
   if (row) {
@@ -200,7 +167,7 @@ function onDel(row?: any) {
     ids = data.value.batch.selectionDataList.map(item => item.id ?? '')
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudGenTable.delete(ids).then(() => {
+    crudGenTable.remove(ids).then(() => {
       getDataList()
       ElMessage.success({
         message: '删除成功',
@@ -251,7 +218,7 @@ async function genCommand(template: 'WEB_PLUS' | 'BACKEND') {
 }
 
 function onSync(row?: any) {
-  crudGenTable.syncField(row.id).then(() => {
+  syncFieldGenTable(row.id).then(() => {
     getDataList()
     ElMessage.success({
       message: '同步成功',
@@ -529,7 +496,8 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
   .page-main {
     flex: 1;
     overflow: auto;
-    :deep(.main-container){
+
+    :deep(.main-container) {
       flex: 1;
       overflow: auto;
       display: flex;
@@ -559,7 +527,6 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
         }
       }
     }
-
   }
 
   .el-divider {

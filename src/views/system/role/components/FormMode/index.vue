@@ -58,30 +58,30 @@ function onCancel() {
 
 <template>
   <div>
-    <el-dialog
+    <ElDialog
       v-if="props.mode === 'dialog'" v-model="myVisible" :close-on-click-modal="false" :title="title"
       append-to-body destroy-on-close width="600px"
     >
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>
-        <el-button size="large" @click="onCancel">
+        <ElButton size="large" @click="onCancel">
           取 消
-        </el-button>
-        <el-button type="primary" size="large" @click="onSubmit">
+        </ElButton>
+        <ElButton type="primary" size="large" @click="onSubmit">
           确 定
-        </el-button>
+        </ElButton>
       </template>
-    </el-dialog>
-    <el-drawer v-else-if="props.mode === 'drawer'" v-model="myVisible" :title="title" size="600px" :close-on-click-modal="false" destroy-on-close>
+    </ElDialog>
+    <ElDrawer v-else-if="props.mode === 'drawer'" v-model="myVisible" :title="title" size="600px" :close-on-click-modal="false" destroy-on-close>
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>
-        <el-button size="large" @click="onCancel">
+        <ElButton size="large" @click="onCancel">
           取 消
-        </el-button>
-        <el-button type="primary" size="large" @click="onSubmit">
+        </ElButton>
+        <ElButton type="primary" size="large" @click="onSubmit">
           确 定
-        </el-button>
+        </ElButton>
       </template>
-    </el-drawer>
+    </ElDrawer>
   </div>
 </template>

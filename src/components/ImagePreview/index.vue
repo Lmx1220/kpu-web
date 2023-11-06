@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+defineOptions({
+  name: 'ImagePreview',
+})
+
 const props = withDefaults(
   defineProps<{
     src: string
@@ -11,10 +15,6 @@ const props = withDefaults(
   },
 )
 
-defineOptions({
-  name: 'ImagePreview',
-})
-
 const realWidth = computed(() => {
   return typeof props.width === 'string' ? props.width : `${props.width}px`
 })
@@ -25,13 +25,13 @@ const realHeight = computed(() => {
 </script>
 
 <template>
-  <el-image :src="src" fit="cover" :style="`width:${realWidth};height:${realHeight};`" :preview-src-list="[src]" preview-teleported>
+  <ElImage :src="src" fit="cover" :style="`width:${realWidth};height:${realHeight};`" :preview-src-list="[src]" preview-teleported>
     <template #error>
       <div class="image-slot">
-        <svg-icon name="image-load-fail" />
+        <SvgIcon name="image-load-fail" />
       </div>
     </template>
-  </el-image>
+  </ElImage>
 </template>
 
 <style lang="scss" scoped>

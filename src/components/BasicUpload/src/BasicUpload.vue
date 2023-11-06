@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { omit } from 'lodash-es'
 import { useAttrs } from 'vue'
-import { useI18n } from 'vue-i18n'
+
 import UploadDialog from './UploadDialog.vue'
 import { useDialog } from '@/components/Dialog/hooks/useDialog'
 import type { FileResultVO } from '@/api/modules/system/model/fileModel'
@@ -29,6 +29,9 @@ export interface UploadContainerProps extends BasicProps {
   showPreviewButton?: boolean
 }
 
+defineOptions({
+  name: 'BasicUpload',
+})
 const props = withDefaults(defineProps<UploadContainerProps>(), {
   name: 'file',
   filename: null,
@@ -38,7 +41,7 @@ const props = withDefaults(defineProps<UploadContainerProps>(), {
   emptyHidePreview: false,
   helpText: '',
   maxSize: 2,
-  maxNumber: Infinity,
+  maxNumber: Number.POSITIVE_INFINITY,
   accept: () => [],
   multiple: true,
   uploadParams: () => ({}),
@@ -49,9 +52,6 @@ const emits = defineEmits<{
   'previewDelete': [Recordable<any>]
   'update:value': [FileResultVO[]]
 }>()
-defineOptions({
-  name: 'BasicUpload',
-})
 const { t } = useI18n()
 
 const fileList = ref<FileResultVO[]>([])
@@ -94,25 +94,25 @@ const [registerPreviewDialog, { openDialog: openPreviewDialog }] = useDialog()
 
 <template>
   <div>
-    <el-button-group>
-      <el-button @click="openUploadDialog()">
+    <ElButtonGroup>
+      <ElButton @click="openUploadDialog()">
         {{ t('component.upload.upload') }}
-      </el-button>
-      <el-tooltip v-if="showPreview && showPreviewButton" placement="bottom">
+      </ElButton>
+      <ElTooltip v-if="showPreview && showPreviewButton" placement="bottom">
         <template #content>
           {{ t('component.upload.uploaded') }}
           <template v-if="fileList.length">
             {{ fileList.length }}
           </template>
         </template>
-        <el-button @click="openPreviewDialog()">
-          <svg-icon name="bi:eye" />
+        <ElButton @click="openPreviewDialog()">
+          <SvgIcon name="bi:eye" />
           <template v-if="fileList.length && showPreviewNumber">
             {{ fileList.length }}
           </template>
-        </el-button>
-      </el-tooltip>
-    </el-button-group>
+        </ElButton>
+      </ElTooltip>
+    </ElButtonGroup>
     <UploadDialog
       v-bind="bindValue"
       :preview-file-list="fileList"

@@ -2,7 +2,7 @@
 import type { UploadRawFile } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { isFunction } from 'lodash-es'
-import { useI18n } from 'vue-i18n'
+
 import { checkImgType, getBase64WithFile } from './helper'
 import { useUploadType } from './useUpload'
 import type { FileResultVO } from '@/api/modules/system/model/fileModel'
@@ -19,7 +19,7 @@ interface Props extends BasicProps {
 
 const props = withDefaults(defineProps<Props>(), {
   previewFileList: () => [],
-  maxNumber: Infinity,
+  maxNumber: Number.POSITIVE_INFINITY,
   accept: () => [],
   helpText: '',
   maxSize: 2,
@@ -243,28 +243,28 @@ function handleRemove(record: FileItem) {
     @ok="handleOk"
   >
     <template #centerFooter>
-      <el-button
+      <ElButton
         type="success"
         :disabled="!getIsSelectFile"
         :loading="isUploadingRef"
         @click="handleStartUpload"
       >
         {{ getUploadBtnText }}
-      </el-button>
+      </ElButton>
     </template>
     <div class="upload-dialog-toolbar">
-      <el-alert :title="getHelpText" type="info" class="upload-dialog-toolbar__text" show-icon :closable="false" />
-      <el-upload
+      <ElAlert :title="getHelpText" type="info" class="upload-dialog-toolbar__text" show-icon :closable="false" />
+      <ElUpload
         :accept="getStringAccept"
         :multiple="multiple"
         :before-upload="beforeUpload"
         :show-upload-list="false"
         class="upload-dialog-toolbar__btn"
       >
-        <el-button type="primary">
+        <ElButton type="primary">
           {{ t('component.upload.choose') }}
-        </el-button>
-      </el-upload>
+        </ElButton>
+      </ElUpload>
     </div>
     <FileList v-model:data-source="fileListRef" @delete="handleRemove" />
   </BaseDialog>
@@ -273,10 +273,6 @@ function handleRemove(record: FileItem) {
 <style lang="scss" scoped>
 // scss
 .upload-dialog {
-  //.ant-upload-list {
-  //  display: none;
-  //}
-
   &-toolbar {
     display: flex;
     align-items: center;

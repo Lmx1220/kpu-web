@@ -47,7 +47,8 @@
   position: relative;
 
   #nprogress {
-    .spinner, .bar {
+    .spinner,
+    .bar {
       position: absolute;
     }
   }
@@ -58,7 +59,7 @@
     transform: rotate(0);
   }
 
-  to {
+  100% {
     transform: rotate(360deg);
   }
 }

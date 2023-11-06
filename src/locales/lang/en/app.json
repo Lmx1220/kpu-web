@@ -1,0 +1,36 @@
+{
+  "account": "account",
+  "captcha": "captcha",
+  "check": "Submit",
+  "goLogin": "go login",
+  "hotkeys": "Hotkeys Introduction",
+  "login": "Login",
+  "logout": "Logout",
+  "newPassword": "new password",
+  "password": "password",
+  "preferences": "Preferences",
+  "profile": "Profile",
+  "search": {
+    "alt_s": "Wake up search panel",
+    "enter": "Visit page",
+    "esc": "Exit",
+    "input": "Search page, support title, URL fuzzy query",
+    "type": {
+      "menu": "Search menu",
+      "tab": "Search tag"
+    },
+    "up_down": "Switch search results"
+  },
+  "sendCaptcha": "send captcha",
+  "tabbar": {
+    "close": "Close",
+    "closeLeftSide": "Close Leftside Tabs",
+    "closeOtherSide": "Close Otherside Tabs",
+    "closeRightSide": "Close Rightside Tabs",
+    "maximize": "Maximize",
+    "searchTabs": "Search Tabs",
+    "pin": "Pin",
+    "reload": "Reload",
+    "unpin": "Unpin"
+  }
+}

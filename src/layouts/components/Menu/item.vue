@@ -102,7 +102,7 @@ defineExpose({
 <style lang="scss" scoped>
 :deep(.badge) {
   & > span {
-    --at-apply: left-initial\! right-0;
+    --at-apply: important-left-initial right-0;
   }
 }
 </style>

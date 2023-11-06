@@ -82,7 +82,7 @@ async function getDataList(current?: number) {
       prop: 'createdTime',
     })
     params.model.orgIdList = orgIds.value
-    const res = await crudStation.list(params)
+    const res = await crudStation.page(params)
     data.value.dataList = get(res, 'records', [])
     pagination.value.total = Number(res.total)
     pagination.value.page = Number(get(res, 'current', 1))
@@ -117,7 +117,7 @@ function onAdd() {
     router.push({
       name: 'SystemStationCreate',
       params: {
-        type: 'add',
+        type: ActionEnum.ADD,
       },
     })
   }
@@ -145,24 +145,6 @@ function onEdit(row: any) {
   }
 }
 
-function onView(row: any) {
-  if (data.value.formMode === 'router') {
-    router.push({
-      name: 'SystemStationDetail',
-      params: {
-        id: row.id,
-        type: ActionEnum.VIEW,
-      },
-    })
-  }
-  else {
-    data.value.formModeProps.id = row.id
-    data.value.formModeProps.visible = true
-    data.value.formModeProps.type = ActionEnum.VIEW
-    data.value.formModeProps.data = row
-  }
-}
-
 function onDel(row?: any) {
   let ids: string[] = []
   if (row) {
@@ -172,7 +154,7 @@ function onDel(row?: any) {
     ids = data.value.batch.selectionDataList.map(item => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudStation.delete(ids).then(() => {
+    crudStation.remove(ids).then(() => {
       getDataList()
       ElMessage.success({
         message: '删除成功',
@@ -316,7 +298,8 @@ function onReset() {
   .page-main {
     flex: 1;
     overflow: auto;
-    :deep(.main-container){
+
+    :deep(.main-container) {
       flex: 1;
       overflow: auto;
       display: flex;
@@ -359,7 +342,7 @@ function onReset() {
 .search-form {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: -18px
+  margin-bottom: -18px;
 }
 
 .page-main {
@@ -379,7 +362,6 @@ function onReset() {
         }
       }
     }
-
   }
 }
 </style>

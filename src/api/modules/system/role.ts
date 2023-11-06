@@ -16,6 +16,7 @@ const ServicePrefix = ''
 
 export const Api = {
   Page: { url: `${ServicePrefix}/${MODULAR}/page`, method: RequestEnum.POST } as AxiosRequestConfig,
+  GetMyListRole: { url: `${ServicePrefix}/${MODULAR}/myPage`, method: RequestEnum.POST } as AxiosRequestConfig,
   Save: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.POST } as AxiosRequestConfig,
   Update: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.PUT },
   Delete: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.DELETE } as AxiosRequestConfig,
@@ -52,7 +53,7 @@ export function copy(id: string) {
 }
 
 export function getMyListRole(params: PageParams<RolePageQuery>) {
-  return defHttp.request<PageResult<RoleResultVO>>({ ...Api.Page, params })
+  return defHttp.request<PageResult<RoleResultVO>>({ ...Api.GetMyListRole, params })
 }
 
 export function resourceList(roleId: string) {
@@ -72,13 +73,10 @@ export function saveRoleUser(data: RoleUserSaveVO) {
 }
 
 export default {
-  list: page,
+  page,
+  save,
+  update,
+  remove,
+  query,
   detail,
-  create: save,
-  edit: update,
-  delete: remove,
-  resourceList,
-  saveResource,
-  userList,
-  saveRoleUser,
 }

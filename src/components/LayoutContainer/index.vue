@@ -88,10 +88,11 @@ const enabledRightSide = computed(() => {
   .right-side,
   .main {
     --container-padding: 15px;
+
     height: 100%;
     padding: var(--container-padding);
     background-color: var(--g-container-bg);
-    transition: background-color .3s;
+    transition: background-color 0.3s;
   }
 
   .left-side {

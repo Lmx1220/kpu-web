@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
 import { useFullscreen } from '@vueuse/core'
 import Notification from './Notification/index.vue'
 import eventBus from '@/util/eventBus'

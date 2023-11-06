@@ -83,7 +83,7 @@ async function getDataList(current?: number) {
     params.extra.createdTime_st = data.value.daterange[0]
     params.extra.createdTime_ed = data.value.daterange[1]
   }
-  const res = await crudParameter.list(params)
+  const res = await crudParameter.page(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)
   pagination.value.page = Number(get(res, 'current', 1))
@@ -116,7 +116,7 @@ function onAdd() {
     router.push({
       name: 'routerName',
       params: {
-        type: 'add',
+        type: ActionEnum.ADD,
       },
     })
   }
@@ -170,7 +170,7 @@ function onDel(row?: any) {
     ids = data.value.batch.selectionDataList.map(item => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudParameter.delete(ids).then(() => {
+    crudParameter.remove(ids).then(() => {
       getDataList()
       ElMessage.success({
         message: '模拟删除成功',
@@ -323,7 +323,8 @@ function onDel(row?: any) {
   .page-main {
     flex: 1;
     overflow: auto;
-    :deep(.main-container){
+
+    :deep(.main-container) {
       flex: 1;
       overflow: auto;
       display: flex;
@@ -353,7 +354,6 @@ function onDel(row?: any) {
         }
       }
     }
-
   }
 
   .el-divider {

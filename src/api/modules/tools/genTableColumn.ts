@@ -57,10 +57,10 @@ export function syncFieldGenTableColumn(data: {
 }
 
 export default {
-  list: page,
+  page,
+  save,
+  update,
+  remove,
+  query,
   detail,
-  create: save,
-  edit: update,
-  delete: remove,
-  syncField: syncFieldGenTableColumn,
 }

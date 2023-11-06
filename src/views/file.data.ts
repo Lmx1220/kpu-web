@@ -1,7 +1,7 @@
 import type { VxeGridPropTypes } from 'vxe-table'
 import type { FormSchemaExt } from '@/api/modules/common/formValidateService'
 
-const { t } = useI18nL()
+const { t } = useI18n()
 
 export function formItems(): Partial<any>[] {
   return [

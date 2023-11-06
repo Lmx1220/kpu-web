@@ -32,9 +32,9 @@ watch(
       v-for="iframe in iframeStore.openedList" :key="iframe.path" v-loading="iframe.isLoading" class="iframe"
       :class="{ actived: route.fullPath === iframe.path }"
     >
-      <transition name="iframe" mode="out-in" appear>
+      <Transition name="iframe" mode="out-in" appear>
         <iframe v-show="route.fullPath === iframe.path" ref="iframeRef" :src="iframe.src" :data-path="iframe.path" frameborder="0" />
-      </transition>
+      </Transition>
     </div>
   </div>
 </template>
@@ -57,25 +57,25 @@ watch(
   iframe {
     flex: 1;
     width: 100%;
-    height: 100%
+    height: 100%;
   }
 }
 
 .iframe-enter-active {
-    transition: .2s
+  transition: 0.2s;
 }
 
 .iframe-leave-active {
-    transition: .15s
+  transition: 0.15s;
 }
 
 .iframe-enter-from {
-    opacity: 0;
-    margin-left: -20px
+  opacity: 0;
+  margin-left: -20px;
 }
 
 .iframe-leave-to {
-    opacity: 0;
-    margin-left: 20px
+  opacity: 0;
+  margin-left: 20px;
 }
 </style>

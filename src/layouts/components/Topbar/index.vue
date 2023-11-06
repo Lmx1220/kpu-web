@@ -63,13 +63,14 @@ watch(scrollTop, (value, oldValue) => {
   display: flex;
   flex-direction: column;
   box-shadow: 0 1px 0 0 var(--g-border-color);
-  transition: width .3s, top .3s, transform .3s, box-shadow .3s;
+  transition: width 0.3s, top 0.3s, transform 0.3s, box-shadow 0.3s;
+
   &.topbar-fixed,
   &.topbar-sticky {
     position: fixed;
 
     &.shadow {
-      box-shadow: 0 10px 10px -10px var(--g-box-shadow-color)
+      box-shadow: 0 10px 10px -10px var(--g-box-shadow-color);
     }
   }
 

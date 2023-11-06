@@ -30,7 +30,7 @@ export function urlToBase64(url: string, mineType?: string): Promise<string> {
     img.crossOrigin = ''
     img.onload = function () {
       if (!canvas || !ctx) {
-        return reject()
+        return reject(new Error('Canvas or context not found'))
       }
       canvas.height = img.height
       canvas.width = img.width

@@ -55,135 +55,135 @@ export interface DialogProps {
   closeFunc: () => Promise<any>
 
   /**
-     * Specify a function that will be called when dialog is closed completely.
-     * @type Function
-     */
+   * Specify a function that will be called when dialog is closed completely.
+   * @type Function
+   */
   afterClose?: () => any
 
   /**
-     * Body style for dialog body element. Such as height, padding etc.
-     * @default {}
-     * @type object
-     */
+   * Body style for dialog body element. Such as height, padding etc.
+   * @default {}
+   * @type object
+   */
   bodyStyle?: CSSProperties
 
   /**
-     * Text of the Cancel button
-     * @default 'cancel'
-     * @type string
-     */
+   * Text of the Cancel button
+   * @default 'cancel'
+   * @type string
+   */
   cancelText?: string
 
   /**
-     * Centered Dialog
-     * @default false
-     * @type boolean
-     */
+   * Centered Dialog
+   * @default false
+   * @type boolean
+   */
   centered?: boolean
 
   /**
-     * Whether a close (x) button is visible on top right of the dialog or not
-     * @default true
-     * @type boolean
-     */
+   * Whether a close (x) button is visible on top right of the dialog or not
+   * @default true
+   * @type boolean
+   */
   closable?: boolean
   /**
-     * Whether a close (x) button is visible on top right of the dialog or not
-     */
+   * Whether a close (x) button is visible on top right of the dialog or not
+   */
   // closeIcon?: VNodeChild | JSX.Element
 
   /**
-     * Whether to apply loading visual effect for OK button or not
-     * @default false
-     * @type boolean
-     */
+   * Whether to apply loading visual effect for OK button or not
+   * @default false
+   * @type boolean
+   */
   confirmLoading?: boolean
 
   /**
-     * Whether to unmount child components on onClose
-     * @default false
-     * @type boolean
-     */
+   * Whether to unmount child components on onClose
+   * @default false
+   * @type boolean
+   */
   destroyOnClose?: boolean
 
   /**
-     * Footer content, set as :footer="null" when you don't need default buttons
-     * @default OK and Cancel buttons
-     * @type any (string | slot)
-     */
+   * Footer content, set as :footer="null" when you don't need default buttons
+   * @default OK and Cancel buttons
+   * @type any (string | slot)
+   */
   footer?: VNodeChild | JSX.Element
 
   /**
-     * Return the mount node for Dialog
-     * @default () => document. Body
-     * @type Function
-     */
+   * Return the mount node for Dialog
+   * @default () => document. Body
+   * @type Function
+   */
   getContainer?: (instance: any) => HTMLElement
 
   /**
-     * Whether show mask or not.
-     * @default true
-     * @type boolean
-     */
+   * Whether show mask or not.
+   * @default true
+   * @type boolean
+   */
   mask?: boolean
 
   /**
-     * Whether to close the dialog when the mask (area outside the dialog) is clicked
-     * @default true
-     * @type boolean
-     */
+   * Whether to close the dialog when the mask (area outside the dialog) is clicked
+   * @default true
+   * @type boolean
+   */
   closeOnClickModal?: boolean
 
   /**
-     * Style for dialog's mask element.
-     * @default {}
-     * @type object
-     */
+   * Style for dialog's mask element.
+   * @default {}
+   * @type object
+   */
   maskStyle?: CSSProperties
 
   /**
-     * Text of the OK button
-     * @default 'OK'
-     * @type string
-     */
+   * Text of the OK button
+   * @default 'OK'
+   * @type string
+   */
   okText?: string
 
   /**
-     * Button type of the OK button
-     * @default 'primary'
-     * @type string
-     */
+   * Button type of the OK button
+   * @default 'primary'
+   * @type string
+   */
   okType?: 'primary' | 'danger' | 'dashed' | 'ghost' | 'default'
 
   /**
-     * The ok button props, follow jsx rules
-     * @type object
-     */
+   * The ok button props, follow jsx rules
+   * @type object
+   */
   okButtonProps?: Partial<ButtonProps>
 
   /**
-     * The cancel button props, follow jsx rules
-     * @type object
-     */
+   * The cancel button props, follow jsx rules
+   * @type object
+   */
   cancelButtonProps?: Partial<ButtonProps>
 
   /**
-     * The dialog's title
-     * @type any (string | slot)
-     */
+   * The dialog's title
+   * @type any (string | slot)
+   */
   title?: string | VNodeChild | JSX.Element
 
   /**
-     * Width of the dialog
-     * @default 520
-     * @type string | number
-     */
+   * Width of the dialog
+   * @default 520
+   * @type string | number
+   */
   width?: string | number
   /**
-     * The z-index of the Dialog
-     * @default 1000
-     * @type number
-     */
+   * The z-index of the Dialog
+   * @default 1000
+   * @type number
+   */
   zIndex?: number
 }
 

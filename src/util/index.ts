@@ -116,22 +116,6 @@ export function setObjToUrlParams(baseUrl: string, obj: any): string {
   return /\?$/.test(baseUrl) ? baseUrl + parameters : baseUrl.replace(/\/?$/, '?') + parameters
 }
 
-interface NodeConfig {
-  id: string
-  children: string
-  parentId: string
-  name: string
-}
-
-const nodeConfig: NodeConfig = {
-  id: 'id',
-  children: 'children',
-  parentId: 'parentId',
-  name: 'name',
-}
-
-const createNode = (partialNode: Partial<NodeConfig>): NodeConfig => Object.assign({}, nodeConfig, partialNode)
-
 export function openWindow(
   url: string,
   opt?: { target?: TargetContext | string; noopener?: boolean; noreferrer?: boolean },

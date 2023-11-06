@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
 import DetailForm from './components/DetailForm/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import eventBus from '@/util/eventBus'

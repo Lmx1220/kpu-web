@@ -6,10 +6,10 @@ services:
       context: .
       dockerfile: Dockerfile
     networks:
-        - api-server
+      - api-server
     container_name: frontend
     ports:
-      - "80:80"
+      - '80:80'
     restart: always
 networks:
   api-server:

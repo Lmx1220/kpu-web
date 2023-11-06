@@ -106,18 +106,18 @@ defineExpose({
     form.value?.validate((valid) => {
       if (valid) {
         if (props.type === ActionEnum.ADD) {
-          crudUser.create(data.value.form).then(() => {
+          crudUser.save(data.value.form).then(() => {
             ElMessage.success({
-              message: '新增成功',
+              message: t('common.tips.addSuccess'),
               center: true,
             })
             callback && callback()
           })
         }
         else if (props.type === ActionEnum.EDIT) {
-          crudUser.edit(data.value.form).then(() => {
+          crudUser.update(data.value.form).then(() => {
             ElMessage.success({
-              message: '编辑成功',
+              message: t('common.tips.editSuccess'),
               center: true,
             })
             callback && callback()
@@ -220,7 +220,7 @@ defineExpose({
             filterable
             multiple
             show-checkbox
-            style="width: 250px"
+            style="width: 250px;"
             value-key="id"
           />
         </ElFormItem>

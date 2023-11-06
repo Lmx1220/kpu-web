@@ -4,9 +4,9 @@ import type { ErrorMessageMode } from '#/axios'
 
 /**
  * @description: 校验网络请求状态码
- * @param {Number} status
- * @param {String} msg
- * @param {String} errorMessageMode
+ * @param {number} status
+ * @param {string} msg
+ * @param {string} errorMessageMode
  * @return void
  */
 export function checkStatus(status: number, msg: string,

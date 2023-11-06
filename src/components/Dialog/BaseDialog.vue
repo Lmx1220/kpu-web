@@ -8,6 +8,10 @@ import type { DialogMethods, DialogProps } from './typing'
 import { isFunction } from '@/util/is'
 import { deepMerge } from '@/util'
 
+defineOptions({
+  name: 'BaseDialog',
+  inheritAttrs: false,
+})
 const props = withDefaults(defineProps<Partial<DialogProps>>(), {
   scrollTop: true,
   draggable: true,
@@ -31,18 +35,13 @@ const emits = defineEmits<{
   'cancel': [Event?]
   'ok': [Event]
 }>()
-const { t } = useI18nL()
+const { t } = useI18n()
 const cancelText = computed(() => {
   return t('common.cancelText')
 })
 const okText = computed(() => {
   return t('common.okText')
 })
-defineOptions({
-  name: 'BaseDialog',
-  inheritAttrs: false,
-})
-
 const attrs = useAttrs()
 const propsRef = ref<Partial<DialogProps> | null>(null)
 const dialogWrapperRef = ref<InstanceType<typeof DialogWrapper>>()
@@ -164,7 +163,7 @@ function handleFullScreen(e: Event) {
 </script>
 
 <template>
-  <el-dialog v-bind="getBindValue" :show-close="false" @close="handleCancel">
+  <ElDialog v-bind="getBindValue" :show-close="false" @close="handleCancel">
     <template v-if="!$slots.footer" #footer>
       <DialogFooter v-bind="getBindValue" @cancel="handleCancel" @ok="handleOk">
         <template v-for="item in Object.keys($slots)" #[item]="data">
@@ -199,8 +198,9 @@ function handleFullScreen(e: Event) {
     <template v-for="item in Object.keys(omit($slots, 'default'))" #[item]="data">
       <slot :name="item" v-bind="data || {}" />
     </template>
-  </el-dialog>
+  </ElDialog>
 </template>
 
 <style lang="scss" scoped>
+// scss
 </style>

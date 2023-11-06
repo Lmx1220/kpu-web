@@ -131,7 +131,7 @@ VXETable.use(VXETablePluginElement)
 
 app.use(pinia)
 app.use(router)
-useI18n(app)
+await useI18n(app)
 app.use(directive)
 errorLog(app)
 

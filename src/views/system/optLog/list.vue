@@ -5,7 +5,7 @@ import FormMode from './components/FormMode/index.vue'
 import type { DictOption, Option } from '@/api/model/baseModel'
 import { findEnumListByType } from '@/api/modules/common/dict'
 import type { OptLogPageQuery } from '@/api/modules/system/model/optLogModel'
-import crudOptLog from '@/api/modules/system/optLog'
+import crudOptLog, { clear } from '@/api/modules/system/optLog'
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
@@ -98,7 +98,7 @@ async function getDataList(current?: number) {
   //   params.extra.createdTime_st = data.value.daterange[0]
   //   params.extra.createdTime_ed = data.value.daterange[1]
   // }
-  const res = await crudOptLog.list(params)
+  const res = await crudOptLog.page(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)
   pagination.value.page = Number(get(res, 'current', 1))
@@ -124,58 +124,6 @@ function sortChange({
   order,
 }: any) {
   onSortChange(prop, order).then(() => getDataList())
-}
-
-function filterChange(filters: any) {
-  const { queryParams } = toValue(data)
-  for (const key in filters) {
-    if (key.includes('.')) {
-      queryParams.model[key.split('.')[0]] = filters[key]
-    }
-    else {
-      queryParams.model[key] = filters[key]
-    }
-    if (key === 'state') {
-      queryParams.model[key] = filters[key][0]
-    }
-  }
-
-  getDataList(1)
-}
-
-function onAdd() {
-  if (data.value.formMode === 'router') {
-    router.push({
-      name: 'SystemOptLogCreate',
-      query: {
-        type: 'add',
-      },
-    })
-  }
-  else {
-    data.value.formModeProps.id = ''
-    data.value.formModeProps.visible = true
-    data.value.formModeProps.type = ActionEnum.ADD
-  }
-}
-
-function onEdit(row: any) {
-  if (data.value.formMode === 'router') {
-    router.push({
-      name: 'SystemOptLogEdit',
-      params: {
-        id: row.id,
-      },
-      query: {
-        type: 'edit',
-      },
-    })
-  }
-  else {
-    data.value.formModeProps.id = row.id
-    data.value.formModeProps.visible = true
-    data.value.formModeProps.type = ActionEnum.EDIT
-  }
 }
 
 function onView(row: any) {
@@ -206,7 +154,7 @@ function onDel(row?: any) {
     ids = data.value.batch.selectionDataList.map(item => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudOptLog.delete(ids).then(() => {
+    crudOptLog.remove(ids).then(() => {
       getDataList()
       ElMessage.success({
         message: '模拟删除成功',
@@ -219,7 +167,7 @@ function onDel(row?: any) {
 
 function onCommand(type: number) {
   ElMessageBox.confirm('确认要清理数据吗？').then(() => {
-    crudOptLog.clear(type).then(() => {
+    clear(type).then(() => {
       getDataList(1)
       ElMessage.success({
         message: '清理成功',
@@ -454,7 +402,8 @@ async function getDict() {
   .page-main {
     flex: 1;
     overflow: auto;
-    :deep(.main-container){
+
+    :deep(.main-container) {
       flex: 1;
       overflow: auto;
       display: flex;
@@ -484,7 +433,6 @@ async function getDict() {
         }
       }
     }
-
   }
 
   > .el-divider {

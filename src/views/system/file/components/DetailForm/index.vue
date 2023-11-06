@@ -56,18 +56,18 @@ defineExpose({
       if (valid) {
         const { form } = toValue(data)
         if (props.type === ActionEnum.ADD) {
-          crudFile.create(data.value.form).then(() => {
+          crudFile.save(data.value.form).then(() => {
             ElMessage.success({
-              message: '新增成功',
+              message: t('common.tips.addSuccess'),
               center: true,
             })
             callback && callback()
           })
         }
         else if (props.type === ActionEnum.EDIT && form.id) {
-          crudFile.edit({ ...form, id: form.id }).then(() => {
+          crudFile.update({ ...form, id: form.id }).then(() => {
             ElMessage.success({
-              message: '编辑成功',
+              message: t('common.tips.editSuccess'),
               center: true,
             })
             callback && callback()

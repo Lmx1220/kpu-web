@@ -22,21 +22,27 @@ export const Api = {
 export function page(params: PageParams<UserPageQuery>) {
   return defHttp.request<PageResult<UserResultVO>>({ ...Api.Page, params })
 }
+
 export function save(params: UserSaveVO) {
   return defHttp.request<UserResultVO>({ ...Api.Save, params })
 }
+
 export function update(params: UserUpdateVO) {
   return defHttp.request<UserResultVO>({ ...Api.Update, params })
 }
+
 export function remove(params: string[]) {
   return defHttp.request<boolean>({ ...Api.Delete, params })
 }
+
 export function query(params: UserPageQuery) {
   return defHttp.request<UserResultVO[]>({ ...Api.Query, params })
 }
+
 export function detail(id: string) {
   return defHttp.request<UserResultVO>({ ...Api.Detail, params: { id } })
 }
+
 export function copy(id: string) {
   return defHttp.request<UserResultVO>({ ...Api.Copy, params: { id } })
 }
@@ -50,11 +56,10 @@ export function saveUserRole(data: UserRoleSaveVO) {
 }
 
 export default {
-  list: page,
+  page,
+  query,
   detail,
-  create: save,
-  edit: update,
-  delete: remove,
-  roleList,
-  saveUserRole,
+  save,
+  update,
+  remove,
 }

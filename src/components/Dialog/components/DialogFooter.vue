@@ -13,6 +13,9 @@ interface Props {
   okButtonProps?: PropType<Partial<ButtonProps>>
 }
 
+defineOptions({
+  name: 'BasicDialogFooter',
+})
 withDefaults(defineProps<Props>(), {
   // okText: '确定',
   // cancelText: '取消',
@@ -27,10 +30,6 @@ const emits = defineEmits<{
   'ok': [Event]
   'cancel': [Event]
 }>()
-
-defineOptions({
-  name: 'BasicDialogFooter',
-})
 
 function handleOk(e: Event) {
   emits('ok', e)
@@ -62,5 +61,5 @@ function handleCancel(e: Event) {
 </template>
 
 <style scoped lang="scss">
-
+// scss
 </style>

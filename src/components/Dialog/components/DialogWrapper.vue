@@ -4,6 +4,10 @@ import { createDialogContext } from '../hooks/useDialogContext'
 import { useWindowSizeFn } from '@/hooks/useWindowSizeFn'
 import type { AnyFunction } from '@/hooks/utils'
 
+defineOptions({
+  name: 'DialogWrapper',
+  inheritAttrs: false,
+})
 const props = defineProps({
   loading: { type: Boolean },
   useWrapper: {
@@ -36,10 +40,6 @@ const emits = defineEmits<{
   'extHeight': [number]
 }
 >()
-defineOptions({
-  name: 'DialogWrapper',
-  inheritAttrs: false,
-})
 const wrapperRef = ref()
 const spinRef = ref()
 const realHeightRef = ref(0)
@@ -162,14 +162,14 @@ defineExpose({
 </script>
 
 <template>
-  <el-scrollbar
+  <ElScrollbar
     ref="wrapperRef" v-loading="loading" :element-loading-text="loadingTip"
     :wrap-style="{ minHeight: `${minHeight}px` }" :height="height" :max-height="realHeightRef"
   >
     <div ref="spinRef">
       <slot />
     </div>
-  </el-scrollbar>
+  </ElScrollbar>
 </template>
 
 <style lang="scss" scoped>

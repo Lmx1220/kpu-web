@@ -1,4 +1,5 @@
 import path from 'node:path'
+import process from 'node:process'
 import fs from 'fs-extra'
 import inquirer from 'inquirer'
 import { lookupCollection, lookupCollections } from '@iconify/json'
@@ -18,11 +19,11 @@ async function generateIcons() {
   }).sort((a, b) => a.name.localeCompare(b.name))
   console.log(collections.map(item => `${item.name} : ${item.id}`))
   /**
-     * 分别会在对应目录下生成以下文件，其中(1)(3)用于离线下载并安装图标，(2)用于图标选择器使用
-     * (1) src/iconify/index.json    记录用户 inquirer 的交互信息
-     * (2) src/iconify/data.json     包含多个图标集数据，仅记录图标名
-     * (3) public/icons/*-raw.json   多个图标集的原始数据，独立存放，用于离线使用
-     */
+   * 分别会在对应目录下生成以下文件，其中(1)(3)用于离线下载并安装图标，(2)用于图标选择器使用
+   * (1) src/iconify/index.json    记录用户 inquirer 的交互信息
+   * (2) src/iconify/data.json     包含多个图标集数据，仅记录图标名
+   * (3) public/icons/*-raw.json   多个图标集的原始数据，独立存放，用于离线使用
+   */
   inquirer.prompt([
     {
       type: 'checkbox',

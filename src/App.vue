@@ -2,17 +2,18 @@
 import eruda from 'eruda'
 import VConsole from 'vconsole'
 import hotkeys from 'hotkeys-js'
-import { getElementLocales } from './locales'
+import { useTitle as usePageTitle } from '@vueuse/core'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 
 import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
+import { useLocale } from '@/locales/useLocale.ts'
 
 const route = useRoute()
-const locales = computed(() => getElementLocales())
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
+const locale = useLocale()
 const { auth } = useAuth()
 const { generateI18nTitle } = useI18nTitle()
 // 侧边栏主导航当前实际宽度
@@ -45,10 +46,12 @@ const subSidebarActualWidth = computed(() => {
   return `${actualWidth}px`
 })
 provide('generateI18nTitle', generateI18nTitle)
+const pageTitle = usePageTitle()
 watch([
   () => settingsStore.settings.app.enableDynamicTitle,
   () => settingsStore.title,
   () => settingsStore.customTitleList,
+  () => settingsStore.settings.app.defaultLang,
 ], () => {
   const breadcrumbNeste = route.meta.breadcrumbNeste
   const customTitle = settingsStore.customTitleList?.find(On => On.fullPath === route.fullPath)
@@ -62,7 +65,7 @@ watch([
     title = generateI18nTitle(secondLastBreadcrumb.i18n, settingsStore.title)
   }
 
-  document.title = title ? `${title} - ${import.meta.env.VITE_APP_TITLE}` : import.meta.env.VITE_APP_TITLE
+  pageTitle.value = title ? `${title} - ${import.meta.env.VITE_APP_TITLE}` : import.meta.env.VITE_APP_TITLE
 }, {
   immediate: true,
 })
@@ -86,7 +89,7 @@ import.meta.env.VITE_APP_DEBUG_TOOL === 'vconsole' && new VConsole()
 
 <template>
   <ElConfigProvider
-    :locale="locales[settingsStore.settings.app.defaultLang]" :button="{
+    :locale="locale.getElementLocale.value" :button="{
       autoInsertSpace: true,
     }"
   >
@@ -107,24 +110,3 @@ import.meta.env.VITE_APP_DEBUG_TOOL === 'vconsole' && new VConsole()
 <style lang="scss" scoped>
 // scss
 </style>
-
-<i18n global>
-{
-  "en": {
-    "language": "Language",
-    "hello": "hello, world!"
-  },
-  "ja": {
-    "language": "言語",
-    "hello": "こんにちは、世界！"
-  },
-  "zh-cn": {
-    "language": "语言",
-    "hello": "你好，世界！"
-  },
-  "zh-tw": {
-    "language": "語言",
-    "hello": "你好，世界！"
-  }
-}
-</i18n>

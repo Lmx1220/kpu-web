@@ -93,7 +93,7 @@ defineExpose({
     form.value?.validate((valid) => {
       if (valid) {
         if (props.type === ActionEnum.ADD) {
-          crudOptLog.create(data.value.form).then(() => {
+          crudOptLog.save(data.value.form).then(() => {
             ElMessage.success({
               message: '模拟新增成功',
               center: true,
@@ -102,7 +102,7 @@ defineExpose({
           })
         }
         else if (props.type === ActionEnum.EDIT) {
-          crudOptLog.edit(data.value.form).then(() => {
+          crudOptLog.update(data.value.form).then(() => {
             ElMessage.success({
               message: '模拟编辑成功',
               center: true,

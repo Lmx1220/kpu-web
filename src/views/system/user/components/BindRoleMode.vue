@@ -2,7 +2,7 @@
 import { ElMessage, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import usePagination from '@/util/usePagination'
-import crudUser from '@/api/modules/system/user'
+import { roleList, saveUserRole } from '@/api/modules/system/user'
 import { getMyListRole } from '@/api/modules/system/role'
 import { getCategoryColor } from '@/enums/colorEnum'
 import type { RolePageQuery } from '@/api/modules/system/model/roleModel'
@@ -123,7 +123,7 @@ function getDataList(current?: number) {
 }
 
 async function getBindRoles(id: string) {
-  const dataList = await crudUser.roleList(id)
+  const dataList = await roleList(id)
   data.value.bindRoles = dataList
 }
 
@@ -147,84 +147,84 @@ function sortChange({
 
 async function onBindUser(flag: boolean, id?: string) {
   const roleIdList = id ? [id] : data.value.batch.selectionDataList.map(item => item.id)
-  const res = await crudUser.saveUserRole({
+  const res = await saveUserRole({
     userId: props.id,
     roleIdList,
     flag,
   })
   data.value.bindRoles = res
-  ElMessage.success('操作成功')
+  ElMessage.success(t('sys.api.operationSuccess'))
 }
 </script>
 
 <template>
-  <el-dialog
+  <ElDialog
     v-model="myVisible" :close-on-click-modal="false" :title="title" append-to-body destroy-on-close
     width="70%" @open="handleOpen"
   >
-    <search-bar :fold="data.searchFold" :show-toggle="false">
+    <SearchBar :fold="data.searchFold" :show-toggle="false">
       <template #default="{ fold }">
-        <el-form
+        <ElForm
           :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
           size="default"
         >
-          <el-form-item label="编码">
-            <el-input
+          <ElFormItem label="编码">
+            <ElInput
               v-model="data.search.code" clearable placeholder="请输入编码，支持模糊查询"
               @clear="currentChange()" @keydown.enter="currentChange()"
             />
-          </el-form-item>
-          <el-form-item label="名称">
-            <el-input
+          </ElFormItem>
+          <ElFormItem label="名称">
+            <ElInput
               v-model="data.search.name" clearable placeholder="请输入名称，支持模糊查询"
               @clear="currentChange()" @keydown.enter="currentChange()"
             />
-          </el-form-item>
-          <el-form-item v-show="!fold" label="范围">
-            <el-radio-group v-model="data.search.scope" @change="currentChange()">
-              <el-radio-button :label="-1">
+          </ElFormItem>
+          <ElFormItem v-show="!fold" label="范围">
+            <ElRadioGroup v-model="data.search.scope" @change="currentChange()">
+              <ElRadioButton :label="-1">
                 全部
-              </el-radio-button>
-              <el-radio-button :label="1">
+              </ElRadioButton>
+              <ElRadioButton :label="1">
                 已绑定
-              </el-radio-button>
-              <el-radio-button :label="2">
+              </ElRadioButton>
+              <ElRadioButton :label="2">
                 未绑定
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="currentChange()">
+              </ElRadioButton>
+            </ElRadioGroup>
+          </ElFormItem>
+          <ElFormItem>
+            <ElButton type="primary" @click="currentChange()">
               <template #icon>
-                <svg-icon name="ep:search" />
+                <SvgIcon name="ep:search" />
               </template>
               筛选
-            </el-button>
-            <el-button link type="primary" @click="data.searchFold = !fold">
+            </ElButton>
+            <ElButton link type="primary" @click="data.searchFold = !fold">
               <template #icon>
-                <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                <SvgIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
               </template>
               {{ fold ? '展开' : '收起' }}
-            </el-button>
-          </el-form-item>
-        </el-form>
+            </ElButton>
+          </ElFormItem>
+        </ElForm>
       </template>
-    </search-bar>
-    <el-divider border-style="dashed" />
-    <el-space wrap>
-      <el-button
+    </SearchBar>
+    <ElDivider border-style="dashed" />
+    <ElSpace wrap>
+      <ElButton
         :disabled="!data.batch.selectionDataList.length" size="default" type="danger"
         @click="onBindUser(true)"
       >
         批量绑定
-      </el-button>
-      <el-button
+      </ElButton>
+      <ElButton
         :disabled="!data.batch.selectionDataList.length" size="default" type="primary"
         @click="onBindUser(false)"
       >
         批量取消
-      </el-button>
-    </el-space>
+      </ElButton>
+    </ElSpace>
     <ElTable
       ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%"
       row-key="id" stripe
@@ -233,51 +233,51 @@ async function onBindUser(flag: boolean, id?: string) {
       @current-change="data.current = $event"
       @selection-change="data.batch.selectionDataList = $event"
     >
-      <el-table-column v-if="data.batch.enable" align="center" reserve-selection type="selection" />
-      <el-table-column align="center" label="序号" width="100">
+      <ElTableColumn v-if="data.batch.enable" align="center" reserve-selection type="selection" />
+      <ElTableColumn align="center" label="序号" width="100">
         <template #default="{ $index }">
           {{ (pagination.size * (pagination.page - 1)) + $index + 1 }}
         </template>
-      </el-table-column>
-      <el-table-column align="center" label="编码" prop="code" />
-      <el-table-column align="center" label="名称" prop="name" />
-      <el-table-column align="center" label="角色类别" prop="category">
+      </ElTableColumn>
+      <ElTableColumn align="center" label="编码" prop="code" />
+      <ElTableColumn align="center" label="名称" prop="name" />
+      <ElTableColumn align="center" label="角色类别" prop="category">
         <template #default="scope">
-          <el-tag :type="getCategoryColor(scope.row.category)">
+          <ElTag :type="getCategoryColor(scope.row.category)">
             {{ scope.row.echoMap.category }}
-          </el-tag>
+          </ElTag>
         </template>
-      </el-table-column>
-      <el-table-column align="center" label="状态" prop="state" width="80">
+      </ElTableColumn>
+      <ElTableColumn align="center" label="状态" prop="state" width="80">
         <template #default="{ row }">
-          <el-tag :type="row.state ? 'success' : 'danger'">
+          <ElTag :type="row.state ? 'success' : 'danger'">
             {{ row.state ? '启用' : '禁用' }}
-          </el-tag>
+          </ElTag>
         </template>
-      </el-table-column>
-      <el-table-column align="center" fixed="right" label="操作" width="120">
+      </ElTableColumn>
+      <ElTableColumn align="center" fixed="right" label="操作" width="120">
         <template #default="scope">
-          <el-button
+          <ElButton
             bg plain size="small" text type="primary"
             @click="onBindUser(!data.bindRoles.find((item: any) => item === scope.row.id), scope.row.id)"
           >
             {{ data.bindRoles.find((item: any) => item === scope.row.id) ? '取消绑定' : '绑定' }}
-          </el-button>
+          </ElButton>
         </template>
-      </el-table-column>
+      </ElTableColumn>
     </ElTable>
-    <el-pagination
+    <ElPagination
       :current-page="pagination.page" :hide-on-single-page="false" :layout="pagination.layout"
       :page-size="pagination.size" :page-sizes="pagination.sizes" :total="pagination.total" background
       class="pagination" @size-change="sizeChange" @current-change="currentChange"
     />
     <template #footer>
-      <el-button size="large" @click="onCancel">
+      <ElButton size="large" @click="onCancel">
         取 消
-      </el-button>
-      <el-button size="large" type="primary" @click="onSubmit">
+      </ElButton>
+      <ElButton size="large" type="primary" @click="onSubmit">
         确 定
-      </el-button>
+      </ElButton>
     </template>
-  </el-dialog>
+  </ElDialog>
 </template>

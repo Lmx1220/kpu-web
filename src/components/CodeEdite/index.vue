@@ -13,6 +13,9 @@ interface Props {
   placeholder: string
 }
 
+defineOptions({
+  name: 'CodeEdite',
+})
 const props = withDefaults(defineProps<Props>(), {
   code: '',
   mode: 'javascript',
@@ -26,12 +29,8 @@ const props = withDefaults(defineProps<Props>(), {
   }),
   placeholder: '',
 })
-defineOptions({
-  name: 'CodeEdite',
-})
 const code = computed(() => props.code)
 const themes = { oneDark } as any
-const log = console.log
 const languages = {
   java: java(),
   Javascript: javascript(),
@@ -65,8 +64,6 @@ onMounted(() => {
         color: '#333',
       }"
       :tab-size="config.tabSize"
-      @blur="log('blur', $event)"
-      @focus="log('focus', $event)"
     />
   </div>
 </template>

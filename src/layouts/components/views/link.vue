@@ -20,27 +20,27 @@ function open() {
 
 <template>
   <div class="link-view">
-    <transition name="link" mode="out-in" appear>
-      <page-main :key="route.meta.link" title="⚠️访问提醒">
+    <Transition name="link" mode="out-in" appear>
+      <PageMain :key="route.meta.link" title="⚠️访问提醒">
         <div class="container">
-          <svg-icon :size="120" color="var(--g-theme-color)" name="i-icon-park-twotone:planet" />
+          <SvgIcon :size="120" color="var(--g-theme-color)" name="i-icon-park-twotone:planet" />
           <div class="title">
             是否访问此链接
           </div>
-          <el-tooltip content="复制链接" placement="top" :show-after="300">
+          <ElTooltip content="复制链接" placement="top" :show-after="300">
             <div class="link" @click="route.meta.link && copy(route.meta.link)">
               {{ route.meta.link }}
             </div>
-          </el-tooltip>
-          <el-button type="primary" plain round @click="open">
+          </ElTooltip>
+          <ElButton type="primary" plain round @click="open">
             <template #icon>
-              <svg-icon name="ep:link" />
+              <SvgIcon name="ep:link" />
             </template>
             立即访问
-          </el-button>
+          </ElButton>
         </div>
-      </page-main>
-    </transition>
+      </PageMain>
+    </Transition>
   </div>
 </template>
 

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ElMessage, ElTree } from 'element-plus'
 import { intersection, uniq, without } from 'lodash-es'
-import { resourceAuthTree } from '@/api/modules/system/menu'
-import crudRole from '@/api/modules/system/role'
+import { resourceAuthTree } from '@/api/modules/system/resource'
+import { resourceList, saveResource } from '@/api/modules/system/role'
 
 export interface Props {
   data: any
@@ -26,7 +26,7 @@ const loading = ref(false)
 
 async function getDate(id: string) {
   loading.value = true
-  const ids = await crudRole.resourceList(id)
+  const ids = await resourceList(id)
   treeRef.value?.setCheckedKeys(ids)
   setTimeout(() => {
     loading.value = false
@@ -140,7 +140,7 @@ function expandHandle(isExpand: boolean) {
 
 async function handleSubmit() {
   const checkedKeys = treeRef.value?.getCheckedKeys() as string[]
-  await crudRole.saveResource({
+  await saveResource({
     roleId: props.data.id,
     menuIdList: checkedKeys,
   })
@@ -200,42 +200,42 @@ function isAllCheckedByKey(node: any) {
 
 <template>
   <div v-if="data.id" class="flex flex-col h-full">
-    <page-header :title="`【${data?.name || ''}】拥有的应用资源`">
-      <el-button round type="primary" @click="handleSubmit()">
+    <PageHeader :title="`【${data?.name || ''}】拥有的应用资源`">
+      <ElButton round type="primary" @click="handleSubmit()">
         保存
-      </el-button>
-    </page-header>
-    <div v-loading="loading" class="flex flex-col" style="min-height:0;flex: 1;">
+      </ElButton>
+    </PageHeader>
+    <div v-loading="loading" class="flex flex-col" style="min-height: 0;flex: 1;">
       <div class="title flex items-center">
         <div class="flex-1 flex items-center cursor-pointer">
-          <el-input v-model="filterText" class="mr-1 ml-5 " placeholder="搜素">
+          <ElInput v-model="filterText" class="mr-1 ml-5 " placeholder="搜素">
             <template #append>
-              <svg-icon name="i-ep:search" />
+              <SvgIcon name="i-ep:search" />
             </template>
-          </el-input>
-          <el-dropdown class="inline" @command="handleCommand">
-            <svg-icon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
+          </ElInput>
+          <ElDropdown class="inline" @command="handleCommand">
+            <SvgIcon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
             <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item command="checkAll">
+              <ElDropdownMenu>
+                <ElDropdownItem command="checkAll">
                   全部选择
-                </el-dropdown-item>
-                <el-dropdown-item command="uncheckAll">
+                </ElDropdownItem>
+                <ElDropdownItem command="uncheckAll">
                   取消选择
-                </el-dropdown-item>
-                <el-dropdown-item command="expand" divided>
+                </ElDropdownItem>
+                <ElDropdownItem command="expand" divided>
                   展开全部
-                </el-dropdown-item>
-                <el-dropdown-item command="fold">
+                </ElDropdownItem>
+                <ElDropdownItem command="fold">
                   折叠全部
-                </el-dropdown-item>
-              </el-dropdown-menu>
+                </ElDropdownItem>
+              </ElDropdownMenu>
             </template>
-          </el-dropdown>
+          </ElDropdown>
         </div>
       </div>
-      <el-divider />
-      <el-scrollbar>
+      <ElDivider />
+      <ElScrollbar>
         <ElTree
           ref="treeRef" :data="three" :expand-on-click-node="false" :filter-node-method="filterNode"
           :props="defaultProps"
@@ -249,10 +249,10 @@ function isAllCheckedByKey(node: any) {
             <div
               class="custom-tree-node"
             >
-              <svg-icon :name="data.icon" class="mr-1 ml-1" size="16" />
-              <el-tag :type="getResourceTagColor(data.resourceType)" class="mr-1">
+              <SvgIcon :name="data.icon" class="mr-1 ml-1" size="16" />
+              <ElTag :type="getResourceTagColor(data.resourceType)" class="mr-1">
                 {{ data?.echoMap?.resourceType }}
-              </el-tag>
+              </ElTag>
               <span>{{ node.label }}</span>
               <span><a
                 v-if="data.children" style="margin-left: 30px;color: #0084f4;"
@@ -261,7 +261,7 @@ function isAllCheckedByKey(node: any) {
             </div>
           </template>
         </ElTree>
-      </el-scrollbar>
+      </ElScrollbar>
     </div>
   </div>
   <div v-else class="empty">
@@ -290,3 +290,4 @@ function isAllCheckedByKey(node: any) {
   font-size: 14px;
 }
 </style>
+@/api/modules/system/resource

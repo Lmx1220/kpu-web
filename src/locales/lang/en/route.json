@@ -1,0 +1,10 @@
+{
+  "home": "Home",
+  "i18n": "I18N",
+  "login": "Login",
+  "personal": {
+    "editpassword": "Edit Password",
+    "setting": "Personal Setting"
+  },
+  "undefined": "[ No title ]"
+}

@@ -105,9 +105,9 @@ defineExpose({
     form.value?.validate((valid) => {
       if (valid) {
         if (props.type === ActionEnum.ADD) {
-          crudOrg.create(data.value.form).then(() => {
+          crudOrg.save(data.value.form).then(() => {
             ElMessage.success({
-              message: '新增成功',
+              message: t('common.tips.addSuccess'),
               center: true,
             })
             emits('update:type', undefined)
@@ -115,9 +115,9 @@ defineExpose({
           })
         }
         else if (props.type === ActionEnum.EDIT) {
-          crudOrg.edit(data.value.form).then(() => {
+          crudOrg.update(data.value.form).then(() => {
             ElMessage.success({
-              message: '编辑成功',
+              message: t('common.tips.editSuccess'),
               center: true,
             })
             emits('update:type', undefined)

@@ -3,6 +3,9 @@ import { radioGroupEmits } from 'element-plus'
 import { get } from 'lodash-es'
 import type { ApiRadioGroupProps } from './typing'
 
+defineOptions({
+  name: 'ApiRadioGroup',
+})
 const props = withDefaults(defineProps<ApiRadioGroupProps>(), {
   resultField: 'data',
   labelField: 'label',
@@ -10,9 +13,6 @@ const props = withDefaults(defineProps<ApiRadioGroupProps>(), {
 })
 const emit = defineEmits(radioGroupEmits)
 const attrs = useAttrs()
-defineOptions({
-  name: 'ApiRadioGroup',
-})
 const getProps = computed(() => {
   return { ...props.componentProps, ...attrs }
 })
@@ -41,16 +41,16 @@ const slots = useSlots()
 </script>
 
 <template>
-  <el-radio-group v-model="modelValue" v-bind="getProps" @change="(val) => emit('change', val)">
+  <ElRadioGroup v-model="modelValue" v-bind="getProps" @change="(val) => emit('change', val)">
     <template v-if="slots.default">
       <slot :dicts="dicts" />
     </template>
-    <el-radio v-for="(item, index) in dicts" v-else :key="index" :label="item[valueField]">
+    <ElRadio v-for="(item, index) in dicts" v-else :key="index" :label="item[valueField]">
       {{ item[labelField] }}
-    </el-radio>
-  </el-radio-group>
+    </ElRadio>
+  </ElRadioGroup>
 </template>
 
 <style scoped lang="scss">
-
+// scss
 </style>

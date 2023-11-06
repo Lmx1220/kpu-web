@@ -78,11 +78,11 @@ function onView(url: string, e: Event) {
 
 <template>
   <span class="thumb">
-    <el-image v-if="fileType === 'IMAGE'" :src="realSrc" :preview-src-list="[realSrc]" preview-teleported>
+    <ElImage v-if="fileType === 'IMAGE'" :src="realSrc" :preview-src-list="[realSrc]" preview-teleported>
       <template #error>
-        <el-image :src="fallback" :style="imageStyle" />
+        <ElImage :src="fallback" :style="imageStyle" />
       </template>
-    </el-image>
+    </ElImage>
     <a v-else style="color: var(--el-color-primary);" class="cursor-pointer" @click="(event) => onView(realSrc, event)">
       {{ originalFileName }}
     </a>
@@ -90,5 +90,5 @@ function onView(url: string, e: Event) {
 </template>
 
 <style scoped lang="scss">
-
+// scss
 </style>

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
 import type { Props as DetailFormProps } from '../DetailForm/index.vue'
 import DetailForm from '../DetailForm/index.vue'
 
@@ -54,33 +53,33 @@ function onCancel() {
 
 <template>
   <div>
-    <el-dialog
+    <ElDialog
       v-if="props.mode === 'dialog'" v-model="myVisible" :close-on-click-modal="false" :title="title"
       append-to-body destroy-on-close width="600px"
     >
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>
-        <el-button size="large" @click="onCancel">
+        <ElButton size="large" @click="onCancel">
           {{ t('common.cancelText') }}
-        </el-button>
-        <el-button size="large" type="primary" @click="onSubmit">
+        </ElButton>
+        <ElButton size="large" type="primary" @click="onSubmit">
           {{ t('common.okText') }}
-        </el-button>
+        </ElButton>
       </template>
-    </el-dialog>
-    <el-drawer
+    </ElDialog>
+    <ElDrawer
       v-else-if="props.mode === 'drawer'" v-model="myVisible" :close-on-click-modal="false" :title="title"
       destroy-on-close size="600px"
     >
       <DetailForm ref="form" v-bind="$props" />
       <template #footer>
-        <el-button size="large" @click="onCancel">
+        <ElButton size="large" @click="onCancel">
           {{ t('common.cancelText') }}
-        </el-button>
-        <el-button size="large" type="primary" @click="onSubmit">
+        </ElButton>
+        <ElButton size="large" type="primary" @click="onSubmit">
           {{ t('common.okText') }}
-        </el-button>
+        </ElButton>
       </template>
-    </el-drawer>
+    </ElDrawer>
   </div>
 </template>

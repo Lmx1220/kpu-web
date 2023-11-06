@@ -142,9 +142,9 @@ function usePagination<T extends Record<string, any>>() {
   }
 
   /**
-     * 重置查询参数
-     * @param {any} defaultSearch 默认查询参数
-     */
+   * 重置查询参数
+   * @param {any} defaultSearch 默认查询参数
+   */
   function resetQuery(defaultSearch?: Record<string, any>) {
     const queryParams: Record<string, any> = search.value
     if (defaultSearch) {

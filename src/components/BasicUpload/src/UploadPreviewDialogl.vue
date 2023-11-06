@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 import { downloadIds } from '@/api/modules/system/upload'
 import { useDialogInner } from '@/components/Dialog/hooks/useDialog'
@@ -21,7 +20,7 @@ const emits = defineEmits<{
   'update:value': [FileResultVO[]]
 }>()
 const { t } = useI18n()
-const [register, { closeDialog }] = useDialogInner()
+const [register] = useDialogInner()
 const fileListRef = ref<FileResultVO[]>([])
 
 watch(
@@ -59,32 +58,32 @@ async function handleDownload(record: FileResultVO) {
     :show-ok-btn="false"
     @register="register"
   >
-    <el-table :data="fileListRef">
-      <el-table-column type="index" width="50" />
-      <el-table-column align="center" width="100" :label="t('component.upload.legend')" prop="url">
+    <ElTable :data="fileListRef">
+      <ElTableColumn type="index" width="50" />
+      <ElTableColumn align="center" width="100" :label="t('component.upload.legend')" prop="url">
         <template #default="{ row }">
           <ThumbUrl v-if="row.fileType === 'IMAGE'" :file-id="row.id" :original-file-name="row.originalFileName" />
         </template>
-      </el-table-column>
-      <el-table-column
+      </ElTableColumn>
+      <ElTableColumn
         prop="originalFileName"
         :label="t('component.upload.fileName')"
         align="left"
       />
-      <el-table-column width="180" fixed="right" align="center" border :label="t('component.upload.operating')">
+      <ElTableColumn width="180" fixed="right" align="center" border :label="t('component.upload.operating')">
         <template #default="{ row }">
-          <el-button text type="warning" @click="handleRemove(row)">
+          <ElButton text type="warning" @click="handleRemove(row)">
             {{ t('component.upload.del') }}
-          </el-button>
-          <el-button text type="danger" @click="handleDownload(row)">
+          </ElButton>
+          <ElButton text type="danger" @click="handleDownload(row)">
             {{ t('component.upload.download') }}
-          </el-button>
+          </ElButton>
         </template>
-      </el-table-column>
-    </el-table>
+      </ElTableColumn>
+    </ElTable>
   </BaseDialog>
 </template>
 
 <style scoped lang="scss">
-
+// scss
 </style>

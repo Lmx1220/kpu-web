@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import storage from '@/util/storage'
 import useUserStore from '@/store/modules/user'
+import Copyright from '@/layouts/components/Copyright/index.vue'
 
 defineOptions({
   name: 'Login',
@@ -362,11 +362,10 @@ function testAccount(account: string) {
       min-height: auto;
       padding: 30px;
     }
-
   }
 
   .copyright {
-    position: relative
+    position: relative;
   }
 
   .login-switcher {
@@ -407,7 +406,7 @@ function testAccount(account: string) {
   .login-banner {
     position: relative;
     width: 450px;
-    background-color: var(--g-bg);;
+    background-color: var(--g-bg);
 
     .banner {
       width: calc(100%);
@@ -422,11 +421,10 @@ function testAccount(account: string) {
       width: 30px;
       height: 30px;
       border-radius: 4px;
-      background: url('../assets/images/logo.png') no-repeat center;
+      background: url("../assets/images/logo.png") no-repeat;
       background-size: contain;
       box-shadow: var(--el-box-shadow-light);
     }
-
   }
 
   .login-form {

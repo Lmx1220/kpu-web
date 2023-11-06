@@ -51,10 +51,10 @@ export function clear(type: number) {
 }
 
 export default {
-  list: page,
+  page,
+  save,
+  update,
+  remove,
+  query,
   detail,
-  create: save,
-  edit: update,
-  delete: remove,
-  clear,
 }

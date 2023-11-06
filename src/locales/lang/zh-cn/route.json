@@ -1,0 +1,10 @@
+{
+  "home": "主页",
+  "i18n": "国际化",
+  "login": "登录",
+  "personal": {
+    "editpassword": "修改密码",
+    "setting": "个人设置"
+  },
+  "undefined": "[ 无标题 ]"
+}

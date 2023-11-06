@@ -1,3 +1,4 @@
+import type { VueI18nTranslation } from 'vue-i18n'
 import { i18n } from '@/locales'
 
 interface I18nGlobalTranslation {
@@ -21,7 +22,7 @@ function getKey(namespace: string | undefined, key: string) {
   return `${namespace}.${key}`
 }
 
-export function useI18nL(namespace?: string): {
+export function useI18n(namespace?: string): {
   t: I18nGlobalTranslation
 } {
   const normalFn = {
@@ -43,9 +44,7 @@ export function useI18nL(namespace?: string): {
     if (!key.includes('.') && !namespace) {
       return key
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    return t(getKey(namespace, key), ...(arg as I18nTranslationRestParameters))
+    return (t as VueI18nTranslation)(getKey(namespace, key), ...(arg as I18nTranslationRestParameters))
   }
   return {
     ...methods,

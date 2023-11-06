@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-
 interface Props {
   canFullscreen?: boolean
   fullscreen?: boolean
   title?: string
 }
+
+defineOptions({
+  name: 'BasicDialogHeader',
+})
 
 const props = withDefaults(defineProps<Props>(), {
   canFullscreen: true,
@@ -16,10 +18,6 @@ const emits = defineEmits<{
   'fullscreen': [Event]
   'cancel': [Event]
 }>()
-defineOptions({
-  name: 'BasicDialogHeader',
-})
-
 function handleFullScreen(e: Event) {
   e?.stopPropagation()
   e?.preventDefault()
@@ -44,15 +42,15 @@ function handleTitleDbClick(e: Event) {
   <div>
     <template v-if="canFullscreen">
       <div class="dialog-close">
-        <el-tooltip v-if="fullscreen" :content="t('component.dialog.restore')" placement="bottom">
-          <svg-icon name="i-ri:fullscreen-exit-line" @click="handleFullScreen" />
-        </el-tooltip>
-        <el-tooltip v-else :content="t('component.dialog.maximize')" placement="bottom">
-          <svg-icon name="ri:fullscreen-line" @click="handleFullScreen" />
-        </el-tooltip>
-        <el-tooltip :content="t('component.dialog.close')" placement="bottom">
-          <svg-icon name="ep:close" @click="handleCancel" />
-        </el-tooltip>
+        <ElTooltip v-if="fullscreen" :content="t('component.dialog.restore')" placement="bottom">
+          <SvgIcon name="i-ri:fullscreen-exit-line" @click="handleFullScreen" />
+        </ElTooltip>
+        <ElTooltip v-else :content="t('component.dialog.maximize')" placement="bottom">
+          <SvgIcon name="ri:fullscreen-line" @click="handleFullScreen" />
+        </ElTooltip>
+        <ElTooltip :content="t('component.dialog.close')" placement="bottom">
+          <SvgIcon name="ep:close" @click="handleCancel" />
+        </ElTooltip>
       </div>
     </template>
     <div class="dialog-title" @dblclick="handleTitleDbClick">

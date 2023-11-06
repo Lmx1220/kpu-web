@@ -87,10 +87,11 @@ const { switchTo } = useMenu()
   color: var(--g-main-sidebar-menu-color);
   background-color: var(--g-main-sidebar-bg);
   box-shadow: 1px 0 0 0 var(--g-border-color);
-  transition: background-color .3s, color .3s, box-shadow .3s;
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+
   .sidebar-logo {
     background-color: var(--g-main-sidebar-bg);
-    transition: background-color .3s;
+    transition: background-color 0.3s;
   }
 
   .menu-active {
@@ -128,7 +129,7 @@ const { switchTo } = useMenu()
         border-radius: 2px;
         background-color: var(--g-main-sidebar-menu-active-bg);
         box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
-        transition: all .3s;
+        transition: all 0.3s;
 
         @include position-center(y);
       }
@@ -155,6 +156,7 @@ const { switchTo } = useMenu()
 
         @include position-center(y);
       }
+
       .item-container.active::before,
       :deep(.menu-item.active::before) {
         opacity: 1;
@@ -191,17 +193,15 @@ const { switchTo } = useMenu()
 
       &:hover .menu-item-container {
         color: var(--g-main-sidebar-menu-hover-color);
-        background-color: var(--g-main-sidebar-menu-hover-bg)
+        background-color: var(--g-main-sidebar-menu-hover-bg);
       }
 
       &.active .menu-item-container {
         color: var(--g-main-sidebar-menu-active-color) !important;
-        background-color: var(--g-main-sidebar-menu-active-bg) !important
+        background-color: var(--g-main-sidebar-menu-active-bg) !important;
       }
-
     }
   }
-
 }
 
 // 主侧边栏动画
@@ -212,6 +212,6 @@ const { switchTo } = useMenu()
 
 .main-sidebar-enter-from,
 .main-sidebar-leave-to {
-  transform: translate(calc(var(--g-main-sidebar-width) * -1))
+  transform: translate(calc(var(--g-main-sidebar-width) * -1));
 }
 </style>

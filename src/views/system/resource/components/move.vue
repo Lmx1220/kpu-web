@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ElMessageBox, ElTree } from 'element-plus'
-import { move, resourceAuthTree } from '@/api/modules/system/menu'
+import { move, resourceAuthTree } from '@/api/modules/system/resource'
 
 export interface Props {
   id?: string
@@ -90,7 +90,7 @@ function getThreeData() {
           ? item.label = `${item.label}(不能移动到他自己下)`
           : item.treePath.includes(`/${props.data.id}/`)
             ? item.label = `${item.label}(不能移动到他的子孙节点)`
-            : item.label = item.label
+            : item.label = `${item.label}`
       return item
     })
   })
@@ -152,8 +152,8 @@ async function handleSubmit(_node?: MenuResourceTreeRes) {
     await ElMessageBox.confirm(
         `确定要将【${props.data.title}】移动到 【${_node ? _node.label : '根节点'}】?`,
         {
-          confirmButtonText: '确认',
-          cancelButtonText: '取消',
+          confirmButtonText: t('common.okText'),
+          cancelButtonText: t('common.cancelText'),
           type: 'warning',
         },
     )
@@ -167,7 +167,7 @@ async function handleSubmit(_node?: MenuResourceTreeRes) {
     emits('success')
   }
   catch (e) {
-    console.log(e)
+    console.error(e)
   }
 }
 
@@ -178,34 +178,34 @@ function handleCancel() {
 </script>
 
 <template>
-  <el-dialog v-model="dialogVisible" :title="title" :width="width" @open="getThreeData">
+  <ElDialog v-model="dialogVisible" :title="title" :width="width" @open="getThreeData">
     <div class="title flex items-center">
       <span class="">
         移动：【{{ props.data.title }}】
       </span>
       <div class="flex-1 flex items-center cursor-pointer">
-        <el-input v-model="filterText" class="mr-1 ml-5 " placeholder="搜素">
+        <ElInput v-model="filterText" class="mr-1 ml-5 " placeholder="搜素">
           <template #append>
-            <svg-icon name="i-ep:search" />
+            <SvgIcon name="i-ep:search" />
           </template>
-        </el-input>
-        <el-dropdown class="inline" @command="handleCommand">
-          <svg-icon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
+        </ElInput>
+        <ElDropdown class="inline" @command="handleCommand">
+          <SvgIcon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
           <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item command="expand">
+            <ElDropdownMenu>
+              <ElDropdownItem command="expand">
                 展开全部
-              </el-dropdown-item>
-              <el-dropdown-item command="fold">
+              </ElDropdownItem>
+              <ElDropdownItem command="fold">
                 折叠全部
-              </el-dropdown-item>
-            </el-dropdown-menu>
+              </ElDropdownItem>
+            </ElDropdownMenu>
           </template>
-        </el-dropdown>
+        </ElDropdown>
       </div>
     </div>
-    <el-divider />
-    <el-scrollbar max-height="550px">
+    <ElDivider />
+    <ElScrollbar max-height="550px">
       <ElTree
         ref="treeRef" :data="three" :expand-on-click-node="false" :filter-node-method="filterNode" :props="defaultProps"
         class="filter-tree" node-key="key"
@@ -216,29 +216,29 @@ function handleCancel() {
             class="custom-tree-node"
             @click="() => !node.disabled && onNodeClick(data)"
           >
-            <svg-icon :name="data.icon" :size="16" class="mr-1 ml-1" />
-            <el-tag :type="getResourceTagColor(data.resourceType)" class="mr-1">
+            <SvgIcon :name="data.icon" :size="16" class="mr-1 ml-1" />
+            <ElTag :type="getResourceTagColor(data.resourceType)" class="mr-1">
               {{ data?.echoMap?.resourceType }}
-            </el-tag>
+            </ElTag>
             <span>{{ node.label }}</span>
           </div>
         </template>
       </ElTree>
-    </el-scrollbar>
+    </ElScrollbar>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">
-          取消
-        </el-button>
-        <el-button @click="handleSubmit()">
+        <ElButton @click="dialogVisible = false">
+          {{ t('common.cancelText') }}
+        </ElButton>
+        <ElButton @click="handleSubmit()">
           移动到根节点
-        </el-button>
-        <el-button type="primary" @click="() => handleSubmit(currentNode)">
-          确认
-        </el-button>
+        </ElButton>
+        <ElButton type="primary" @click="() => handleSubmit(currentNode)">
+          {{ t('common.okText') }}
+        </ElButton>
       </span>
     </template>
-  </el-dialog>
+  </ElDialog>
 </template>
 
 <style lang="scss" scoped>
@@ -257,14 +257,11 @@ function handleCancel() {
 
     &:hover:not(.is-disabled, .is-current) {
       background-color: var(--el-tree-node-hover-bg-color);
-
     }
 
     &.is-current {
       background-color: #a3e0ff;
-
     }
-
   }
 }
 
@@ -275,7 +272,6 @@ function handleCancel() {
 
   &:focus > .el-tree-node__content {
     background-color: transparent !important;
-
   }
 }
 
@@ -283,3 +279,4 @@ function handleCancel() {
   font-size: 14px;
 }
 </style>
+@/api/modules/system/resource

@@ -32,6 +32,7 @@ export function extendSlots(slots: Slots, excludeKeys: string[] = []) {
       return null
     }
     ret[key] = (data?: any) => getSlot(slots, key, data)
+    return key
   })
   return ret
 }

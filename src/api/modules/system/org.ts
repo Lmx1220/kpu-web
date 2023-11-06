@@ -57,12 +57,10 @@ export function treeOrg(params?: OrgPageQuery) {
   return defHttp.request<OrgResultVO[]>({ ...Api.TreeOrg, params })
 }
 export default {
-  list: page,
+  page,
+  save,
+  update,
+  remove,
+  query,
   detail,
-  create: save,
-  edit: update,
-  delete: remove,
-  tree: treeOrg,
-  roleList,
-  saveOrgRole,
 }

@@ -15,13 +15,12 @@ export interface Props {
   id?: string | string[]
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  id: '',
-})
 defineOptions({
   name: 'GenInfo',
 })
-
+const props = withDefaults(defineProps<Props>(), {
+  id: '',
+})
 const data = ref<FormConfig>({
   loading: false,
   form: {
@@ -390,7 +389,7 @@ function onOk(callback?: Function) {
           delete newData[item]
         })
       }
-      crudGenerator.edit(newData as GenTableUpdateVO).then(() => {
+      crudGenerator.update(newData as GenTableUpdateVO).then(() => {
         ElMessage.success({
           message: '修改成功',
           center: true,
@@ -420,7 +419,7 @@ function onGen(type: string) {
       ElMessage.warning('请先输入前端应用名、前端模块名、实体类名')
       return
     }
-    data.value.form[`${type}Auth`] = `${plusApplicationName}/${plusModuleName.replaceAll('/',':')}:${entityName}:${type}`
+    data.value.form[`${type}Auth`] = `${plusApplicationName}/${plusModuleName.replaceAll('/', ':')}:${entityName}:${type}`
   }
 }
 
@@ -457,301 +456,305 @@ defineExpose({
 
 <template>
   <div class="page-main gen-info">
-    <el-form ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="138" scroll-to-error>
-      <page-header title="基础信息" />
-      <el-row :gutter="30" style="padding: 20px;">
-        <el-col v-if="isSingle" :lg="24" :xl="12">
-          <el-form-item label="表名" prop="name">
-            <el-input v-model="data.form.name" disabled />
-          </el-form-item>
-        </el-col>
-        <el-col v-if="isSingle" :lg="24" :xl="12">
-          <el-form-item label="数据源名" prop="dsId">
-            <el-select
+    <ElForm ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="138" scroll-to-error>
+      <PageHeader title="基础信息" />
+      <ElRow :gutter="30" style="padding: 20px;">
+        <ElCol v-if="isSingle" :lg="24" :xl="12">
+          <ElFormItem label="表名" prop="name">
+            <ElInput v-model="data.form.name" disabled />
+          </ElFormItem>
+        </ElCol>
+        <ElCol v-if="isSingle" :lg="24" :xl="12">
+          <ElFormItem label="数据源名" prop="dsId">
+            <ElSelect
               v-model="data.form.dsId" disabled placeholder="请选择"
             >
-              <el-option
+              <ElOption
                 v-for="item in data.dicts?.get('DsEnum') || []" :key="item.value" :label="item.label"
                 :value="item.value"
               />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col v-if="isSingle" :lg="24" :xl="12">
-          <el-form-item label="实体类名" prop="entityName">
-            <el-input v-model="data.form.entityName" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="作者" prop="author">
-            <el-input v-model="data.form.author" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col v-if="isSingle" :lg="24" :xl="12">
-          <el-form-item label="表注释" prop="comment">
-            <el-input v-model="data.form.comment" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col v-if="isSingle" :lg="24" :xl="12">
-          <el-form-item label="swagger注释" prop="swaggerComment">
-            <el-input v-model="data.form.swaggerComment" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="24">
-          <el-form-item label="备注" prop="remark">
-            <el-input v-model="data.form.remark" clearable type="textarea" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <page-header title="生成信息" />
-      <el-row :gutter="30" style="padding: 20px;">
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="服务名" prop="serviceName">
-            <el-input v-model="data.form.serviceName" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="父包名" prop="parent">
-            <el-input v-model="data.form.parent" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="模块名" prop="moduleName">
-            <el-input v-model="data.form.moduleName" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="子包名" prop="childPackageName">
-            <el-input v-model="data.form.childPackageName" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="实体父类" prop="entitySuperClass">
-            <el-select
+            </ElSelect>
+          </ElFormItem>
+        </ElCol>
+        <ElCol v-if="isSingle" :lg="24" :xl="12">
+          <ElFormItem label="实体类名" prop="entityName">
+            <ElInput v-model="data.form.entityName" clearable />
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="作者" prop="author">
+            <ElInput v-model="data.form.author" clearable />
+          </ElFormItem>
+        </ElCol>
+        <ElCol v-if="isSingle" :lg="24" :xl="12">
+          <ElFormItem label="表注释" prop="comment">
+            <ElInput v-model="data.form.comment" clearable />
+          </ElFormItem>
+        </ElCol>
+        <ElCol v-if="isSingle" :lg="24" :xl="12">
+          <ElFormItem label="swagger注释" prop="swaggerComment">
+            <ElInput v-model="data.form.swaggerComment" clearable />
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="24">
+          <ElFormItem label="备注" prop="remark">
+            <ElInput v-model="data.form.remark" clearable type="textarea" />
+          </ElFormItem>
+        </ElCol>
+      </ElRow>
+      <PageHeader title="生成信息" />
+      <ElRow :gutter="30" style="padding: 20px;">
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="服务名" prop="serviceName">
+            <ElInput v-model="data.form.serviceName" clearable />
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="父包名" prop="parent">
+            <ElInput v-model="data.form.parent" clearable />
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="模块名" prop="moduleName">
+            <ElInput v-model="data.form.moduleName" clearable />
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="子包名" prop="childPackageName">
+            <ElInput v-model="data.form.childPackageName" clearable />
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="实体父类" prop="entitySuperClass">
+            <ElSelect
               v-model="data.form.entitySuperClass" clearable
               placeholder="请选择"
             >
-              <el-option
+              <ElOption
                 v-for="item in data.dicts?.get('EntitySuperClassEnum') || []" :key="item.value" :label="item.label"
                 :value="item.value"
               />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="父类" prop="superClass">
-            <el-select
+            </ElSelect>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="父类" prop="superClass">
+            <ElSelect
               v-model="data.form.superClass" clearable
               placeholder="请选择"
             >
-              <el-option
+              <ElOption
                 v-for="item in data.dicts?.get('SuperClassEnum') || []" :key="item.value" :label="item.label"
                 :value="item.value"
               />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="24">
-          <el-form-item label="@DS" prop="isDs">
-            <el-radio-group v-model="data.form.isDs">
-              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
+            </ElSelect>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="24">
+          <ElFormItem label="@DS" prop="isDs">
+            <ElRadioGroup v-model="data.form.isDs">
+              <ElRadio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="@TenantLine" prop="isTenantLine">
-            <el-radio-group v-model="data.form.isTenantLine">
-              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="@TenantLine" prop="isTenantLine">
+            <ElRadioGroup v-model="data.form.isTenantLine">
+              <ElRadio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="lombok" prop="isLombok">
-            <el-radio-group v-model="data.form.isLombok">
-              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="lombok" prop="isLombok">
+            <ElRadioGroup v-model="data.form.isLombok">
+              <ElRadio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="链式模型" prop="isChain">
-            <el-radio-group v-model="data.form.isChain">
-              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="链式模型" prop="isChain">
+            <ElRadioGroup v-model="data.form.isChain">
+              <ElRadio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="生成字段常量" prop="isColumnConstant">
-            <el-radio-group v-model="data.form.isColumnConstant">
-              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="生成字段常量" prop="isColumnConstant">
+            <ElRadioGroup v-model="data.form.isColumnConstant">
+              <ElRadio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="生成方式" prop="genType">
-            <el-radio-group v-model="data.form.genType">
-              <el-radio v-for="(item, index) in data.dicts?.get('GenTypeEnum')" :key="index" :label="item?.value">
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="生成方式" prop="genType">
+            <ElRadioGroup v-model="data.form.genType">
+              <ElRadio v-for="(item, index) in data.dicts?.get('GenTypeEnum')" :key="index" :label="item?.value">
                 {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="24">
-          <el-form-item label="后端生成路径" prop="outputDir">
-            <el-input v-model="data.form.outputDir" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="24">
-          <el-form-item label="前端生成路径" prop="frontOutputDir">
-            <el-input v-model="data.form.frontOutputDir" clearable />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <page-header title="前端信息" />
-      <el-row :gutter="30" style="padding: 20px;">
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="前端应用名" prop="plusApplicationName">
-            <el-input v-model="data.form.plusApplicationName" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="前端模块名" prop="plusModuleName">
-            <el-input v-model="data.form.plusModuleName" clearable >
-              <template #prepend>/</template>
-              <template #append>/</template>
-            </el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="弹窗方式" prop="popupType">
-            <el-radio-group v-model="data.form.popupType">
-              <el-radio v-for="(item, index) in data.dicts?.get('PopupTypeEnum')" :key="index" :label="item?.value">
-                {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="生成模板" prop="tplType">
-            <el-radio-group v-model="data.form.tplType">
-              <el-radio v-for="(item, index) in data.dicts?.get('TplEnum')" :key="index" :label="item?.value">
-                {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="显示新增按钮" prop="addShow">
-            <el-radio-group v-model="data.form.addShow">
-              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
-                {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="显示编辑按钮" prop="editShow">
-            <el-radio-group v-model="data.form.editShow">
-              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
-                {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="显示删除按钮" prop="deleteShow">
-            <el-radio-group v-model="data.form.deleteShow">
-              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
-                {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="显示复制按钮" prop="copyShow">
-            <el-radio-group v-model="data.form.copyShow">
-              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
-                {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="显示详情按钮" prop="viewShow">
-            <el-radio-group v-model="data.form.viewShow">
-              <el-radio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
-                {{ item?.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col v-if="data.form.addShow" :lg="24" :xl="12">
-          <el-form-item label="新增按钮权限" prop="addAuth">
-            <el-input v-model="data.form.addAuth" clearable>
-              <template #append>
-                <el-button type="primary" @click="onGen('add')">
-                  生成
-                </el-button>
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="24">
+          <ElFormItem label="后端生成路径" prop="outputDir">
+            <ElInput v-model="data.form.outputDir" clearable />
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="24">
+          <ElFormItem label="前端生成路径" prop="frontOutputDir">
+            <ElInput v-model="data.form.frontOutputDir" clearable />
+          </ElFormItem>
+        </ElCol>
+      </ElRow>
+      <PageHeader title="前端信息" />
+      <ElRow :gutter="30" style="padding: 20px;">
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="前端应用名" prop="plusApplicationName">
+            <ElInput v-model="data.form.plusApplicationName" clearable />
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="前端模块名" prop="plusModuleName">
+            <ElInput v-model="data.form.plusModuleName" clearable>
+              <template #prepend>
+                /
               </template>
-            </el-input>
-          </el-form-item>
-        </el-col>
-        <el-col v-if="data.form.editShow" :lg="24" :xl="12">
-          <el-form-item label="编辑按钮权限" prop="editAuth">
-            <el-input v-model="data.form.editAuth" clearable>
               <template #append>
-                <el-button type="primary" @click="onGen('edit')">
-                  生成
-                </el-button>
+                /
               </template>
-            </el-input>
-          </el-form-item>
-        </el-col>
-        <el-col v-if="data.form.deleteShow" :lg="24" :xl="12">
-          <el-form-item label="删除按钮权限" prop="deleteAuth">
-            <el-input v-model="data.form.deleteAuth" clearable>
+            </ElInput>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="弹窗方式" prop="popupType">
+            <ElRadioGroup v-model="data.form.popupType">
+              <ElRadio v-for="(item, index) in data.dicts?.get('PopupTypeEnum')" :key="index" :label="item?.value">
+                {{ item?.label }}
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="生成模板" prop="tplType">
+            <ElRadioGroup v-model="data.form.tplType">
+              <ElRadio v-for="(item, index) in data.dicts?.get('TplEnum')" :key="index" :label="item?.value">
+                {{ item?.label }}
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="显示新增按钮" prop="addShow">
+            <ElRadioGroup v-model="data.form.addShow">
+              <ElRadio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
+                {{ item?.label }}
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="显示编辑按钮" prop="editShow">
+            <ElRadioGroup v-model="data.form.editShow">
+              <ElRadio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
+                {{ item?.label }}
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="显示删除按钮" prop="deleteShow">
+            <ElRadioGroup v-model="data.form.deleteShow">
+              <ElRadio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
+                {{ item?.label }}
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="显示复制按钮" prop="copyShow">
+            <ElRadioGroup v-model="data.form.copyShow">
+              <ElRadio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
+                {{ item?.label }}
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="显示详情按钮" prop="viewShow">
+            <ElRadioGroup v-model="data.form.viewShow">
+              <ElRadio v-for="(item, index) in data.dicts?.get('YesOrNoEnum')" :key="index" :label="item?.value">
+                {{ item?.label }}
+              </ElRadio>
+            </ElRadioGroup>
+          </ElFormItem>
+        </ElCol>
+        <ElCol v-if="data.form.addShow" :lg="24" :xl="12">
+          <ElFormItem label="新增按钮权限" prop="addAuth">
+            <ElInput v-model="data.form.addAuth" clearable>
               <template #append>
-                <el-button type="primary" @click="onGen('delete')">
+                <ElButton type="primary" @click="onGen('add')">
                   生成
-                </el-button>
+                </ElButton>
               </template>
-            </el-input>
-          </el-form-item>
-        </el-col>
-        <el-col v-if="data.form.copyShow" :lg="24" :xl="12">
-          <el-form-item label="复制按钮权限" prop="copyAuth">
-            <el-input v-model="data.form.copyAuth" clearable @click="onGen('copy')">
+            </ElInput>
+          </ElFormItem>
+        </ElCol>
+        <ElCol v-if="data.form.editShow" :lg="24" :xl="12">
+          <ElFormItem label="编辑按钮权限" prop="editAuth">
+            <ElInput v-model="data.form.editAuth" clearable>
               <template #append>
-                <el-button type="primary">
+                <ElButton type="primary" @click="onGen('edit')">
                   生成
-                </el-button>
+                </ElButton>
               </template>
-            </el-input>
-          </el-form-item>
-        </el-col>
-        <el-col v-if="data.form.viewShow" :lg="24" :xl="12">
-          <el-form-item label="详情按钮权限" prop="viewAuth">
-            <el-input v-model="data.form.viewAuth" clearable>
+            </ElInput>
+          </ElFormItem>
+        </ElCol>
+        <ElCol v-if="data.form.deleteShow" :lg="24" :xl="12">
+          <ElFormItem label="删除按钮权限" prop="deleteAuth">
+            <ElInput v-model="data.form.deleteAuth" clearable>
               <template #append>
-                <el-button type="primary" @click="onGen('view')">
+                <ElButton type="primary" @click="onGen('delete')">
                   生成
-                </el-button>
+                </ElButton>
               </template>
-            </el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <page-header title="SQL信息" />
-      <el-row :gutter="30" style="padding: 20px;">
+            </ElInput>
+          </ElFormItem>
+        </ElCol>
+        <ElCol v-if="data.form.copyShow" :lg="24" :xl="12">
+          <ElFormItem label="复制按钮权限" prop="copyAuth">
+            <ElInput v-model="data.form.copyAuth" clearable @click="onGen('copy')">
+              <template #append>
+                <ElButton type="primary">
+                  生成
+                </ElButton>
+              </template>
+            </ElInput>
+          </ElFormItem>
+        </ElCol>
+        <ElCol v-if="data.form.viewShow" :lg="24" :xl="12">
+          <ElFormItem label="详情按钮权限" prop="viewAuth">
+            <ElInput v-model="data.form.viewAuth" clearable>
+              <template #append>
+                <ElButton type="primary" @click="onGen('view')">
+                  生成
+                </ElButton>
+              </template>
+            </ElInput>
+          </ElFormItem>
+        </ElCol>
+      </ElRow>
+      <PageHeader title="SQL信息" />
+      <ElRow :gutter="30" style="padding: 20px;">
         <!--        <el-col :xl="12" :lg="24"> -->
         <!--          <el-form-item label="菜单所属应用" prop="menuApplicationId"> -->
         <!--            <el-select -->
@@ -764,9 +767,9 @@ defineExpose({
         <!--            </el-select> -->
         <!--          </el-form-item> -->
         <!--        </el-col> -->
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="上级菜单" prop="menuParentId">
-            <el-tree-select
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="上级菜单" prop="menuParentId">
+            <ElTreeSelect
               v-model="data.form.menuParentId"
               :check-strictly="true"
               :data="data.dicts?.get('menuList') || []"
@@ -777,64 +780,64 @@ defineExpose({
               show-checkbox
             >
               <template #default="{ data }">
-                <svg-icon :name="data.icon" class="mr-1 ml-1" size="16" />
-                <el-tag :type="getResourceTagColor(data.resourceType)" class="mr-1">
+                <SvgIcon :name="data.icon" class="mr-1 ml-1" size="16" />
+                <ElTag :type="getResourceTagColor(data.resourceType)" class="mr-1">
                   {{ data?.echoMap?.resourceType }}
-                </el-tag>
+                </ElTag>
                 {{ data.label }}
               </template>
-            </el-tree-select>
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item clearable label="当前菜单名" prop="menuName">
-            <el-input v-model="data.form.menuName" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :lg="24" :xl="12">
-          <el-form-item label="菜单图标" prop="menuIcon">
+            </ElTreeSelect>
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem clearable label="当前菜单名" prop="menuName">
+            <ElInput v-model="data.form.menuName" clearable />
+          </ElFormItem>
+        </ElCol>
+        <ElCol :lg="24" :xl="12">
+          <ElFormItem label="菜单图标" prop="menuIcon">
             <IconPicker v-model="data.form.menuIcon" />
-          </el-form-item>
-        </el-col>
-      </el-row>
+          </ElFormItem>
+        </ElCol>
+      </ElRow>
       <template v-if="['TREE', 'MAIN_SUB'].includes(data.form.tplType)">
-        <page-header title="其他信息" />
-        <el-row>
-          <el-col v-if="data.form.tplType === 'TREE'" :lg="24" :xl="12">
-            <el-form-item clearable label="树名称字段" prop="treeName">
-              <el-input v-model="data.form.treeName" clearable />
-            </el-form-item>
-          </el-col>
-          <el-col v-if="data.form.tplType === 'MAIN_SUB'" :lg="24" :xl="12">
-            <el-form-item clearable label="从表" prop="subId">
-              <el-select
+        <PageHeader title="其他信息" />
+        <ElRow>
+          <ElCol v-if="data.form.tplType === 'TREE'" :lg="24" :xl="12">
+            <ElFormItem clearable label="树名称字段" prop="treeName">
+              <ElInput v-model="data.form.treeName" clearable />
+            </ElFormItem>
+          </ElCol>
+          <ElCol v-if="data.form.tplType === 'MAIN_SUB'" :lg="24" :xl="12">
+            <ElFormItem clearable label="从表" prop="subId">
+              <ElSelect
                 v-model="data.form.subId" placeholder="请选择"
               >
-                <el-option
+                <ElOption
                   v-for="item in data.dicts?.get('genTableList') || []" :key="item.id" :label="item.name"
                   :value="item.id"
                 />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col v-if="data.form.tplType === 'MAIN_SUB'" :lg="24" :xl="12">
-            <el-form-item clearable label="从表实体字段名" prop="subJavaFieldName">
-              <el-input v-model="data.form.subJavaFieldName" clearable />
-            </el-form-item>
-          </el-col>
-        </el-row>
+              </ElSelect>
+            </ElFormItem>
+          </ElCol>
+          <ElCol v-if="data.form.tplType === 'MAIN_SUB'" :lg="24" :xl="12">
+            <ElFormItem clearable label="从表实体字段名" prop="subJavaFieldName">
+              <ElInput v-model="data.form.subJavaFieldName" clearable />
+            </ElFormItem>
+          </ElCol>
+        </ElRow>
       </template>
-      <el-row class="justify-center">
+      <ElRow class="justify-center">
         <div>
-          <el-button @click="() => (form?.resetFields())">
+          <ElButton @click="() => (form?.resetFields())">
             重置
-          </el-button>
-          <el-button @click="onOk()">
+          </ElButton>
+          <ElButton @click="onOk()">
             提交
-          </el-button>
+          </ElButton>
         </div>
-      </el-row>
-    </el-form>
+      </ElRow>
+    </ElForm>
   </div>
 </template>
 
@@ -862,3 +865,4 @@ defineExpose({
   }
 }
 </style>
+@/api/modules/system/resource

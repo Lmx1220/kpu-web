@@ -1,7 +1,9 @@
+import process from 'node:process'
 import type { Plugin } from 'rollup'
 import type { PluginOption } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import createI18n from './i8n'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import vueLegacy from '@vitejs/plugin-legacy'
 import createAutoImport from './auto-import'
 import createComponents from './components'
 
@@ -13,17 +15,26 @@ import createPwa from './pwa'
 import createMock from './mock'
 import createVisualizer from './visualizer'
 import createVueDevTools from './vue-dev-tools'
+import createInspector from './inspector'
 
 export default function creactVitePlugins(viteEnv, isBuild = false) {
-  const vitePlugins: (PluginOption | PluginOption[] | Plugin)[] = [vue()]
-  // vitePlugins.push(createInspector())
+  const vitePlugins: (PluginOption | PluginOption[] | Plugin)[] = [vue(),
+    vueJsx(),
+    vueLegacy({
+      renderLegacyChunks: false,
+      modernPolyfills: [
+        'es.array.at',
+        'es.array.find-last',
+      ],
+    }),
+  ]
+  vitePlugins.push(createInspector())
   vitePlugins.push(createVueDevTools())
   vitePlugins.push(createAutoImport())
   vitePlugins.push(createComponents())
   vitePlugins.push(createUnoCss())
   vitePlugins.push(createSvgIcon(isBuild))
   vitePlugins.push(createMock(viteEnv, isBuild))
-  vitePlugins.push(createI18n())
   isBuild && vitePlugins.push(...createCompression(viteEnv))
   vitePlugins.push(createBanner())
   process.env.REPORT === 'true' && vitePlugins.push(createVisualizer())

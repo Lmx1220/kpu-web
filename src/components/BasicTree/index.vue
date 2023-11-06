@@ -1,10 +1,14 @@
 <script lang="ts" setup>
 import { ElTree } from 'element-plus'
 import { omit } from 'lodash-es'
-import { useI18n } from 'vue-i18n'
+
 import type { FieldNames, KeyType, TreeProps, TreeState } from './tree'
 import { isString } from '@/util/is'
 
+defineOptions({
+  name: 'BasicTree',
+  inheritAttrs: false,
+})
 const props = withDefaults(defineProps<TreeProps>(), {
   title: '',
   loading: false,
@@ -25,10 +29,6 @@ const emits = defineEmits<{
   'select': [keys: KeyType[]]
   'check': [key: KeyType[], check: any]
 }>()
-defineOptions({
-  name: 'BasicTree',
-  inheritAttrs: false,
-})
 const { t } = useI18n()
 const treeDataRef = ref<any[]>([])
 const state = reactive<TreeState>({
@@ -139,7 +139,7 @@ watch(filterText, (val) => {
   treeRef.value!.filter(val)
 })
 onMounted(() => {
-  const level = isString(props.defaultExpandLevel) ? parseInt(props.defaultExpandLevel) : props.defaultExpandLevel
+  const level = isString(props.defaultExpandLevel) ? Number.parseInt(props.defaultExpandLevel) : props.defaultExpandLevel
   if (level > 0) {
     state.expandedKeys = filterByLevel(level)
   }
@@ -337,41 +337,41 @@ defineExpose({
         <span v-if="title" class="mr-1 ml-5 ">{{ title }}</span>
       </slot>
       <div class="flex flex-1 items-center cursor-pointe">
-        <el-input v-if="search" v-model="filterText" class="mr-1 w-full ml-5 " :placeholder="t('common.searchText')">
+        <ElInput v-if="search" v-model="filterText" class="mr-1 w-full ml-5 " :placeholder="t('common.searchText')">
           <template #append>
-            <svg-icon name="i-ep:search" />
+            <SvgIcon name="i-ep:search" />
           </template>
-        </el-input>
+        </ElInput>
         <slot name="toolbar">
-          <el-dropdown v-if="toolbar" class="inline" @command="handleCommand">
-            <svg-icon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
+          <ElDropdown v-if="toolbar" class="inline" @command="handleCommand">
+            <SvgIcon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
             <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item v-if="toolbarStrictly" command="checkAll">
+              <ElDropdownMenu>
+                <ElDropdownItem v-if="toolbarStrictly" command="checkAll">
                   {{ t('component.tree.selectAll') }}
-                </el-dropdown-item>
-                <el-dropdown-item v-if="toolbarStrictly" command="uncheckAll">
+                </ElDropdownItem>
+                <ElDropdownItem v-if="toolbarStrictly" command="uncheckAll">
                   {{ t('component.tree.unSelectAll') }}
-                </el-dropdown-item>
-                <el-dropdown-item command="expand" :divided="checkable">
+                </ElDropdownItem>
+                <ElDropdownItem command="expand" :divided="checkable">
                   {{ t('component.tree.expandAll') }}
-                </el-dropdown-item>
-                <el-dropdown-item command="fold">
+                </ElDropdownItem>
+                <ElDropdownItem command="fold">
                   {{ t('component.tree.unExpandAll') }}
-                </el-dropdown-item>
-                <el-dropdown-item v-if="checkable" command="checkStrictly" divided>
+                </ElDropdownItem>
+                <ElDropdownItem v-if="checkable" command="checkStrictly" divided>
                   {{ t('component.tree.checkStrictly') }}
-                </el-dropdown-item>
-                <el-dropdown-item v-if="checkable" command="checkUnStrictly">
+                </ElDropdownItem>
+                <ElDropdownItem v-if="checkable" command="checkUnStrictly">
                   {{ t('component.tree.checkUnStrictly') }}
-                </el-dropdown-item>
-              </el-dropdown-menu>
+                </ElDropdownItem>
+              </ElDropdownMenu>
             </template>
-          </el-dropdown>
+          </ElDropdown>
         </slot>
       </div>
     </div>
-    <el-scrollbar v-loading="loading">
+    <ElScrollbar v-loading="loading">
       <ElTree
         ref="treeRef" :data="treeDataRef" :expand-on-click-node="false" :filter-node-method="filterNode"
         class="filter-tree" highlight-current
@@ -388,7 +388,7 @@ defineExpose({
             >
               <slot name="title" :data="data">
                 <span>
-                  <svg-icon v-if="data.icon" :name="data.icon" class="mr-1" />
+                  <SvgIcon v-if="data.icon" :name="data.icon" class="mr-1" />
                   <span>{{ getFieldNames.label ? data[getFieldNames.label] : node.label }}</span>
                 </span>
               </slot>
@@ -399,7 +399,7 @@ defineExpose({
           </slot>
         </template>
       </ElTree>
-    </el-scrollbar>
+    </ElScrollbar>
   </div>
 </template>
 
@@ -426,6 +426,5 @@ defineExpose({
     margin-right: 4px;
     visibility: hidden;
   }
-
 }
 </style>

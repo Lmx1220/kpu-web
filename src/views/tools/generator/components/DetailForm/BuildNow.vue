@@ -383,5 +383,5 @@ async function onGenerator(template: 'WEB_PLUS' | 'BACKEND') {
 </template>
 
 <style scoped lang="scss">
-
+// scss
 </style>

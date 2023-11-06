@@ -12,7 +12,6 @@ const {
   getParams,
   onSizeChange,
   onCurrentChange,
-  onSortChange,
 } = usePagination()
 
 const data = ref<DataConfig>({
@@ -112,11 +111,6 @@ function currentChange(page = 1) {
   onCurrentChange(page).then(() => getDataList())
 }
 
-// 字段排序
-function sortChange({ prop, order }: any) {
-  onSortChange(prop, order).then(() => getDataList())
-}
-
 let isAdd = false
 
 async function onOk() {
@@ -162,57 +156,57 @@ function onDsChange() {
     title="导入表结构" @ok="onOk"
     @visibleChange="visibleChange"
   >
-    <search-bar
+    <SearchBar
       :fold="data.searchFold"
       :show-toggle="false"
     >
       <template #default="{ fold }">
-        <el-form
+        <ElForm
           :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
           size="default"
         >
-          <el-form-item label="数据源">
-            <el-select
+          <ElFormItem label="数据源">
+            <ElSelect
               v-model="data.search.dsId" :disabled="data.loading" :loading="dsLoading" placeholder="" size="default"
               @change="onDsChange"
             >
-              <el-option
+              <ElOption
                 v-for="item in data?.dicts?.get('DsEnum') || []" :key="item.value" :label="item.label"
                 :value="item.value"
               />
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button :disabled="data.loading" type="primary" @click="getDataLists()">
+            </ElSelect>
+          </ElFormItem>
+          <ElFormItem>
+            <ElButton :disabled="data.loading" type="primary" @click="getDataLists()">
               <template #icon>
-                <svg-icon name="ep:search" />
+                <SvgIcon name="ep:search" />
               </template>
               筛选
-            </el-button>
-            <el-button link type="primary" @click="data.searchFold = !fold">
+            </ElButton>
+            <ElButton link type="primary" @click="data.searchFold = !fold">
               <template #icon>
-                <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                <SvgIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
               </template>
               {{ fold ? '展开' : '收起' }}
-            </el-button>
-          </el-form-item>
-        </el-form>
+            </ElButton>
+          </ElFormItem>
+        </ElForm>
       </template>
-    </search-bar>
+    </SearchBar>
     <ElTable
       ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
       stripe @selection-change="data.batch.selectionDataList = $event"
     >
-      <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
-      <el-table-column align="center" label="序号" width="100">
+      <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
+      <ElTableColumn align="center" label="序号" width="100">
         <template #default="{ $index }">
           {{ (pagination.size * (pagination.page - 1)) + $index + 1 }}
         </template>
-      </el-table-column>
-      <el-table-column label="表名称" prop="name" />
-      <el-table-column label="表描述" prop="comment" />
+      </ElTableColumn>
+      <ElTableColumn label="表名称" prop="name" />
+      <ElTableColumn label="表描述" prop="comment" />
     </ElTable>
-    <el-pagination
+    <ElPagination
       :current-page="pagination.page" :hide-on-single-page="false" :layout="pagination.layout"
       :page-size="pagination.size" :page-sizes="pagination.sizes" :total="pagination.total"
       background class="pagination" @size-change="sizeChange" @current-change="currentChange"
@@ -221,5 +215,5 @@ function onDsChange() {
 </template>
 
 <style lang="scss" scoped>
-
+// scss
 </style>

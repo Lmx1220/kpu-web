@@ -2,11 +2,11 @@
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 
-defineProps({
-  data: Object,
-})
 defineOptions({
   name: 'JsonPreview',
+})
+defineProps({
+  data: Object,
 })
 </script>
 

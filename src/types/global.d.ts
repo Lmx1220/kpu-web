@@ -1,6 +1,7 @@
 import type { FormRules } from 'element-plus'
 import type { RouteRecordRaw } from 'vue-router'
 import type { ActionEnum } from '@/enums/commonEnum'
+import type { LocaleType } from '#/config'
 
 declare type RecursiveRequired<T> = {
   [P in keyof T]-?: RecursiveRequired<T[P]>
@@ -56,7 +57,7 @@ declare namespace Settings {
      * @默认值 `''` 跟随浏览器语言设置
      * @可选值 [查看 Element Plus 支持语言列表](https://github.com/element-plus/element-plus/tree/dev/packages/locale/lang)
      */
-    defaultLang?: string
+    defaultLang?: LocaleType
     /**
      * 是否开启权限功能
      * @默认值 `false`

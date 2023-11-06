@@ -56,92 +56,92 @@ const name = [{
   ],
 },
 {
-    path: "manager",
-    name: "pagesExampleGeneralManager",
-    redirect: "/pages_example/general/manager",
+  path: 'manager',
+  name: 'pagesExampleGeneralManager',
+  redirect: '/pages_example/general/manager',
+  meta: {
+    title: '管理员管理',
+    i18n: 'route.general.manager.root'
+  },
+  children: [{
+    path: '',
+    name: 'pagesExampleGeneralManagerList',
     meta: {
-        title: "管理员管理",
-        i18n: "route.general.manager.root"
-    },
-    children: [{
-        path: "",
-        name: "pagesExampleGeneralManagerList",
-        meta: {
-            title: "管理员列表",
-            i18n: "route.general.manager.list",
-            sidebar: false,
-            breadcrumb: false,
-            cache: ["pagesExampleGeneralManagerCreate", "pagesExampleGeneralManagerEdit"]
-        }
-    }, {
-        path: "detail",
-        name: "pagesExampleGeneralManagerCreate",
-        meta: {
-            title: "新增管理员",
-            i18n: "route.general.manager.create",
-            sidebar: false,
-            activeMenu: "/pages_example/general/manager",
-            cache: true,
-            noCache: "pagesExampleGeneralManagerList"
-        }
-    }, {
-        path: "detail/:id",
-        name: "pagesExampleGeneralManagerEdit",
-        meta: {
-            title: "编辑管理员",
-            i18n: "route.general.manager.edit",
-            sidebar: false,
-            activeMenu: "/pages_example/general/manager",
-            cache: true,
-            noCache: "pagesExampleGeneralManagerList"
-        }
-    }]
+      title: '管理员列表',
+      i18n: 'route.general.manager.list',
+      sidebar: false,
+      breadcrumb: false,
+      cache: ['pagesExampleGeneralManagerCreate', 'pagesExampleGeneralManagerEdit']
+    }
+  }, {
+    path: 'detail',
+    name: 'pagesExampleGeneralManagerCreate',
+    meta: {
+      title: '新增管理员',
+      i18n: 'route.general.manager.create',
+      sidebar: false,
+      activeMenu: '/pages_example/general/manager',
+      cache: true,
+      noCache: 'pagesExampleGeneralManagerList'
+    }
+  }, {
+    path: 'detail/:id',
+    name: 'pagesExampleGeneralManagerEdit',
+    meta: {
+      title: '编辑管理员',
+      i18n: 'route.general.manager.edit',
+      sidebar: false,
+      activeMenu: '/pages_example/general/manager',
+      cache: true,
+      noCache: 'pagesExampleGeneralManagerList'
+    }
+  }]
 },
 {
-    path: "menu",
-    name: "pagesExampleGeneralMenu",
-    redirect: "/pages_example/general/menu",
+  path: 'menu',
+  name: 'pagesExampleGeneralMenu',
+  redirect: '/pages_example/general/menu',
+  meta: {
+    title: '导航管理',
+    i18n: 'route.general.menu.root',
+    badge: '风格1'
+  },
+  children: [{
+    path: '',
+    name: 'pagesExampleGeneralMenuList',
     meta: {
-        title: "导航管理",
-        i18n: "route.general.menu.root",
-        badge: "风格1"
-    },
-    children: [{
-        path: "",
-        name: "pagesExampleGeneralMenuList",
-        meta: {
-            title: "导航列表",
-            i18n: "route.general.menu.list",
-            sidebar: false,
-            cache: ["pagesExampleGeneralMenuCreate", "pagesExampleGeneralMenuEdit"]
-        }
-    }, {
-        path: "detail",
-        name: "pagesExampleGeneralMenuCreate",
-        meta: {
-            title: "新增导航",
-            i18n: "route.general.menu.create",
-            sidebar: false,
-            activeMenu: "/pages_example/general/menu",
-            cache: true,
-            noCache: "pagesExampleGeneralMenuList",
-            copyright: false,
-            paddingBottom: "80px"
-        }
-    }, {
-        path: "detail/:id",
-        name: "pagesExampleGeneralMenuEdit",
-        meta: {
-            title: "编辑导航",
-            i18n: "route.general.menu.edit",
-            sidebar: false,
-            activeMenu: "/pages_example/general/menu",
-            cache: true,
-            noCache: "pagesExampleGeneralMenuList",
-            copyright: false,
-            paddingBottom: "80px"
-        }
-    }]
+      title: '导航列表',
+      i18n: 'route.general.menu.list',
+      sidebar: false,
+      cache: ['pagesExampleGeneralMenuCreate', 'pagesExampleGeneralMenuEdit']
+    }
+  }, {
+    path: 'detail',
+    name: 'pagesExampleGeneralMenuCreate',
+    meta: {
+      title: '新增导航',
+      i18n: 'route.general.menu.create',
+      sidebar: false,
+      activeMenu: '/pages_example/general/menu',
+      cache: true,
+      noCache: 'pagesExampleGeneralMenuList',
+      copyright: false,
+      paddingBottom: '80px'
+    }
+  }, {
+    path: 'detail/:id',
+    name: 'pagesExampleGeneralMenuEdit',
+    meta: {
+      title: '编辑导航',
+      i18n: 'route.general.menu.edit',
+      sidebar: false,
+      activeMenu: '/pages_example/general/menu',
+      cache: true,
+      noCache: 'pagesExampleGeneralMenuList',
+      copyright: false,
+      paddingBottom: '80px'
+    }
+  }]
 }
 ]
 ```

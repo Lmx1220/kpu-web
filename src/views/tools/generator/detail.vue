@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import DetailForm from './components/DetailForm/index.vue'
 import useSettingsStore from '@/store/modules/settings'
-import eventBus from '@/util/eventBus'
 import type { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
@@ -13,15 +12,15 @@ const router = useRouter()
 const tabbar = useTabbar()
 const form = ref<InstanceType<typeof DetailForm>>()
 
-function onSubmit() {
-  form.value?.submit(() => {
-    eventBus.emit('get-data-list')
-  })
-}
+// function onSubmit() {
+//   form.value?.submit(() => {
+//     eventBus.emit('get-data-list')
+//   })
+// }
 
-function onCancel() {
-  goBack()
-}
+// function onCancel() {
+//   goBack()
+// }
 
 // 返回列表页
 function goBack() {

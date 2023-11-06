@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
 import hotkeys from 'hotkeys-js'
 import type { RouteRecordRaw } from 'vue-router'
 import { Dialog, DialogDescription, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
@@ -427,8 +426,8 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
       margin: 50px 20px 40px;
       text-align: center;
 
-      .switch-type{
-        margin: -20px 0 20px
+      .switch-type {
+        margin: -20px 0 20px;
       }
 
       :deep(.el-input__inner) {
@@ -464,116 +463,115 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
 
             :deep(.el-tag__content) {
               display: inline-flex;
-              align-items: center
+              align-items: center;
             }
           }
         }
       }
+    }
+
+    .result {
+      position: relative;
+      margin: 0 20px 50px;
+      // max-height: calc(100% - 250px);
+      border-radius: 5px;
+      overflow: auto;
+      background-color: var(--el-bg-color);
+      box-shadow: 0 0 0 1px var(--el-border-color-darker);
+
+      &.mobile {
+        max-height: calc(100% - 200px);
       }
 
-      .result {
-        position: relative;
-        margin: 0 20px 50px;
-        // max-height: calc(100% - 250px);
-        border-radius: 5px;
-        overflow: auto;
-        background-color: var(--el-bg-color);
-        box-shadow: 0 0 0 1px var(--el-border-color-darker);
+      .item {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.1s;
 
-        &.mobile {
-          max-height: calc(100% - 200px);
-        }
-
-        .item {
-          display: flex;
-          align-items: center;
-          text-decoration: none;
-          cursor: pointer;
-          transition: all 0.1s;
-
-          &.actived {
-            background-color: var(--el-bg-color-page);
-
-            .icon {
-              .icon {
-                color: var(--el-color-primary);
-                transform: scale(1.2);
-              }
-            }
-
-            .info {
-              border-left-color: var(--el-border-color);
-
-              .title {
-                color: var(--el-text-color-primary);
-              }
-
-              .breadcrumb,
-              .path {
-                color: var(--el-text-color-regular);
-              }
-            }
-          }
+        &.actived {
+          background-color: var(--el-bg-color-page);
 
           .icon {
-            flex: 0 0 66px;
-            text-align: center;
-
             .icon {
-              color: var(--el-color-info);
-              font-size: 20px;
-              transition: all 0.1s;
+              color: var(--el-color-primary);
+              transform: scale(1.2);
             }
           }
 
           .info {
-            flex: 1;
-            height: 70px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            border-left: 1px solid var(--el-border-color-lighter);
-            padding: 5px 10px 7px;
-            transition: all 0.1s;
-
-            @include text-overflow(1, true);
+            border-left-color: var(--el-border-color);
 
             .title {
-              font-size: 18px;
-              font-weight: bold;
-              color: var(--el-text-color-regular);
-
-              @include text-overflow(1, true);
-
-              .icon {
-                font-size: 14px;
-              }
+              color: var(--el-text-color-primary);
             }
 
             .breadcrumb,
             .path {
-              font-size: 12px;
-              color: var(--el-text-color-secondary);
-              transition: all 0.1s;
-
-              @include text-overflow(1, true);
+              color: var(--el-text-color-regular);
             }
+          }
+        }
 
-            .breadcrumb {
+        .icon {
+          flex: 0 0 66px;
+          text-align: center;
+
+          .icon {
+            color: var(--el-color-info);
+            font-size: 20px;
+            transition: all 0.1s;
+          }
+        }
+
+        .info {
+          flex: 1;
+          height: 70px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          border-left: 1px solid var(--el-border-color-lighter);
+          padding: 5px 10px 7px;
+          transition: all 0.1s;
+
+          @include text-overflow(1, true);
+
+          .title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--el-text-color-regular);
+
+            @include text-overflow(1, true);
+
+            .icon {
+              font-size: 14px;
+            }
+          }
+
+          .breadcrumb,
+          .path {
+            font-size: 12px;
+            color: var(--el-text-color-secondary);
+            transition: all 0.1s;
+
+            @include text-overflow(1, true);
+          }
+
+          .breadcrumb {
+            display: flex;
+            align-items: center;
+
+            span {
               display: flex;
               align-items: center;
 
-              span {
-                display: flex;
-                align-items: center;
+              .icon {
+                margin: 0 5px;
+              }
 
-                .icon {
-                  margin: 0 5px;
-                }
-
-                &:last-child .icon {
-                  display: none;
-                }
+              &:last-child .icon {
+                display: none;
               }
             }
           }
@@ -581,4 +579,5 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
       }
     }
   }
+}
 </style>

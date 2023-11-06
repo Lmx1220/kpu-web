@@ -101,5 +101,5 @@ vue3-vite-ts
 ├── scss.template.hbs // scss模板
 ├── tsconfig.json // ts配置
 ├── tsconfig.node.json // ts配置
-└── vite.config.ts // vite配置
+└── vite.config.d.ts // vite配置
 ```

@@ -174,7 +174,7 @@ function onDel(row?: any) {
   }
 
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudOrg.delete(ids).then(() => {
+    crudOrg.remove(ids).then(() => {
       getTreeList()
       ElMessage.success({
         message: '删除成功',
@@ -252,9 +252,9 @@ defineExpose({
             {{ node.label }}</span>
           <span v-if="!query" class="tree__actions">
             <a class="tree__action" @click.stop="onAdd(data)"> 新增 </a>
-            <a class="tree__action" style="margin-left: 8px" @click.stop="onEdit(data)"> 编辑 </a>
-            <a class="tree__action" style="margin-left: 8px" @click.stop="onBindRoles(data)"> 绑定 </a>
-            <a class="tree__action" style="margin-left: 8px" @click.stop="onDel(data)"> 删除 </a>
+            <a class="tree__action" style="margin-left: 8px;" @click.stop="onEdit(data)"> 编辑 </a>
+            <a class="tree__action" style="margin-left: 8px;" @click.stop="onBindRoles(data)"> 绑定 </a>
+            <a class="tree__action" style="margin-left: 8px;" @click.stop="onDel(data)"> 删除 </a>
           </span>
         </div>
       </template>
@@ -283,6 +283,5 @@ defineExpose({
     margin-left: 4px;
     visibility: hidden;
   }
-
 }
 </style>

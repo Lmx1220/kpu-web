@@ -91,7 +91,7 @@ defineExpose({
       if (valid) {
         if (data.value.form.id === '') {
           if (props.parentId) {
-            crudDictItem.create(data.value.form).then(() => {
+            crudDictItem.save(data.value.form).then(() => {
               ElMessage.success({
                 message: '模拟新增成功',
                 center: true,
@@ -100,7 +100,7 @@ defineExpose({
             })
           }
           else {
-            crudDict.create(data.value.form).then(() => {
+            crudDict.save(data.value.form).then(() => {
               ElMessage.success({
                 message: '模拟新增成功',
                 center: true,
@@ -111,7 +111,7 @@ defineExpose({
         }
         else {
           if (props.parentId) {
-            crudDictItem.edit(data.value.form).then(() => {
+            crudDictItem.update(data.value.form).then(() => {
               ElMessage.success({
                 message: '模拟编辑成功',
                 center: true,
@@ -120,7 +120,7 @@ defineExpose({
             })
           }
           else {
-            crudDict.edit(data.value.form).then(() => {
+            crudDict.update(data.value.form).then(() => {
               ElMessage.success({
                 message: '模拟编辑成功',
                 center: true,
@@ -137,48 +137,48 @@ defineExpose({
 
 <template>
   <div v-loading="data.loading">
-    <el-form ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
-      <el-form-item v-show="parentId" label="父标识" prop="key">
-        <el-input v-model="pData.key" disabled placeholder="请输入标题" />
-      </el-form-item>
-      <el-form-item v-show="parentId" label="父名称" prop="name">
-        <el-input v-model="pData.name" disabled placeholder="请输入标题" />
-      </el-form-item>
-      <el-form-item label="标识" prop="key">
-        <el-input v-model="data.form.key" :disabled="!!id && !parentId" placeholder="请输入标识" />
-      </el-form-item>
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="data.form.name" placeholder="请输入名称" />
-      </el-form-item>
-      <el-form-item label="状态" prop="state">
-        <el-radio-group v-model="data.form.state">
-          <el-radio-button v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
+    <ElForm ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="120px">
+      <ElFormItem v-show="parentId" label="父标识" prop="key">
+        <ElInput v-model="pData.key" disabled placeholder="请输入标题" />
+      </ElFormItem>
+      <ElFormItem v-show="parentId" label="父名称" prop="name">
+        <ElInput v-model="pData.name" disabled placeholder="请输入标题" />
+      </ElFormItem>
+      <ElFormItem label="标识" prop="key">
+        <ElInput v-model="data.form.key" :disabled="!!id && !parentId" placeholder="请输入标识" />
+      </ElFormItem>
+      <ElFormItem label="名称" prop="name">
+        <ElInput v-model="data.form.name" placeholder="请输入名称" />
+      </ElFormItem>
+      <ElFormItem label="状态" prop="state">
+        <ElRadioGroup v-model="data.form.state">
+          <ElRadioButton v-for="(item, index) in stautsEnum.dic" :key="index" :label="item.value">
             {{ item.label }}
-          </el-radio-button>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input
+          </ElRadioButton>
+        </ElRadioGroup>
+      </ElFormItem>
+      <ElFormItem label="备注" prop="remark">
+        <ElInput
           v-model="data.form.remark" :autosize="{ minRows: 2, maxRows: 4 }" placeholder="请输入备注"
           type="textarea"
         />
-      </el-form-item>
-      <el-form-item v-show="parentId" label="排序" prop="sortValue">
-        <el-input-number
+      </ElFormItem>
+      <ElFormItem v-show="parentId" label="排序" prop="sortValue">
+        <ElInputNumber
           v-model="data.form.sortValue"
           controls-position="right"
         />
-      </el-form-item>
-      <el-form-item v-show="parentId" label="图标" prop="icon">
+      </ElFormItem>
+      <ElFormItem v-show="parentId" label="图标" prop="icon">
         <IconPicker v-model="data.form.icon" />
-      </el-form-item>
-      <el-form-item v-show="parentId" label="css样式" prop="cssStyle">
-        <el-input v-model="data.form.cssStyle" placeholder="请输入css样式" />
-      </el-form-item>
-      <el-form-item v-show="parentId" label="css类元素" prop="cssClass">
-        <el-input v-model="data.form.cssClass" placeholder="请输入css类元素" />
-      </el-form-item>
-    </el-form>
+      </ElFormItem>
+      <ElFormItem v-show="parentId" label="css样式" prop="cssStyle">
+        <ElInput v-model="data.form.cssStyle" placeholder="请输入css样式" />
+      </ElFormItem>
+      <ElFormItem v-show="parentId" label="css类元素" prop="cssClass">
+        <ElInput v-model="data.form.cssClass" placeholder="请输入css类元素" />
+      </ElFormItem>
+    </ElForm>
   </div>
 </template>
 

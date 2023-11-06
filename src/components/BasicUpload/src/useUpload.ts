@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { computed, unref } from 'vue'
 
-const { t } = useI18nL()
+const { t } = useI18n()
 
 export function useUploadType({
   acceptRef,
@@ -54,7 +54,7 @@ export function useUploadType({
     }
 
     const maxNumber = unref(maxNumberRef)
-    if (maxNumber && maxNumber !== Infinity) {
+    if (maxNumber && maxNumber !== Number.POSITIVE_INFINITY) {
       helpTexts.push(t('component.upload.maxNumber', [maxNumber]))
     }
     return helpTexts.join('，')

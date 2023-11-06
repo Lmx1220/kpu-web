@@ -3,7 +3,6 @@ import type { AxiosInstance, AxiosResponse } from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { clone } from 'lodash-es'
 import HttpRequest from './request'
-import { useI18nL } from '@/util/composables/useI18nL'
 import useUserStore from '@/store/modules/user'
 import { AxiosRetry } from '@/api/helper/axiosRetry'
 import { checkStatus } from '@/api/helper/checkStatus'
@@ -23,7 +22,7 @@ const transform: AxiosTransform = {
    * @description: 处理响应数据。如果数据不是预期格式，可直接抛出错误
    */
   transformResponseHook: (res: AxiosResponse<Result>, options: RequestOptions) => {
-    const { t } = useI18nL()
+    const { t } = useI18n()
     const { isTransformResponse, isReturnNativeResponse } = options
     // 是否返回原生响应头 比如：需要获取响应头时使用该属性
     if (isReturnNativeResponse) {
@@ -176,7 +175,7 @@ const transform: AxiosTransform = {
    * @description: 响应错误处理
    */
   responseInterceptorsCatch: (axiosInstance: AxiosInstance, error: any) => {
-    const { t } = useI18nL()
+    const { t } = useI18n()
     // const errorLogStore = useErrorLogStoreWithOut()
     // errorLogStore.addAjaxErrorInfo(error)
     const { response, code, message, config } = error || {}

@@ -3,7 +3,6 @@ import SubMenu from './sub.vue'
 import Item from './item.vue'
 import type { MenuInjection, MenuProps } from './types'
 import { rootMenuInjectionKey } from './types'
-import { resolveRoutePath } from '@/util'
 
 defineOptions({
   name: 'MainMenu',

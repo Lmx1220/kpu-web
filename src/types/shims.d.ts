@@ -4,10 +4,9 @@ declare interface Window {
 }
 
 declare module '*.vue' {
-  import { type DefineComponent } from 'vue'
 
-  const component: DefineComponent<{}, {}, any>
-  export default component
+  const Component: ReturnType<typeof defineComponent>
+  export default Component
 }
 
 declare const __SYSTEM_INFO__: {

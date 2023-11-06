@@ -1,5 +1,3 @@
-import { useI18n } from 'vue-i18n'
-
 export enum YesOrNoEnum {
   Yes = 1,
   No = 0,

@@ -137,7 +137,7 @@ const activeName = ref('message')
 
 <style lang="scss" scoped>
 [data-overlayscrollbars-viewport] {
-  overscroll-behavior: contain
+  overscroll-behavior: contain;
 }
 
 .list {
@@ -173,13 +173,12 @@ const activeName = ref('message')
 
     .info {
       .title {
-        --at-apply: line-clamp-2 font-size-3 .5 leading-5;
+        --at-apply: line-clamp-2 font-size-3.5 leading-5;
       }
 
       .date {
         --at-apply: m-t-1 font-size-3 leading-4 color-stone-5;
       }
-
     }
   }
 }

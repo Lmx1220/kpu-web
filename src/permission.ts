@@ -1,4 +1,3 @@
-import useFavoritesStore from '@/store/modules/favorites'
 import type { RouteRecordRaw } from 'vue-router'
 import { useNProgress } from '@vueuse/integrations/useNProgress'
 import '@/assets/styles/nprogress.scss'
@@ -11,6 +10,7 @@ import useUserStore from '@/store/modules/user'
 import useTabbarStore from '@/store/modules/tabbar'
 import useKeepAliveStore from '@/store/modules/keepAlive'
 import useIframeStore from '@/store/modules/iframe'
+import useFavoritesStore from '@/store/modules/favorites'
 import type { Iframe } from '@/types/global'
 
 const { isLoading } = useNProgress()

@@ -650,7 +650,7 @@ function handleCopy() {
       --at-apply: ring-ui-primary ring-2;
 
       .content {
-        --at-apply: rotate-0
+        --at-apply: rotate-0;
       }
     }
 
@@ -659,6 +659,7 @@ function handleCopy() {
     }
   }
 }
+
 .menu-mode {
   --at-apply: flex items-center justify-center gap-4 pb-4;
 
@@ -688,7 +689,7 @@ function handleCopy() {
     }
 
     .mode-container {
-      --at-apply: border-width-1 .5 bg-ui-primary/20 border-dashed border-ui-primary;
+      --at-apply: border-width-1.5 bg-ui-primary/20 border-dashed border-ui-primary;
 
       &::before {
         --at-apply: content-empty absolute w-full h-full;
@@ -701,7 +702,7 @@ function handleCopy() {
       }
 
       &::after {
-        --at-apply: top-2 bottom-2 left-4 .5 w-3;
+        --at-apply: top-2 bottom-2 left-4.5 w-3;
       }
 
       .mode-container {
@@ -715,11 +716,11 @@ function handleCopy() {
       }
 
       &::after {
-        --at-apply: top-4 .5 left-2 bottom-2 w-3 rounded-bl-1;
+        --at-apply: top-4.5 left-2 bottom-2 w-3 rounded-bl-1;
       }
 
       .mode-container {
-        --at-apply: inset-t-4 .5 inset-r-2 inset-b-2 inset-l-5 .5 rounded-br-1;
+        --at-apply: inset-t-4.5 inset-r-2 inset-b-2 inset-l-5.5 rounded-br-1;
       }
     }
 
@@ -729,7 +730,7 @@ function handleCopy() {
       }
 
       .mode-container {
-        --at-apply: inset-t-2 inset-r-2 inset-b-2 inset-l-5 .5 rounded-tr-1 rounded-br-1;
+        --at-apply: inset-t-2 inset-r-2 inset-b-2 inset-l-5.5 rounded-tr-1 rounded-br-1;
       }
     }
 
@@ -739,7 +740,7 @@ function handleCopy() {
       }
 
       .mode-container {
-        --at-apply: top-2 right-2 bottom-2 left-4 .5 rounded-tr-1 rounded-br-1;
+        --at-apply: top-2 right-2 bottom-2 left-4.5 rounded-tr-1 rounded-br-1;
       }
     }
 
@@ -749,7 +750,7 @@ function handleCopy() {
       }
 
       .mode-container {
-        --at-apply: top-4 .5 right-2 bottom-2 left-2 rounded-bl-1 rounded-br-1;
+        --at-apply: top-4.5 right-2 bottom-2 left-2 rounded-bl-1 rounded-br-1;
       }
     }
   }
@@ -767,14 +768,12 @@ function handleCopy() {
 
     &-adaption {
       &::before {
-
         --at-apply: absolute w-full h-full bg-stone-1 dark:bg-stone-9 content-empty;
       }
 
-      & {
-        .left, .right {
-          --at-apply: absolute top-1\/2 -translate-y-1\/2;
-        }
+      .left,
+      .right {
+        --at-apply: absolute top-1\/2 -translate-y-1\/2;
       }
 
       .left {
@@ -784,7 +783,6 @@ function handleCopy() {
       .right {
         --at-apply: right-1;
       }
-
     }
 
     &-adaption-min-width {
@@ -792,18 +790,17 @@ function handleCopy() {
         --at-apply: absolute left-1\/2 w-1\/2 h-full -translate-x-1\/2 bg-stone-1 dark:bg-stone-9 content-empty;
       }
 
-      & {
-        .left, .right {
-          --at-apply: absolute top-1\/2 -translate-y-1\/2;
-        }
+      .left,
+      .right {
+        --at-apply: absolute top-1\/2 -translate-y-1\/2;
       }
 
       .left {
-        --at-apply: left-0 .5;
+        --at-apply: left-0.5;
       }
 
       .right {
-        --at-apply: right-0 .5;
+        --at-apply: right-0.5;
       }
     }
 
@@ -814,7 +811,6 @@ function handleCopy() {
     }
 
     &-center-max-width {
-
       &::before {
         --at-apply: absolute left-1\/2 w-3\/5 h-full -translate-x-1\/2 bg-stone-1 dark:bg-stone-9 content-empty;
       }
@@ -825,11 +821,11 @@ function handleCopy() {
       }
 
       .left {
-        --at-apply: left-2 .5;
+        --at-apply: left-2.5;
       }
 
       .right {
-        --at-apply: right-2 .5;
+        --at-apply: right-2.5;
       }
     }
   }
@@ -868,7 +864,6 @@ function handleCopy() {
           }
         }
       }
-
     }
 
     &.mode-slide-left {
@@ -946,7 +941,6 @@ function handleCopy() {
             opacity: 1;
           }
         }
-
       }
     }
 
@@ -973,12 +967,11 @@ function handleCopy() {
             opacity: 1;
           }
         }
-
       }
     }
   }
-
 }
+
 .setting-item {
   --at-apply: flex items-center justify-between gap-4 px-4 py-2 rounded-2 transition hover:bg-stone-1 dark:hover:bg-stone-9;
 

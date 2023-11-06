@@ -648,70 +648,70 @@ export default [
     },
   },
 ]
-const menuThreeList = [
-  {
-    id: 1,
-    parentId: 0,
-    name: '1',
-    sort: 1,
-    children: [{
-      id: 2,
-      parentId: 1,
-      name: '1-1',
-      sort: 2,
-    },
-    {
-      id: 3,
-      parentId: 1,
-      name: '1-2',
-      sort: 3,
-    },
-    ],
-  },
-  {
-    id: 4,
-    parentId: 0,
-    name: '2',
-    sort: 4,
-    children: [{
-      id: 5,
-      parentId: 4,
-      name: '2-1',
-      sort: 5,
-    }],
-  },
-]
-const menuThreeList1 = [
-  {
-    id: 1,
-    parentId: 0,
-    name: '1',
-    sort: 1,
-    children: [
-      {
-        id: 2,
-        parentId: 1,
-        name: '1-1',
-        sort: 1,
-      },
-      {
-        id: 3,
-        parentId: 1,
-        name: '1-2',
-        sort: 2,
-      },
-    ],
-  },
-  {
-    id: 4,
-    parentId: 0,
-    name: '2',
-    sort: 2,
-    children: [{
-      id: 5,
-      parentId: 4,
-      name: '2-1',
-      sort: 1,
-    }],
-  },
-]
+// const menuThreeList = [
+//   {
+//     id: 1,
+//     parentId: 0,
+//     name: '1',
+//     sort: 1,
+//     children: [{
+//       id: 2,
+//       parentId: 1,
+//       name: '1-1',
+//       sort: 2,
+//     },
+//     {
+//       id: 3,
+//       parentId: 1,
+//       name: '1-2',
+//       sort: 3,
+//     },
+//     ],
+//   },
+//   {
+//     id: 4,
+//     parentId: 0,
+//     name: '2',
+//     sort: 4,
+//     children: [{
+//       id: 5,
+//       parentId: 4,
+//       name: '2-1',
+//       sort: 5,
+//     }],
+//   },
+// ]
+// const menuThreeList1 = [
+//   {
+//     id: 1,
+//     parentId: 0,
+//     name: '1',
+//     sort: 1,
+//     children: [
+//       {
+//         id: 2,
+//         parentId: 1,
+//         name: '1-1',
+//         sort: 1,
+//       },
+//       {
+//         id: 3,
+//         parentId: 1,
+//         name: '1-2',
+//         sort: 2,
+//       },
+//     ],
+//   },
+//   {
+//     id: 4,
+//     parentId: 0,
+//     name: '2',
+//     sort: 2,
+//     children: [{
+//       id: 5,
+//       parentId: 4,
+//       name: '2-1',
+//       sort: 1,
+//     }],
+//   },
+// ]

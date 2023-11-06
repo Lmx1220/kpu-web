@@ -112,11 +112,11 @@ export function generatorCode(data: {
     [key: string]: string
   }
 }) {
-  return defHttp.request<Boolean>({ ...Api.GeneratorCode, params: data })
+  return defHttp.request<boolean>({ ...Api.GeneratorCode, params: data })
 }
 
 export function importCheck(tableNames: string[]) {
-  return defHttp.request<Boolean>({ ...Api.ImportCheck, params: tableNames }, {
+  return defHttp.request<boolean>({ ...Api.ImportCheck, params: tableNames }, {
     errorMessageMode: 'none',
   })
 }
@@ -125,19 +125,18 @@ export function importTable(params: {
   dsId: string
   tableNames: string[]
 }) {
-  return defHttp.request<Boolean>({ ...Api.ImportTable, params })
+  return defHttp.request<boolean>({ ...Api.ImportTable, params })
 }
 
 export function syncFieldGenTable(id: string) {
-  return defHttp.request<Boolean>({ ...Api.SyncField, params: { id } })
+  return defHttp.request<boolean>({ ...Api.SyncField, params: { id } })
 }
 
 export default {
-  list: page,
+  page,
+  save,
+  update,
+  remove,
   query,
   detail,
-  create: save,
-  edit: update,
-  delete: remove,
-  syncField: syncFieldGenTable,
 }

@@ -39,9 +39,10 @@ export function copy(id: string) {
 }
 
 export default {
-  list: page,
+  page,
+  save,
+  update,
+  remove,
+  query,
   detail,
-  create: save,
-  edit: update,
-  delete: remove,
 }

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { useI18n } from 'vue-i18n'
+
 import type { FormConfig } from '#/global'
 import crudDatasourceConfig from '@/api/modules/tools/datasourceConfig'
 import { ActionEnum } from '@/enums/commonEnum.ts'
@@ -108,10 +108,10 @@ defineExpose({
       if (valid) {
         if (props.type !== ActionEnum.VIEW) {
           if (props.type === ActionEnum.EDIT) {
-            await crudDatasourceConfig.create(data.value.form)
+            await crudDatasourceConfig.save(data.value.form)
           }
           else {
-            await crudDatasourceConfig.create(data.value.form)
+            await crudDatasourceConfig.update(data.value.form)
           }
           ElMessage.success({
             message: t(`common.tips.${props.type}Success`),

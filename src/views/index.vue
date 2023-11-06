@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ElNotification } from 'element-plus'
-import { useI18n } from 'vue-i18n'
+
 import { ActionEnum } from '@/enums/commonEnum'
 import Vxe from '@/views/vxe.vue'
 
@@ -35,9 +35,9 @@ async function handleSubmit() {
         message: h('div', { innerHTML: msgStr }, []),
         duration: 500,
       })
-      return
+      // return
     }
-    const { insertRecords, removeRecords, updateRecords } = getFileRef()?.getRecordset()
+    // const { insertRecords, removeRecords, updateRecords } = getFileRef()?.getRecordset()
   }
   catch (e) {
     console.error(e)

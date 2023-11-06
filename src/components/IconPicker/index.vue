@@ -137,181 +137,181 @@ function removeIcon() {
 
 <style lang="scss" scoped>
 .icon-picker {
-    width: 40px;
-    height: 40px;
-    line-height: 36px;
-    text-align: center;
-    color: var(--el-text-color-regular);
-    border: 1px solid var(--el-border-color);
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 24px;
-    vertical-align: middle;
+  width: 40px;
+  height: 40px;
+  line-height: 36px;
+  text-align: center;
+  color: var(--el-text-color-regular);
+  border: 1px solid var(--el-border-color);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 24px;
+  vertical-align: middle;
+
+  &:hover {
+    border: 1px solid var(--el-border-color-darker);
+  }
+
+  &.empty {
+    color: var(--el-text-color-placeholder);
+    border: 1px dashed var(--el-border-color);
 
     &:hover {
-        border: 1px solid var(--el-border-color-darker);
+      color: var(--el-text-color-regular);
+      border: 1px solid var(--el-border-color-darker);
     }
-
-    &.empty {
-        color: var(--el-text-color-placeholder);
-        border: 1px dashed var(--el-border-color);
-
-        &:hover {
-            color: var(--el-text-color-regular);
-            border: 1px solid var(--el-border-color-darker);
-        }
-    }
+  }
 }
 
 .icon-picker-dialog-body {
-    display: flex;
-    height: 500px;
-    margin: calc((var(--el-dialog-padding-primary) + 10px + 30px) * -1) calc(var(--el-dialog-padding-primary) * -1) calc((var(--el-dialog-padding-primary) + 10px) * -1) calc(var(--el-dialog-padding-primary) * -1);
+  display: flex;
+  height: 500px;
+  margin: calc((var(--el-dialog-padding-primary) + 10px + 30px) * -1) calc(var(--el-dialog-padding-primary) * -1) calc((var(--el-dialog-padding-primary) + 10px) * -1) calc(var(--el-dialog-padding-primary) * -1);
 
-    .el-tabs {
-        :deep(.el-tabs__nav-prev),
-        :deep(.el-tabs__nav-next) {
-            background-image: linear-gradient(to right, transparent, var(--el-fill-color));
-        }
-
-        :deep(.el-tabs__header .el-tabs__nav) {
-            .el-tabs__active-bar {
-                z-index: 0;
-                width: 100%;
-                background-color: unset;
-                background-image: linear-gradient(to right, transparent, var(--el-fill-color));
-                border-right: 2px solid var(--el-color-primary);
-                transition: 0.3s;
-            }
-
-            .el-tabs__item {
-                position: relative;
-                margin-bottom: -2px;
-                height: auto;
-                transition: 0.3s;
-
-                &::after {
-                    content: "";
-                    position: absolute;
-                    left: 0;
-                    bottom: 0;
-                    width: 100%;
-                    height: 2px;
-                    background-image: linear-gradient(to right, transparent, var(--el-fill-color));
-                }
-
-                .icon-label {
-                    display: flex;
-                    flex-direction: column;
-                    width: 120px;
-                    text-align: left;
-                    line-height: 20px;
-                    padding: 15px 0;
-
-                    .name {
-                        font-size: 16px;
-                        margin-bottom: 2px;
-                        white-space: normal;
-                        word-break: initial;
-                    }
-
-                    .total {
-                        font-size: 12px;
-                    }
-                }
-            }
-        }
+  .el-tabs {
+    :deep(.el-tabs__nav-prev),
+    :deep(.el-tabs__nav-next) {
+      background-image: linear-gradient(to right, transparent, var(--el-fill-color));
     }
 
-    .main-container {
-        flex: 1;
-        margin-right: 11px;
+    :deep(.el-tabs__header .el-tabs__nav) {
+      .el-tabs__active-bar {
+        z-index: 0;
+        width: 100%;
+        background-color: unset;
+        background-image: linear-gradient(to right, transparent, var(--el-fill-color));
+        border-right: 2px solid var(--el-color-primary);
+        transition: 0.3s;
+      }
 
-        .search-bar {
-            margin: 0 75px;
+      .el-tabs__item {
+        position: relative;
+        margin-bottom: -2px;
+        height: auto;
+        transition: 0.3s;
 
-            .el-input {
-                margin-top: 20px;
-            }
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 2px;
+          background-image: linear-gradient(to right, transparent, var(--el-fill-color));
         }
 
-        .list-icon {
-            position: relative;
-            margin: 15px 0;
-            min-height: 160px;
+        .icon-label {
+          display: flex;
+          flex-direction: column;
+          width: 120px;
+          text-align: left;
+          line-height: 20px;
+          padding: 15px 0;
 
-            .list-icon-item {
-                margin: 5px;
-                box-sizing: content-box;
-                padding: 15px;
-                font-size: 28px;
-                cursor: pointer;
-                border: 1px solid var(--el-border-color);
-                transition: var(--el-transition-border);
+          .name {
+            font-size: 16px;
+            margin-bottom: 2px;
+            white-space: normal;
+            word-break: initial;
+          }
 
-                &:nth-child(6n + 6) {
-                    margin-right: 0;
-                }
-
-                &:not(.empty):hover {
-                    border-color: var(--el-border-color-darker);
-                    background-color: var(--el-fill-color);
-                    color: var(--el-color-primary);
-                    transition: background-color 0.3s, var(--el-transition-border), var(--el-transition-color);
-                }
-
-                &.empty {
-                    border-color: transparent;
-                    color: var(--el-text-color-placeholder);
-                    transition: var(--el-transition-color);
-
-                    &:hover {
-                        color: var(--el-text-color-disabled);
-                    }
-                }
-            }
-
-            .list-icon-preview-item {
-                display: none;
-                position: absolute;
-                box-sizing: content-box;
-                padding: 10px;
-                border: 1px solid var(--el-border-color-darker);
-                font-size: 108px;
-                background: var(--el-fill-color);
-                color: var(--el-color-primary);
-
-                &.top-left {
-                    display: block;
-                    top: 5px;
-                    left: 5px;
-                }
-
-                &.top-right {
-                    display: block;
-                    top: 5px;
-                    right: 5px;
-                }
-
-                &.bottom-left {
-                    display: block;
-                    bottom: 5px;
-                    left: 5px;
-                }
-
-                &.bottom-right {
-                    display: block;
-                    bottom: 5px;
-                    right: 5px;
-                }
-            }
+          .total {
+            font-size: 12px;
+          }
         }
-
-        .el-pagination {
-            display: flex;
-            justify-content: center;
-        }
+      }
     }
+  }
+
+  .main-container {
+    flex: 1;
+    margin-right: 11px;
+
+    .search-bar {
+      margin: 0 75px;
+
+      .el-input {
+        margin-top: 20px;
+      }
+    }
+
+    .list-icon {
+      position: relative;
+      margin: 15px 0;
+      min-height: 160px;
+
+      .list-icon-item {
+        margin: 5px;
+        box-sizing: content-box;
+        padding: 15px;
+        font-size: 28px;
+        cursor: pointer;
+        border: 1px solid var(--el-border-color);
+        transition: var(--el-transition-border);
+
+        &:nth-child(6n + 6) {
+          margin-right: 0;
+        }
+
+        &:not(.empty):hover {
+          border-color: var(--el-border-color-darker);
+          background-color: var(--el-fill-color);
+          color: var(--el-color-primary);
+          transition: background-color 0.3s, var(--el-transition-border), var(--el-transition-color);
+        }
+
+        &.empty {
+          border-color: transparent;
+          color: var(--el-text-color-placeholder);
+          transition: var(--el-transition-color);
+
+          &:hover {
+            color: var(--el-text-color-disabled);
+          }
+        }
+      }
+
+      .list-icon-preview-item {
+        display: none;
+        position: absolute;
+        box-sizing: content-box;
+        padding: 10px;
+        border: 1px solid var(--el-border-color-darker);
+        font-size: 108px;
+        background: var(--el-fill-color);
+        color: var(--el-color-primary);
+
+        &.top-left {
+          display: block;
+          top: 5px;
+          left: 5px;
+        }
+
+        &.top-right {
+          display: block;
+          top: 5px;
+          right: 5px;
+        }
+
+        &.bottom-left {
+          display: block;
+          bottom: 5px;
+          left: 5px;
+        }
+
+        &.bottom-right {
+          display: block;
+          bottom: 5px;
+          right: 5px;
+        }
+      }
+    }
+
+    .el-pagination {
+      display: flex;
+      justify-content: center;
+    }
+  }
 }
 </style>

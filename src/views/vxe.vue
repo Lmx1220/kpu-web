@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ElMessage } from 'element-plus'
 import type { Ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+
 import type { VxeGridInstance, VxeGridListeners, VxeGridProps, VxeTablePropTypes } from 'vxe-table'
 import { columns, customFormSchemaRules, formItems } from './file.data'
 import { ActionEnum, VALIDATE_API } from '@/enums/commonEnum'
@@ -175,21 +175,21 @@ defineExpose({
 </script>
 
 <template>
-  <vxe-grid ref="xGrid" v-bind="gridOptions" v-on="gridEvents">
+  <VxeGrid ref="xGrid" v-bind="gridOptions" v-on="gridEvents">
     <template #operate="{ row }">
-      <el-popconfirm
+      <ElPopconfirm
         icon-color="#626AEF"
         title="确认删除吗?"
         @confirm="removeRowEvent(row)"
       >
         <template #reference>
-          <el-button
+          <ElButton
             circle
           >
-            <svg-icon name="ep:delete" />
-          </el-button>
+            <SvgIcon name="ep:delete" />
+          </ElButton>
         </template>
-      </el-popconfirm>
+      </ElPopconfirm>
     </template>
-  </vxe-grid>
+  </VxeGrid>
 </template>

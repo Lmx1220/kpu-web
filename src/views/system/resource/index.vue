@@ -1,22 +1,28 @@
 <script setup lang="ts">
-import { ElMessage, ElMessageBox } from 'element-plus'
-import crudMenu from '@/api/modules/system/menu'
+import { ElMessage } from 'element-plus'
+
+import Move from './components/move.vue'
+import crudResource, { moveDown, moveUp, treeResourceAndView } from '@/api/modules/system/resource'
 import useSettingsStore from '@/store/modules/settings'
 import type { DataConfig, Menu } from '@/types/global'
-import Move from '@/views/system/menu/components/move.vue'
+import type { ResourceResultVO } from '@/api/modules/system/model/ResourceModel.ts'
+import eventBus from '@/util/eventBus.ts'
+import { useKeepAlive } from '@/hooks/useA.ts'
+import { forEach } from '@/util/helper/treeHelper'
 
 defineOptions({
-  name: 'MenuList',
+  name: 'SystemResourceList',
 })
 
 const auth = useAuth()
 
 const router = useRouter()
 const tabbar = useTabbar()
+const { t } = useI18n()
 
-const data: Ref<DataConfig<any, Menu.raw>> = ref(
+const data: Ref<DataConfig<any, ResourceResultVO>> = ref(
   {
-    dataList: [] as Menu.raw[],
+    dataList: [],
     loading: false,
     tableAutoHeight: true,
     /**
@@ -25,7 +31,7 @@ const data: Ref<DataConfig<any, Menu.raw>> = ref(
      * dialog 对话框
      * drawer 抽屉
      */
-    formMode: 'drawer',
+    formMode: 'router',
     // 详情
     formModeProps: {
       visible: false,
@@ -51,20 +57,42 @@ const settingsStore = useSettingsStore()
 
 onMounted(() => {
   getDataList()
+  if (data.value.formMode === 'router') {
+    eventBus.on('get-data-list', () => {
+      getDataList()
+    })
+  }
 })
+
+onBeforeUnmount(() => {
+  if (data.value.formMode === 'router') {
+    eventBus.off('get-data-list')
+  }
+})
+
+if (data.value.formMode === 'router') {
+  useKeepAlive(() => eventBus.off('get-data-list'))
+}
+
 function getDataList() {
   data.value.loading = true
-  crudMenu.list<any>().then((res) => {
+  treeResourceAndView().then((res) => {
+    forEach(res, (item) => {
+      if (!item.children) {
+        item.children = []
+      }
+    })
     data.value.dataList = res
     data.value.loading = false
   }).catch(() => {
     data.value.loading = false
   })
 }
-function onAdd(row?: Menu.raw) {
+
+function onAdd(row?: ResourceResultVO) {
   if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
     tabbar.open({
-      name: 'SystemMenuCreate',
+      name: 'SystemResourceCreate',
       query: {
         parentId: row?.id,
         sort: row?.parentId ? row.children?.length ? row.children.length + 1 : 1 : data.value.dataList ? data.value.dataList.length + 1 : 1,
@@ -73,7 +101,7 @@ function onAdd(row?: Menu.raw) {
   }
   else {
     router.push({
-      name: 'SystemMenuCreate',
+      name: 'SystemResourceCreate',
       query: {
         parentId: row?.id,
         sort: row?.parentId ? row.children?.length ? row.children.length + 1 : 1 : data.value.dataList ? data.value.dataList.length + 1 : 1,
@@ -81,10 +109,11 @@ function onAdd(row?: Menu.raw) {
     })
   }
 }
-function onEdit(row: Menu.raw) {
+
+function onEdit(row: ResourceResultVO) {
   if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
     tabbar.open({
-      name: 'SystemMenuEdit',
+      name: 'SystemResourcedit',
       params: {
         id: row.id,
       },
@@ -92,38 +121,41 @@ function onEdit(row: Menu.raw) {
   }
   else {
     router.push({
-      name: 'SystemMenuEdit',
+      name: 'SystemResourceEdit',
       params: {
         id: row.id,
       },
     })
   }
 }
-function onDel(row: Menu.raw) {
-  ElMessageBox.confirm(`确认删除「${row.title}」吗？`, '确认信息').then(() => {
-    crudMenu.delete([row.id]).then(() => {
+
+function onDel(row: ResourceResultVO) {
+  if (row.id) {
+    crudResource.remove([row.id]).then(() => {
       getDataList()
       ElMessage.success({
-        message: '删除成功',
+        message: t('common.tips.deleteSuccess'),
         center: true,
       })
     })
-  }).catch(() => { })
+  }
 }
+
 function onMoveUp(row: Menu.raw) {
-  crudMenu.moveUp(row.id).then(() => {
+  moveUp(row.id).then(() => {
     getDataList()
     ElMessage.success({
-      message: '操作成功',
+      message: t('sys.api.operationSuccess'),
       center: true,
     })
   })
 }
+
 function onMoveDown(row: Menu.raw) {
-  crudMenu.moveDown(row.id).then(() => {
+  moveDown(row.id).then(() => {
     getDataList()
     ElMessage.success({
-      message: '操作成功',
+      message: t('sys.api.operationSuccess'),
       center: true,
     })
   })
@@ -134,11 +166,8 @@ const moveDialog = ref<{ id?: string; visible: boolean; data: object }>({
   visible: false,
   data: {},
 })
+
 function onMove(row: Menu.raw) {
-  // ElMessage.info({
-  //   message: '暂未实现',
-  //   center: true,
-  // })
   moveDialog.value.id = row.id
   moveDialog.value.visible = true
   moveDialog.value.data = row
@@ -147,30 +176,30 @@ function onMove(row: Menu.raw) {
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <PageHeader title="菜单管理" />
+    <PageHeader :title="t('system.resource.table.title')" />
     <PageMain>
       <ElSpace>
         <ElButton type="primary" @click="onAdd()">
           <template #icon>
             <SvgIcon name="ep:plus" />
           </template>
-          新增主导航
+          {{ t('common.title.addRoot') }}
         </ElButton>
       </ElSpace>
       <ElTable
         v-loading="data.loading" class="my-4" :data="data.dataList" row-key="id" default-expand-all border
         stripe highlight-current-row height="100%"
       >
-        <ElTableColumn prop="title" label="标题" min-width="200" fixed="left" />
+        <ElTableColumn prop="title" :label="t('system.resource.title')" min-width="200" fixed="left" />
 
-        <ElTableColumn prop="path" label="路由" width="200">
+        <ElTableColumn prop="path" :label="t('system.resource.path')" width="200">
           <template #default="scope">
             <span :title="scope.row.path">
               {{ scope.row.path }}
             </span>
           </template>
         </ElTableColumn>
-        <ElTableColumn prop="component" label="页面组件" width="200">
+        <ElTableColumn prop="component" :label="t('system.resource.component')" width="200">
           <template #default="scope">
             <ElTag v-if="scope.row.component === 'Layout'">
               {{ scope.row.component }}
@@ -180,19 +209,19 @@ function onMove(row: Menu.raw) {
             </span>
           </template>
         </ElTableColumn>
-        <ElTableColumn prop="icon" label="图标" width="90" align="center">
+        <ElTableColumn prop="icon" :label="t('system.resource.icon')" width="90" align="center">
           <template #default="scope">
             <div style="display: flex; justify-content: center;">
               <SvgIcon v-if="scope.row.icon" :name="scope.row.icon" style="font-size: 24px;" />
             </div>
           </template>
         </ElTableColumn>
-        <ElTableColumn prop="activeIcon" label="激活图标" width="90" align="center">
+        <ElTableColumn prop="activeIcon" :label="t('system.resource.activeIcon')" width="90" align="center">
           <template #default="scope">
             <SvgIcon v-if="scope.row.activeIcon" :name="scope.row.activeIcon" style="font-size: 24px;" />
           </template>
         </ElTableColumn>
-        <ElTableColumn prop="sidebar" label="菜单" width="80" align="center">
+        <ElTableColumn prop="sidebar" :label="t('system.resource.meta.sidebar')" width="80" align="center">
           <template #default="scope">
             <ElTag
               v-if="typeof scope.row.meta.sidebar === 'boolean'"
@@ -202,7 +231,7 @@ function onMove(row: Menu.raw) {
             </ElTag>
           </template>
         </ElTableColumn>
-        <ElTableColumn prop="breadcrumb" label="面包屑" width="80" align="center">
+        <ElTableColumn prop="breadcrumb" :label="t('system.resource.meta.breadcrumb')" width="80" align="center">
           <template #default="scope">
             <ElTag
               v-if="typeof scope.row.meta.breadcrumb === 'boolean'"
@@ -214,41 +243,40 @@ function onMove(row: Menu.raw) {
         </ElTableColumn>
         <!-- <el-table-column prop="sortValue" label="排序" min-width="80" fixed="right" /> -->
         <ElTableColumn
-          v-if="auth.auth(['authority:menu:add', 'authority:menu:edit', 'authority:menu:delete'])"
+          v-if="auth.auth(['system:resource:add', 'system:resource:edit', 'system:resource:delete'])"
           align="center" fixed="right" label="操作" width="350"
         >
           <template #default="scope">
             <ElButton
-              v-show="scope.row.resourceType === '10'" v-auth="'authority:menu:add'" link plain size="small"
+              v-show="scope.row.resourceType === '10'" v-auth="'system:resource:add'" link plain size="small"
               type="info" @click="onAdd(scope.row)"
             >
-              新增导航
+              {{ t('common.title.addChildren') }}
             </ElButton>
-            <ElButton v-auth="'authority:menu:edit'" link size="small" type="primary" @click="onEdit(scope.row)">
-              编辑
+            <ElButton v-auth="'system:resource:edit'" link size="small" type="primary" @click="onEdit(scope.row)">
+              {{ t('common.title.edit') }}
             </ElButton>
-            <ElButton v-auth="'authority:menu:delete'" link size="small" type="danger" @click="onDel(scope.row)">
-              删除
-            </ElButton>
-            <!--            <el-button v-auth="'authority:menu:edit'" type="danger" size="small"> -->
-            <!--              上移 -->
-            <!--            </el-button> -->
-            <ElPopconfirm title="是否上移?" @confirm="onMoveUp(scope.row)">
+            <ElPopconfirm v-if="auth.auth('system:resource:del')" :title="t('common.tips.confirmDelete')" @confirm="onDel(scope.row)">
+              <ElButton link size="small" type="danger">
+                {{ t('common.title.delete') }}
+              </ElButton>
+            </ElPopconfirm>
+            <ElPopconfirm v-if="auth.auth('system:resource:edit')" :title="t('common.tips.confirmMove')" @confirm="onMoveUp(scope.row)">
               <template #reference>
-                <ElButton v-auth="'authority:menu:edit'" link size="small" type="danger">
-                  上移
+                <ElButton link size="small" type="danger">
+                  {{ t('common.title.moveUp') }}
                 </ElButton>
               </template>
             </ElPopconfirm>
-            <ElPopconfirm title="是否下移?" @confirm="onMoveDown(scope.row)">
+            <ElPopconfirm v-if="auth.auth('system:resource:edit')" :title="t('common.tips.confirmMove')" @confirm="onMoveDown(scope.row)">
               <template #reference>
-                <ElButton v-auth="'authority:menu:edit'" link size="small" type="danger">
-                  下移
+                <ElButton link size="small" type="danger">
+                  {{ t('common.title.moveDown') }}
                 </ElButton>
               </template>
             </ElPopconfirm>
-            <ElButton v-auth="'authority:menu:edit'" link size="small" type="danger" @click="onMove(scope.row)">
-              移动
+            <ElButton v-auth="'system:resource:edit'" link size="small" type="danger" @click="onMove(scope.row)">
+              {{ t('common.title.move') }}
             </ElButton>
           </template>
         </ElTableColumn>
@@ -258,7 +286,7 @@ function onMove(row: Menu.raw) {
   </div>
 </template>
 
-<style lang="scss"  scoped>
+<style lang="scss" scoped>
 .absolute-container {
   position: absolute;
   width: 100%;
@@ -269,7 +297,8 @@ function onMove(row: Menu.raw) {
   .page-main {
     flex: 1;
     overflow: auto;
-    :deep(.main-container){
+
+    :deep(.main-container) {
       flex: 1;
       overflow: auto;
       display: flex;
@@ -278,7 +307,7 @@ function onMove(row: Menu.raw) {
   }
 
   .page-header {
-    margin-bottom: 0
+    margin-bottom: 0;
   }
 }
 </style>

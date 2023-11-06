@@ -2,6 +2,9 @@
 import { get } from 'lodash-es'
 import type { ApiSelectProps } from './typing'
 
+defineOptions({
+  name: 'ApiSelect',
+})
 const props = withDefaults(defineProps<ApiSelectProps>(), {
   resultField: 'data',
   labelField: 'label',
@@ -13,9 +16,6 @@ const props = withDefaults(defineProps<ApiSelectProps>(), {
 })
 const emit = defineEmits(['change', 'update:modelValue'])
 const attrs = useAttrs()
-defineOptions({
-  name: 'ApiSelect',
-})
 const getProps = computed(() => {
   return { ...props.componentProps, ...attrs }
 })
@@ -67,20 +67,20 @@ function filterMethod(query: string) {
 </script>
 
 <template>
-  <el-select v-model="modelValue" :filterable="showSearch" :filter-method="filterMethod" v-bind="getProps" @change="(val) => emit('change', val)">
+  <ElSelect v-model="modelValue" :filterable="showSearch" :filter-method="filterMethod" v-bind="getProps" @change="(val) => emit('change', val)">
     <template v-if="slots.default">
       <slot :dicts="dicts" />
     </template>
-    <el-option
+    <ElOption
       v-for="(item, index) in dicts"
       v-else
       :key="index"
       :label="item[labelField]"
       :value="item[valueField]"
     />
-  </el-select>
+  </ElSelect>
 </template>
 
 <style scoped lang="scss">
-
+// scss
 </style>

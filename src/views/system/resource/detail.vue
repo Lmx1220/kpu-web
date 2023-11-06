@@ -2,14 +2,19 @@
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import Sortable from 'sortablejs'
-import crudMenu from '@/api/modules/system/menu'
+import { cloneDeep } from 'lodash-es'
+
+import crudResource from '@/api/modules/system/resource'
 import useSettingsStore from '@/store/modules/settings'
-import type { Menu } from '@/types/global'
+import type { ResourceResultVO } from '@/api/modules/system/model/ResourceModel.ts'
+import eventBus from '@/util/eventBus.ts'
+import { ActionEnum } from '@/enums/commonEnum'
 
 defineOptions({
-  name: 'MenuDetail',
+  name: 'ResourceDetail',
 })
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const settingsStore = useSettingsStore()
@@ -18,12 +23,12 @@ const tabbar = useTabbar()
 function handleBack() {
   if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
     tabbar.close({
-      name: 'SystemMenuList',
+      name: 'SystemResourceList',
     })
   }
   else {
     router.push({
-      name: 'SystemMenuList',
+      name: 'SystemResourceList',
     })
   }
 }
@@ -31,10 +36,9 @@ function handleBack() {
 const formRef = ref<FormInstance>()
 const loading = ref(false)
 
-const form = ref<Menu.raw>({
+const form = ref<ResourceResultVO>({
   id: route.params.id as any ?? '',
   parentId: route.query.parentId as string ?? '',
-  pid: route.query.parentId as string ?? '',
   sortValue: route.query.sort as unknown as number ?? 0,
   path: '',
   redirect: '',
@@ -93,54 +97,52 @@ onMounted(() => {
 })
 
 function getInfo() {
+  if (!form.value.id) {
+    return
+  }
   loading.value = true
-  crudMenu.detail<any>(form.value.id).then((res) => {
+  crudResource.detail(form.value.id).then((res) => {
     loading.value = false
-    form.value.id = res.id
-    // form.value.auths = res.auths
-    // form.value.parentId = res.parentId
-    // form.value.path = res.path
-    // form.value.redirect = res.redirect
-    // form.value.name = res.name
-    // form.value.component = res.component
-    Object.assign(form.value.meta, JSON.parse(res.metaJson))
-    Object.assign(form.value, res)
+    form.value = res
+    form.value.meta = JSON.parse(res.metaJson ?? '')
   }).catch(() => {
     loading.value = false
   })
 }
-
 function handleSubmit() {
   formRef.value && formRef.value.validate(async (valid) => {
     if (valid) {
       try {
-        const data = JSON.parse(JSON.stringify(form.value))
+        const data: any = cloneDeep(unref(form))
         data.auth = data.auth?.join(',')
         data.noCache = data.noCache?.join(',')
         data.cache = typeof data.cache === 'object' ? data.cache?.join(',') : data.cache
         data.metaJson = JSON.stringify(data.meta)
+        data.auths = data.auths ?? []
         delete data.meta
         if (form.value.id === '') {
-          await crudMenu.create<any>(data)
+          await crudResource.save(data)
           ElMessage.success({
-            message: '模拟新增成功',
+            message: t(`common.tips.${ActionEnum.ADD}Success`),
             center: true,
           })
+          eventBus.emit('get-data-list')
           handleBack()
         }
         else {
-          await crudMenu.edit<any>(data)
+          await crudResource.update(data)
           ElMessage.success({
-            message: '模拟编辑成功',
+            message: t(`common.tips.${ActionEnum.EDIT}Success`),
             center: true,
           })
+          eventBus.emit('get-data-list')
           handleBack()
         }
       }
       catch (error: any) {
-        console.log(error)
+        console.error(error)
         if (error && error.msg) {
-          console.log(error.msg)
+          console.error(error.msg)
           ElMessage.error({
             message: error.msg,
             center: true,
@@ -290,180 +292,180 @@ function TableSortable() {
 
 <template>
   <div class="absolute-container">
-    <page-header :title="route.name === 'SystemMenuCreate' ? '新增导航' : '编辑导航'">
-      <el-button round @click="handleBack">
+    <PageHeader :title="(route.name === 'SystemResourceCreate' ? `${t('common.title.add')}` : `${t('common.title.edit')}`) + t('system.resource.object')">
+      <ElButton round @click="handleBack">
         <template #icon>
-          <svg-icon name="i-ep:arrow-left" />
+          <SvgIcon name="i-ep:arrow-left" />
         </template>
-        返回
-      </el-button>
-    </page-header>
+        {{ t('common.back') }}
+      </ElButton>
+    </PageHeader>
     <div class="page-main">
-      <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
+      <ElForm ref="formRef" :model="form" :rules="rules" label-position="top">
         <LayoutContainer right-side-width="500px">
           <template #rightSide>
-            <page-header title="权限池">
+            <PageHeader title="权限池">
               <template #content>
                 <p>设置导航所具备的所有权限，权限池内的权限会用于角色管理</p>
                 <p style="margin-bottom: 0;">
                   通常只在最子级导航上进行设置
                 </p>
               </template>
-            </page-header>
+            </PageHeader>
             <ElTable ref="authsTableRef" :key="authsTableKey" :data="form.auths" border stripe highlight-current-row>
-              <el-table-column align="center" fixed label="排序" prop="sortValue" width="60">
+              <ElTableColumn align="center" fixed :label="t('system.resource.sortValue')" prop="sortValue" width="60">
                 <template #header>
-                  <el-button type="primary" size="small" plain circle @click="handleAddAuths">
-                    <svg-icon name="i-ep:plus" />
-                  </el-button>
+                  <ElButton type="primary" size="small" plain circle @click="handleAddAuths">
+                    <SvgIcon name="i-ep:plus" />
+                  </ElButton>
                 </template>
                 <template #default="{ $index }">
                   <span class="index">{{ $index + 1 }}</span>
-                  <el-button class="delete" type="danger" size="small" plain circle @click="handleDelAuths($index)">
-                    <svg-icon name="i-ep:delete" />
-                  </el-button>
+                  <ElButton class="delete" type="danger" size="small" plain circle @click="handleDelAuths($index)">
+                    <SvgIcon name="i-ep:delete" />
+                  </ElButton>
                 </template>
-              </el-table-column>
-              <el-table-column align="center" fixed label="排序" prop="sortValue" width="80">
+              </ElTableColumn>
+              <ElTableColumn align="center" fixed :label="t('system.resource.sortValue')" prop="sortValue" width="80">
                 <ElTag type="info" class="sortable">
-                  <svg-icon name="i-ep:d-caret" />
+                  <SvgIcon name="i-ep:d-caret" />
                 </ElTag>
-              </el-table-column>
-              <el-table-column prop="name" label="名称">
+              </ElTableColumn>
+              <ElTableColumn prop="name" :label="t('system.resource.name')">
                 <template #default="{ row }">
-                  <el-input v-model="row.name" clearable placeholder="请输入名称" />
+                  <ElInput v-model="row.name" clearable placeholder="请输入名称" />
                 </template>
-              </el-table-column>
-              <el-table-column prop="value" label="标识">
+              </ElTableColumn>
+              <ElTableColumn prop="value" label="标识">
                 <template #default="{ row }">
-                  <el-input v-model="row.code" clearable placeholder="请输入标识" />
+                  <ElInput v-model="row.code" clearable placeholder="请输入标识" />
                 </template>
-              </el-table-column>
+              </ElTableColumn>
             </ElTable>
           </template>
-          <page-header v-if="form.parentId" title="基础配置" content="标准路由配置，包含 path/redirect/name/component" />
-          <el-row v-if="form.parentId" :gutter="30" style="padding: 20px;">
-            <el-col :xl="12" :lg="24">
-              <el-form-item label="目录" prop="resourceType">
-                <el-switch
-                  v-model="form.resourceType" active-text="是" active-value="10" inactive-text="否"
+          <PageHeader v-if="form.parentId" title="基础配置" content="标准路由配置，包含 path/redirect/name/component" />
+          <ElRow v-if="form.parentId" :gutter="30" style="padding: 20px;">
+            <ElCol :xl="12" :lg="24">
+              <ElFormItem label="目录" prop="resourceType">
+                <ElSwitch
+                  v-model="form.resourceType" :active-text="t('kpu.common.yes')" active-value="10" :inactive-text="t('kpu.common.no')"
                   inactive-value="20" inline-prompt
                 />
-              </el-form-item>
-            </el-col>
-            <el-col :xl="12" :lg="24">
-              <el-form-item prop="path" label="路由地址">
-                <el-input v-model="form.path" clearable placeholder="请输入路由地址" />
-              </el-form-item>
-            </el-col>
-            <el-col :xl="12" :lg="24">
-              <el-form-item prop="redirect" label="重定向">
-                <el-input v-model="form.redirect" clearable placeholder="请输入重定向地址" />
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.resourceType === '20'" :lg="24" :xl="12">
-              <el-form-item prop="name" label="路由命名">
+              </ElFormItem>
+            </ElCol>
+            <ElCol :xl="12" :lg="24">
+              <ElFormItem prop="path" :label="t('system.resource.path')">
+                <ElInput v-model="form.path" clearable :placeholder="t('common.inputText')" />
+              </ElFormItem>
+            </ElCol>
+            <ElCol :xl="12" :lg="24">
+              <ElFormItem prop="redirect" :label="t('system.resource.path')">
+                <ElInput v-model="form.redirect" clearable placeholder="请输入重定向地址" />
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.resourceType === '20'" :lg="24" :xl="12">
+              <ElFormItem prop="name" label="路由命名">
                 <template #label>
-                  路由命名
+                  {{ t('system.resource.path') }}
                   <span class="label-tip"> 即 name ，系统唯一</span>
                 </template>
-                <el-input v-model="form.name" clearable placeholder="请输入路由命名" />
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.resourceType === '20'" :lg="24" :xl="12">
-              <el-form-item label="组件路径" prop="component">
+                <ElInput v-model="form.name" clearable placeholder="请输入路由命名" />
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.resourceType === '20'" :lg="24" :xl="12">
+              <ElFormItem label="组件路径" prop="component">
                 <template #label>
-                  组件路径
+                  {{ t('system.resource.path') }}
                   <span class="label-tip"> 顶级路由请设置 <ElLink
                     type="primary" :underline="true"
                     @click.prevent="() => form.component = 'Layout'"
                   >Layout</ElLink>”，中间层级路由无需设置</span>
                 </template>
-                <el-input v-model="form.component" clearable>
+                <ElInput v-model="form.component" clearable>
                   <template v-if="form.component !== 'Layout'" #prepend>
                     /src/views/
                   </template>
-                </el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <page-header title="扩展配置" content="标准路由配置，包含 path/redirect/name/component">
+                </ElInput>
+              </ElFormItem>
+            </ElCol>
+          </ElRow>
+          <PageHeader title="扩展配置" content="标准路由配置，包含 path/redirect/name/component">
             <template #content>
               框架扩展配置，详细配置介绍请查看
             </template>
-          </page-header>
-          <el-row :gutter="30" style="padding: 20px;">
-            <el-col :xl="12" :lg="24">
-              <el-form-item prop="title" label="显示名称">
-                <el-input v-model="form.title" clearable placeholder="请输入显示名称" />
-              </el-form-item>
-            </el-col>
-            <el-col :xl="12" :lg="24">
-              <el-form-item prop="auth" label="鉴权标识">
+          </PageHeader>
+          <ElRow :gutter="30" style="padding: 20px;">
+            <ElCol :xl="12" :lg="24">
+              <ElFormItem prop="title" :label="t('system.resource.title')">
+                <ElInput v-model="form.title" clearable placeholder="请输入显示名称" />
+              </ElFormItem>
+            </ElCol>
+            <ElCol :xl="12" :lg="24">
+              <ElFormItem prop="auth" :label="t('system.resource.auth')">
                 <template #label>
-                  鉴权标识
-                  <el-tooltip content="当设置多个标识时，只要命中其中一个则鉴权通过" placement="top">
-                    <svg-icon name="i-ri:question-line" />
-                  </el-tooltip>
+                  {{ t('system.resource.auth') }}
+                  <ElTooltip content="当设置多个标识时，只要命中其中一个则鉴权通过" placement="top">
+                    <SvgIcon name="i-ri:question-line" />
+                  </ElTooltip>
                 </template>
-                <el-space>
+                <ElSpace>
                   <ElTag
                     v-for="tag in form.meta.auth" :key="tag" :disable-transitions="false" class="mx-1" size="large"
                     closable @close="handleRemoveAuth(tag)"
                   >
                     {{ tag }}
                   </ElTag>
-                  <el-input
+                  <ElInput
                     v-if="authShow" ref="InputAuthRef" v-model="auth" style=" width: 200px;" placeholder=""
                     @keydown.enter="handleEnterAuth" @blur="handleEnterAuth"
                   />
-                  <el-button @click="handleAddAuth">
+                  <ElButton @click="handleAddAuth">
                     新增
-                  </el-button>
-                </el-space>
-              </el-form-item>
-            </el-col>
-            <el-col :xl="12" :lg="24">
-              <el-form-item prop="icon" label="默认图标">
+                  </ElButton>
+                </ElSpace>
+              </ElFormItem>
+            </ElCol>
+            <ElCol :xl="12" :lg="24">
+              <ElFormItem prop="icon" :label="t('system.resource.sortValue')">
                 <IconPicker v-model="form.icon" />
-              </el-form-item>
-            </el-col>
-            <el-col :xl="12" :lg="24">
-              <el-form-item prop="activeIcon" label="激活图标">
+              </ElFormItem>
+            </ElCol>
+            <ElCol :xl="12" :lg="24">
+              <ElFormItem prop="activeIcon" :label="t('system.resource.sortValue')">
                 <IconPicker v-model="form.activeIcon" />
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.parentId" :xl="12" :lg="24">
-              <el-form-item prop="defaultOpened" label="默认展开">
-                <el-switch v-model="form.meta.defaultOpened" active-text="是" inactive-text="否" inline-prompt />
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.parentId" :xl="12" :lg="24">
-              <el-form-item prop="permanent" label="常驻标签页">
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.parentId" :xl="12" :lg="24">
+              <ElFormItem prop="defaultOpened" :label="t('system.resource.meta.defaultOpened')">
+                <ElSwitch v-model="form.meta.defaultOpened" active-text="是" inactive-text="否" inline-prompt />
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.parentId" :xl="12" :lg="24">
+              <ElFormItem prop="permanent" :label="t('system.resource.meta.permanent')">
                 <template #label>
-                  常驻标签页
+                  {{ t('system.resource.meta.permanent') }}
                   <span class="label-tip"> 请勿在带有参数的路由地址上开启该设置</span>
                 </template>
-                <el-switch v-model="form.meta.permanent" active-text="是" inactive-text="否" inline-prompt />
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.parentId" :xl="12" :lg="24">
-              <el-form-item prop="sidebar" label="在导航显示">
-                <el-switch v-model="form.meta.sidebar" active-text="显示" inactive-text="隐藏" inline-prompt />
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.parentId" :xl="12" :lg="24">
-              <el-form-item prop="breadcrumb" label="在面包屑显示">
-                <el-switch v-model="form.meta.breadcrumb" active-text="显示" inactive-text="隐藏" inline-prompt />
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
-              <el-form-item prop="cache" label="缓存规则">
+                <ElSwitch v-model="form.meta.permanent" active-text="是" inactive-text="否" inline-prompt />
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.parentId" :xl="12" :lg="24">
+              <ElFormItem prop="sidebar" :label="t('system.resource.meta.sidebar')">
+                <ElSwitch v-model="form.meta.sidebar" active-text="显示" inactive-text="隐藏" inline-prompt />
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.parentId" :xl="12" :lg="24">
+              <ElFormItem prop="breadcrumb" :label="t('system.resource.meta.breadcrumb')">
+                <ElSwitch v-model="form.meta.breadcrumb" active-text="显示" inactive-text="隐藏" inline-prompt />
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
+              <ElFormItem prop="cache" :label="t('system.resource.meta.cache')">
                 <template #label>
-                  缓存规则
-                  <el-tooltip content="当跳转到设置的路由时，则会对当前路由进行缓存" placement="top">
-                    <svg-icon name="i-ri:question-line" />
-                  </el-tooltip>
+                  {{ t('system.resource.meta.cache') }}
+                  <ElTooltip content="当跳转到设置的路由时，则会对当前路由进行缓存" placement="top">
+                    <SvgIcon name="i-ri:question-line" />
+                  </ElTooltip>
                   <span class="label-tip">切换为
                     <ElLink v-show="typeof form.meta.cache === 'object'" type="primary" @click="form.meta.cache = true">
                       始终缓存
@@ -474,113 +476,113 @@ function TableSortable() {
                   </span>
                 </template>
 
-                <el-space v-show="typeof form.meta.cache === 'object'">
+                <ElSpace v-show="typeof form.meta.cache === 'object'">
                   <ElTag
                     v-for="cache in form.meta.cache" :key="cache" class="mx-1" size="large"
                     :disable-transitions="false" closable @close="handleRemoveCache(cache as string)"
                   >
                     {{ cache }}
                   </ElTag>
-                  <el-input
+                  <ElInput
                     v-if="cacheShow" ref="InputCacheRef" v-model="cache" style=" width: 200px;"
                     @keydown.enter="handleEnterCache" @blur="handleEnterCache"
                   />
-                  <el-button @click="handleAddCache">
-                    新增
-                  </el-button>
-                </el-space>
+                  <ElButton @click="handleAddCache">
+                    {{ t('common.title.add') }}
+                  </ElButton>
+                </ElSpace>
                 <div v-show="typeof form.meta.cache === 'boolean'">
                   始终缓存
                 </div>
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
-              <el-form-item prop="noCache" label="不缓存规则">
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
+              <ElFormItem prop="noCache" :label="t('system.resource.meta.noCache')">
                 <template #label>
-                  不缓存规则
-                  <el-tooltip content="当跳转到设置的路由时，则会对当前路由取消缓存" placement="top">
-                    <svg-icon name="i-ri:question-line" />
-                  </el-tooltip>
+                  {{ t('system.resource.meta.noCache') }}
+                  <ElTooltip content="当跳转到设置的路由时，则会对当前路由取消缓存" placement="top">
+                    <SvgIcon name="i-ri:question-line" />
+                  </ElTooltip>
                   <span class="label-tip">当缓存规则为“始终缓存”时生效</span>
                 </template>
-                <el-space>
+                <ElSpace>
                   <ElTag
                     v-for="noCache in form.meta.noCache" :key="noCache" class="mx-1" size="large"
                     :disable-transitions="false" closable @close="handleRemoveNoCache(noCache)"
                   >
                     {{ noCache }}
                   </ElTag>
-                  <el-input
+                  <ElInput
                     v-if="noCacheShow" ref="InputNoCacheRef" v-model="noCache" style=" width: 200px;"
                     placeholder="" @keydown.enter="handleEnterNoCache" @blur="handleEnterNoCache"
                   />
-                  <el-button @click="handleAddNoCache">
-                    新增
-                  </el-button>
-                </el-space>
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
-              <el-form-item prop="activeMenu" label="高亮导航">
+                  <ElButton @click="handleAddNoCache">
+                    {{ t('common.title.add') }}
+                  </ElButton>
+                </ElSpace>
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
+              <ElFormItem prop="activeMenu" :label="t('system.resource.meta.activeMenu')">
                 <template #label>
-                  高亮导航
+                  {{ t('system.resource.meta.activeMenu') }}
                   <span class="label-tip">如果子路由不在导航显示，则需要设置高亮的上级路由地址</span>
                 </template>
-                <el-input v-model="form.meta.activeMenu" clearable placeholder="请输入高亮导航的完整路由地址" />
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.parentId" :xl="12" :lg="24">
-              <el-form-item prop="badge" label="徽标">
+                <ElInput v-model="form.meta.activeMenu" clearable placeholder="请输入高亮导航的完整路由地址" />
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.parentId" :xl="12" :lg="24">
+              <ElFormItem prop="badge" :label="t('system.resource.meta.badge')">
                 <template #label>
-                  徽标
+                  {{ t('system.resource.meta.badge') }}
                   <span class="label-tip">不宜设置太长，建议控制在4个字符内</span>
                 </template>
-                <el-input v-model="form.meta.badge" clearable placeholder="请输入徽标显示内容" />
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
-              <el-form-item prop="link" label="访问外链">
+                <ElInput v-model="form.meta.badge" clearable placeholder="请输入徽标显示内容" />
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
+              <ElFormItem prop="link" :label="t('system.resource.meta.link')">
                 <template #label>
-                  访问外链
+                  {{ t('system.resource.meta.link') }}
                   <span class="label-tip">请设置 http/https 开头的完整外链地址</span>
                 </template>
-                <el-input v-model="form.meta.link" clearable placeholder="请输入网址" />
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
-              <el-form-item prop="iframe" label="内嵌网页">
+                <ElInput v-model="form.meta.link" clearable placeholder="请输入网址" />
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
+              <ElFormItem prop="iframe" :label="t('system.resource.meta.iframe')">
                 <template #label>
-                  内嵌网页
+                  {{ t('system.resource.meta.iframe') }}
                   <span class="label-tip">请勿与外链同时设置，同时设置时，本设置会失效</span>
                 </template>
-                <el-input v-model="form.meta.iframe" clearable placeholder="请输入网址" />
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
-              <el-form-item prop="copyright" label="底部版权">
-                <el-switch v-model="form.meta.copyright" active-text="显示" inactive-text="隐藏" inline-prompt />
-              </el-form-item>
-            </el-col>
-            <el-col v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
-              <el-form-item prop="paddingBottom" label="底部填充高度">
+                <ElInput v-model="form.meta.iframe" clearable placeholder="请输入网址" />
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
+              <ElFormItem prop="copyright" :label="t('system.resource.meta.copyright')">
+                <ElSwitch v-model="form.meta.copyright" active-text="显示" inactive-text="隐藏" inline-prompt />
+              </ElFormItem>
+            </ElCol>
+            <ElCol v-if="form.parentId && form.resourceType === '20'" :lg="24" :xl="12">
+              <ElFormItem prop="paddingBottom" :label="t('system.resource.meta.paddingBottom')">
                 <template #label>
-                  底部填充高度
+                  {{ t('system.resource.meta.paddingBottom') }}
                   <span class="label-tip">请设置有效的长度单位，例如：px/em/rem等</span>
                 </template>
-                <el-input v-model="form.meta.paddingBottom" clearable placeholder="请输入底部填充高度" />
-              </el-form-item>
-            </el-col>
-          </el-row>
+                <ElInput v-model="form.meta.paddingBottom" clearable placeholder="请输入底部填充高度" />
+              </ElFormItem>
+            </ElCol>
+          </ElRow>
         </LayoutContainer>
-      </el-form>
+      </ElForm>
     </div>
     <FixedActionBar>
-      <el-button type="primary" size="large" @click="handleSubmit">
-        提交
-      </el-button>
-      <el-button size="large" @click="handleBack">
-        取消
-      </el-button>
+      <ElButton type="primary" size="large" @click="handleSubmit">
+        {{ t('common.okText') }}
+      </ElButton>
+      <ElButton size="large" @click="handleBack">
+        {{ t('common.cancelText') }}
+      </ElButton>
     </FixedActionBar>
   </div>
 </template>
@@ -647,14 +649,12 @@ function TableSortable() {
 
             .el-tag.sortable,
             .el-tag.sortable .el-icon {
-              cursor: s-resize
+              cursor: s-resize;
             }
-
           }
         }
       }
     }
   }
-
 }
 </style>

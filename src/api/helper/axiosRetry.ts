@@ -9,9 +9,7 @@ export class AxiosRetry {
    * 重试
    */
   retry(axiosInstance: AxiosInstance, error: AxiosError) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    const { config } = error.response
+    const { config } = error.response ?? {} as any
     const { waitTime, count } = config?.requestOptions?.retryRequest ?? {}
     config.__retryCount = config.__retryCount || 0
     if (config.__retryCount >= count) {

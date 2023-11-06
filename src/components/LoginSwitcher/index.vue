@@ -11,21 +11,21 @@ function command(name: string) {
 
 <template>
   <div>
-    <el-dropdown @command="command">
-      <el-button>
+    <ElDropdown @command="command">
+      <ElButton>
         切换登录页风格
-        <svg-icon class="el-icon--right" name="i-ep:arrow-down" />
-      </el-button>
+        <SvgIcon class="el-icon--right" name="i-ep:arrow-down" />
+      </ElButton>
       <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item :disabled="route.name === 'login'" command="login">
+        <ElDropdownMenu>
+          <ElDropdownItem :disabled="route.name === 'login'" command="login">
             风格1
-          </el-dropdown-item>
-          <el-dropdown-item :disabled="route.name === 'login2'" command="login2">
+          </ElDropdownItem>
+          <ElDropdownItem :disabled="route.name === 'login2'" command="login2">
             风格2
-          </el-dropdown-item>
-        </el-dropdown-menu>
+          </ElDropdownItem>
+        </ElDropdownMenu>
       </template>
-    </el-dropdown>
+    </ElDropdown>
   </div>
 </template>

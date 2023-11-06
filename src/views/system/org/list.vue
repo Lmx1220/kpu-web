@@ -64,7 +64,7 @@ function onAdd(row: any) {
     router.push({
       name: 'SystemOrgCreate',
       params: {
-        type: 'add',
+        type: ActionEnum.ADD,
       },
     })
   }
@@ -202,7 +202,8 @@ const title = computed(() => {
   .page-main {
     flex: 1;
     overflow: auto;
-    :deep(.main-container){
+
+    :deep(.main-container) {
       flex: 1;
       overflow: auto;
       display: flex;

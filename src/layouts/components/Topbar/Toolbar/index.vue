@@ -38,7 +38,7 @@ const breadcrumbList = computed(() => {
   if (settingsStore.settings.home.enable) {
     breadcrumbList.push({
       path: '/',
-      title: generateI18nTitle('route.home',settingsStore.settings.home.title),
+      title: generateI18nTitle('route.home', settingsStore.settings.home.title),
     })
   }
   if (route.name !== 'home' && settingsStore.settings.breadcrumb.enableMainMenu && !['single'].includes(settingsStore.settings.menu.menuMode)) {
@@ -113,7 +113,10 @@ function pathCompile(path: string) {
 
 <style lang="scss" scoped>
 .toolbar-container {
-  --at-apply: flex items-center justify-between h-[var(--g-toolbar-height)] bg-[var(--g-container-bg)];
+  --at-apply: flex items-center justify-between;
+
+  height: var(--g-toolbar-height);
+  background-color: var(--g-container-bg);
   transition: background-color 0.3s;
 
   .left-box {
@@ -131,12 +134,14 @@ function pathCompile(path: string) {
       &.breadcrumb-modern {
         :deep(.breadcrumb-item) {
           .text {
-            background-color: rgba(231, 229, 228, .8);
+            background-color: rgb(231 229 228 / 80%);
             padding: 6px 16px;
             clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%, 8px 50%);
+
             @at-root .dark & {
-              background-color: rgba(41, 37, 36, .8);
+              background-color: rgb(41 37 36 / 80%);
             }
+
             &.is-link:hover {
               --at-apply: bg-stone-2 dark:bg-stone-8;
             }
@@ -146,24 +151,24 @@ function pathCompile(path: string) {
             .text {
               padding-left: 12px;
               border-radius: 6px 0 0 6px;
-              clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%)
+              clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
             }
 
             &:not(:first-child) {
               .text {
                 --at-apply: bg-stone-2 dark:bg-stone-8;
+
                 border-radius: 0 6px 6px 0;
               }
             }
           }
 
           .separator {
-            display: none
+            display: none;
           }
         }
       }
     }
-
   }
 }
 

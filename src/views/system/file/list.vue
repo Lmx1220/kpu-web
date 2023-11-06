@@ -11,7 +11,6 @@ import type { DataConfig } from '@/types/global'
 import { downloadFile } from '@/util'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
-import { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
   name: 'SystemFileList',
@@ -25,7 +24,7 @@ const {
   onSortChange,
   resetQuery,
 } = usePagination()
-const router = useRouter()
+// const router = useRouter()
 // const route = useRoute()
 
 const data = ref<DataConfig>({
@@ -87,7 +86,7 @@ async function getDataList(current?: number) {
     name: 'daterange',
     prop: 'createdTime',
   })
-  const res = await crudFile.list(params)
+  const res = await crudFile.page(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)
   pagination.value.page = Number(get(res, 'current', 1))
@@ -126,56 +125,6 @@ function sortChange({
   onSortChange(prop, order).then(() => getDataList())
 }
 
-function onAdd() {
-  if (data.value.formMode === 'router') {
-    router.push({
-      name: 'SystemFileCreate',
-      params: {
-        type: 'add',
-      },
-    })
-  }
-  else {
-    data.value.formModeProps.id = ''
-    data.value.formModeProps.visible = true
-    data.value.formModeProps.type = ActionEnum.ADD
-  }
-}
-
-function onEdit(row: any) {
-  if (data.value.formMode === 'router') {
-    router.push({
-      name: 'SystemFileEdit',
-      params: {
-        id: row.id,
-        type: 'edit',
-      },
-    })
-  }
-  else {
-    data.value.formModeProps.id = row.id
-    data.value.formModeProps.visible = true
-    data.value.formModeProps.type = ActionEnum.EDIT
-  }
-}
-
-function onView(row: any) {
-  if (data.value.formMode === 'router') {
-    router.push({
-      name: 'SystemFileDetail',
-      params: {
-        id: row.id,
-        type: ActionEnum.VIEW,
-      },
-    })
-  }
-  else {
-    data.value.formModeProps.id = row.id
-    data.value.formModeProps.visible = true
-    data.value.formModeProps.type = ActionEnum.VIEW
-  }
-}
-
 function onDel(row?: any) {
   let ids: string[] = []
   if (row) {
@@ -185,7 +134,7 @@ function onDel(row?: any) {
     ids = data.value.batch.selectionDataList.map(item => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudFile.delete(ids).then(() => {
+    crudFile.remove(ids).then(() => {
       getDataList()
       ElMessage.success({
         message: '删除成功',
@@ -390,7 +339,8 @@ function handleChange(list: FileResultVO[]) {
   .page-main {
     flex: 1;
     overflow: auto;
-    :deep(.main-container){
+
+    :deep(.main-container) {
       flex: 1;
       overflow: auto;
       display: flex;
@@ -420,7 +370,6 @@ function handleChange(list: FileResultVO[]) {
         }
       }
     }
-
   }
 
   .el-divider {

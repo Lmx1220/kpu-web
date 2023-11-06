@@ -8,7 +8,7 @@ import { ActionEnum } from '@/enums/commonEnum.ts'
 defineOptions({
   name: 'DetailForm',
 })
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   id: '',
   type: ActionEnum.ADD,
 })

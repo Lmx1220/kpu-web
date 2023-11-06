@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import storage from '@/util/storage'
@@ -377,7 +376,7 @@ function testAccount(account: string) {
   right: 20px;
   cursor: pointer;
   font-size: 18px;
-  color: var(--el-text-color-primary)
+  color: var(--el-text-color-primary);
 }
 
 #login-box {
@@ -408,11 +407,10 @@ function testAccount(account: string) {
       width: 30px;
       height: 30px;
       border-radius: 4px;
-      background: url('../assets/images/logo.png') no-repeat;
+      background: url("../assets/images/logo.png") no-repeat;
       background-size: contain;
       box-shadow: var(--el-box-shadow-light);
     }
-
   }
 
   .login-form {
@@ -472,7 +470,7 @@ function testAccount(account: string) {
   }
 
   :deep(.el-divider__text) {
-    background-color: var(--g-container-bg)
+    background-color: var(--g-container-bg);
   }
 
   .sub-link {

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-const props = defineProps<{
-  value: string | string[]
-}>()
-
 defineOptions({
   name: 'Auth',
 })
+
+const props = defineProps<{
+  value: string | string[]
+}>()
 
 function check() {
   return useAuth().auth(props.value)

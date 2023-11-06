@@ -106,7 +106,7 @@ function addCustomRules(rules: any, customRules: any[], type: string) {
       case 'RegEx':
         rules.push({
           type: 'method',
-          validator(model: any, value: any, callback: any) {
+          validator(model: any, value: any) {
             return (!value || new RegExp(attrs.regexp).test(value)) ? Promise.resolve() : Promise.reject(attrs.message)
           },
           message: attrs.message,
@@ -115,8 +115,8 @@ function addCustomRules(rules: any, customRules: any[], type: string) {
       case 'Max':
         rules.push({
           type: 'method',
-          validator(model: any, value: any, callback: any) {
-            return parseInt(value) > attrs.value ? Promise.reject(attrs.message) : Promise.resolve()
+          validator(model: any, value: any) {
+            return Number.parseInt(value) > attrs.value ? Promise.reject(attrs.message) : Promise.resolve()
           },
           message: replaceMessagePlaceholders(attrs),
         })
@@ -124,8 +124,8 @@ function addCustomRules(rules: any, customRules: any[], type: string) {
       case 'Min':
         rules.push({
           type: 'method',
-          validator(model: any, value: any, callback: any) {
-            return parseInt(value) < attrs.value ? Promise.reject(attrs.message) : Promise.resolve()
+          validator(model: any, value: any) {
+            return Number.parseInt(value) < attrs.value ? Promise.reject(attrs.message) : Promise.resolve()
           },
           message: replaceMessagePlaceholders(attrs),
         })
@@ -133,8 +133,8 @@ function addCustomRules(rules: any, customRules: any[], type: string) {
       case 'DecimalMax':
         rules.push({
           type: 'method',
-          validator(model: any, value: any, callback: any) {
-            return parseFloat(value) > attrs.value ? Promise.reject(attrs.message) : Promise.resolve()
+          validator(model: any, value: any) {
+            return Number.parseFloat(value) > attrs.value ? Promise.reject(attrs.message) : Promise.resolve()
           },
           message: attrs.message,
         })
@@ -142,8 +142,8 @@ function addCustomRules(rules: any, customRules: any[], type: string) {
       case 'DecimalMin':
         rules.push({
           type: 'method',
-          validator(model: any, value: any, callback: any) {
-            return parseFloat(value) < attrs.value ? Promise.reject(attrs.message) : Promise.resolve()
+          validator(model: any, value: any) {
+            return Number.parseFloat(value) < attrs.value ? Promise.reject(attrs.message) : Promise.resolve()
           },
           message: attrs.message,
         })
@@ -151,7 +151,7 @@ function addCustomRules(rules: any, customRules: any[], type: string) {
       case 'Null':
         rules.push({
           type: 'method',
-          validator(model: any, value: any, callback: any) {
+          validator(model: any, value: any) {
             return value.length !== 0 ? Promise.reject(attrs.message) : Promise.resolve()
           },
           message: attrs.message,
@@ -177,7 +177,7 @@ function addCustomRules(rules: any, customRules: any[], type: string) {
       case 'AssertTrue':
         rules.push({
           type: 'method',
-          validator(model: any, value: any, callback: any) {
+          validator(model: any, value: any) {
             return (value === 'true' || value === true) ? Promise.resolve() : Promise.reject(attrs.message)
           },
           message: attrs.message,
@@ -186,7 +186,7 @@ function addCustomRules(rules: any, customRules: any[], type: string) {
       case 'AssertFalse':
         rules.push({
           type: 'method',
-          validator(model: any, value: any, callback: any) {
+          validator(model: any, value: any) {
             return (value === 'false' || value === false) ? Promise.resolve() : Promise.reject(attrs.message)
           },
           message: attrs.message,
@@ -195,7 +195,7 @@ function addCustomRules(rules: any, customRules: any[], type: string) {
       case 'Past':
         rules.push({
           type: 'method',
-          validator(model: any, value: any, callback: any) {
+          validator(model: any, value: any) {
             return checkPastDate(value, attrs) ? Promise.resolve() : Promise.reject(attrs.message)
           },
           message: attrs.message,
@@ -204,7 +204,7 @@ function addCustomRules(rules: any, customRules: any[], type: string) {
       case 'PastOrPresent':
         rules.push({
           type: 'method',
-          validator(model: any, value: any, callback: any) {
+          validator(model: any, value: any) {
             return checkPastDate(value, attrs) ? Promise.resolve() : Promise.reject(attrs.message)
           },
           message: attrs.message,
@@ -213,7 +213,7 @@ function addCustomRules(rules: any, customRules: any[], type: string) {
       case 'Future':
         rules.push({
           type: 'method',
-          validator(model: any, value: any, callback: any) {
+          validator(model: any, value: any) {
             return !checkPastDate(value, attrs) ? Promise.resolve() : Promise.reject(attrs.message)
           },
           message: attrs.message,
@@ -222,7 +222,7 @@ function addCustomRules(rules: any, customRules: any[], type: string) {
       case 'FutureOrPresent':
         rules.push({
           type: 'method',
-          validator(model: any, value: any, callback: any) {
+          validator(model: any, value: any) {
             return !checkPastDate(value, attrs) ? Promise.resolve() : Promise.reject(attrs.message)
           },
           message: attrs.message,
@@ -260,7 +260,7 @@ function mergeRules(rules: any[] = [], formSchemaExt: Partial<FormSchemaExt>[] =
 }
 
 export function getValidateRules(axiosRequestConfig: AxiosRequestConfig, formSchemaExt: Partial<FormSchemaExt>[]) {
-  return new Promise<any[]>((resolve, reject) => {
+  return new Promise<any[]>((resolve) => {
     (async () => {
       const requestOptions = {
         url: `/form/validator${axiosRequestConfig.url}`,
@@ -297,7 +297,7 @@ export function getValidateRules(axiosRequestConfig: AxiosRequestConfig, formSch
 }
 
 export function getValidateRuleObj(axiosRequestConfig: AxiosRequestConfig, formSchemaExt: Partial<FormSchemaExt>[]) {
-  return new Promise<Record<string, any>>((resolve, reject) => {
+  return new Promise<Record<string, any>>((resolve) => {
     (async () => {
       const requestOptions = {
         url: `/form/validator${axiosRequestConfig.url}`,

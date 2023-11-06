@@ -72,7 +72,7 @@ defineExpose({
     form.value?.validate((valid) => {
       if (valid) {
         if (data.value.form.id === '') {
-          crudParameter.create(data.value.form).then(() => {
+          crudParameter.save(data.value.form).then(() => {
             ElMessage.success({
               message: '模拟新增成功',
               center: true,
@@ -81,7 +81,7 @@ defineExpose({
           })
         }
         else {
-          crudParameter.edit(data.value.form).then(() => {
+          crudParameter.update(data.value.form).then(() => {
             ElMessage.success({
               message: '模拟编辑成功',
               center: true,

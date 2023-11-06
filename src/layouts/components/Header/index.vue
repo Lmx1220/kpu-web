@@ -32,7 +32,7 @@ function handlerMouserScroll(event: any) {
         <div class="main">
           <Logo class="title" title="" />
           <!-- 顶部模式 -->
-          <div ref="menuRef" class="menu-container" @mousewheel.prevent="handlerMouserScroll">
+          <div ref="menuRef" class="menu-container" @wheel.prevent="handlerMouserScroll">
             <div
               v-if="settingsStore.settings.menu.menuMode === 'head'"
 
@@ -113,7 +113,7 @@ header {
   color: var(--g-header-color);
   background-color: var(--g-header-bg);
   box-shadow: -1px 0 0 0 var(--g-border-color), 1px 0 0 0 var(--g-border-color), 0 1px 0 0 var(--g-border-color);
-  transition: background-color .3s;
+  transition: background-color 0.3s;
 
   .header-container {
     width: var(--g-header-width);
@@ -132,8 +132,8 @@ header {
 
       .menu-active {
         &-arrow {
-          .item-container:before,
-          :deep(.menu-item):before {
+          .item-container::before,
+          :deep(.menu-item)::before {
             content: "";
             opacity: 0;
             bottom: 0;
@@ -142,21 +142,21 @@ header {
             border-right: 5px solid transparent;
             border-left: 5px solid transparent;
             border-bottom: 5px solid var(--g-header-bg);
-            transition: all .3s;
+            transition: all 0.3s;
 
             @include position-center(x);
           }
 
           .item-container.active::before,
-          :deep(.menu-item).active:before {
+          :deep(.menu-item).active::before {
             opacity: 1;
             bottom: 8px;
           }
         }
 
         &-line {
-          .item-container:before,
-          :deep(.menu-item):before {
+          .item-container::before,
+          :deep(.menu-item)::before {
             content: "";
             opacity: 0;
             bottom: 6px;
@@ -165,21 +165,21 @@ header {
             border-radius: 2px;
             background-color: var(--g-header-menu-active-bg);
             box-shadow: 0 0 0 1px var(--g-header-bg);
-            transition: all .3s;
+            transition: all 0.3s;
 
             @include position-center(x);
           }
 
           .item-container.active::before,
-          :deep(.menu-item).active:before {
+          :deep(.menu-item).active::before {
             opacity: 1;
             width: 20px;
           }
         }
 
         &-dot {
-          .item-container:before,
-          :deep(.menu-item):before {
+          .item-container::before,
+          :deep(.menu-item)::before {
             content: "";
             opacity: 0;
             bottom: 0;
@@ -188,13 +188,13 @@ header {
             border-radius: 50%;
             background-color: var(--g-header-menu-active-bg);
             box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
-            transition: all .3s;
+            transition: all 0.3s;
 
             @include position-center(x);
           }
 
           .item-container.active::before,
-          :deep(.menu-item).active:before {
+          :deep(.menu-item).active::before {
             opacity: 1;
             bottom: 4px;
           }
@@ -238,7 +238,7 @@ header {
     scrollbar-width: none;
 
     &::-webkit-scrollbar {
-      display: none
+      display: none;
     }
 
     .menu {
@@ -261,14 +261,13 @@ header {
 
         .menu-item-container-icon {
           transform: scale(1);
-          font-size: 24px !important
+          font-size: 24px !important;
         }
-
       }
 
       .active .menu-item-container {
         color: var(--g-header-menu-active-color);
-        background-color: var(--g-header-menu-active-bg)
+        background-color: var(--g-header-menu-active-bg);
       }
     }
   }

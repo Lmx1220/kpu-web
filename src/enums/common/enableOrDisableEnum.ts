@@ -1,5 +1,3 @@
-import { useI18n } from 'vue-i18n'
-
 export enum EnableOrDisableEnum {
   ENABLE = 1,
   DISABLE = 0,

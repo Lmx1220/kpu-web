@@ -2,6 +2,9 @@
 import VueBlocksTree from 'vue3-blocks-tree'
 import 'vue3-blocks-tree/dist/vue3-blocks-tree.css'
 
+defineOptions({
+  name: 'BlocksTrees',
+})
 const props = withDefaults(defineProps<Props>(), {
   treeProps: () => ({}),
 })
@@ -15,12 +18,8 @@ const emits = defineEmits<{
 
 interface Props {
   treeProps: Record<string, any>
-  data: {}
+  data: Record<string, any>
 }
-
-defineOptions({
-  name: 'BlocksTrees',
-})
 
 const treeProp = computed(() => props.treeProps)
 const horizontal = ref(false)
@@ -57,21 +56,21 @@ const labelClassNameItem = reactive([{
   <div>
     <div class="m-4">
       <div>
-        <div class="inline-flex items-center" style="gap: 8px">
+        <div class="inline-flex items-center" style="gap: 8px;">
           <slot name="operation" />
         </div>
-        <div class="inline-flex items-center" style="gap: 8px">
-          <el-checkbox v-model="horizontal" label="垂直展示" />
-          <el-checkbox v-model="collapsable" label="折叠节点" />
-          <el-select
+        <div class="inline-flex items-center" style="gap: 8px;">
+          <ElCheckbox v-model="horizontal" label="垂直展示" />
+          <ElCheckbox v-model="collapsable" label="折叠节点" />
+          <ElSelect
             v-model="labelClassName" clearable placeholder="请选择"
             style="width: 120px;"
           >
-            <el-option
+            <ElOption
               v-for="item in labelClassNameItem" :key="item.value" :label="item.label"
               :value="item.value"
             />
-          </el-select>
+          </ElSelect>
         </div>
       </div>
     </div>
@@ -85,34 +84,34 @@ const labelClassNameItem = reactive([{
 
 <style lang="scss" scoped>
 :deep(.bg-primary) {
-  background-color: var(--g-theme-color)
+  background-color: var(--g-theme-color);
 }
 
 :deep(.bg-white) {
-  background-color: #fff
+  background-color: #fff;
 }
 
 :deep(.bg-orange) {
-  background-color: orange
+  background-color: orange;
 }
 
 :deep(.bg-gold) {
-  background-color: gold
+  background-color: gold;
 }
 
 :deep(.bg-gray) {
-  background-color: gray
+  background-color: gray;
 }
 
 :deep(.bg-lightpink) {
-  background-color: #ffb6c1
+  background-color: #ffb6c1;
 }
 
 :deep(.bg-chocolate) {
-  background-color: #d2691e
+  background-color: #d2691e;
 }
 
 :deep(.bg-tomato) {
-  background-color: tomato
+  background-color: tomato;
 }
 </style>

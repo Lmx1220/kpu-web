@@ -2,19 +2,18 @@
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import type { DataConfig } from '#/global'
-import crudGenerator from '@/api/modules/tools/genTableColumn'
+import crudGenTableColumn, { syncFieldGenTableColumn } from '@/api/modules/tools/genTableColumn'
 import type { GenTableColumnPageQuery } from '@/api/modules/tools/model/genTableColumnModel'
 import { deepClone } from '@/util'
 import usePagination from '@/util/usePagination'
 import yesOrNoEnum from '@/enums/common/yesOrNoEnum'
 
-const props = withDefaults(defineProps<Props>(), {
-  id: '',
-})
 defineOptions({
   name: 'ColumnInfo',
 })
-
+const props = withDefaults(defineProps<Props>(), {
+  id: '',
+})
 export interface Props {
   id?: string | string[]
 }
@@ -31,7 +30,7 @@ const {
   onSortChange,
   resetQuery,
 } = usePagination()
-const router = useRouter()
+// const router = useRouter()
 // const route = useRoute()
 const defaultQuery = {
   name: '',
@@ -168,7 +167,7 @@ async function getDataList(current?: number) {
     ...data.value.search,
   })
   params.model.tableId = props.id
-  const res = await crudGenerator.list(params)
+  const res = await crudGenTableColumn.page(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)
   pagination.value.page = Number(get(res, 'current', 1))
@@ -226,7 +225,7 @@ function onCancel(row: any) {
 }
 
 function onSave(row: any) {
-  crudGenerator.edit(row).then((res) => {
+  crudGenTableColumn.update(row).then((res) => {
     Object.assign(row, res)
     editData.value = null
     ElMessage.success({
@@ -245,7 +244,7 @@ function onDel(row?: any) {
     ids = data.value.batch.selectionDataList.map(item => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudGenerator.delete(ids).then(() => {
+    crudGenTableColumn.remove(ids).then(() => {
       getDataList()
       ElMessage.success({
         message: '删除成功',
@@ -258,7 +257,7 @@ function onDel(row?: any) {
 
 function onSync(row?: any) {
   ElMessageBox.confirm('确认同步吗？', '确认信息').then(() => {
-    crudGenerator.syncField({ tableId: props.id as string, id: row.id }).then(() => {
+    syncFieldGenTableColumn({ tableId: props.id as string, id: row.id }).then(() => {
       getDataList()
       ElMessage.success({
         message: '同步成功',
@@ -291,129 +290,129 @@ function formatterIsNot(yesOrNo: boolean) {
 </script>
 
 <template>
-  <page-main v-if="isSingle" class="column-info">
-    <search-bar
+  <PageMain v-if="isSingle" class="column-info">
+    <SearchBar
       :fold="data.searchFold"
       :show-toggle="false"
     >
       <template #default="{ fold }">
-        <el-form
+        <ElForm
           :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
           size="default"
         >
-          <el-form-item label="列名称">
-            <el-input
+          <ElFormItem label="列名称">
+            <ElInput
               v-model="data.search.name" clearable placeholder="请输入，支持模糊查询"
               @clear="currentChange()" @keydown.enter="currentChange()"
             />
-          </el-form-item>
-          <el-form-item label="列描述">
-            <el-input
+          </ElFormItem>
+          <ElFormItem label="列描述">
+            <ElInput
               v-model="data.search.comment" clearable placeholder="请输入，支持模糊查询"
               @clear="currentChange()" @keydown.enter="currentChange()"
             />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="currentChange()">
+          </ElFormItem>
+          <ElFormItem>
+            <ElButton type="primary" @click="currentChange()">
               <template #icon>
-                <svg-icon name="ep:search" />
+                <SvgIcon name="ep:search" />
               </template>
               筛选
-            </el-button>
-            <el-button type="primary" @click="resetQuery(defaultQuery)">
+            </ElButton>
+            <ElButton type="primary" @click="resetQuery(defaultQuery)">
               重置
-            </el-button>
-            <el-button link type="primary" @click="data.searchFold = !fold">
+            </ElButton>
+            <ElButton link type="primary" @click="data.searchFold = !fold">
               <template #icon>
-                <svg-icon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                <SvgIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
               </template>
               {{ fold ? '展开' : '收起' }}
-            </el-button>
-          </el-form-item>
-        </el-form>
+            </ElButton>
+          </ElFormItem>
+        </ElForm>
       </template>
-    </search-bar>
-    <el-divider border-style="dashed" />
-    <el-space wrap>
-      <el-button :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
+    </SearchBar>
+    <ElDivider border-style="dashed" />
+    <ElSpace wrap>
+      <ElButton :disabled="!data.batch.selectionDataList.length" size="default" @click="onDel()">
         <template #icon>
-          <svg-icon name="ep:delete" />
+          <SvgIcon name="ep:delete" />
         </template>
         删除
-      </el-button>
-    </el-space>
-    <el-form :model="data">
+      </ElButton>
+    </ElSpace>
+    <ElForm :model="data">
       <ElTable
         ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
         stripe @sort-change="sortChange"
         @selection-change="data.batch.selectionDataList = $event"
       >
-        <el-table-column v-if="data.batch.enable" align="center" fixed type="selection" />
-        <el-table-column align="center" fixed label="#" width="100">
+        <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
+        <ElTableColumn align="center" fixed label="#" width="100">
           <template #default="{ $index }">
             {{ (pagination.size * (pagination.page - 1)) + $index + 1 }}
           </template>
-        </el-table-column>
-        <el-table-column fixed label="列名称" prop="name" width="370" />
-        <el-table-column fixed label="列类型" prop="type" width="100" />
-        <el-table-column label="列描述" prop="comment" width="800" show-overflow-tooltip>
+        </ElTableColumn>
+        <ElTableColumn fixed label="列名称" prop="name" width="370" />
+        <ElTableColumn fixed label="列类型" prop="type" width="100" />
+        <ElTableColumn label="列描述" prop="comment" width="800" show-overflow-tooltip>
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.column`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-input v-model="row.comment" placeholder="请输入" />
-              </el-form-item>
+                <ElInput v-model="row.comment" placeholder="请输入" />
+              </ElFormItem>
               <span v-else>{{ row.comment }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="文档描述" prop="swaggerComment" width="140" show-overflow-tooltip>
+        </ElTableColumn>
+        <ElTableColumn label="文档描述" prop="swaggerComment" width="140" show-overflow-tooltip>
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.swaggerComment`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-input v-model="row.swaggerComment" placeholder="请输入" />
-              </el-form-item>
+                <ElInput v-model="row.swaggerComment" placeholder="请输入" />
+              </ElFormItem>
               <span v-else>{{ row.swaggerComment }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="JAVA类型" prop="javaType" width="150">
+        </ElTableColumn>
+        <ElTableColumn label="JAVA类型" prop="javaType" width="150">
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.javaType`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-autocomplete
+                <ElAutocomplete
                   v-model="row.javaType"
                   :fetch-suggestions="(queryString: string, cb: any) => querySearch(queryString, cb, 'javaType')"
                   :select-when-unmatched="true"
@@ -422,48 +421,48 @@ function formatterIsNot(yesOrNo: boolean) {
                   highlight-first-item
                   placeholder="Please Input"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ row.javaType }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="JAVA字段名" min-width="150" prop="javaField">
+        </ElTableColumn>
+        <ElTableColumn label="JAVA字段名" min-width="150" prop="javaField">
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.javaField`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-input v-model="row.javaField" placeholder="请输入" />
-              </el-form-item>
+                <ElInput v-model="row.javaField" placeholder="请输入" />
+              </ElFormItem>
               <span v-else>{{ row.javaField }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="TS类型" min-width="100" prop="tsType">
+        </ElTableColumn>
+        <ElTableColumn label="TS类型" min-width="100" prop="tsType">
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.tsType`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-autocomplete
+                <ElAutocomplete
                   v-model="row.tsType"
                   :fetch-suggestions="(queryString: string, cb: any) => querySearch(queryString, cb, 'tsType')"
                   :select-when-unmatched="true"
@@ -472,162 +471,162 @@ function formatterIsNot(yesOrNo: boolean) {
                   highlight-first-item
                   placeholder="Please Input"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ row.tsType }}</span>
             </div>
           </template>
-        </el-table-column>
+        </ElTableColumn>
 
-        <el-table-column label="长度" prop="size" width="100">
+        <ElTableColumn label="长度" prop="size" width="100">
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.size`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-input-number
+                <ElInputNumber
                   v-model="row.size"
                   controls-position="right"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ row.size }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="主键" prop="isPk" width="90">
+        </ElTableColumn>
+        <ElTableColumn label="主键" prop="isPk" width="90">
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.isPk`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-switch
+                <ElSwitch
                   v-model="row.isPk"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ formatterIsNot(row.isPk) }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="必填" prop="isRequired" width="90">
+        </ElTableColumn>
+        <ElTableColumn label="必填" prop="isRequired" width="90">
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.isRequired`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-switch
+                <ElSwitch
                   v-model="row.isRequired"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ formatterIsNot(row.isRequired) }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="逻辑删除" prop="isLogicDeleteField" width="120">
+        </ElTableColumn>
+        <ElTableColumn label="逻辑删除" prop="isLogicDeleteField" width="120">
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.isLogicDeleteField`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-switch
+                <ElSwitch
                   v-model="row.isLogicDeleteField"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ formatterIsNot(row.isLogicDeleteField) }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="乐观锁" prop="isVersionField" width="100">
+        </ElTableColumn>
+        <ElTableColumn label="乐观锁" prop="isVersionField" width="100">
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.isVersionField`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-switch
+                <ElSwitch
                   v-model="row.isVersionField"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ formatterIsNot(row.isVersionField) }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="自增" prop="isIncrement" width="90">
+        </ElTableColumn>
+        <ElTableColumn label="自增" prop="isIncrement" width="90">
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.isIncrement`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-switch
+                <ElSwitch
                   v-model="row.isIncrement"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ formatterIsNot(row.isIncrement) }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="填充类型" prop="fill" width="120">
+        </ElTableColumn>
+        <ElTableColumn label="填充类型" prop="fill" width="120">
           <template #header="{ column }">
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.fill`"
               >
-                <el-autocomplete
+                <ElAutocomplete
                   v-model="row.fill"
                   :fetch-suggestions="(queryString: string, cb: any) => querySearch(queryString, cb, 'fill')"
                   :select-when-unmatched="true"
@@ -636,110 +635,110 @@ function formatterIsNot(yesOrNo: boolean) {
                   highlight-first-item
                   placeholder="Please Input"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ row.fill }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="编辑" prop="isEdit" width="90">
+        </ElTableColumn>
+        <ElTableColumn label="编辑" prop="isEdit" width="90">
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.isEdit`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-switch
+                <ElSwitch
                   v-model="row.isEdit"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ formatterIsNot(row.isEdit) }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="列表" prop="isList" width="90">
+        </ElTableColumn>
+        <ElTableColumn label="列表" prop="isList" width="90">
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.isList`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-switch
+                <ElSwitch
                   v-model="row.isList"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ formatterIsNot(row.isList) }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="查询" prop="isQuery" width="90">
+        </ElTableColumn>
+        <ElTableColumn label="查询" prop="isQuery" width="90">
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.isQuery`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-switch
+                <ElSwitch
                   v-model="row.isQuery"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ formatterIsNot(row.isQuery) }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="宽度" prop="width" width="100">
+        </ElTableColumn>
+        <ElTableColumn label="宽度" prop="width" width="100">
           <template #header="{ column }">
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.width`"
               >
-                <el-input-number
+                <ElInputNumber
                   v-model="row.width"
                   controls-position="right"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ row.width }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="查询方式" min-width="140" prop="queryType">
+        </ElTableColumn>
+        <ElTableColumn label="查询方式" min-width="140" prop="queryType">
           <template #header="{ column }">
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.queryType`"
               >
-                <el-autocomplete
+                <ElAutocomplete
                   v-model="row.queryType"
                   :fetch-suggestions="(queryString: string, cb: any) => querySearch(queryString, cb, 'queryType')"
                   :select-when-unmatched="true"
@@ -748,187 +747,187 @@ function formatterIsNot(yesOrNo: boolean) {
                   highlight-first-item
                   placeholder="Please Input"
                 />
-              </el-form-item>
+              </ElFormItem>
               <span v-else>{{ row.queryType }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="组件" min-width="140" prop="component" show-overflow-tooltip>
+        </ElTableColumn>
+        <ElTableColumn label="组件" min-width="140" prop="component" show-overflow-tooltip>
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.component`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-input v-model="row.component" placeholder="请输入" />
-              </el-form-item>
+                <ElInput v-model="row.component" placeholder="请输入" />
+              </ElFormItem>
               <span v-else>{{ row.component }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="Vxe组组件" min-width="140" prop="vxeComponent" show-overflow-tooltip>
+        </ElTableColumn>
+        <ElTableColumn label="Vxe组组件" min-width="140" prop="vxeComponent" show-overflow-tooltip>
           <template #header="{ column }">
             <i class="align-middle required-icon" />
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.vxeComponent`" :rules="[{
                   required: true,
                   message: '请输入',
                   trigger: 'blur',
                 }]"
               >
-                <el-input v-model="row.vxeComponent" placeholder="请输入" />
-              </el-form-item>
+                <ElInput v-model="row.vxeComponent" placeholder="请输入" />
+              </ElFormItem>
               <span v-else>{{ row.vxeComponent }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="字典类型" min-width="140" prop="dictType" show-overflow-tooltip>
+        </ElTableColumn>
+        <ElTableColumn label="字典类型" min-width="140" prop="dictType" show-overflow-tooltip>
           <template #header="{ column }">
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.dictType`"
               >
-                <el-input v-model="row.dictType" placeholder="请输入" />
-              </el-form-item>
+                <ElInput v-model="row.dictType" placeholder="请输入" />
+              </ElFormItem>
               <span v-else>{{ row.dictType }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="Echo" min-width="100" prop="echoStr" show-overflow-tooltip>
+        </ElTableColumn>
+        <ElTableColumn label="Echo" min-width="100" prop="echoStr" show-overflow-tooltip>
           <template #header="{ column }">
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.echoStr`"
               >
-                <el-input v-model="row.echoStr" placeholder="请输入" />
-              </el-form-item>
+                <ElInput v-model="row.echoStr" placeholder="请输入" />
+              </ElFormItem>
               <span v-else>{{ row.echoStr }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="枚举" min-width="100" prop="enumStr" show-overflow-tooltip>
+        </ElTableColumn>
+        <ElTableColumn label="枚举" min-width="100" prop="enumStr" show-overflow-tooltip>
           <template #header="{ column }">
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.enumStr`"
               >
-                <el-input v-model="row.enumStr" placeholder="请输入" />
-              </el-form-item>
+                <ElInput v-model="row.enumStr" placeholder="请输入" />
+              </ElFormItem>
               <span v-else>{{ row.enumStr }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="默认值" min-width="100" prop="editDefValue">
+        </ElTableColumn>
+        <ElTableColumn label="默认值" min-width="100" prop="editDefValue">
           <template #header="{ column }">
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.editDefValue`"
               >
-                <el-input v-model="row.editDefValue" placeholder="请输入" />
-              </el-form-item>
+                <ElInput v-model="row.editDefValue" placeholder="请输入" />
+              </ElFormItem>
               <span v-else>{{ row.editDefValue }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="提示信息" min-width="100" prop="editHelpMessage" show-overflow-tooltip>
+        </ElTableColumn>
+        <ElTableColumn label="提示信息" min-width="100" prop="editHelpMessage" show-overflow-tooltip>
           <template #header="{ column }">
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.editHelpMessage`"
               >
-                <el-input v-model="row.editHelpMessage" placeholder="请输入" />
-              </el-form-item>
+                <ElInput v-model="row.editHelpMessage" placeholder="请输入" />
+              </ElFormItem>
               <span v-else>{{ row.editHelpMessage }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="主页提示信息" min-width="140" prop="indexHelpMessage" show-overflow-tooltip>
+        </ElTableColumn>
+        <ElTableColumn label="主页提示信息" min-width="140" prop="indexHelpMessage" show-overflow-tooltip>
           <template #header="{ column }">
-            <svg-icon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="align-middle mr-1" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
             <div class="edit-column">
-              <el-form-item
+              <ElFormItem
                 v-if="row.id === editData?.id" :prop="`dataList.${$index}.indexHelpMessage`"
               >
-                <el-input v-model="row.indexHelpMessage" placeholder="请输入" />
-              </el-form-item>
+                <ElInput v-model="row.indexHelpMessage" placeholder="请输入" />
+              </ElFormItem>
               <span v-else>{{ row.indexHelpMessage }}</span>
             </div>
           </template>
-        </el-table-column>
-        <el-table-column label="排序" prop="sortValue" sortable="custom" />
-        <el-table-column align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
-        <el-table-column align="center" fixed="right" label="操作" width="186">
+        </ElTableColumn>
+        <ElTableColumn label="排序" prop="sortValue" sortable="custom" />
+        <ElTableColumn align="center" label="创建时间" prop="createdTime" sortable="custom" width="180" />
+        <ElTableColumn align="center" fixed="right" label="操作" width="186">
           <template #default="scope">
-            <el-button
+            <ElButton
               v-if="editData?.id !== scope.row.id" plain size="small" title="修改" type="primary"
               @click="() => onEdit(scope.row)"
             >
-              <svg-icon name="ep:edit" />
-            </el-button>
-            <el-button
+              <SvgIcon name="ep:edit" />
+            </ElButton>
+            <ElButton
               v-if="editData?.id === scope.row.id" plain size="small" title="取消" type="primary"
               @click="onCancel(scope.row)"
             >
-              <svg-icon name="ep:circle-close" />
-            </el-button>
-            <el-button
+              <SvgIcon name="ep:circle-close" />
+            </ElButton>
+            <ElButton
               v-if="editData?.id === scope.row.id" plain size="small" title="保存" type="primary"
               @click="onSave(scope.row)"
             >
-              <svg-icon name="ep:document-checked" />
-            </el-button>
-            <el-button plain size="small" title="删除" type="danger" @click="onDel(scope.row)">
-              <svg-icon name="ep:delete" />
-            </el-button>
-            <el-button plain size="small" title="同步" type="primary" @click="onSync(scope.row)">
-              <svg-icon name="ant-design:cloud-sync-outlined" />
-            </el-button>
+              <SvgIcon name="ep:document-checked" />
+            </ElButton>
+            <ElButton plain size="small" title="删除" type="danger" @click="onDel(scope.row)">
+              <SvgIcon name="ep:delete" />
+            </ElButton>
+            <ElButton plain size="small" title="同步" type="primary" @click="onSync(scope.row)">
+              <SvgIcon name="ant-design:cloud-sync-outlined" />
+            </ElButton>
           </template>
-        </el-table-column>
+        </ElTableColumn>
       </ElTable>
-    </el-form>
-    <el-pagination
+    </ElForm>
+    <ElPagination
       :current-page="pagination.page" :hide-on-single-page="false" :layout="pagination.layout"
       :page-size="pagination.size" :page-sizes="pagination.sizes" :total="pagination.total"
       background class="pagination" @size-change="sizeChange" @current-change="currentChange"
     />
-  </page-main>
+  </PageMain>
   <template v-else>
     <span>批量操作暂不支持修改字段，如果确实需要个性化修改字典配置，请单个修改后在生成！</span>
   </template>
@@ -956,19 +955,15 @@ function formatterIsNot(yesOrNo: boolean) {
       left: 0;
       top: 0.1em;
       color: var(--el-color-danger);
-
     }
   }
 
   .edit-column {
-    //display: flex;
-    //align-items: center;
-    //justify-content: center;
     .el-form-item {
       margin-bottom: 0;
     }
 
-    &.col--dirty:before {
+    &.col--dirty::before {
       content: "";
       top: -5px;
       left: -5px;
@@ -978,8 +973,6 @@ function formatterIsNot(yesOrNo: boolean) {
       border-color: transparent #f56c6c transparent transparent;
       transform: rotate(45deg);
     }
-
   }
-
 }
 </style>

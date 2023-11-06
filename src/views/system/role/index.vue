@@ -84,7 +84,7 @@ function getDataList() {
     ...data.value.search,
   })
 
-  crudRole.list(params).then((res) => {
+  crudRole.page(params).then((res) => {
     // data.value.loading = false
     data.value.dataList = get(res, 'records', [])
     pagination.value.total = Number(res.total)
@@ -118,7 +118,7 @@ function onAdd() {
     router.push({
       name: 'routerName',
       params: {
-        type: 'add',
+        type: ActionEnum.ADD,
       },
     })
   }
@@ -135,7 +135,7 @@ function onEdit(row: any) {
       name: 'routerName',
       params: {
         id: row.id,
-        type: 'edit',
+        type: ActionEnum.EDIT,
       },
     })
   }
@@ -172,7 +172,7 @@ function onDel(row?: any) {
     ids = data.value.batch.selectionDataList.map(item => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudRole.delete(ids).then(() => {
+    crudRole.remove(ids).then(() => {
       getDataList()
       ElMessage.success({
         message: '删除成功',
@@ -364,7 +364,8 @@ async function getDict() {
   .page-main {
     flex: 1;
     overflow: auto;
-    :deep(.main-container){
+
+    :deep(.main-container) {
       flex: 1;
       overflow: auto;
       display: flex;
@@ -391,10 +392,9 @@ async function getDict() {
           align-items: center;
           justify-content: center;
           font-size: 32px;
-          color: var(--el-text-color-placeholder)
+          color: var(--el-text-color-placeholder);
         }
       }
-
     }
   }
 }
@@ -416,7 +416,6 @@ async function getDict() {
         }
       }
     }
-
   }
 
   // .el-divider {

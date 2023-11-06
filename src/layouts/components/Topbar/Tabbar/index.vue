@@ -2,7 +2,7 @@
 import ContextMenu from '@imengyu/vue3-context-menu'
 import Sortable from 'sortablejs'
 import hotkeys from 'hotkeys-js'
-import { useI18n } from 'vue-i18n'
+
 import { ElMessageBox } from 'element-plus'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import { useMagicKeys } from '@vueuse/core'
@@ -249,6 +249,7 @@ function onTabbarContextmenu(event: MouseEvent, routeItem: Tabbar.recordRaw) {
   })
 }
 function iconName(enableIcon: boolean, icon: string | undefined, activeIcon: string | undefined) {
+  // eslint-disable-next-line style/no-mixed-operators
   return !enableIcon && icon || enableIcon && activeIcon || icon || ''
 }
 onMounted(() => {
@@ -305,7 +306,7 @@ onUnmounted(
       ref="tabs" class="tabs" :class="{
         'tabs-ontop': settingsStore.settings.topbar.switchTabbarAndToolbar,
         [`tabs-${settingsStore.settings.tabbar.style}`]: settingsStore.settings.tabbar.style,
-      }" @mousewheel.prevent="handlerMouserScroll"
+      }" @wheel.prevent="handlerMouserScroll"
     >
       <TransitionGroup
         ref="tabContainer" :name="!isDragging ? 'tabbar' : undefined" tag="div" class="tab-container"
@@ -430,20 +431,6 @@ onUnmounted(
 </template>
 
 <style lang="scss">
-.mx-menu-ghost-host {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  top: 0;
-  overflow: hidden;
-  pointer-events: none;
-
-  &.fullscreen {
-    position: fixed;
-  }
-}
-
 .mx-menu-bar {
   flex: 1;
   display: flex;
@@ -465,8 +452,6 @@ onUnmounted(
   .mx-menu-bar-item {
     padding: 2px 8px;
     border-radius: 5px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
     user-select: none;
     background-color: var(--mx-menu-backgroud);
     color: var(--mx-menu-text);
@@ -480,12 +465,14 @@ onUnmounted(
       }
     }
 
-    &.active, &:active {
+    &.active,
+    &:active {
       background-color: var(--mx-menu-active-backgroud);
       color: var(--mx-menu-active-text);
     }
 
-    &.active .mx-menu-bar-icon-menu, &:active .mx-menu-bar-icon-menu {
+    &.active .mx-menu-bar-icon-menu,
+    &:active .mx-menu-bar-icon-menu {
       fill: var(--mx-menu-active-text);
     }
   }
@@ -500,11 +487,23 @@ onUnmounted(
     border-radius: 0;
   }
 }
+
 .mx-menu-ghost-host {
   --at-apply: z-100;
 
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  &.fullscreen {
+    position: fixed;
+  }
+
   .mx-context-menu {
-    --at-apply: flex ring-stone-3 dark:ring-stone-7 bg-[var(--g-container-bg)];
+    --at-apply: flex ring-stone-3 dark:ring-stone-7;
+
+    background-color: var(--g-container-bg);
 
     .mx-context-menu-items .mx-context-menu-item {
       --at-apply: transition;
@@ -521,20 +520,20 @@ onUnmounted(
         --at-apply: w-4 m-r-10px color-initial;
       }
 
-      .disabled span, .disabled .icon {
+      .disabled span,
+      .disabled .icon {
         --at-apply: opacity-25;
       }
     }
 
     .mx-context-menu-item-sperator {
-      --at-apply: bg-[var(--g-container-bg)];
+      background-color: var(--g-container-bg);
 
-      &:after {
+      &::after {
         --at-apply: bg-stone-2 dark:bg-stone-7;
       }
     }
   }
-
 }
 
 .tabbar-dropdown {
@@ -557,8 +556,9 @@ onUnmounted(
       border: none;
       background-color: var(--g-bg);
       transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
-      transition-timing-function: cubic-bezier(.4, 0, .2, 1);
-      transition-duration: .15s;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 0.15s;
+
       &:hover:not(:disabled) {
         --at-apply: color-ui-primary;
       }
@@ -596,7 +596,7 @@ onUnmounted(
       margin: 0 15px;
       padding: 0 5px;
       border-radius: 5px;
-      transition: background-color .3s;
+      transition: background-color 0.3s;
 
       &.actived {
         background-color: var(--g-bg);
@@ -610,7 +610,7 @@ onUnmounted(
         .title {
           opacity: 1;
           margin-right: 20px;
-          mask-image: linear-gradient(to right, #000 calc(100% - 44px), transparent)
+          mask-image: linear-gradient(to right, #000 calc(100% - 44px), transparent);
         }
       }
 
@@ -619,10 +619,10 @@ onUnmounted(
       }
 
       .title {
-        opacity: .7;
+        opacity: 0.7;
         transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-        transition-timing-function: cubic-bezier(.4, 0, .2, 1);
-        transition-duration: .15s;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 0.15s;
         position: relative;
         display: flex;
         align-items: center;
@@ -635,15 +635,14 @@ onUnmounted(
 
         .i {
           margin-right: 5px;
-          font-size: 16px
+          font-size: 16px;
         }
-
       }
 
       .action-icon {
         transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-        transition-timing-function: cubic-bezier(.4, 0, .2, 1);
-        transition-duration: .15s;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 0.15s;
         position: absolute;
         z-index: 10;
         top: 50%;
@@ -656,11 +655,11 @@ onUnmounted(
         opacity: 0;
         pointer-events: all;
         color: var(--g-tabbar-tab-color);
+
         &:hover {
-          --at-apply: ring-stone-3 dark:ring-stone-7
+          --at-apply: ring-stone-3 dark:ring-stone-7;
         }
       }
-
     }
   }
 }
@@ -668,7 +667,7 @@ onUnmounted(
 
 <style lang="scss" scoped>
 [data-overlayscrollbars-viewport] {
-  overscroll-behavior: contain
+  overscroll-behavior: contain;
 }
 
 .tabbar-container {
@@ -736,10 +735,6 @@ onUnmounted(
           user-select: none;
         }
 
-        //&:last-child {
-        //  margin-right: 30px;
-        //}
-
         &.actived {
           z-index: 5;
 
@@ -795,10 +790,6 @@ onUnmounted(
           width: 100%;
           height: 100%;
           pointer-events: none;
-
-          //svg {
-          //  display: none;
-          //}
         }
 
         .tab-content {
@@ -818,7 +809,7 @@ onUnmounted(
             white-space: nowrap;
             mask-image: linear-gradient(to right, #000 calc(100% - 20px), transparent);
             color: var(--g-tabbar-tab-color);
-            transition: margin-right .3s;
+            transition: margin-right 0.3s;
 
             &:has(+.action-icon) {
               margin-right: 28px;
@@ -829,31 +820,30 @@ onUnmounted(
             }
           }
 
-          //.drag-handle {
-          //  position: absolute;
-          //  z-index: 9;
-          //  inset: 0;
-          //}
-
           .action-icon {
             position: absolute;
             z-index: 10;
             top: 50%;
-            right: .5em;
+            right: 0.5em;
             transform: translateY(-50%);
             width: 1.5em;
             height: 1.5em;
             border-radius: 50%;
             font-size: 12px;
             color: var(--g-tabbar-tab-color);
+
             &:hover {
-              background-color: var(--el-fill-color);
-              --at-apply: ring-1 ring-stone-3 dark:ring-stone-7 bg-[var(--g-bg)];
+              --at-apply: ring-1 ring-stone-3 dark:ring-stone-7;
+
+              background-color: var(--g-bg);
             }
           }
 
           .hotkey-number {
-            --at-apply: ring-1 ring-stone-3 dark:ring-stone-7 flex-center absolute z-10 top-1\/2 right-[0.5em] -translate-y-1\/2 w-6 h-6 border-rd-1\/2 font-size-12px color-[var(--g-tabbar-tab-color)] bg-[var(--g-bg)];
+            --at-apply: ring-1 ring-stone-3 dark:ring-stone-7 flex-center absolute z-10 top-1\/2 right-[0.5em] -translate-y-1\/2 w-6 h-6 border-rd-1\/2 font-size-12px;
+
+            color: var(--g-tabbar-tab-color);
+            background-color: var(--g-bg);
           }
         }
 
@@ -869,7 +859,7 @@ onUnmounted(
       .tab-container {
         &:not(.dragging) {
           .tab:not(.actived):hover {
-            &+.tab .tab-dividers::before {
+            & + .tab .tab-dividers::before {
               opacity: 0;
             }
 
@@ -905,7 +895,7 @@ onUnmounted(
           .tab-background {
             border-radius: 10px 10px 0 0;
             background-color: var(--g-tabbar-tab-hover-bg);
-            transition: opacity .3s, background-color .3s;
+            transition: opacity 0.3s, background-color 0.3s;
 
             &::before,
             &::after {
@@ -916,7 +906,7 @@ onUnmounted(
               height: 20px;
               border-radius: 100%;
               box-shadow: 0 0 0 20px transparent;
-              transition: box-shadow .3s;
+              transition: box-shadow 0.3s;
             }
 
             &::before {
@@ -931,7 +921,7 @@ onUnmounted(
           }
 
           &.actived {
-            &+.tab .tab-dividers::before {
+            & + .tab .tab-dividers::before {
               opacity: 0;
             }
 
@@ -944,9 +934,7 @@ onUnmounted(
                 box-shadow: 0 0 0 20px var(--g-container-bg);
               }
             }
-
           }
-
         }
       }
     }
@@ -989,7 +977,7 @@ onUnmounted(
       .tab-container {
         &:not(.dragging) {
           .tab:not(.actived):hover {
-            &+.tab .tab-dividers::before {
+            & + .tab .tab-dividers::before {
               opacity: 0;
             }
 
@@ -1037,7 +1025,7 @@ onUnmounted(
           }
 
           &.actived {
-            &+.tab .tab-dividers::before {
+            & + .tab .tab-dividers::before {
               opacity: 0;
             }
 
@@ -1072,7 +1060,10 @@ onUnmounted(
     background-image: linear-gradient(to right, transparent, var(--g-bg));
 
     .icon {
-      --at-apply: color-[var(--el-text-color-primary)] bg-[var(--g-container-bg)] shadow ring transition w-6 h-6 border-rd-5px font-size-16px cursor-pointer;
+      --at-apply: shadow transition w-6 h-6 border-rd-5px font-size-16px cursor-pointer;
+
+      color: var(--el-text-color-primary);
+      background-color: var(--g-container-bg);
     }
   }
 }
@@ -1110,21 +1101,21 @@ onUnmounted(
 .tabbar-dropdown .dropdown-tab-enter-from,
 .tabbar-dropdown .dropdown-tab-leave-to {
   opacity: 0;
-  transform: translateY(-30px)
+  transform: translateY(-30px);
 }
 
 .tabbar-dropdown {
   .dropdown-tab-enter-active {
-    transition: all .3s
+    transition: all 0.3s;
   }
 
   .dropdown-tab-leave-active {
     position: absolute !important;
-    transition: all .3s
+    transition: all 0.3s;
   }
 
   .dropdown-tab-move[data-v-5cbb47a6] {
-    transition: transform .3s
+    transition: transform 0.3s;
   }
 }
 </style>

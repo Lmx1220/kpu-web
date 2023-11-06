@@ -64,7 +64,7 @@ watch(() => favoritesContainer.value, (value) => {
         >
           <SvgIcon :name="favorites.icon ?? ''" :size="18" />
           <div class="name flex-1 pe-4 truncate">
-            {{favorites.icon }}
+            {{ favorites.icon }}
             {{ generateI18nTitle(favorites.i18n, favorites.title) }}
           </div>
           <SvgIcon
@@ -90,14 +90,14 @@ watch(() => favoritesContainer.value, (value) => {
 
 <style lang="scss" scoped>
 [data-overlayscrollbars-viewport] {
-  overscroll-behavior: contain
+  overscroll-behavior: contain;
 }
 
 .draggable-ghost {
-  opacity: 0
+  opacity: 0;
 }
 
 .name {
-  mask-image: linear-gradient(to right, #000 calc(100% - 80px), transparent)
+  mask-image: linear-gradient(to right, #000 calc(100% - 80px), transparent);
 }
 </style>

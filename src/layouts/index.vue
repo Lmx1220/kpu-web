@@ -98,6 +98,7 @@ onUnmounted(() => {
                 <KeepAlive :include="keepAliveStore.list">
                   <component :is="Component" :key="route.fullPath" />
                 </KeepAlive>
+                <!--                <component :is="Component" :key="route.fullPath" /> -->
               </Transition>
             </RouterView>
             <IframeView v-show="isIframe && !isLink" />
@@ -164,7 +165,6 @@ onUnmounted(() => {
       &.show {
         transform: translate(0);
       }
-
     }
   }
 }
@@ -220,7 +220,7 @@ onUnmounted(() => {
     display: flex;
     width: calc(var(--g-main-sidebar-actual-width) + var(--g-sub-sidebar-actual-width));
     box-shadow: -1px 0 0 0 var(--g-border-color), 1px 0 0 0 var(--g-border-color);
-    transition: width .3s, transform .3s, box-shadow .3s, top .3s
+    transition: width 0.3s, transform 0.3s, box-shadow 0.3s, top 0.3s;
   }
 
   .sidebar-mask {
@@ -243,8 +243,8 @@ onUnmounted(() => {
     }
   }
 
-  .main-sidebar-container:not(.main-sidebar-leave-active)+.sub-sidebar-container {
-    left: var(--g-main-sidebar-width)
+  .main-sidebar-container:not(.main-sidebar-leave-active) + .sub-sidebar-container {
+    left: var(--g-main-sidebar-width);
   }
 
   .main-container {
@@ -254,7 +254,7 @@ onUnmounted(() => {
     margin-left: calc(var(--g-main-sidebar-actual-width) + var(--g-sub-sidebar-actual-width));
     background-color: var(--g-bg);
     box-shadow: -1px 0 0 0 var(--g-border-color), 1px 0 0 0 var(--g-border-color);
-    transition: margin-left .3s, background-color .3s, box-shadow .3s;
+    transition: margin-left 0.3s, background-color 0.3s, box-shadow 0.3s;
 
     .main {
       height: 100%;
@@ -265,10 +265,11 @@ onUnmounted(() => {
 
       .exit-main-page-maximize {
         --at-apply: bg-stone-7 color-stone-3 dark:bg-stone-3 dark:color-stone-7;
-        opacity: .5;
+
+        opacity: 0.5;
         transition-property: opacity;
-        transition-timing-function: cubic-bezier(.4, 0, .2, 1);
-        transition-duration: .15s;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 0.15s;
         position: fixed;
         z-index: 1000;
         right: -40px;
@@ -279,7 +280,7 @@ onUnmounted(() => {
         cursor: pointer;
 
         &:hover {
-          opacity: 1
+          opacity: 1;
         }
 
         i {
@@ -291,22 +292,22 @@ onUnmounted(() => {
     }
 
     .topbar-container {
-      &.has-tabbar+.main {
+      &.has-tabbar + .main {
         margin: var(--g-tabbar-height) 0 0;
       }
 
-      &.has-toolbar+.main {
+      &.has-toolbar + .main {
         margin: var(--g-toolbar-height) 0 0;
       }
 
-      &.has-toolbar.has-tabbar+.main {
+      &.has-toolbar.has-tabbar + .main {
         margin: calc(var(--g-toolbar-height) + var(--g-tabbar-height)) 0 0;
       }
     }
   }
 }
 
-header:not(.header-leave-active)+.wrapper {
+header:not(.header-leave-active) + .wrapper {
   padding-top: var(--g-header-height);
 
   .sidebar-container {
@@ -322,15 +323,15 @@ header:not(.header-leave-active)+.wrapper {
       top: var(--g-header-height);
 
       :deep(.tools) {
-        display: none
+        display: none;
       }
-
     }
   }
 }
 
 .app-setting {
   @apply bg-ui-primary color-white dark:color-dark ;
+
   position: fixed;
   align-items: center;
   justify-content: center;
@@ -352,23 +353,32 @@ header:not(.header-leave-active)+.wrapper {
 
 @keyframes rotate {
   0% {
-    transform: rotate(0)
+    transform: rotate(0);
   }
 
   100% {
-    transform: rotate(360deg)
+    transform: rotate(360deg);
   }
 }
 
-.fade-enter-active, .slide-left-enter-active, .slide-right-enter-active, .slide-top-enter-active, .slide-bottom-enter-active {
+.fade-enter-active,
+.slide-left-enter-active,
+.slide-right-enter-active,
+.slide-top-enter-active,
+.slide-bottom-enter-active {
   transition: 0.2s;
 }
 
-.fade-leave-active, .slide-left-leave-active, .slide-right-leave-active, .slide-top-leave-active, .slide-bottom-leave-active {
+.fade-leave-active,
+.slide-left-leave-active,
+.slide-right-leave-active,
+.slide-top-leave-active,
+.slide-bottom-leave-active {
   transition: 0.15s;
 }
 
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
@@ -377,7 +387,8 @@ header:not(.header-leave-active)+.wrapper {
   margin-left: 20px;
 }
 
-.slide-left-leave-to, .slide-right-enter-from {
+.slide-left-leave-to,
+.slide-right-enter-from {
   opacity: 0;
   margin-left: -20px;
 }
@@ -392,7 +403,8 @@ header:not(.header-leave-active)+.wrapper {
   margin-top: 20px;
 }
 
-.slide-top-leave-to, .slide-bottom-enter-from {
+.slide-top-leave-to,
+.slide-bottom-enter-from {
   opacity: 0;
   margin-top: -20px;
 }

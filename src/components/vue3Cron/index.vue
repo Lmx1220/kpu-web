@@ -1,4 +1,7 @@
 <script setup lang="ts">
+defineOptions({
+  name: 'Vue3Cron',
+})
 defineProps({
   value: String,
   maxHeight: String,
@@ -12,10 +15,6 @@ const emits = defineEmits<{
     value: string,
   ]
 }>()
-defineOptions({
-  name: 'Vue3Cron',
-})
-
 // (默认是每一分钟一次)
 const weekList = ref([
   { name: '星期日', value: 'SUN', val: 1 },
@@ -349,75 +348,75 @@ watch(
     <div v-show="tabActive === 1" class="v3c-content">
       <!-- 每一秒 -->
       <div>
-        <el-radio v-model="state.second.cronEvery" label="1">
+        <ElRadio v-model="state.second.cronEvery" label="1">
           每一秒钟
-        </el-radio>
+        </ElRadio>
       </div>
       <!-- 每隔多久 -->
       <div class="mt-15">
-        <el-radio v-model="state.second.cronEvery" label="2">
+        <ElRadio v-model="state.second.cronEvery" label="2">
           每隔
-        </el-radio>
-        <el-input-number v-model="state.second.incrementIncrement" :min="1" :max="60" controls-position="right" />
+        </ElRadio>
+        <ElInputNumber v-model="state.second.incrementIncrement" :min="1" :max="60" controls-position="right" />
         <span class="ml-5 mr-5">秒执行， 从</span>
-        <el-input-number v-model="state.second.incrementStart" :min="0" :max="59" controls-position="right" />
+        <ElInputNumber v-model="state.second.incrementStart" :min="0" :max="59" controls-position="right" />
         <span>秒开始</span>
       </div>
       <!-- 具体秒数 -->
       <div class="mt-15">
-        <el-radio v-model="state.second.cronEvery" label="3">
+        <ElRadio v-model="state.second.cronEvery" label="3">
           具体秒数(可多选)
-        </el-radio>
-        <el-select v-model="state.second.specificSpecific" multiple clearable style="width: 140px">
-          <el-option v-for="(item, index) in 60" :key="index" :label="index" :value="index" />
-        </el-select>
+        </ElRadio>
+        <ElSelect v-model="state.second.specificSpecific" multiple clearable style="width: 140px;">
+          <ElOption v-for="(item, index) in 60" :key="index" :label="index" :value="index" />
+        </ElSelect>
       </div>
       <!-- 周期从 -->
       <div class="mt-15">
-        <el-radio v-model="state.second.cronEvery" label="4">
+        <ElRadio v-model="state.second.cronEvery" label="4">
           周期从
-        </el-radio>
-        <el-input-number v-model="state.second.rangeStart" :min="0" :max="59" controls-position="right" />
-        <sapn>秒</sapn><span class="ml-10 mr-5">到</span>
-        <el-input-number v-model="state.second.rangeEnd" :min="0" :max="59" controls-position="right" />
-        <sapn>秒</sapn>
+        </ElRadio>
+        <ElInputNumber v-model="state.second.rangeStart" :min="0" :max="59" controls-position="right" />
+        <Sapn>秒</Sapn><span class="ml-10 mr-5">到</span>
+        <ElInputNumber v-model="state.second.rangeEnd" :min="0" :max="59" controls-position="right" />
+        <Sapn>秒</Sapn>
       </div>
     </div>
     <!-- 分钟 -->
     <div v-show="tabActive === 2" class="v3c-content">
       <!-- 每一分钟 -->
       <div>
-        <el-radio v-model="state.minute.cronEvery" label="1">
+        <ElRadio v-model="state.minute.cronEvery" label="1">
           每一分钟
-        </el-radio>
+        </ElRadio>
       </div>
       <!-- 每隔多久 -->
       <div class="mt-15">
-        <el-radio v-model="state.minute.cronEvery" label="2">
+        <ElRadio v-model="state.minute.cronEvery" label="2">
           每隔
-        </el-radio>
-        <el-input-number v-model="state.minute.incrementIncrement" :min="1" :max="60" controls-position="right" />
+        </ElRadio>
+        <ElInputNumber v-model="state.minute.incrementIncrement" :min="1" :max="60" controls-position="right" />
         <span class="ml-5 mr-5">分执行，从</span>
-        <el-input-number v-model="state.minute.incrementStart" :min="0" :max="59" controls-position="right" />
+        <ElInputNumber v-model="state.minute.incrementStart" :min="0" :max="59" controls-position="right" />
         <span>分开始</span>
       </div>
       <!-- 具体分钟数 -->
       <div class="mt-15">
-        <el-radio v-model="state.minute.cronEvery" label="3">
+        <ElRadio v-model="state.minute.cronEvery" label="3">
           具体分钟数(可多选)
-        </el-radio>
-        <el-select v-model="state.minute.specificSpecific" multiple clearable style="width: 140px">
-          <el-option v-for="(item, index) in 60" :key="index" :label="index" :value="index" />
-        </el-select>
+        </ElRadio>
+        <ElSelect v-model="state.minute.specificSpecific" multiple clearable style="width: 140px;">
+          <ElOption v-for="(item, index) in 60" :key="index" :label="index" :value="index" />
+        </ElSelect>
       </div>
       <!-- 周期从 -->
       <div class="mt-15">
-        <el-radio v-model="state.minute.cronEvery" label="4">
+        <ElRadio v-model="state.minute.cronEvery" label="4">
           周期从
-        </el-radio>
-        <el-input-number v-model="state.minute.rangeStart" :min="0" :max="59" controls-position="right" />
+        </ElRadio>
+        <ElInputNumber v-model="state.minute.rangeStart" :min="0" :max="59" controls-position="right" />
         <span>分</span><span class="ml-10 mr-5">到</span>
-        <el-input-number v-model="state.minute.rangeEnd" :min="0" :max="59" controls-position="right" />
+        <ElInputNumber v-model="state.minute.rangeEnd" :min="0" :max="59" controls-position="right" />
         <span>分</span>
       </div>
     </div>
@@ -425,37 +424,37 @@ watch(
     <div v-show="tabActive === 3" class="v3c-content">
       <!-- 每一小时 -->
       <div>
-        <el-radio v-model="state.hour.cronEvery" label="1">
+        <ElRadio v-model="state.hour.cronEvery" label="1">
           每一小时
-        </el-radio>
+        </ElRadio>
       </div>
       <!-- 每隔多久 -->
       <div class="mt-15">
-        <el-radio v-model="state.hour.cronEvery" label="2">
+        <ElRadio v-model="state.hour.cronEvery" label="2">
           每隔
-        </el-radio>
-        <el-input-number v-model="state.hour.incrementIncrement" :min="1" :max="24" controls-position="right" />
+        </ElRadio>
+        <ElInputNumber v-model="state.hour.incrementIncrement" :min="1" :max="24" controls-position="right" />
         <span class="ml-5 mr-5">小时执行，从</span>
-        <el-input-number v-model="state.hour.incrementStart" :min="0" :max="23" controls-position="right" />
+        <ElInputNumber v-model="state.hour.incrementStart" :min="0" :max="23" controls-position="right" />
         <span>小时开始</span>
       </div>
       <!-- 具体小时数 -->
       <div class="mt-15">
-        <el-radio v-model="state.hour.cronEvery" label="3">
+        <ElRadio v-model="state.hour.cronEvery" label="3">
           具体小时数(可多选)
-        </el-radio>
-        <el-select v-model="state.hour.specificSpecific" multiple clearable style="width: 140px">
-          <el-option v-for="(item, index) in 24" :key="index" :label="index" :value="index" />
-        </el-select>
+        </ElRadio>
+        <ElSelect v-model="state.hour.specificSpecific" multiple clearable style="width: 140px;">
+          <ElOption v-for="(item, index) in 24" :key="index" :label="index" :value="index" />
+        </ElSelect>
       </div>
       <!-- 周期从 -->
       <div class="mt-15">
-        <el-radio v-model="state.hour.cronEvery" label="4">
+        <ElRadio v-model="state.hour.cronEvery" label="4">
           周期从
-        </el-radio>
-        <el-input-number v-model="state.hour.rangeStart" :min="0" :max="23" controls-position="right" />
+        </ElRadio>
+        <ElInputNumber v-model="state.hour.rangeStart" :min="0" :max="23" controls-position="right" />
         <span>时</span><span class="ml-10 mr-5">到</span>
-        <el-input-number v-model="state.hour.rangeEnd" :min="0" :max="23" controls-position="right" />
+        <ElInputNumber v-model="state.hour.rangeEnd" :min="0" :max="23" controls-position="right" />
         <span>时</span>
       </div>
     </div>
@@ -463,47 +462,47 @@ watch(
     <div v-show="tabActive === 4" class="v3c-content">
       <!-- 1 -->
       <div>
-        <el-radio v-model="state.day.cronEvery" label="1">
+        <ElRadio v-model="state.day.cronEvery" label="1">
           每一天
-        </el-radio>
+        </ElRadio>
       </div>
       <!-- 2 -->
       <div class="mt-15">
-        <el-radio v-model="state.day.cronEvery" label="2">
+        <ElRadio v-model="state.day.cronEvery" label="2">
           每隔
-        </el-radio>
-        <el-input-number v-model="state.week.incrementIncrement" :min="1" :max="60" controls-position="right" />
+        </ElRadio>
+        <ElInputNumber v-model="state.week.incrementIncrement" :min="1" :max="60" controls-position="right" />
         <span class="ml-5 mr-5">周执行，从</span>
-        <el-input-number v-model="state.week.incrementStart" :min="1" :max="52" controls-position="right" />
+        <ElInputNumber v-model="state.week.incrementStart" :min="1" :max="52" controls-position="right" />
         <span>周开始</span>
       </div>
       <!-- 3 -->
       <div class="mt-15">
-        <el-radio v-model="state.day.cronEvery" label="3">
+        <ElRadio v-model="state.day.cronEvery" label="3">
           每隔
-        </el-radio>
-        <el-input-number v-model="state.day.incrementIncrement" :min="1" :max="30" controls-position="right" />
+        </ElRadio>
+        <ElInputNumber v-model="state.day.incrementIncrement" :min="1" :max="30" controls-position="right" />
         <span class="ml-5 mr-5">天执行，从</span>
-        <el-input-number v-model="state.day.incrementStart" :min="1" :max="30" controls-position="right" />
+        <ElInputNumber v-model="state.day.incrementStart" :min="1" :max="30" controls-position="right" />
         <span>天开始</span>
       </div>
       <!-- 4 -->
       <div class="mt-15">
-        <el-radio v-model="state.day.cronEvery" label="4">
+        <ElRadio v-model="state.day.cronEvery" label="4">
           具体星期几(可多选)
-        </el-radio>
-        <el-select v-model="state.week.specificSpecific" multiple clearable style="width: 140px">
-          <el-option v-for="(item, index) in weekList" :key="index" :label="item.name" :value="item.value" />
-        </el-select>
+        </ElRadio>
+        <ElSelect v-model="state.week.specificSpecific" multiple clearable style="width: 140px;">
+          <ElOption v-for="(item, index) in weekList" :key="index" :label="item.name" :value="item.value" />
+        </ElSelect>
       </div>
       <!-- 5 -->
       <div class="mt-15">
-        <el-radio v-model="state.day.cronEvery" label="5">
+        <ElRadio v-model="state.day.cronEvery" label="5">
           具体天数(可多选)
-        </el-radio>
-        <el-select v-model="state.day.specificSpecific" multiple clearable style="width: 140px">
-          <el-option v-for="(item, index) in 31" :key="index" :label="item" :value="item" />
-        </el-select>
+        </ElRadio>
+        <ElSelect v-model="state.day.specificSpecific" multiple clearable style="width: 140px;">
+          <ElOption v-for="(item, index) in 31" :key="index" :label="item" :value="item" />
+        </ElSelect>
       </div>
       <!-- 6 -->
       <!-- <div class="mt-15">
@@ -546,37 +545,37 @@ watch(
     <div v-show="tabActive === 5" class="v3c-content">
       <!-- 1 -->
       <div>
-        <el-radio v-model="state.month.cronEvery" label="1">
+        <ElRadio v-model="state.month.cronEvery" label="1">
           每一月
-        </el-radio>
+        </ElRadio>
       </div>
       <!-- 2 -->
       <div class="mt-15">
-        <el-radio v-model="state.month.cronEvery" label="2">
+        <ElRadio v-model="state.month.cronEvery" label="2">
           每隔
-        </el-radio>
-        <el-input-number v-model="state.month.incrementIncrement" :min="1" :max="12" controls-position="right" />
+        </ElRadio>
+        <ElInputNumber v-model="state.month.incrementIncrement" :min="1" :max="12" controls-position="right" />
         <span class="ml-5 mr-5">月执行，从</span>
-        <el-input-number v-model="state.month.incrementStart" :min="1" :max="12" controls-position="right" />
+        <ElInputNumber v-model="state.month.incrementStart" :min="1" :max="12" controls-position="right" />
         <span>月开始</span>
       </div>
       <!-- 3 -->
       <div class="mt-15">
-        <el-radio v-model="state.month.cronEvery" label="3">
+        <ElRadio v-model="state.month.cronEvery" label="3">
           具体月数(可多选)
-        </el-radio>
-        <el-select v-model="state.month.specificSpecific" multiple clearable style="width: 140px">
-          <el-option v-for="(item, index) in 12" :key="index" :label="item" :value="item" />
-        </el-select>
+        </ElRadio>
+        <ElSelect v-model="state.month.specificSpecific" multiple clearable style="width: 140px;">
+          <ElOption v-for="(item, index) in 12" :key="index" :label="item" :value="item" />
+        </ElSelect>
       </div>
       <!-- 4 -->
       <div class="mt-15">
-        <el-radio v-model="state.month.cronEvery" label="4">
+        <ElRadio v-model="state.month.cronEvery" label="4">
           周期从
-        </el-radio>
-        <el-input-number v-model="state.month.rangeStart" :min="1" :max="12" controls-position="right" />
+        </ElRadio>
+        <ElInputNumber v-model="state.month.rangeStart" :min="1" :max="12" controls-position="right" />
         <span>月</span><span class="ml-10 mr-5">到</span>
-        <el-input-number v-model="state.month.rangeEnd" :min="1" :max="12" controls-position="right" />
+        <ElInputNumber v-model="state.month.rangeEnd" :min="1" :max="12" controls-position="right" />
         <span>月</span>
       </div>
     </div>
@@ -584,45 +583,45 @@ watch(
     <div v-show="tabActive === 6" class="v3c-content">
       <!-- 1 -->
       <div>
-        <el-radio v-model="state.year.cronEvery" label="1">
+        <ElRadio v-model="state.year.cronEvery" label="1">
           每一年
-        </el-radio>
+        </ElRadio>
       </div>
       <!-- 2 -->
       <div class="mt-15">
-        <el-radio v-model="state.year.cronEvery" label="2">
+        <ElRadio v-model="state.year.cronEvery" label="2">
           每隔
-        </el-radio>
-        <el-input-number v-model="state.year.incrementIncrement" :min="1" :max="99" controls-position="right" />
+        </ElRadio>
+        <ElInputNumber v-model="state.year.incrementIncrement" :min="1" :max="99" controls-position="right" />
         <span class="ml-5 mr-5">年执行，从</span>
-        <el-input-number
+        <ElInputNumber
           v-model="state.year.incrementStart" :min="currYear" :max="currYear + 10"
-          controls-position="right" style="width:100px;"
+          controls-position="right" style="width: 100px;"
         />
         <span>年开始</span>
       </div>
       <!-- 3 -->
       <div class="mt-15">
-        <el-radio v-model="state.year.cronEvery" label="3">
+        <ElRadio v-model="state.year.cronEvery" label="3">
           具体年份(可多选)
-        </el-radio>
-        <el-select v-model="state.year.specificSpecific" multiple clearable style="width: 140px">
-          <el-option v-for="(item, index) in 100" :key="index" :label="currYear + item" :value="currYear + item" />
-        </el-select>
+        </ElRadio>
+        <ElSelect v-model="state.year.specificSpecific" multiple clearable style="width: 140px;">
+          <ElOption v-for="(item, index) in 100" :key="index" :label="currYear + item" :value="currYear + item" />
+        </ElSelect>
       </div>
       <!-- 4 -->
       <div class="mt-15">
-        <el-radio v-model="state.year.cronEvery" label="4">
+        <ElRadio v-model="state.year.cronEvery" label="4">
           周期从
-        </el-radio>
-        <el-input-number
+        </ElRadio>
+        <ElInputNumber
           v-model="state.year.rangeStart" :min="currYear" :max="currYear + 10" controls-position="right"
-          style="width:100px;"
+          style="width: 100px;"
         />
         <span>年</span><span class="ml-10 mr-5">到</span>
-        <el-input-number
+        <ElInputNumber
           v-model="state.year.rangeEnd" :min="currYear" :max="currYear + 10" controls-position="right"
-          style="width:100px;"
+          style="width: 100px;"
         />
         <span>年</span>
       </div>
@@ -640,118 +639,118 @@ watch(
 
 <style lang="css" scoped>
 :deep(.el-input-number) {
-    width: 80px;
-    margin-right: 5px;
+  width: 80px;
+  margin-right: 5px;
 }
 
 :deep(.el-radio) {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .v3c {
-    width: auto;
-    border: 1px solid #f5f7fa;
+  width: auto;
+  border: 1px solid #f5f7fa;
 }
 
 .v3c-tab {
-    padding: 0;
-    list-style: none;
-    margin: 0;
-    background-color: #f5f7fa;
-    display: flex;
+  padding: 0;
+  list-style: none;
+  margin: 0;
+  background-color: #f5f7fa;
+  display: flex;
 }
 
 .v3c-tab-item {
-    flex: 1;
-    text-align: center;
-    cursor: pointer;
-    padding: 6px;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  padding: 6px;
 }
 
 .v3c-tab-item.v3c-active {
-    background-color: #409eff;
-    color: #fff;
+  background-color: #409eff;
+  color: #fff;
 }
 
 .v3c-lang-btn {
-    background-color: #61ddaa;
-    color: #fff;
+  background-color: #61ddaa;
+  color: #fff;
 
-    /* border-radius: 10px; */
+  /* border-radius: 10px; */
 }
 
 .v3c-content {
-    padding: 20px;
-    max-height: v-bind(maxHeight);
-    overflow: hidden;
-    overflow-y: auto;
+  padding: 20px;
+  max-height: v-bind(maxHeight);
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 .p-20 {
-    padding: 20px;
+  padding: 20px;
 }
 
 .v3c-footer {
-    background-color: #f5f7fa;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    display: flex;
-    text-align: center;
+  background-color: #f5f7fa;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  text-align: center;
 }
 
 .btn-ok {
-    line-height: 1.5715;
-    position: relative;
-    display: inline-block;
-    font-weight: 400;
-    white-space: nowrap;
-    text-align: center;
-    background: #409eff;
-    background-image: none;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    user-select: none;
-    touch-action: manipulation;
-    height: 32px;
-    padding: 4px 15px;
-    font-size: 14px;
-    border-radius: 2px;
-    color: #fff;
-    border-color: #409eff;
-    text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
-    box-shadow: 0 2px #0000000b;
+  line-height: 1.5715;
+  position: relative;
+  display: inline-block;
+  font-weight: 400;
+  white-space: nowrap;
+  text-align: center;
+  background: #409eff;
+  background-image: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  user-select: none;
+  touch-action: manipulation;
+  height: 32px;
+  padding: 4px 15px;
+  font-size: 14px;
+  border-radius: 2px;
+  color: #fff;
+  border-color: #409eff;
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  box-shadow: 0 2px #0000000b;
 }
 
 .btn-close {
-    line-height: 1.5715;
-    position: relative;
-    display: inline-block;
-    font-weight: 400;
-    white-space: nowrap;
-    text-align: center;
-    background: #61ddaa;
-    background-image: none;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    user-select: none;
-    touch-action: manipulation;
-    height: 32px;
-    padding: 4px 15px;
-    font-size: 14px;
-    border-radius: 2px;
-    color: #fff;
-    border-color: #61ddaa;
-    text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
-    box-shadow: 0 2px #0000000b;
+  line-height: 1.5715;
+  position: relative;
+  display: inline-block;
+  font-weight: 400;
+  white-space: nowrap;
+  text-align: center;
+  background: #61ddaa;
+  background-image: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  user-select: none;
+  touch-action: manipulation;
+  height: 32px;
+  padding: 4px 15px;
+  font-size: 14px;
+  border-radius: 2px;
+  color: #fff;
+  border-color: #61ddaa;
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  box-shadow: 0 2px #0000000b;
 }
 
 .cron {
-    background-color: #61ddaa;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    color: #fff;
+  background-color: #61ddaa;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #fff;
 }
 </style>

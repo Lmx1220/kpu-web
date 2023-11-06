@@ -80,7 +80,7 @@ async function getDataList(current?: number) {
   const params = getParams<DictPageQuery>({
     ...data.value.search,
   })
-  const res = await crudDict.list(params)
+  const res = await crudDict.page(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)
   pagination.value.page = Number(get(res, 'current', 1))
@@ -144,7 +144,7 @@ function onDel(row?: any) {
     ids = data.value.batch.selectionDataList.map(item => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudDict.delete(ids).then(() => {
+    crudDict.remove(ids).then(() => {
       getDataList()
       ElMessage.success({
         message: '模拟删除成功',
@@ -275,7 +275,8 @@ function onDel(row?: any) {
   .page-main {
     flex: 1;
     overflow: auto;
-    :deep(.main-container){
+
+    :deep(.main-container) {
       flex: 1;
       overflow: auto;
       display: flex;
@@ -307,7 +308,6 @@ function onDel(row?: any) {
       }
     }
   }
-
 }
 
 .page-main {
@@ -327,8 +327,6 @@ function onDel(row?: any) {
         }
       }
     }
-
   }
-
 }
 </style>

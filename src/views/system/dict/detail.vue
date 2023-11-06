@@ -36,29 +36,29 @@ function goBack() {
 
 <template>
   <div>
-    <page-header :title="route.name === 'routerName' ? '新增字典' : '编辑字典'">
-      <el-button round size="default" @click="goBack">
+    <PageHeader :title="route.name === 'routerName' ? '新增字典' : '编辑字典'">
+      <ElButton round size="default" @click="goBack">
         <template #icon>
-          <svg-icon name="ep:arrow-left" />
+          <SvgIcon name="ep:arrow-left" />
         </template>
         返回
-      </el-button>
-    </page-header>
-    <page-main>
-      <el-row>
-        <el-col :lg="16" :md="24">
+      </ElButton>
+    </PageHeader>
+    <PageMain>
+      <ElRow>
+        <ElCol :lg="16" :md="24">
           <DetailForm :id="route.params.id as string" ref="form" />
-        </el-col>
-      </el-row>
-    </page-main>
-    <fixed-action-bar>
-      <el-button size="large" type="primary" @click="onSubmit">
+        </ElCol>
+      </ElRow>
+    </PageMain>
+    <FixedActionBar>
+      <ElButton size="large" type="primary" @click="onSubmit">
         提交
-      </el-button>
-      <el-button size="large" @click="onCancel">
+      </ElButton>
+      <ElButton size="large" @click="onCancel">
         取消
-      </el-button>
-    </fixed-action-bar>
+      </ElButton>
+    </FixedActionBar>
   </div>
 </template>
 
