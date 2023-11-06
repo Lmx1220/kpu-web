@@ -7,8 +7,7 @@ export default function createBanner() {
  * Powered by admin
  * https://admin.netlify.app
  * 代码仓库
- * Gitee  https://gitee.com/hooray/admin
- * Github https://github.com/hooray/admin
+ * Github https://github.com/Lmx1220/vue3-ts
  */
     `)
 }

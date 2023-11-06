@@ -38,8 +38,6 @@ import 'virtual:svg-icons-register'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 import 'floating-vue/dist/style.css'
 
-const app = createApp(App)
-
 if (icons.useType === 'offline') {
   for (const info of icons.collections) {
     downloadAndInstall(info)
@@ -127,15 +125,19 @@ VXETable.setup({
   // @ts-expect-error
   i18n: (key: any, ...args: any) => i18n.global.t(key, args),
 })
-VXETable.use(VXETablePluginElement)
+async function bootstrap() {
+  const app = createApp(App)
+  VXETable.use(VXETablePluginElement)
 
-app.use(pinia)
-app.use(router)
-await useI18n(app)
-app.use(directive)
-errorLog(app)
+  app.use(pinia)
+  app.use(router)
+  await useI18n(app)
+  app.use(directive)
+  errorLog(app)
 
-app.use(ElemnetPlus)
-app.use(FloatingVue)
-app.use(VXETable)
-app.mount('#app')
+  app.use(ElemnetPlus)
+  app.use(FloatingVue)
+  app.use(VXETable)
+  app.mount('#app')
+}
+bootstrap()

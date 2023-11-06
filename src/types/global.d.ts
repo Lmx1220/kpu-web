@@ -375,7 +375,7 @@ declare namespace Settings {
     company?: string
     /**
      * 网站地址
-     * @默认值 `'https://hooray.gitee.io/admin/'`
+     * @默认值 `'https://lmx.gitee.io/admin/'`
      */
     website?: string
     /**
