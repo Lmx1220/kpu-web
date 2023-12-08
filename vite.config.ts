@@ -56,6 +56,7 @@ export default ({ mode, command }) => {
     define: {
       __SYSTEM_INFO__: JSON.stringify({
         pkg: {
+          version: pkg.version,
           dependencies: pkg.dependencies,
           devDependencies: pkg.devDependencies,
         },

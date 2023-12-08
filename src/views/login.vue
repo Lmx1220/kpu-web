@@ -9,6 +9,7 @@ defineOptions({
   name: 'Login',
 })
 const { t } = useI18n()
+const logo = new URL('../assets/images/logo.png', import.meta.url).href
 const banner = new URL('../assets/images/login-banner.png', import.meta.url).href
 const title = import.meta.env.VITE_APP_TITLE
 const route = useRoute()
@@ -152,7 +153,7 @@ function testAccount(account: string) {
     </I18nSelector>
     <div id="login-box">
       <div class="login-banner">
-        <div class="logo" />
+        <img :src="logo" class="logo">
         <img :src="banner" class="banner">
       </div>
       <ElForm
@@ -418,11 +419,8 @@ function testAccount(account: string) {
       position: absolute;
       top: 20px;
       left: 20px;
-      width: 30px;
       height: 30px;
       border-radius: 4px;
-      background: url("../assets/images/logo.png") no-repeat;
-      background-size: contain;
       box-shadow: var(--el-box-shadow-light);
     }
   }

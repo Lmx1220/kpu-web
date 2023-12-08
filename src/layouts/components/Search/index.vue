@@ -63,7 +63,6 @@ const isShow = ref(false)
 const searchInput = ref('')
 const sourceList: Ref<listTypes[]> = ref([])
 const actived = ref(-1)
-const isScrollbarsInit = ref(false)
 
 const searchInputRef = ref()
 const searchResultRef = ref<OverlayScrollbarsComponentRef>()
@@ -271,7 +270,7 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
 </script>
 
 <template>
-  <TransitionRoot :show="isShow" as="template" @after-leave="isScrollbarsInit = false">
+  <TransitionRoot :show="isShow" as="template">
     <Dialog
       :initial-focus="searchInputRef" class="fixed inset-0 flex z-2000"
       @close="isShow && eventBus.emit('global-search-toggle')"
@@ -306,44 +305,43 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
                   <OverlayScrollbarsComponent
                     ref="searchResultRef"
                     :options="{ scrollbars: { autoHide: 'leave', autoHideDelay: 300 } }"
-                    class="h-full" @os-initialized="isScrollbarsInit = true"
+                    defer
+                    class="h-full"
                   >
-                    <template v-if="isScrollbarsInit">
-                      <template v-if="resultList.length > 0">
-                        <a
-                          v-for="(item, index) in resultList" :key="item.path" ref="searchResultItemRef"
-                          :class="{ 'bg-stone-2/40 dark:bg-stone-7/40': index === actived }"
-                          :data-index="index" class="flex items-center cursor-pointer"
-                          @click="pageJump(item.path, item.link)" @mouseover="actived = index"
+                    <template v-if="resultList.length > 0">
+                      <a
+                        v-for="(item, index) in resultList" :key="item.path" ref="searchResultItemRef"
+                        :class="{ 'bg-stone-2/40 dark:bg-stone-7/40': index === actived }"
+                        :data-index="index" class="flex items-center cursor-pointer"
+                        @click="pageJump(item.path, item.link)" @mouseover="actived = index"
+                      >
+                        <SvgIcon
+                          v-if="item.icon" :class="{ 'scale-120 text-ui-primary': index === actived }" :name="item.icon" :size="20"
+                          class="basis-16 transition"
+                        />
+                        <div
+                          border-l="~ solid stone-2 dark:stone-7"
+                          class="flex-1 flex flex-col gap-1 px-4 py-3 truncate"
                         >
-                          <SvgIcon
-                            v-if="item.icon" :class="{ 'scale-120 text-ui-primary': index === actived }" :name="item.icon" :size="20"
-                            class="basis-16 transition"
-                          />
-                          <div
-                            border-l="~ solid stone-2 dark:stone-7"
-                            class="flex-1 flex flex-col gap-1 px-4 py-3 truncate"
-                          >
-                            <div class="text-base font-bold truncate">{{
-                              generateI18nTitle(item.i18n, item.title)
-                            }}
-                            </div>
-                            <Breadcrumb v-if="item.breadcrumb.length" class="truncate">
-                              <BreadcrumbItem v-for="(bc, bcIndex) in item.breadcrumb" :key="bcIndex" class="text-xs">
-                                {{ generateI18nTitle(bc.i18n, bc.title) }}
-                              </BreadcrumbItem>
-                            </Breadcrumb>
+                          <div class="text-base font-bold truncate">{{
+                            generateI18nTitle(item.i18n, item.title)
+                          }}
                           </div>
-                        </a>
-                      </template>
-                      <template v-else>
-                        <div flex="center col" py-6 text-stone-5>
-                          <SvgIcon :size="40" name="tabler:mood-empty" />
-                          <p m-2 text-base>
-                            没有找到你想要的
-                          </p>
+                          <Breadcrumb v-if="item.breadcrumb.length" class="truncate">
+                            <BreadcrumbItem v-for="(bc, bcIndex) in item.breadcrumb" :key="bcIndex" class="text-xs">
+                              {{ generateI18nTitle(bc.i18n, bc.title) }}
+                            </BreadcrumbItem>
+                          </Breadcrumb>
                         </div>
-                      </template>
+                      </a>
+                    </template>
+                    <template v-else>
+                      <div flex="center col" py-6 text-stone-5>
+                        <SvgIcon :size="40" name="tabler:mood-empty" />
+                        <p m-2 text-base>
+                          没有找到你想要的
+                        </p>
+                      </div>
                     </template>
                   </OverlayScrollbarsComponent>
                 </DialogDescription>

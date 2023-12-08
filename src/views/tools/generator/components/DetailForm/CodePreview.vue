@@ -1,17 +1,11 @@
 <script lang="ts" setup>
-// eslint-disable-next-line import/order
-import { findTableList, previewCode } from '@/api/modules/tools/genTable'
-
-// eslint-disable-next-line import/order
-import { isArray } from '@/util/is'
-
 import { useClipboard } from '@vueuse/core'
-
 import { ElMessage } from 'element-plus'
-
 import hljs from 'highlight.js'
-
 import xml from 'highlight.js/lib/languages/xml'
+import json from 'highlight.js/lib/languages/json'
+import { isArray } from '@/util/is'
+import { findTableList, previewCode } from '@/api/modules/tools/genTable'
 import 'highlight.js/styles/github-dark-dimmed.css'
 
 defineOptions({
@@ -23,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 hljs.registerLanguage('vue', xml)
 hljs.registerLanguage('html', xml)
-// hljs.registerLanguage('xml', xml)
+hljs.registerLanguage('json', json)
 hljs.registerLanguage('web', xml)
 export interface Props {
   id?: string | string[]
@@ -45,7 +39,7 @@ interface Data {
   }
   activeNameTemplate: string
 }
-
+const { t } = useI18n()
 const data = ref<Data>({
   loading: false,
   tableList: [],
@@ -75,7 +69,7 @@ function handleChange(val: any) {
   getPreviewCode(true)
 }
 
-const { copy, copied } = useClipboard()
+const { copy, copied, isSupported } = useClipboard()
 watch(copied, (value) => {
   if (value) {
     ElMessage.success(t('common.tips.copySuccess'))
@@ -154,16 +148,16 @@ function highlightedCode(code: string, key: any) {
       <template #icon>
         <SvgIcon name="ep:refresh" />
       </template>
-      刷新
+      {{ t('common.redo') }}
     </ElButton>
     <ElTabs v-model="code" class="demo-tabs min-h-[400px]">
       <ElTabPane v-for="(code, key) in data.templateObj[data.template] || {}" :key="key" :label="getKey(key)">
         <pre>
-          <ElButton class="float-left" text @click="onCopy(code)">
+          <ElButton v-if="isSupported" class="float-left" text @click="onCopy(code)">
             <template #icon>
               <SvgIcon name="ep:document-copy" />
             </template>
-            复制
+            {{ t('common.title.copy') }}
             </ElButton>
           <code class="hljs" v-html="highlightedCode(code, key)" />
         </pre>

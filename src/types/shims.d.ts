@@ -11,7 +11,7 @@ declare module '*.vue' {
 
 declare const __SYSTEM_INFO__: {
   pkg: {
-    version: string
+    version: Recordable<string>
     dependencies: Recordable<string>
     devDependencies: Recordable<string>
   }

@@ -194,10 +194,10 @@ function handleMouseleave() {
         }" :options="{ scrollbars: { visibility: 'hidden' } }" class="sub-menu"
         defer
       >
-        <template v-for="item in menu.children" :key="item.path">
+        <template v-for="item in menu.children" :key="item.path ?? JSON.stringify(item)">
           <SubMenu
             v-if="item.meta?.sidebar !== false" :level="level + 1" :menu="item"
-            :unique-key="[...uniqueKey, item.path]"
+            :unique-key="[...uniqueKey, item.path ?? JSON.stringify(item)]"
           />
         </template>
       </OverlayScrollbarsComponent>
