@@ -1,5 +1,5 @@
 import api from '@/api'
-import TimeDelayReq from '@/api/helper/timeDelayReq'
+import { TimeDelayReq } from '@/api/helper/timeDelayReq'
 import type { CodeQueryVO, DictOption } from '@/api/model/baseModel'
 
 export function findDictMapItemListByKey(data: CodeQueryVO[]) {

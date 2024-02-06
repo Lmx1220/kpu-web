@@ -2,7 +2,7 @@ import type { AxiosProgressEvent } from 'axios'
 import qs from 'qs'
 import type { FileResultVO } from './model/fileModel'
 import type { UploadFileParams } from '#/axios'
-import TimeDelayReq from '@/api/helper/timeDelayReq'
+import { TimeDelayReq } from '@/api/helper/timeDelayReq'
 import defHttp from '@/api'
 
 const MODULAR = 'file'
