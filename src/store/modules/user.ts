@@ -26,7 +26,7 @@ const useUserStore = defineStore(
     const isLogin = computed(() => {
       let retn = false
       if (token.value) {
-        if (new Date().getTime() < Number.parseInt(failure_time.value) * 1000) {
+        if (new Date().getTime() < new Date(failure_time.value).getTime()) {
           retn = true
         }
       }
@@ -40,19 +40,19 @@ const useUserStore = defineStore(
     }) {
       // 通过 mock 进行登录
       const res = await api.post<any>({
-        url: '/noToken/login',
+        url: '/anyTenant/login',
         data: {
           username: data.username,
           password: data.password,
-          grantType: 'password',
+          grantType: 'PASSWORD',
         },
       })
-      storage.local.set('account', res.username)
+      // storage.local.set('account', res.username)
       storage.local.set('token', res.token)
-      storage.local.set('failure_time', res.expire)
-      account.value = res.username
+      storage.local.set('failure_time', res.expiration)
+      // account.value = res.username
       token.value = res.token
-      failure_time.value = res.expire
+      failure_time.value = res.expiration
     }
     // 登出
     async function logout(redirect = router.currentRoute.value.fullPath) {

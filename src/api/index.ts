@@ -233,7 +233,8 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
       timeout: 10 * 1000 * 60, // 10 * 1000 * 60 = 10分钟
       headers: {
         'Content-Type': ContentTypeEnum.JSON,
-        'Authorization': 'Basic a3B1X3dlYjprcHVfd2ViX3NlY3JldA',
+        'Authorization': 'a3B1X3dlYjprcHVfd2ViX3NlY3JldA',
+        'ApplicationId': '1',
       },
       transform: clone(transform),
       // 配置项，下面的选项都可以在独立的接口请求中覆盖
