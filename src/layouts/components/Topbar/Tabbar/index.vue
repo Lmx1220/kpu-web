@@ -52,10 +52,8 @@ onBeforeUpdate(() => {
   tabbarList.value = []
 })
 const leftPx = computed(() => {
-  debugger
   const tab = tabbarStore.list.findIndex(k => k.tabId === activedTabId.value)
   const find = tabbarList.value.find((item) => {
-    debugger
     return Number.parseInt(item.dataset.index) === tab
   })
   if (find == null) {
