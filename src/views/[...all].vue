@@ -21,7 +21,7 @@ onMounted(() => {
 })
 
 function goBack() {
-  router.push('/')
+  router.push(settingsStore.settings.home.fullPath)
 }
 </script>
 

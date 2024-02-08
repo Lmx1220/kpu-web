@@ -7,8 +7,8 @@ function Layout() {
 // 系统路由
 const systemRoutes: RouteRecordRaw[] = [
   {
-    path: '/',
-    name: 'home',
+    path: '',
+    // name: 'home',
     component: Layout,
     redirect: '/',
     meta: {

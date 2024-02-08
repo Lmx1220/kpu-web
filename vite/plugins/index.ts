@@ -14,11 +14,15 @@ import createCompression from './compression'
 import createPwa from './pwa'
 import createMock from './mock'
 import createVisualizer from './visualizer'
-import createVueDevTools from './vue-dev-tools'
-import createInspector from './inspector'
+import createConsole from './console'
+import createDevtools from './devtools'
+import createArchiver from './archiver'
+import appInfo from './app-info'
 
 export default function creactVitePlugins(viteEnv, isBuild = false) {
-  const vitePlugins: (PluginOption | PluginOption[] | Plugin)[] = [vue(),
+  const vitePlugins: (PluginOption | PluginOption[] | Plugin)[] = [
+    appInfo(),
+    vue(),
     vueJsx(),
     vueLegacy({
       renderLegacyChunks: false,
@@ -28,14 +32,15 @@ export default function creactVitePlugins(viteEnv, isBuild = false) {
       ],
     }),
   ]
-  vitePlugins.push(createInspector())
-  vitePlugins.push(createVueDevTools())
+  vitePlugins.push(createDevtools(viteEnv))
   vitePlugins.push(createAutoImport())
   vitePlugins.push(createComponents())
   vitePlugins.push(createUnoCss())
   vitePlugins.push(createSvgIcon(isBuild))
   vitePlugins.push(createMock(viteEnv, isBuild))
-  isBuild && vitePlugins.push(...createCompression(viteEnv))
+  vitePlugins.push(...createCompression(viteEnv, isBuild))
+  vitePlugins.push(createArchiver(viteEnv))
+  vitePlugins.push(createConsole())
   vitePlugins.push(createBanner())
   process.env.REPORT === 'true' && vitePlugins.push(createVisualizer())
   viteEnv.VITE_BUILD_PWA === 'true' && vitePlugins.push(createPwa())

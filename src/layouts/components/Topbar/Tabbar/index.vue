@@ -51,7 +51,30 @@ function addTabbarList(tabbar: any) {
 onBeforeUpdate(() => {
   tabbarList.value = []
 })
-
+const leftPx = computed(() => {
+  debugger
+  const tab = tabbarStore.list.findIndex(k => k.tabId === activedTabId.value)
+  const find = tabbarList.value.find((item) => {
+    debugger
+    return Number.parseInt(item.dataset.index) === tab
+  })
+  if (find == null) {
+    return `${void 0}px`
+  }
+  else {
+    return `${find.offsetLeft}px`
+  }
+})
+const widthPx = computed(() => {
+  const tab = tabbarStore.list.findIndex(k => k.tabId === activedTabId.value)
+  const find = tabbarList.value.find(item => Number.parseInt(item.dataset.index) === tab)
+  if (find == null) {
+    return `${void 0}px`
+  }
+  else {
+    return `${find.offsetWidth}px`
+  }
+})
 const isDragging = ref(false)
 let tabSortable: Sortable
 // const tabContainer = ref<ComponentPublicInstance>()
@@ -69,7 +92,7 @@ onMounted(() => {
       isDragging.value = false
     },
     onUpdate: (e: Sortable.SortableEvent) => {
-      if (e.newIndex && e.oldIndex) {
+      if (e.newIndex !== undefined && e.oldIndex !== undefined) {
         tabbarStore.sort(e.newIndex, e.oldIndex)
       }
     },
@@ -89,7 +112,7 @@ watch(() => tabContainer.value, (val) => {
       isDragging.value = false
     },
     onUpdate: (e: Sortable.SortableEvent) => {
-      if (e.newIndex && e.oldIndex) {
+      if (e.newIndex !== undefined && e.oldIndex !== undefined) {
         tabbarStore.sort(e.newIndex, e.oldIndex)
       }
     },
@@ -317,7 +340,7 @@ onUnmounted(
             'tab-ontop': settingsStore.settings.topbar.switchTabbarAndToolbar,
             'actived': element.tabId === activedTabId,
             'no-drag': element.isPermanent || element.isPin,
-          }" class="tab"
+          }" :data-index="index" class="tab"
           :title="element.customTitleList?.find((item) => item.fullPath === item.fullPath)?.title || generateI18nTitle(element.i18n, element.title)"
           @click="router.push(`${element.fullPath}`)" @dblclick="settingsStore.setMainPageMaximize()"
           @contextmenu="onTabbarContextmenu($event, element)"
@@ -357,11 +380,13 @@ onUnmounted(
     </div>
     <div v-if="isShowMoreAction" class="more-action">
       <HDropdown placement="bottom-end" popper-class="tabbar-dropdown">
-        <SvgIcon class="icon" name="i-ri:arrow-down-s-fill" />
+        <div class="h-6 w-6 flex-center cursor-pointer rounded-1 bg-[var(--g-container-bg)] text-lg shadow transition-background-color transition-shadow">
+          <SvgIcon name="i-ri:arrow-down-s-fill" />
+        </div>
         <template #dropdown>
           <div class="quick-button">
             <button
-              v-if="settingsStore.settings.navSearch.enable" :title="t('app.tabbar.searchTabs')" class="button"
+              v-if="settingsStore.settings.toolbar.navSearch" :title="t('app.tabbar.searchTabs')" class="button"
               @click="actionCommand('search-tabs')"
             >
               <SvgIcon name="i-ep:search" />
@@ -538,26 +563,25 @@ onUnmounted(
 
 .tabbar-dropdown {
   .quick-button {
-    padding: 15px 15px 10px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding: 15px 15px 10px;
 
     .button {
+      transition-property: color,background-color,border-color,outline-color,text-decoration-color,fill,stroke;
+      transition-timing-function: cubic-bezier(.4,0,.2,1);
+      transition-duration: .15s;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 24px;
-      height: 24px;
-      margin-right: 10px;
-      padding: 1px 6px;
-      border-radius: 5px;
+      width: 32px;
+      height: 32px;
       cursor: pointer;
-      outline: none;
-      border: none;
       background-color: var(--g-bg);
-      transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
-      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      transition-duration: 0.15s;
+      border: none;
+      border-radius: 5px;
+      outline: none;
 
       &:hover:not(:disabled) {
         --at-apply: color-ui-primary;
@@ -698,7 +722,15 @@ onUnmounted(
 
     .tab-container {
       display: inline-block;
-
+      &:after {
+        position: absolute;
+        bottom: 0;
+        left: v-bind('leftPx');
+        z-index: 10;
+        width: v-bind('widthPx');
+        content: "";
+        transition: width .3s,left .3s
+      }
       &:not(.dragging) {
         .tab {
           &:not(.actived):hover {
@@ -708,7 +740,9 @@ onUnmounted(
             &::after {
               content: none;
             }
-
+            &+.tab .tab-dividers:before{
+              opacity: 0
+            }
             .tab-content {
               .title,
               .action-icon {
@@ -742,13 +776,19 @@ onUnmounted(
           &::after {
             content: none;
           }
-
+          &+.tab .tab-dividers:before{
+            opacity: 0
+          }
           .tab-content {
             .title,
             .action-icon {
               color: var(--g-tabbar-tab-active-color);
             }
           }
+          .tab-background {
+            background-color: var(--g-container-bg)
+          }
+
         }
 
         &.tab-ghost {
@@ -757,24 +797,24 @@ onUnmounted(
 
         .tab-dividers {
           position: absolute;
+          top: 50%;
+          right: -1px;
+          left: -1px;
           z-index: 0;
           height: 14px;
-          top: 50%;
-          left: 0;
-          right: 0;
-          margin-top: -7px;
+          transform: translateY(-50%);
 
           &::before {
-            content: "";
-            display: block;
             position: absolute;
             top: 0;
-            left: 1px;
             bottom: 0;
+            left: 1px;
+            display: block;
             width: 1px;
-            opacity: 1;
+            content: "";
             background-color: var(--g-tabbar-dividers-bg);
-            transition: opacity 0.2s ease, background-color 0.3s;
+            opacity: 1;
+            transition: opacity .2s ease,background-color .3s;
           }
         }
 
@@ -974,73 +1014,41 @@ onUnmounted(
     }
 
     &.tabs-square {
-      .tab-container {
-        &:not(.dragging) {
-          .tab:not(.actived):hover {
-            & + .tab .tab-dividers::before {
-              opacity: 0;
-            }
 
-            .tab-background {
-              &::before {
-                height: 100%;
-                background-color: var(--g-tabbar-tab-hover-bg);
-              }
-            }
+      .tab-container {
+        &::after {
+          height: 2px;
+          --at-apply: bg-ui-primary;
+        }
+        &:has(>.tab.tab-ontop) {
+          &:after {
+            top: 0;
+            bottom: unset
           }
+          .tab .tab-background {
+            top: 0;
+            bottom: unset
+          }
+
         }
 
-        .tab {
-          .tab-dividers {
-            left: -1px;
-            right: -1px;
-          }
-
-          &.tab-ontop .tab-background {
-            transform: rotateX(180deg);
-          }
+        .tab:not(.actived):hover {
 
           .tab-background {
-            &::before {
-              content: "";
-              transition: background-color 0.3s;
-              position: absolute;
-              width: 100%;
-              height: 0;
-              bottom: 0;
-            }
-
-            &::after {
-              content: "";
-              transition: transform 0.3s;
-              position: absolute;
-              width: 100%;
-              height: 2px;
-              left: 0;
-              bottom: 0;
-              background-color: var(--g-theme-color);
-              transform: scaleX(0);
-              transform-origin: bottom right;
-            }
+            height: 100%;
           }
-
-          &.actived {
-            & + .tab .tab-dividers::before {
-              opacity: 0;
-            }
-
-            .tab-background {
-              &::before {
-                height: calc(100% - 2px);
-                bottom: 2px;
-                background-color: var(--g-container-bg);
-              }
-
-              &::after {
-                transform: scaleX(1);
-                transform-origin: bottom left;
-              }
-            }
+        }
+        .tab {
+          .tab-background {
+            top: unset;
+            bottom: 0;
+            height: 0;
+            background-color: var(--g-tabbar-tab-hover-bg);
+            transition: height .3s;
+          }
+          &.actived .tab-background {
+            height: 100%;
+            background-color: var(--g-container-bg)
           }
         }
       }

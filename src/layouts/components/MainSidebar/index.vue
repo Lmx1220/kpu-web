@@ -43,10 +43,10 @@ const { switchTo } = useMenu()
                 'rounded-2': settingsStore.settings.menu.isRounded,
               }"
               :title="generateI18nTitle(item.meta?.i18n, item.meta?.title)"
-              class="menu-item-container w-full h-full flex justify-between items-center gap-1 px-2! py-4 transition-all cursor-pointer group text-[var(--g-main-sidebar-menu-color)] hover:(text-[var(--g-main-sidebar-menu-hover-color)] bg-[var(--g-main-sidebar-menu-hover-bg)])"
+              class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 py-4 text-[var(--g-main-sidebar-menu-color)] transition-all hover:bg-[var(--g-main-sidebar-menu-hover-bg)] hover:text-[var(--g-main-sidebar-menu-hover-color)] px-2!"
               @click="switchTo(index)"
             >
-              <div class="inline-flex flex-col justify-center items-center flex-1 gap-[2px] w-full">
+              <div class="w-full inline-flex flex-1 flex-col items-center justify-center gap-1">
                 <SvgIcon
                   v-if="item.meta?.icon" :name="item.meta.icon" :size="20"
                   async class="menu-item-container-icon transition-transform group-hover:scale-120"
@@ -180,20 +180,15 @@ const { switchTo } = useMenu()
 
     :deep(.menu-item) {
       .menu-item-container {
-        height: 60px;
-        padding: 0 5px;
+        padding-block:8px;
         color: var(--g-main-sidebar-menu-color);
-        background-color: var(--g-main-sidebar-menu-bg);
-
+        &:hover {
+          color: var(--g-main-sidebar-menu-hover-color);
+          background-color: var(--g-main-sidebar-menu-hover-bg)
+        }
         .menu-item-container-icon {
-          transform: scale(1);
           font-size: 24px !important;
         }
-      }
-
-      &:hover .menu-item-container {
-        color: var(--g-main-sidebar-menu-hover-color);
-        background-color: var(--g-main-sidebar-menu-hover-bg);
       }
 
       &.active .menu-item-container {

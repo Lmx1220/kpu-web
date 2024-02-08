@@ -12,7 +12,6 @@ const props = withDefaults(
     headers?: UploadProps['headers']
     data?: UploadProps['data']
     name?: UploadProps['name']
-    url?: string
     size?: number
     width?: number
     height?: number
@@ -22,7 +21,6 @@ const props = withDefaults(
   }>(),
   {
     name: 'file',
-    url: '',
     size: 2,
     width: 150,
     height: 150,
@@ -33,13 +31,14 @@ const props = withDefaults(
 )
 
 const emits = defineEmits<{
-  'update:url': [
-    url: string,
-  ]
   'onSuccess': [
     res: any,
   ]
 }>()
+
+const url = defineModel<string>({
+  default: '',
+})
 
 const uploadData = ref({
   imageViewerVisible: false,
@@ -59,7 +58,7 @@ function previewClose() {
 }
 // 移除
 function remove() {
-  emits('update:url', '')
+  url.value = ''
 }
 const beforeUpload: UploadProps['beforeUpload'] = (file) => {
   const fileName = file.name.split('.')
@@ -104,7 +103,7 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
       <ElImage v-if="url === ''" :src="url === '' ? placeholder : url" :style="`width:${width}px;height:${height}px;`" fit="fill">
         <template #error>
           <div class="image-slot" :style="`width:${width}px;height:${height}px;`">
-            <SvgIcon name="ep:plus" />
+            <SvgIcon name="i-ep:plus" class="icon" />
           </div>
         </template>
       </ElImage>
@@ -113,10 +112,10 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
         <div class="mask">
           <div class="actions">
             <span title="预览" @click.stop="preview">
-              <SvgIcon name="ep:zoom-in" />
+              <SvgIcon name="i-ep:zoom-in" class="icon" />
             </span>
             <span title="移除" @click.stop="remove">
-              <SvgIcon name="ep:delete" />
+              <SvgIcon name="i-ep:delete" class="icon" />
             </span>
           </div>
         </div>
@@ -146,33 +145,33 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
 
 .image {
   position: relative;
-  border-radius: 6px;
   overflow: hidden;
+  border-radius: 6px;
 
   .mask {
-    opacity: 0;
     position: absolute;
     top: 0;
     width: 100%;
     height: 100%;
     background-color: var(--el-overlay-color-lighter);
+    opacity: 0;
     transition: opacity 0.3s;
 
     .actions {
-      width: 100px;
-      height: 100px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
+      width: 100px;
+      height: 100px;
 
       @include position-center(xy);
 
       span {
         width: 50%;
+        color: var(--el-color-white);
         text-align: center;
         cursor: pointer;
-        color: var(--el-color-white);
         transition: color 0.1s, transform 0.1s;
 
         &:hover {
@@ -207,14 +206,14 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
 
     .image-slot {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       width: 100%;
       height: 100%;
       color: var(--el-text-color-placeholder);
       background-color: transparent;
 
-      i {
+      .icon {
         font-size: 30px;
       }
     }
@@ -224,12 +223,12 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
       top: 0;
 
       &::after {
-        content: "";
         position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
-        left: 0;
-        top: 0;
+        content: "";
         background-color: var(--el-overlay-color-lighter);
       }
 

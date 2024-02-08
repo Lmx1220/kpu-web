@@ -14,15 +14,15 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     enableDynamicTitle: false,
     storagePrefix: 'fa_',
     enableWatermark: false,
-    enableAppSetting: true,
+    // enableAppSetting: true,
     enableUserPreferences: false,
   },
   home: {
     enable: true,
     title: '主页',
+    fullPath: '/',
   },
   navSearch: {
-    enable: true,
     enableHotkeys: true,
   },
   layout: {
@@ -38,6 +38,7 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     subMenuUniqueOpened: true,
     subMenuOnlyOneHide: false,
     subMenuCollapse: false,
+    subMenuAutoCollapse: false,
     enableSubMenuCollapseButton: false,
     enableHotkeys: false,
   },
@@ -55,14 +56,17 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     storageTo: 'local',
   },
   toolbar: {
-    enableNotification: true,
-    enableI18n: true,
-    enableFullscreen: true,
-    enablePageReload: true,
-    enableColorScheme: true,
+    favorites: true,
+    breadcrumb: true,
+    notification: true,
+    navSearch: true,
+    i18n: true,
+    fullscreen: true,
+    pageReload: true,
+    colorScheme: true,
+    layout: ['favorites', 'breadcrumb', '->', 'navSearch', 'notification', 'i18n', 'fullscreen', 'pageReload', 'colorScheme'],
   },
   breadcrumb: {
-    enable: true,
     enableMainMenu: true,
     style: 'modern',
   },
@@ -73,7 +77,6 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     iframeCacheMax: 3,
   },
   favorites: {
-    enable: true,
     storageTo: 'local',
   },
   copyright: {

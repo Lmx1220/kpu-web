@@ -332,7 +332,7 @@ async function getDict() {
   Object.entries(options).forEach(([key, value]) => {
     data.value.dicts?.set(key, value)
   })
-  resourceAuthTree().then((res:any) => {
+  resourceAuthTree().then((res: any) => {
     data.value.dicts?.set('menuList', res)
   })
   getListDatasourceConfigQuery({}).then((records) => {

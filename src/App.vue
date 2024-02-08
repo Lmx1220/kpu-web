@@ -3,17 +3,16 @@ import eruda from 'eruda'
 import VConsole from 'vconsole'
 import hotkeys from 'hotkeys-js'
 import { useTitle as usePageTitle } from '@vueuse/core'
+import Provider from './ui-provider/index.vue'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 
 import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
-import { useLocale } from '@/locales/useLocale.ts'
 
 const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
-const locale = useLocale()
 const { auth } = useAuth()
 const { generateI18nTitle } = useI18nTitle()
 // 侧边栏主导航当前实际宽度
@@ -88,11 +87,7 @@ import.meta.env.VITE_APP_DEBUG_TOOL === 'vconsole' && new VConsole()
 </script>
 
 <template>
-  <ElConfigProvider
-    :locale="locale.getElementLocale.value" :button="{
-      autoInsertSpace: true,
-    }"
-  >
+  <Provider>
     <RouterView
       v-slot="{ Component, route }"
       :style="{
@@ -104,7 +99,7 @@ import.meta.env.VITE_APP_DEBUG_TOOL === 'vconsole' && new VConsole()
       <NotAllowed v-else />
     </RouterView>
     <SystemInfo />
-  </ElConfigProvider>
+  </Provider>
 </template>
 
 <style lang="scss" scoped>

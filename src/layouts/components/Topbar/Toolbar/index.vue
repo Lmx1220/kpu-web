@@ -1,113 +1,23 @@
 <script setup lang="ts">
-import { compile } from 'path-to-regexp'
-import Favorites from '../.././Favorites/index.vue'
-import Tools from '../.././Tools/index.vue'
-import Breadcrumb from '../../Breadcrumb/index.vue'
-import BreadcrumbItem from '../../Breadcrumb/item.vue'
+import LeftSide from './leftSide.vue'
+import RightSide from './rightSide.vue'
 import useSettingsStore from '@/store/modules/settings'
-import useMenuStore from '@/store/modules/menu'
-import useI18nTitle from '@/util/composables/useI18nTitle'
 
 defineOptions({
   name: 'Toolbar',
 })
-const route = useRoute()
 
 const settingsStore = useSettingsStore()
-const menuStore = useMenuStore()
-
-const { generateI18nTitle } = useI18nTitle()
-
-const enableSubMenuCollapseButton = computed(() => {
-  return settingsStore.mode === 'mobile' || (
-    ['side', 'head', 'single'].includes(settingsStore.settings.menu.menuMode)
-    && settingsStore.settings.menu.enableSubMenuCollapseButton
-    && !(
-      settingsStore.settings.menu.subMenuOnlyOneHide
-      && menuStore.sidebarMenus.length === 1
-      && (
-        !menuStore.sidebarMenus[0].children
-        || menuStore.sidebarMenus[0]?.children.every(item => item.meta?.sidebar === false)
-      )
-    )
-  )
-})
-
-const breadcrumbList = computed(() => {
-  const breadcrumbList = []
-  if (settingsStore.settings.home.enable) {
-    breadcrumbList.push({
-      path: '/',
-      title: generateI18nTitle('route.home', settingsStore.settings.home.title),
-    })
-  }
-  if (route.name !== 'home' && settingsStore.settings.breadcrumb.enableMainMenu && !['single'].includes(settingsStore.settings.menu.menuMode)) {
-    const index = menuStore.allMenus.findIndex(item => item.children.some(p => route.fullPath.indexOf(`${p.path}/`) === 0 || route.fullPath === p.path))
-    const parentMenu = menuStore.allMenus[index]
-    if (parentMenu?.meta) {
-      breadcrumbList.push({
-        path: '',
-        title: generateI18nTitle(parentMenu.meta?.i18n, parentMenu.meta?.title),
-      })
-    }
-  }
-  if (route.meta.breadcrumbNeste) {
-    route.meta.breadcrumbNeste.forEach((item) => {
-      if (item.hide === false) {
-        breadcrumbList.push({
-          path: item.path,
-          title: generateI18nTitle(item.i18n, item.title),
-        })
-      }
-    })
-    const customTitle = settingsStore.customTitleList.find(customTitle => customTitle.fullPath === route.fullPath)
-    if (customTitle) {
-      customTitle.title && (breadcrumbList[breadcrumbList.length - 1].title = customTitle.title)
-    }
-  }
-
-  return breadcrumbList
-})
-
-function pathCompile(path: string) {
-  const toPath = compile(path)
-  return toPath(route.params)
-}
 </script>
 
 <template>
-  <div class="toolbar-container">
-    <div class="left-box">
-      <div
-        v-if="enableSubMenuCollapseButton" :class="{ '-rotate-z-180': settingsStore.settings.menu.subMenuCollapse }"
-        class="flex-center px-2 py-1 cursor-pointer transition-transform"
-        @click="settingsStore.toggleSidebarCollapse()"
-      >
-        <SvgIcon class="icon" name="toolbar-collapse" />
-      </div>
-      <HDropdown
-        v-if="settingsStore.settings.favorites.enable && settingsStore.mode === 'pc'" class="sidebar-favorites"
-        placement="bottom-start"
-      >
-        <SvgIcon name="i-uiw:star-off" />
-        <template #dropdown>
-          <Favorites />
-        </template>
-      </HDropdown>
-      <Breadcrumb
-        v-if="settingsStore.settings.breadcrumb.enable && settingsStore.mode === 'pc' && settingsStore.settings.app.routeBaseOn !== 'filesystem'"
-        class="breadcrumb" :class="{
-          [`breadcrumb-${settingsStore.settings.breadcrumb.style}`]: settingsStore.settings.breadcrumb.style,
-        }"
-      >
-        <TransitionGroup name="breadcrumb">
-          <BreadcrumbItem v-for="(item, index) in breadcrumbList" :key="`${index}_${item.path}_${item.title}`" :to="index < breadcrumbList.length - 1 && item.path !== '' ? pathCompile(item.path) : ''">
-            {{ item.title }}
-          </BreadcrumbItem>
-        </TransitionGroup>
-      </Breadcrumb>
+  <div class="toolbar-container flex items-center justify-between">
+    <div class="h-full flex items-center of-hidden pl-2 pr-16" style="mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 50px), transparent);">
+      <LeftSide />
     </div>
-    <Tools />
+    <div v-show="['side', 'single', 'only-side'].includes(settingsStore.settings.menu.menuMode)" class="h-full flex items-center px-2">
+      <RightSide />
+    </div>
   </div>
 </template>
 

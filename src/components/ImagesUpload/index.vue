@@ -12,7 +12,6 @@ const props = withDefaults(
     headers?: UploadProps['headers']
     data?: UploadProps['data']
     name?: UploadProps['name']
-    url?: string[]
     size?: number
     max?: number
     width?: number
@@ -23,7 +22,6 @@ const props = withDefaults(
   }>(),
   {
     name: 'file',
-    url: () => [],
     size: 2,
     max: 3,
     width: 150,
@@ -35,13 +33,14 @@ const props = withDefaults(
 )
 
 const emits = defineEmits<{
-  'update:url': [
-    value: string[],
-  ]
   'onSuccess': [
     res: any,
   ]
 }>()
+
+const url = defineModel<string[]>({
+  default: [],
+})
 
 const uploadData = ref({
   dialogImageIndex: 0,
@@ -63,20 +62,16 @@ function previewClose() {
 }
 // 移除
 function remove(index: number) {
-  const url = props.url
-  url.splice(index, 1)
-  emits('update:url', url)
+  url.value.splice(index, 1)
 }
 // 移动
 function move(index: number, type: 'left' | 'right') {
-  const url = props.url
   if (type === 'left' && index !== 0) {
-    url[index] = url.splice(index - 1, 1, url[index])[0]
+    url.value[index] = url.value.splice(index - 1, 1, url.value[index])[0]
   }
-  if (type === 'right' && index !== url.length - 1) {
-    url[index] = url.splice(index + 1, 1, url[index])[0]
+  if (type === 'right' && index !== url.value.length - 1) {
+    url.value[index] = url.value.splice(index + 1, 1, url.value[index])[0]
   }
-  emits('update:url', url)
 }
 
 const beforeUpload: UploadProps['beforeUpload'] = (file) => {
@@ -112,16 +107,16 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
       <div class="mask">
         <div class="actions">
           <span title="预览" @click="preview(index)">
-            <SvgIcon name="ep:zoom-in" />
+            <SvgIcon name="i-ep:zoom-in" class="icon" />
           </span>
           <span title="移除" @click="remove(index)">
-            <SvgIcon name="ep:delete" />
+            <SvgIcon name="i-ep:delete" class="icon" />
           </span>
           <span v-show="url.length > 1" title="左移" :class="{ disabled: index === 0 }" @click="move(index, 'left')">
-            <SvgIcon name="ep:back" />
+            <SvgIcon name="i-ep:back" class="icon" />
           </span>
           <span v-show="url.length > 1" title="右移" :class="{ disabled: index === url.length - 1 }" @click="move(index, 'right')">
-            <SvgIcon name="ep:right" />
+            <SvgIcon name="i-ep:right" class="icon" />
           </span>
         </div>
       </div>
@@ -140,7 +135,7 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
       class="images-upload"
     >
       <div class="image-slot" :style="`width:${width}px;height:${height}px;`">
-        <SvgIcon name="ep:plus" />
+        <SvgIcon name="i-ep:plus" class="icon" />
       </div>
       <div v-show="uploadData.progress.percent" class="progress" :style="`width:${width}px;height:${height}px;`">
         <ElImage :src="uploadData.progress.preview" :style="`width:${width}px;height:${height}px;`" fit="fill" />
@@ -169,34 +164,34 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
   position: relative;
   display: inline-block;
   margin-right: 10px;
+  overflow: hidden;
   border: 1px dashed var(--el-border-color);
   border-radius: 6px;
-  overflow: hidden;
 
   .mask {
-    opacity: 0;
     position: absolute;
     top: 0;
     width: 100%;
     height: 100%;
     background-color: var(--el-overlay-color-lighter);
+    opacity: 0;
     transition: opacity 0.3s;
 
     .actions {
-      width: 100px;
-      height: 100px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
+      width: 100px;
+      height: 100px;
 
       @include position-center(xy);
 
       span {
         width: 50%;
+        color: var(--el-color-white);
         text-align: center;
         cursor: pointer;
-        color: var(--el-color-white);
         transition: color 0.1s, transform 0.1s;
 
         &.disabled {
@@ -236,14 +231,14 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
 
     .image-slot {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       width: 100%;
       height: 100%;
       color: var(--el-text-color-placeholder);
       background-color: transparent;
 
-      i {
+      .icon {
         font-size: 30px;
       }
     }
@@ -253,12 +248,12 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
       top: 0;
 
       &::after {
-        content: "";
         position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
-        left: 0;
-        top: 0;
+        content: "";
         background-color: var(--el-overlay-color-lighter);
       }
 

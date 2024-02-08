@@ -195,7 +195,7 @@ function onBindRoles(row: any) {
 }
 
 function onResetPassword(row: any) {
-  console.log(row)
+  // console.log(row)
 }
 </script>
 

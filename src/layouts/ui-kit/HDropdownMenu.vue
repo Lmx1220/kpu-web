@@ -16,7 +16,7 @@ const myItems = computed(() => {
 </script>
 
 <template>
-  <VMenu :delay="200" v-bind="$attrs">
+  <VMenu :show-triggers="['hover']" :auto-hide="false" :popper-triggers="['hover', 'click']" :delay="200" v-bind="$attrs">
     <slot />
     <template #popper>
       <div

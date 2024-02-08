@@ -1,5 +1,6 @@
 import path from 'node:path'
 import process from 'node:process'
+import { exec } from 'node:child_process'
 import fs from 'fs-extra'
 import inquirer from 'inquirer'
 import { lookupCollection, lookupCollections } from '@iconify/json'
@@ -79,6 +80,7 @@ async function generateIcons() {
       path.resolve(process.cwd(), 'src/iconify/data.json'),
       collectionsMeta,
     )
+    exec('eslint src/iconify/data.json src/iconify/index.json --cache --fix')
   })
 }
 

@@ -47,20 +47,18 @@ const globalSettings: Settings.all = {
     storageTo: 'local',
   },
   toolbar: {
-    enableNotification: true,
-    enableI18n: true,
-    enableFullscreen: true,
-    enablePageReload: true,
-    enableColorScheme: true,
+    notification: true,
+    i18n: true,
+    fullscreen: true,
+    pageReload: true,
+    colorScheme: true,
   },
   favorites: {
-    enable: true,
     storageTo: 'local',
   },
   breadcrumb: {
     style: 'modern',
     enableMainMenu: true,
-    enable: true,
   },
   mainPage: {
     enableHotkeys: true,
@@ -74,7 +72,6 @@ const globalSettings: Settings.all = {
     title: '主页',
   },
   navSearch: {
-    enable: true,
     enableHotkeys: true,
   },
   copyright: {
