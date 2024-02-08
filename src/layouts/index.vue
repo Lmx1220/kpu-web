@@ -17,6 +17,7 @@ import useMainPage from '@/util/composables/useMainPage'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
 import useKeepAliveStore from '@/store/modules/keepAlive'
+import BackTop from '@/layouts/components/BackTop/index.vue'
 
 defineOptions({
   name: 'Layout',
@@ -128,14 +129,16 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
           <Copyright />
         </div>
       </div>
-      <ElBacktop :bottom="20" :right="20" title="回到顶部" />
     </div>
     <Search />
     <HotkeysIntro />
-    <div v-if="enableAppSetting" class="app-setting">
-      <SvgIcon class="icon" name="ep:setting" @click="eventBus.emit('global-app-setting-toggle')" />
+    <template v-if="enableAppSetting">
+      <div class="app-setting" @click="eventBus.emit('global-app-setting-toggle')">
+        <SvgIcon name="i-uiw:setting-o" class="icon" />
+      </div>
       <AppSetting />
-    </div>
+    </template>
+    <BackTop />
   </div>
 </template>
 
