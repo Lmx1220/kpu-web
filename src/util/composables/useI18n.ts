@@ -30,9 +30,9 @@ export function useI18n(namespace?: string): {
     t: (key: string) => {
       return getKey(namespace, key)
     },
-    te: (key: string) =>{
+    te: (key: string) => {
       return getKey(namespace, key)
-    }
+    },
   }
 
   if (!i18n) {

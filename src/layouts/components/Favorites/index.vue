@@ -18,7 +18,7 @@ watch(() => favoritesContainer.value, (value) => {
     ghostClass: 'draggable-ghost',
     draggable: '.draggable-item',
     onUpdate: (e: Sortable.SortableEvent) => {
-      if (e.newIndex && e.oldIndex) {
+      if (e.newIndex !== undefined && e.oldIndex !== undefined) {
         favoritesStore.sort(e.newIndex, e.oldIndex)
       }
     },

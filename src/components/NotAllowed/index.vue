@@ -1,9 +1,13 @@
 <script lang="ts" setup>
+import useSettingsStore from '@/store/modules/settings.ts'
+
 defineOptions({
   name: 'NotAllowed',
 })
 
 const router = useRouter()
+
+const settingsStore = useSettingsStore()
 
 const data = ref({
   inter: Number.NaN,
@@ -25,7 +29,7 @@ onMounted(() => {
 })
 
 function goBack() {
-  router.push('/')
+  router.push(settingsStore.settings.home.fullPath)
 }
 </script>
 

@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 const props = withDefaults(
   defineProps<{
     block?: boolean
@@ -22,7 +22,7 @@ const buttonClass = computed(() => [
 </script>
 
 <template>
-  <button :class="buttonClass" :disabled="disabled">
+  <button :disabled="disabled" :class="buttonClass">
     <slot />
   </button>
 </template>

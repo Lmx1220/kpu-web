@@ -1,3 +1,4 @@
+import { defineFakeRoute } from 'vite-plugin-fake-server/client'
 import Mock from 'mockjs'
 
 const AllList: any[] = []
@@ -8,7 +9,7 @@ for (let i = 0; i < 50; i++) {
   }))
 }
 
-export default [
+export default defineFakeRoute([
   {
     url: '/mock/system/role/list',
     method: 'get',
@@ -77,4 +78,4 @@ export default [
       },
     },
   },
-]
+])

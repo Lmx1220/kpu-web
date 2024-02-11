@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import hotkeys from 'hotkeys-js'
+import { useTimeoutFn } from '@vueuse/core'
 import AppSetting from './components/AppSetting/index.vue'
 import Headers from './components/Header/index.vue'
 import HotkeysIntro from './components/HotkeysIntro/index.vue'
@@ -16,6 +17,7 @@ import useMainPage from '@/util/composables/useMainPage'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
 import useKeepAliveStore from '@/store/modules/keepAlive'
+import BackTop from '@/layouts/components/BackTop/index.vue'
 
 defineOptions({
   name: 'Layout',
@@ -30,7 +32,7 @@ const isIframe = computed(() => !!route.meta.iframe)
 const isLink = computed(() => !!route.meta.link)
 onMounted(() => {
   hotkeys('f5', (e) => {
-    if (settingsStore.settings.toolbar.enablePageReload) {
+    if (settingsStore.settings.toolbar.pageReload) {
       e.preventDefault()
       mainPage.reload()
     }
@@ -60,6 +62,24 @@ onUnmounted(() => {
   hotkeys.unbind('alt+`')
   hotkeys.unbind('alt+up,alt+down')
 })
+let stops: Fn | null
+
+function mouseenter() {
+  stops && stops()
+  settingsStore.setHoverSidebar(true)
+}
+
+function mouseleave() {
+  stops == null || stops()
+
+  const { stop } = useTimeoutFn(() => {
+    settingsStore.setHoverSidebar(!1)
+  }
+  , 300)
+  stops = stop
+}
+
+const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
 </script>
 
 <template>
@@ -70,6 +90,8 @@ onUnmounted(() => {
         <div
           class="sidebar-container"
           :class="{ show: settingsStore.mode === 'mobile' && !settingsStore.settings.menu.subMenuCollapse }"
+          @mouseenter="mouseenter"
+          @mouseleave="mouseleave"
         >
           <MainSidebar />
           <SubSidebar />
@@ -107,14 +129,16 @@ onUnmounted(() => {
           <Copyright />
         </div>
       </div>
-      <ElBacktop :bottom="20" :right="20" title="回到顶部" />
     </div>
     <Search />
     <HotkeysIntro />
-    <div v-if="settingsStore.settings.app.enableAppSetting" class="app-setting">
-      <SvgIcon class="icon" name="ep:setting" @click="eventBus.emit('global-app-setting-toggle')" />
+    <template v-if="enableAppSetting">
+      <div class="app-setting" @click="eventBus.emit('global-app-setting-toggle')">
+        <SvgIcon name="i-uiw:setting-o" class="icon" />
+      </div>
       <AppSetting />
-    </div>
+    </template>
+    <BackTop />
   </div>
 </template>
 
@@ -264,7 +288,9 @@ onUnmounted(() => {
       transition: 0.3s;
 
       .exit-main-page-maximize {
-        --at-apply: bg-stone-7 color-stone-3 dark:bg-stone-3 dark:color-stone-7;
+        --at-apply: bg-stone-7 color-stone-3
+        dark: bg-stone-3
+        dark: color-stone-7;
 
         opacity: 0.5;
         transition-property: opacity;

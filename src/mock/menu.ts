@@ -1,3 +1,5 @@
+import { defineFakeRoute } from 'vite-plugin-fake-server/client'
+
 const menuList = [{
   id: 1,
   parentId: 0,
@@ -574,7 +576,8 @@ const menuList = [{
     }],
   }],
 }]
-export default [
+
+export default defineFakeRoute([
   {
     url: '/mock/menu/list',
     method: 'get',
@@ -647,7 +650,7 @@ export default [
       },
     },
   },
-]
+])
 // const menuThreeList = [
 //   {
 //     id: 1,

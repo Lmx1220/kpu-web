@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useClipboard } from '@vueuse/core'
 import { ElMessage } from 'element-plus'
+import Sortable from 'sortablejs'
 import themes from '../../../../themes'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
@@ -25,11 +26,26 @@ watch(() => settingsStore.settings.menu.menuMode, (value) => {
   }
 })
 
+const toolbarLayoutRef = ref()
+watch(() => toolbarLayoutRef.value, (value) => {
+  value && new Sortable(toolbarLayoutRef.value, {
+    animation: 200,
+    ghostClass: 'op-30',
+    draggable: '.draggable',
+    filter: '.no-drag',
+    onUpdate: (e: Sortable.SortableEvent) => {
+      if (e.newIndex !== undefined && e.oldIndex !== undefined) {
+        settingsStore.settings.toolbar.layout.splice(e.newIndex, 0, settingsStore.settings.toolbar.layout.splice(e.oldIndex, 1)[0])
+      }
+    },
+  })
+})
 onMounted(() => {
   eventBus.on('global-app-setting-toggle', () => {
     isShow.value = !isShow.value
   })
 })
+
 const isDark = computed({
   get() {
     return settingsStore.settings.app.colorScheme === 'dark'
@@ -72,7 +88,15 @@ function handleCopy() {
       颜色主题风格
     </div>
     <div class="flex justify-center items-center pb-4">
-      <HToggle v-model="isDark" off-icon="ri:moon-line" on-icon="ri:sun-line" />
+      <HTabList
+        v-model="settingsStore.settings.app.colorScheme"
+        :options="[
+          { icon: 'i-ri:sun-line', label: '明亮', value: 'light' },
+          { icon: 'i-ri:moon-line', label: '暗黑', value: 'dark' },
+          { icon: 'i-ri:computer-line', label: '系统', value: '' },
+        ]"
+        class="w-60"
+      />
     </div>
     <div class="themes">
       <div
@@ -260,6 +284,18 @@ function handleCopy() {
         :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.menuMode)"
       />
     </div>
+    <div class="setting-item">
+      <div class="label">
+        次导航是否自动收起
+        <HTooltip placement="top" text="次导航收起时，鼠标悬停会临时展开">
+          <SvgIcon name="i-ri:question-line" />
+        </HTooltip>
+      </div>
+      <HToggle
+        v-model="settingsStore.settings.menu.subMenuAutoCollapse"
+        :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.menuMode)"
+      />
+    </div>
     <div v-if="settingsStore.mode === 'pc'" class="setting-item">
       <div class="label">
         显示次导航折叠按钮
@@ -346,6 +382,7 @@ function handleCopy() {
         v-model="settingsStore.settings.tabbar.style"
         :disabled="!settingsStore.settings.tabbar.enable"
         :options="[
+          { label: '默认', value: '' },
           { label: '时尚', value: 'fashion' },
           { label: '卡片', value: 'card' },
           { label: '方块', value: 'square' },
@@ -399,30 +436,48 @@ function handleCopy() {
     <ElDivider>工具栏</ElDivider>
     <div class="setting-item">
       <div class="label">
+        收藏夹
+        <HTooltip placement="top" text="可将常用导航添加进收藏夹，方便快读访问">
+          <SvgIcon name="i-ri:question-line" />
+        </HTooltip>
+      </div>
+      <HToggle v-model="settingsStore.settings.toolbar.favorites" />
+    </div>
+    <div v-if="settingsStore.mode === 'pc'" class="setting-item">
+      <div class="label">
+        面包屑导航
+      </div>
+      <HToggle v-model="settingsStore.settings.toolbar.breadcrumb" />
+    </div>
+    <div class="setting-item">
+      <div class="label">
+        导航搜索
+        <HTooltip placement="top" text="对导航进行快捷搜索">
+          <SvgIcon name="i-ri:question-line" />
+        </HTooltip>
+      </div>
+      <HToggle v-model="settingsStore.settings.toolbar.navSearch" />
+    </div>
+    <div class="setting-item">
+      <div class="label">
         通知中心
         <HTooltip placement="top" text="该功能具体业务功能需自行开发，框架仅提供示例模版">
           <SvgIcon name="i-ri:question-line" />
         </HTooltip>
       </div>
-      <HToggle v-model="settingsStore.settings.toolbar.enableNotification" />
+      <HToggle v-model="settingsStore.settings.toolbar.notification" />
     </div>
     <div class="setting-item">
       <div class="label">
         国际化
       </div>
-      <HToggle v-model="settingsStore.settings.toolbar.enableI18n" />
+      <HToggle v-model="settingsStore.settings.toolbar.i18n" />
     </div>
     <div v-if="settingsStore.mode === 'pc'" class="setting-item">
       <div class="label">
         全屏
-        <HTooltip
-          placement="top"
-          text="该功能使用场景极少，用户习惯于通过窗口“最大化”功能来扩大显示区域，以显示更多内容，并且使用 F11 键也可以进入全屏效果"
-        >
-          <HToggle name="i-ri:question-line" />
-        </HTooltip>
       </div>
-      <HToggle v-model="settingsStore.settings.toolbar.enableFullscreen" />
+      <HToggle v-model="settingsStore.settings.toolbar.fullscreen" />
     </div>
     <div class="setting-item">
       <div class="label">
@@ -431,7 +486,7 @@ function handleCopy() {
           <SvgIcon name="i-ri:question-line" />
         </HTooltip>
       </div>
-      <HToggle v-model="settingsStore.settings.toolbar.enablePageReload" />
+      <HToggle v-model="settingsStore.settings.toolbar.pageReload" />
     </div>
     <div class="setting-item">
       <div class="label">
@@ -440,25 +495,41 @@ function handleCopy() {
           <SvgIcon name="i-ri:question-line" />
         </HTooltip>
       </div>
-      <HToggle v-model="settingsStore.settings.toolbar.enableColorScheme" />
+      <HToggle v-model="settingsStore.settings.toolbar.colorScheme" />
+    </div>
+    <div ref="toolbarLayoutRef" class="mx-4 my-2 flex items-center rounded-2 px-2 py-1 ring-1 ring-stone-2 dark:ring-stone-7">
+      <span
+        v-for="item in settingsStore.settings.toolbar.layout" :key="item" class="draggable flex-center p-1"
+        :class="{ 'flex-1 text-stone-3 dark:text-stone-7 no-drag': item === '->',
+                  'cursor-ew-resize': item !== '->' && settingsStore.settings.toolbar[item],
+                  'pointer-events-none w-0 op-0 p-0! no-drag': item !== '->' && !settingsStore.settings.toolbar[item],
+        }"
+      >
+        <SvgIcon v-if="item === 'favorites'" name="i-uiw:star-off" />
+        <SvgIcon v-if="item === 'breadcrumb'" name="i-ic:twotone-double-arrow" />
+        <SvgIcon v-if="item === 'navSearch'" name="i-ri:search-line" />
+        <SvgIcon v-if="item === 'notification'" name="i-ri:notification-3-line" />
+        <SvgIcon v-if="item === 'i18n'" name="i-ri:translate" />
+        <SvgIcon v-if="item === 'fullscreen'" name="i-ri:fullscreen-line" />
+        <SvgIcon v-if="item === 'pageReload'" name="i-iconoir:refresh-double" />
+        <SvgIcon v-if="item === 'colorScheme'" name="i-ri:sun-line" />
+        <span v-if="item === '->'" class="pointer-events-none text-sm">
+          布局调整
+        </span>
+      </span>
     </div>
 
     <div v-if="settingsStore.mode === 'pc'" class="divider">
       面包屑导航
     </div>
-    <div v-if="settingsStore.mode === 'pc'" class="setting-item">
-      <div class="label">
-        是否启用
-      </div>
-      <HToggle v-model="settingsStore.settings.breadcrumb.enable" />
-    </div>
+
     <div v-if="settingsStore.mode === 'pc'" class="setting-item">
       <div class="label">
         风格
       </div>
       <HCheckList
         v-model="settingsStore.settings.breadcrumb.style"
-        :disabled="!settingsStore.settings.breadcrumb.enable"
+        :disabled="!settingsStore.settings.toolbar.breadcrumb"
         :options="[
           { label: '默认', value: '' },
           { label: '现代', value: 'modern' },
@@ -471,7 +542,7 @@ function handleCopy() {
       </div>
       <HToggle
         v-model="settingsStore.settings.breadcrumb.enableMainMenu"
-        :disabled="['single'].includes(settingsStore.settings.menu.menuMode) || !settingsStore.settings.breadcrumb.enable"
+        :disabled="['single'].includes(settingsStore.settings.menu.menuMode) || !settingsStore.settings.toolbar.breadcrumb"
       />
     </div>
     <div class="divider">
@@ -489,13 +560,6 @@ function handleCopy() {
     </div>
     <div class="setting-item">
       <div class="label">
-        是否启用
-      </div>
-
-      <HToggle v-model="settingsStore.settings.navSearch.enable" />
-    </div>
-    <div class="setting-item">
-      <div class="label">
         是否启用快捷键
         <HTooltip placement="top" text="对导航进行快捷搜索">
           <SvgIcon name="i-ri:question-line" />
@@ -504,7 +568,7 @@ function handleCopy() {
 
       <HToggle
         v-model="settingsStore.settings.navSearch.enableHotkeys"
-        :disabled="!settingsStore.settings.navSearch.enable"
+        :disabled="!settingsStore.settings.toolbar.navSearch"
       />
     </div>
     <div class="divider">
@@ -572,7 +636,7 @@ function handleCopy() {
         </HTooltip>
       </div>
       <HInput
-        v-model="settingsStore.settings.home.title" :disabled="settingsStore.settings.toolbar.enableI18n"
+        v-model="settingsStore.settings.home.title" :disabled="settingsStore.settings.toolbar.i18n"
         size="small"
       />
     </div>

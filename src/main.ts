@@ -1,9 +1,6 @@
 import './util/baidu'
 import './util/system.copyright'
 
-import ElemnetPlus from 'element-plus'
-import '@/assets/styles/element-plus.scss'
-
 import VXETable from 'vxe-table'
 import VXETablePluginElement from 'vxe-table-plugin-element'
 import 'vxe-table-plugin-element/dist/style.css'
@@ -15,6 +12,7 @@ import App from './App.vue'
 // 加载 iconify 图标
 
 import errorLog from './util/error.log'
+import ui from './ui-provider'
 import { downloadAndInstall } from '@/iconify'
 import icons from '@/iconify/index.json'
 
@@ -135,8 +133,8 @@ async function bootstrap() {
   app.use(directive)
   errorLog(app)
 
-  app.use(ElemnetPlus)
   app.use(FloatingVue)
+  app.use(ui)
   app.use(VXETable)
   app.mount('#app')
 }

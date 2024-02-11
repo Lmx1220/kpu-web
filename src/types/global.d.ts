@@ -96,11 +96,11 @@ declare namespace Settings {
      */
     routeBaseOn?: 'frontend' | 'backend' | 'filesystem'
 
-    /**
-     * 是否开启应用配置，强烈建议在生产环境中关闭
-     * @默认值 `false`
-     */
-    enableAppSetting?: boolean
+    // /**
+    //  * 是否开启应用配置，强烈建议在生产环境中关闭
+    //  * @默认值 `false`
+    //  */
+    // enableAppSetting?: boolean
     /**
      * 是否开启用户偏好设置，强烈建议在生产环境中关闭
      * @默认值 `false`
@@ -120,6 +120,11 @@ declare namespace Settings {
      * @默认值 `'主页'`
      */
     title?: string
+    /**
+     * 主页完整路径
+     * @默认值 `'/'`
+     */
+    fullPath?: string
   }
 
   interface layout {
@@ -188,6 +193,11 @@ declare namespace Settings {
      * @默认值 `false`
      */
     subMenuCollapse?: boolean
+    /**
+     * 次导航是否收起
+     * @默认值 `false`
+     */
+    subMenuAutoCollapse?: boolean
     /**
      * 是否开启次导航的展开/收起按钮
      * @默认值 `false`
@@ -259,38 +269,49 @@ declare namespace Settings {
 
   interface toolbar {
     /**
+     * 是否开启收藏夹
+     * @默认值 `true`
+     */
+    favorites?: boolean
+    /**
+     * 是否开启面包屑导航
+     * @默认值 `false`
+     */
+    breadcrumb?: boolean
+    /**
+     * 是否开启导航搜索
+     * @默认值 `true`
+     */
+    navSearch?: boolean
+    /**
      * 是否开启通知中心
      * @默认值 `false`
      */
-    enableNotification?: boolean
+    notification?: boolean
     /**
      * 是否开启国际化
      * @默认值 `false`
      */
-    enableI18n?: boolean
+    i18n?: boolean
     /**
      * 是否开启全屏
      * @默认值 `false`
      */
-    enableFullscreen?: boolean
+    fullscreen?: boolean
     /**
      * 是否开启页面刷新
      * @默认值 `false`
      */
-    enablePageReload?: boolean
+    pageReload?: boolean
     /**
      * 是否开启颜色主题
      * @默认值 `false`
      */
-    enableColorScheme?: boolean
+    colorScheme?: boolean
+    layout?: ['favorites', 'breadcrumb', '->', 'navSearch', 'notification', 'i18n', 'fullscreen', 'pageReload', 'colorScheme']
   }
 
   interface breadcrumb {
-    /**
-     * 是否开启面包屑导航
-     * @默认值 `true`
-     */
-    enable?: boolean
     /**
      * 面包屑导航风格
      * @默认值 `''` 默认
@@ -305,11 +326,6 @@ declare namespace Settings {
   }
 
   interface favorites {
-    /**
-     * 是否开启收藏夹
-     * @默认值 `true`
-     */
-    enable?: boolean
     /**
      * @默认值 `'local'` 本地
      * @可选值 `'server'` 服务器
@@ -345,11 +361,6 @@ declare namespace Settings {
   }
 
   interface navSearch {
-    /**
-     * 是否开启导航搜索
-     * @默认值 `true`
-     */
-    enable?: boolean
     /**
      * 是否开启导航搜索快捷键
      * @默认值 `true`
@@ -414,7 +425,7 @@ declare namespace Settings {
 }
 declare module 'vue-router' {
   interface RouteMeta {
-    title?: string | Function
+    title?: string | (() => string)
     i18n?: string
     icon?: string
     activeIcon?: string
@@ -442,7 +453,7 @@ interface CustomTitleList {
 declare namespace Route {
   interface recordMainRaw {
     meta?: {
-      title?: string | Function
+      title?: string | (() => string)
       icon?: string
       auth?: string | string[]
       customTitleList?: CustomTitleList[]
@@ -453,7 +464,7 @@ declare namespace Route {
 
   interface breadcrumb {
     path: string
-    title?: string | Function
+    title?: string | (() => string)
     i18n?: string
     icon?: string
     activeIcon?: string
@@ -468,7 +479,7 @@ declare namespace Menu {
     parentId?: string
     path?: string
     meta?: {
-      title?: string
+      title?: string | (() => string)
       icon?: string
       activeIcon?: string
       i18n?: string
@@ -484,7 +495,7 @@ declare namespace Menu {
   /** 主导航 */
   interface recordMainRaw {
     meta?: {
-      title?: string
+      title?: string | (() => string)
       icon?: string
       i18n?: string
       auth?: string | string[]
@@ -541,7 +552,7 @@ declare namespace Tabbar {
     fullPath: string
     routeName?: RouteRecordRaw.name
     activeMenu?: string
-    title?: string | Function
+    title?: string | (() => string)
     i18n?: string
     iframe?: string
     icon?: string

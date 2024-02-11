@@ -74,7 +74,7 @@ export default function useTabbar() {
   }
   function checkCloseLeftSide(tabId = getId()) {
     let fig = true
-    if (tabId === tabbarStore.list[0].tabId) {
+    if (tabId === tabbarStore.list[0]?.tabId) {
       fig = false
     }
     else {

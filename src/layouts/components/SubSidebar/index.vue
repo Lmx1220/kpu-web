@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useElementSize } from '@vueuse/core'
 import Logo from '../Logo/index.vue'
 import Menu from '../Menu/index.vue'
 import useSettingsStore from '@/store/modules/settings'
@@ -12,10 +13,29 @@ const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 
-const sidebarScrollTop = ref(0)
-function onSidebarScroll(e: Event) {
-  sidebarScrollTop.value = (e.target as HTMLElement).scrollTop
+const subSidebarRef = ref()
+const showShadowTop = ref(false)
+const showShadowBottom = ref(false)
+function onSidebarScroll() {
+  const scrollTop = subSidebarRef.value.scrollTop
+  showShadowTop.value = scrollTop > 0
+  const clientHeight = subSidebarRef.value.clientHeight
+  const scrollHeight = subSidebarRef.value.scrollHeight
+  showShadowBottom.value = Math.ceil(scrollTop + clientHeight) < scrollHeight
 }
+const menuRef = ref()
+
+onMounted(() => {
+  onSidebarScroll()
+  const { height } = useElementSize(menuRef)
+  watch(() => height.value, () => {
+    if (height.value > 0) {
+      onSidebarScroll()
+    }
+  }, {
+    immediate: true,
+  })
+})
 const enableSidebar = computed(() => {
   return settingsStore.mode === 'mobile' || (
     ['side', 'head', 'single'].includes(settingsStore.settings.menu.menuMode)
@@ -30,12 +50,21 @@ const enableSidebar = computed(() => {
     )
   )
 })
+const isCollapse = computed(() => {
+  if (settingsStore.mode === 'pc') {
+    return !!(settingsStore.settings.menu.subMenuCollapse && (!settingsStore.isHoverSidebar || (settingsStore.isHoverSidebar && !settingsStore.settings.menu.subMenuAutoCollapse)))
+  }
+  else {
+    return settingsStore.settings.menu.subMenuCollapse
+  }
+})
 </script>
 
 <template>
   <div
     v-if="enableSidebar" class="sub-sidebar-container" :class="{
-      'is-collapse': settingsStore.mode === 'pc' && settingsStore.settings.menu.subMenuCollapse,
+      'is-collapse': isCollapse,
+      'shadow-side': settingsStore.isHoverSidebar && settingsStore.settings.menu.subMenuAutoCollapse && settingsStore.settings.menu.subMenuCollapse,
     }"
   >
     <Logo
@@ -45,24 +74,55 @@ const enableSidebar = computed(() => {
       class="sidebar-logo"
     />
     <div
+      ref="subSidebarRef"
+      class="sub-sidebar flex-1 transition-shadow-300"
       :class="{
-        shadow: sidebarScrollTop,
-      }" class="sub-sidebar flex-1 transition-shadow-300" @scroll="onSidebarScroll"
+        'shadow-top': showShadowTop,
+        'shadow-bottom': showShadowBottom,
+      }" @scroll="onSidebarScroll"
     >
       <!-- 侧边栏模式（无主导航）或侧边栏精简模式 -->
-      <TransitionGroup name="sub-sidebar">
-        <template v-for="(mainItem, mainIndex) in menuStore.allMenus" :key="mainIndex">
-          <div v-show="mainIndex === menuStore.actived">
-            <Menu
-              :accordion="settingsStore.settings.menu.subMenuUniqueOpened" :collapse="settingsStore.mode === 'pc' && settingsStore.settings.menu.subMenuCollapse"
-              :default-openeds="menuStore.defaultOpenedPaths"
-              :menu="mainItem.children"
-              :rounded="settingsStore.settings.menu.isRounded"
-              :value="route.meta.activeMenu || route.path" class="menu"
-            />
-          </div>
-        </template>
-      </TransitionGroup>
+      <div ref="menuRef">
+        <TransitionGroup name="sub-sidebar">
+          <template v-for="(mainItem, mainIndex) in menuStore.allMenus" :key="mainIndex">
+            <div v-show="mainIndex === menuStore.actived">
+              <Menu
+                :accordion="settingsStore.settings.menu.subMenuUniqueOpened"
+                :collapse="isCollapse"
+                :default-openeds="menuStore.defaultOpenedPaths"
+                :menu="mainItem.children"
+                :rounded="settingsStore.settings.menu.isRounded"
+                :value="route.meta.activeMenu || route.path" class="menu"
+              />
+            </div>
+          </template>
+        </TransitionGroup>
+      </div>
+    </div>
+    <div
+      v-if="settingsStore.mode === 'pc'"
+      class="relative flex items-center px-4 py-3"
+      :class="{
+        'justify-center': isCollapse,
+        'justify-between': !isCollapse && settingsStore.settings.menu.enableSubMenuCollapseButton,
+        'justify-end': !isCollapse && !settingsStore.settings.menu.enableSubMenuCollapseButton,
+      }"
+    >
+      <span
+        v-show="!isCollapse || isCollapse && !settingsStore.settings.menu.enableSubMenuCollapseButton"
+        class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark:bg-stone-9 hover:bg-stone-2 dark:hover:bg-stone-8"
+        @click="() => settingsStore.toggleSidebarAutoCollapse()"
+      >
+        <SvgIcon :name="settingsStore.settings.menu.subMenuAutoCollapse ? 'i-material-symbols:lock-open-right-outline-rounded' : 'i-material-symbols:lock-outline'" />
+      </span>
+      <span
+        v-show="settingsStore.settings.menu.enableSubMenuCollapseButton"
+        class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark:bg-stone-9 hover:bg-stone-2 dark:hover:bg-stone-8"
+        :class="{ '-rotate-z-180': settingsStore.settings.menu.subMenuCollapse }"
+        @click="() => settingsStore.toggleSidebarCollapse()"
+      >
+        <SvgIcon name="toolbar-collapse" />
+      </span>
     </div>
   </div>
 </template>

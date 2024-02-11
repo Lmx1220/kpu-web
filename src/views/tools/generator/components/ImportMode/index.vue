@@ -154,7 +154,7 @@ function onDsChange() {
   <BaseDialog
     :ok-button-props="{ disabled: !data.batch.selectionDataList.length }" loading-tip="加载"
     title="导入表结构" @ok="onOk"
-    @visibleChange="visibleChange"
+    @visible-change="visibleChange"
   >
     <SearchBar
       :fold="data.searchFold"

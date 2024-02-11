@@ -10,10 +10,20 @@ const hide = ref(false)
 const settingsStore = useSettingsStore()
 
 const toolbar = computed(() => {
-  return !(
-    (settingsStore.settings.menu.menuMode === 'head' && !settingsStore.settings.menu.enableSubMenuCollapseButton && (!settingsStore.settings.breadcrumb.enable || settingsStore.settings.app.routeBaseOn === 'filesystem'))
-    || (settingsStore.settings.menu.menuMode === 'only-head' && (!settingsStore.settings.breadcrumb.enable || settingsStore.settings.app.routeBaseOn === 'filesystem'))
-  )
+  const indexSeparator = settingsStore.settings.toolbar.layout.findIndex(item => item === '->')
+  const hasInvalidItemBeforeSeparator = settingsStore.settings.toolbar.layout.some((item, index) => {
+    if (index < indexSeparator && item !== '->') {
+      if (settingsStore.settings.app.routeBaseOn === 'filesystem' && item === 'breadcrumb') {
+        return false
+      }
+      else {
+        return !settingsStore.settings.toolbar[item]
+      }
+    }
+    return false
+  })
+
+  return !['head', 'only-head'].includes(settingsStore.settings.menu.menuMode) || hasInvalidItemBeforeSeparator
 })
 
 const topbar = computed(() => {

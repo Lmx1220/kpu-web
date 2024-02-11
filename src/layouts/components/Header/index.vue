@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import Logo from '../Logo/index.vue'
-import Tools from '../Tools/index.vue'
 import MainMenu from '../Menu/index.vue'
 import useI18nTitle from '@/util/composables/useI18nTitle'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
 import useMenu from '@/util/composables/useMenu'
+import RightSide from '@/layouts/components/Topbar/Toolbar/rightSide.vue'
 
 defineOptions({
   name: 'LayoutHeader',
@@ -50,10 +50,10 @@ function handlerMouserScroll(event: any) {
                       'text-[var(--g-header-menu-active-color)]! bg-[var(--g-header-menu-active-bg)]!': index === menuStore.actived,
                       'rounded-2': settingsStore.settings.menu.isRounded,
                     }"
-                    class="menu-item-container w-full h-full flex justify-between items-center gap-1 px-5 py-4 transition-all cursor-pointer group text-[var(--g-header-menu-color)] hover:text-[var(--g-header-menu-hover-color)] hover:bg-[var(--g-header-menu-hover-bg)]"
+                    class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 px-3 text-[var(--g-header-menu-color)] transition-all hover:bg-[var(--g-header-menu-hover-bg)] hover:text-[var(--g-header-menu-hover-color)]"
                     @click="switchTo(index)"
                   >
-                    <div class="inline-flex flex-col justify-center items-center flex-1">
+                    <div class="inline-flex flex-1 items-center justify-center gap-1">
                       <SvgIcon
                         v-if="item.meta?.icon" :name="item.meta.icon"
                         async
@@ -83,7 +83,7 @@ function handlerMouserScroll(event: any) {
             />
           </div>
         </div>
-        <Tools />
+        <RightSide />
       </div>
     </header>
   </Transition>
@@ -217,8 +217,8 @@ header {
     background-color: inherit;
 
     .logo {
-      width: 50px;
-      height: 50px;
+      width: initial;
+      height: 40px;
     }
 
     span {
@@ -230,9 +230,9 @@ header {
 
   .menu-container {
     flex: 1;
-    margin: 0 30px;
-    padding: 0 20px;
     height: 100%;
+    padding: 0 20px;
+    margin: 0 30px;
     overflow-x: auto;
     mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
     scrollbar-width: none;
@@ -243,47 +243,38 @@ header {
 
     .menu {
       display: inline-flex;
-      height: 100%;
-      background-color: var(--g-header-bg);
+      height: 100%
     }
 
     :deep(.menu-item) {
       .menu-item-container {
-        width: 80px;
-        padding: 0 5px;
         color: var(--g-header-menu-color);
-        background-color: var(--g-header-menu-bg);
 
         &:hover {
           color: var(--g-header-menu-hover-color);
-          background-color: var(--g-header-menu-hover-bg);
-        }
-
-        .menu-item-container-icon {
-          transform: scale(1);
-          font-size: 24px !important;
+          background-color: var(--g-header-menu-hover-bg)
         }
       }
 
-      .active .menu-item-container {
-        color: var(--g-header-menu-active-color);
-        background-color: var(--g-header-menu-active-bg);
+      &.active .menu-item-container {
+        color: var(--g-header-menu-active-color)!important;
+        background-color: var(--g-header-menu-active-bg)!important
       }
     }
   }
 
-  :deep(.tools) {
-    padding: 0;
-
-    .buttons .item .icon {
-      color: var(--g-header-color);
-    }
-
-    .user-container {
-      font-size: 16px;
-      color: var(--g-header-color);
-    }
-  }
+  //:deep(.tools) {
+  //  padding: 0;
+  //
+  //  .buttons .item .icon {
+  //    color: var(--g-header-color);
+  //  }
+  //
+  //  .user-container {
+  //    font-size: 16px;
+  //    color: var(--g-header-color);
+  //  }
+  //}
 }
 
 // 头部动画

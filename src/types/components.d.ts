@@ -21,6 +21,7 @@ declare module 'vue' {
     DialogHeader: typeof import('./../components/Dialog/components/DialogHeader.vue')['default']
     DialogWrapper: typeof import('./../components/Dialog/components/DialogWrapper.vue')['default']
     FileList: typeof import('./../components/BasicUpload/src/FileList.vue')['default']
+    FileUpload: typeof import('./../components/FileUpload/index.vue')['default']
     FixedActionBar: typeof import('./../components/FixedActionBar/index.vue')['default']
     HBadge: typeof import('./../layouts/ui-kit/HBadge.vue')['default']
     HButton: typeof import('./../layouts/ui-kit/HButton.vue')['default']

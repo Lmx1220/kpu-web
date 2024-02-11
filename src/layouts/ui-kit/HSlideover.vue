@@ -1,10 +1,9 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { Dialog, DialogDescription, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 
 const props = withDefaults(
   defineProps<{
-    modelValue: boolean
     appear?: boolean
     side?: 'left' | 'right'
     title?: string
@@ -12,7 +11,6 @@ const props = withDefaults(
     overlay?: boolean
   }>(),
   {
-    modelValue: false,
     appear: false,
     side: 'right',
     preventClose: false,
@@ -21,9 +19,12 @@ const props = withDefaults(
 )
 
 const emits = defineEmits<{
-  'update:modelValue': [boolean]
   'close': []
 }>()
+
+const isOpen = defineModel<boolean>({
+  default: false,
+})
 
 const slots = useSlots()
 
@@ -47,15 +48,6 @@ const transitionClass = computed(() => {
   }
 })
 
-const isOpen = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emits('update:modelValue', value)
-  },
-})
-
 function close() {
   isOpen.value = false
   emits('close')
@@ -63,34 +55,25 @@ function close() {
 </script>
 
 <template>
-  <TransitionRoot :appear="appear" :show="isOpen" as="template">
-    <Dialog
-      :class="{ 'justify-end': side === 'right' }" class="fixed inset-0 flex z-2000"
-      @close="!preventClose && close()"
-    >
-      <TransitionChild :appear="appear" as="template" v-bind="overlayTransitionClass">
-        <div
-          :class="{ 'backdrop-blur-sm': overlay }"
-          class="fixed inset-0 transition-opacity bg-stone-2/75 dark:bg-stone-8/75"
-        />
+  <TransitionRoot as="template" :appear="appear" :show="isOpen">
+    <Dialog class="fixed inset-0 z-2000 flex" :class="{ 'justify-end': side === 'right' }" @close="!preventClose && close()">
+      <TransitionChild as="template" :appear="appear" v-bind="overlayTransitionClass">
+        <div class="fixed inset-0 bg-stone-2/75 transition-opacity dark:bg-stone-8/75" :class="{ 'backdrop-blur-sm': overlay }" />
       </TransitionChild>
-      <TransitionChild :appear="appear" as="template" v-bind="transitionClass">
-        <DialogPanel bg-white dark:bg-stone-8 flex flex-1 flex-col focus:outline-none max-w-md relative w-full w-screen>
-          <div border-b="~ solid stone/15" flex="~ items-center justify-between" p-4 text-6>
-            <DialogTitle dark:text-white m-0 text-dark text-lg>
+      <TransitionChild as="template" :appear="appear" v-bind="transitionClass">
+        <DialogPanel relative max-w-md w-full w-screen flex flex-1 flex-col bg-white dark:bg-stone-8 focus:outline-none>
+          <div flex="~ items-center justify-between" p-4 border-b="~ solid stone/15" text-6>
+            <DialogTitle m-0 text-lg text-dark dark:text-white>
               {{ title }}
             </DialogTitle>
-            <SvgIcon cursor-pointer name="carbon:close" @click="close" />
+            <SvgIcon name="i-carbon:close" cursor-pointer @click="close" />
           </div>
-          <DialogDescription flex-1 m-0 of-y-hidden>
-            <OverlayScrollbarsComponent
-              :options="{ scrollbars: { autoHide: 'leave', autoHideDelay: 300 } }" class="h-full p-4"
-              defer
-            >
+          <DialogDescription m-0 flex-1 of-y-hidden>
+            <OverlayScrollbarsComponent :options="{ scrollbars: { autoHide: 'leave', autoHideDelay: 300 } }" defer class="h-full p-4">
               <slot />
             </OverlayScrollbarsComponent>
           </DialogDescription>
-          <div v-if="!!slots.footer" border-t="~ solid stone/15" flex="~ items-center justify-end" px-3 py-2>
+          <div v-if="!!slots.footer" flex="~ items-center justify-end" px-3 py-2 border-t="~ solid stone/15">
             <slot name="footer" />
           </div>
         </DialogPanel>

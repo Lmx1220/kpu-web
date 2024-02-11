@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus'
 import storage from '@/util/storage'
 import useUserStore from '@/store/modules/user'
 import Copyright from '@/layouts/components/Copyright/index.vue'
+import useSettingsStore from '@/store/modules/settings.ts'
 
 defineOptions({
   name: 'Login',
@@ -15,10 +16,12 @@ const title = import.meta.env.VITE_APP_TITLE
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
+const settingsStore = useSettingsStore()
 // 表单类型，login 登录，register 注册，reset 重置密码
 const formType = ref('login')
 const loading = ref(false)
-const redirect = ref(route.query.redirect?.toString() ?? '/')
+const redirect = ref(route.query.redirect?.toString() ?? settingsStore.settings.home.fullPath)
+
 // 登录
 const loginFormRef = ref<FormInstance>()
 const loginForm = ref({

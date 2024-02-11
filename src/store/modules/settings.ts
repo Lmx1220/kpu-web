@@ -42,21 +42,49 @@ const useSettingsStore = defineStore(
         subMenuCollapseLastStatus.value = !subMenuCollapseLastStatus.value
       }
     }
-
-    watch(() => [settings.value.app.colorScheme, settings.value.app.lightTheme, settings.value.app.darkTheme], ([colorScheme, lightTheme, darkTheme]) => {
-      switch (colorScheme) {
-        case 'dark':
-          document.documentElement.classList.add('dark')
-          document.body.setAttribute('data-theme', darkTheme)
-          break
-        case 'light':
-          document.documentElement.classList.remove('dark')
-          document.body.setAttribute('data-theme', lightTheme)
-          break
+    function toggleSidebarAutoCollapse() {
+      settings.value.menu.subMenuAutoCollapse = !settings.value.menu.subMenuAutoCollapse
+      if (settings.value.menu.subMenuAutoCollapse && !settings.value.menu.subMenuCollapse) {
+        settings.value.menu.subMenuCollapse = true
       }
-    }, {
+      if (!settings.value.menu.subMenuAutoCollapse && settings.value.menu.subMenuCollapse) {
+        settings.value.menu.subMenuCollapse = false
+      }
+    }
+    const isHoverSidebar = ref(false)
+    function setHoverSidebar(val: boolean) {
+      isHoverSidebar.value = val
+    }
+    const currentColorScheme = ref('')
+
+    const prefersColorScheme = window.matchMedia('(prefers-color-scheme: dark)')
+    watch(() => settings.value.app.colorScheme, (value) => {
+      value === '' ? prefersColorScheme.addEventListener('change', changeColorScheme) : prefersColorScheme.removeEventListener('change', changeColorScheme)
+    }
+    , {
       immediate: true,
     })
+    watch(() => [settings.value.app.colorScheme, settings.value.app.lightTheme, settings.value.app.darkTheme], changeColorScheme, {
+      immediate: true,
+    })
+    function changeColorScheme() {
+      let colorScheme = settings.value.app.colorScheme
+      if (colorScheme === '') {
+        colorScheme = prefersColorScheme.matches ? 'dark' : 'light'
+      }
+      switch (colorScheme) {
+        case 'light':
+          currentColorScheme.value = colorScheme
+          document.documentElement.classList.remove('dark')
+          document.body.setAttribute('data-theme', settings.value.app.lightTheme)
+          break
+        case 'dark':
+          currentColorScheme.value = colorScheme
+          document.documentElement.classList.add('dark')
+          document.body.setAttribute('data-theme', settings.value.app.darkTheme)
+          break
+      }
+    }
     watch(() => settings.value.menu.menuMode, (val) => {
       document.body.setAttribute('data-menu-mode', val)
     }, {
@@ -130,22 +158,26 @@ const useSettingsStore = defineStore(
 
     return {
       settings,
+      currentColorScheme,
       os,
       title,
-      titleFirst,
       setTitle,
       customTitleList,
-      resetCustomTitle,
       setCustomTitle,
+      resetCustomTitle,
       mode,
       setMode,
       subMenuCollapseLastStatus,
       toggleSidebarCollapse,
-      updateSettings,
+      toggleSidebarAutoCollapse,
+      isHoverSidebar,
+      setHoverSidebar,
+      // lang,
       setDefaultLang,
-      mainPageMaximizeStatus,
       setColorScheme,
+      mainPageMaximizeStatus,
       setMainPageMaximize,
+      updateSettings,
     }
   },
 )
