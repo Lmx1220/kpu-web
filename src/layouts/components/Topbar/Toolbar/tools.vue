@@ -28,7 +28,6 @@ const components = computed(() => {
   }
   return components
 })
-
 const regexDigit: RegExp = /\d/
 const specialChars: string[] = ['-', '_', '/', '.']
 

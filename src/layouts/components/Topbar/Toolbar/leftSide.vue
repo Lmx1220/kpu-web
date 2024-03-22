@@ -14,6 +14,6 @@ const settingsStore = useSettingsStore()
     <div v-if="settingsStore.mode === 'mobile'" class="flex-center cursor-pointer px-2 py-1 -rotate-z-180" @click="settingsStore.toggleSidebarCollapse()">
       <SvgIcon name="toolbar-collapse" />
     </div>
-    <Tools v-else model="left-side" />
+    <Tools model="left-side" />
   </div>
 </template>

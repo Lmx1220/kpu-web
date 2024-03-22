@@ -56,7 +56,7 @@ defineExpose({
           :is="subMenu ? 'div' : 'a'" v-bind="{
             ...(!subMenu && {
               href: item.meta?.link ? item.meta.link : href,
-              target: item.meta?.link ? '_blank' : '_self',
+              target: item.meta?.newWindow || item.meta?.link ? '_blank' : '_self',
               class: 'no-underline',
             }),
           }" class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 px-5 py-4 text-[var(--g-sub-sidebar-menu-color)] transition-all hover:(bg-[var(--g-sub-sidebar-menu-hover-bg)] text-[var(--g-sub-sidebar-menu-hover-color)])" :class="{

@@ -17,7 +17,7 @@ const useSettingsStore = defineStore(
 
     // 显示模式
     const mode = ref<'pc' | 'mobile'>('pc')
-    // 设置访问模式
+    // 设置显示模式
     function setMode(width: number) {
       if (settings.value.layout.enableMobileAdaptation) {
         // 先判断 UA 是否为移动端设备（手机&平板）
@@ -25,7 +25,7 @@ const useSettingsStore = defineStore(
           mode.value = 'mobile'
         }
         else {
-          // 如果为桌面设备，再根据页面宽度判断是否需要切换为移动端展示
+          // 如果是桌面设备，则根据页面宽度判断是否需要切换为移动端展示
           mode.value = width < 992 ? 'mobile' : 'pc'
         }
       }
@@ -33,15 +33,32 @@ const useSettingsStore = defineStore(
         mode.value = 'pc'
       }
     }
-    // 侧边栏是否收起（用于记录 pc 模式下最后的状态）
-    const subMenuCollapseLastStatus = ref(mergeSettings.menu.subMenuCollapse)
+
     // 切换侧边栏导航展开/收起
     function toggleSidebarCollapse() {
       settings.value.menu.subMenuCollapse = !settings.value.menu.subMenuCollapse
-      if (mode.value === 'pc') {
-        subMenuCollapseLastStatus.value = !subMenuCollapseLastStatus.value
-      }
     }
+    // 次导航是否收起（用于记录 pc 模式下最后的状态）
+    const subMenuCollapseLastStatus = ref(settingsDefault.menu.subMenuCollapse)
+    watch(() => settings.value.menu.subMenuCollapse, (val) => {
+      if (mode.value === 'pc') {
+        subMenuCollapseLastStatus.value = val
+      }
+    })
+    watch(mode, (val) => {
+      switch (val) {
+        case 'pc':
+          settings.value.menu.subMenuCollapse = subMenuCollapseLastStatus.value
+          break
+        case 'mobile':
+          settings.value.menu.subMenuCollapse = true
+          break
+      }
+      document.body.setAttribute('data-mode', val)
+    }, {
+      immediate: true,
+    })
+
     function toggleSidebarAutoCollapse() {
       settings.value.menu.subMenuAutoCollapse = !settings.value.menu.subMenuAutoCollapse
       if (settings.value.menu.subMenuAutoCollapse && !settings.value.menu.subMenuCollapse) {

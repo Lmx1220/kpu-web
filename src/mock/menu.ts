@@ -15,7 +15,7 @@ const menuList = [{
     parentId: 1,
     path: '/multilevel_menu_example',
     redirect: '/multilevel_menu_example/page',
-    component: 'Layout',
+    component: 'LAYOUT',
     name: 'multilevelMenuExample',
     meta: {
       title: '多级导航',
@@ -203,7 +203,7 @@ const menuList = [{
     id: 9,
     parentId: 1,
     path: '/link',
-    component: 'Layout',
+    component: 'LAYOUT',
     redirect: '/link/iframe',
     name: 'externalLinkExample',
     meta: {
@@ -438,7 +438,7 @@ const menuList = [{
     id: 51,
     parentId: 50,
     path: '/pages_example/general',
-    component: 'Layout',
+    component: 'LAYOUT',
     redirect: '/pages_example/general/manager',
     name: 'pagesExampleGeneral',
     meta: {

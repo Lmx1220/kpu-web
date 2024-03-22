@@ -1,38 +1,39 @@
-export interface Extra {
-  [key: string]: any
+export interface BasicPageParams {
+  page: number
+  pageSize: number
 }
 
-export interface PageParams<T extends {
-  [key: string]: any
-}> {
-  current: number
+export interface BasicFetchResult<T> {
+  items: T[]
+  total: number
+}
+
+export interface Enum {
+  code: string | number
+  desc?: string
+  extra?: string
+}
+
+export interface RemoteData {
+  key: string | number
+  data?: any
+}
+
+export interface PageParams<T> {
+  model: T
   size: number
+  current: number
   sort?: string
   order?: string
-  model: T
-  extra: Extra
+  extra?: any
 }
 
 export interface PageResult<T> {
   records: T[]
+  offset: number
+  pages: number
+  current: number
   total: number
-}
-
-export interface CodeQueryVO {
-  excludes?: string[]
-  extend?: Partial<Option>
-  extendFirst: boolean
-  type: string
-}
-
-export interface DictOption {
-  [key: string]: Option[]
-}
-
-export interface Option {
-
-  label: string
-  text: string
-  value: string
-
+  size: number
+  orders: any[]
 }

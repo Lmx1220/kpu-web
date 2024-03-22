@@ -228,7 +228,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     {
       // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
       // authentication schemes，e.g: Bearer
-      authenticationScheme: 'Bearer',
+      authenticationScheme: '',
       // authenticationScheme: '1',
       timeout: 10 * 1000 * 60, // 10 * 1000 * 60 = 10分钟
       headers: {

@@ -1,5 +1,4 @@
 import process from 'node:process'
-import type { Plugin } from 'rollup'
 import type { PluginOption } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -15,12 +14,11 @@ import createPwa from './pwa'
 import createMock from './mock'
 import createVisualizer from './visualizer'
 import createConsole from './console'
-import createDevtools from './devtools'
 import createArchiver from './archiver'
 import appInfo from './app-info'
 
 export default function creactVitePlugins(viteEnv, isBuild = false) {
-  const vitePlugins: (PluginOption | PluginOption[] | Plugin)[] = [
+  const vitePlugins: (PluginOption | PluginOption[])[] = [
     appInfo(),
     vue(),
     vueJsx(),
@@ -32,7 +30,7 @@ export default function creactVitePlugins(viteEnv, isBuild = false) {
       ],
     }),
   ]
-  vitePlugins.push(createDevtools(viteEnv))
+  // vitePlugins.push(createDevtools(viteEnv))
   vitePlugins.push(createAutoImport())
   vitePlugins.push(createComponents())
   vitePlugins.push(createUnoCss())

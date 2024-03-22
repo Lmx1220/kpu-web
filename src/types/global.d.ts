@@ -593,7 +593,7 @@ declare type DataConfig<SEARCH = any, T = any> = Record<any, any> & {
   formMode: 'router' | 'dialog' | 'drawer'
   formModeProps: Record<string, any> & {
     visible: boolean
-    id: string
+    id?: string
     type?: ActionEnum
     data?: Partial<Id>
   }

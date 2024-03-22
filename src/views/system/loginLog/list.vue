@@ -3,7 +3,7 @@ import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
 import type { DictOption, Option } from '@/api/model/baseModel'
-import { findDictMapItemListByKey } from '@/api/modules/common/dict'
+import { asyncFindDictList } from '@/api/modules/common/dict'
 import crudLoginLog, { clear } from '@/api/modules/system/loginLog'
 import type { LoginLogPageQuery } from '@/api/modules/system/model/loginLogModel'
 import type { DataConfig } from '@/types/global'
@@ -173,7 +173,7 @@ function onCommand(type: number) {
 }
 
 async function getDict() {
-  const options: DictOption = await findDictMapItemListByKey([{
+  const options: DictOption = await asyncFindDictList([{
     type: 'LoginStatusEnum',
     extendFirst: true,
   }])

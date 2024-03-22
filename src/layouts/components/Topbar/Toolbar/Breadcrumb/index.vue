@@ -5,6 +5,10 @@ import BreadcrumbItem from '../../../Breadcrumb/item.vue'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu.ts'
 
+defineOptions({
+  name: 'Breadcrumb',
+})
+
 const route = useRoute()
 
 const settingsStore = useSettingsStore()

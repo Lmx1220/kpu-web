@@ -27,7 +27,7 @@ const globalSettings: Settings.all = {
     enableSubMenuCollapseButton: true,
     enableHotkeys: true,
     // baseOn: 'frontend',
-    menuMode: 'side',
+    menuMode: 'head',
     switchMainMenuAndPageJump: false,
     subMenuUniqueOpened: true,
     subMenuOnlyOneHide: false,

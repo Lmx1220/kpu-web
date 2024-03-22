@@ -21,6 +21,7 @@ defineOptions({
 
 const route = useRoute()
 const router = useRouter()
+// const altKey = true
 const altKey = useMagicKeys({ reactive: true })
 const settingsStore = useSettingsStore()
 const tabbarStore = useTabbarStore()
@@ -441,7 +442,7 @@ onUnmounted(
                   }}
                 </div>
                 <SvgIcon
-                  class="action-icon" name="i-ri:close-fill"
+                  class="action-icon" name="ri:close-fill"
                   @click.stop="tabbar.closeById(`${element.tabId}`)"
                 />
               </div>
@@ -615,10 +616,11 @@ onUnmounted(
       position: relative;
       width: calc(100% - 30px);
       height: 30px;
-      margin: 0 15px;
       padding: 0 5px;
+      margin: 0 15px;
+      background-color: var(--g-container-bg);
       border-radius: 5px;
-      transition: background-color 0.3s;
+      transition: background-color .3s;
 
       &.actived {
         background-color: var(--g-bg);
@@ -679,7 +681,8 @@ onUnmounted(
         color: var(--g-tabbar-tab-color);
 
         &:hover {
-          --at-apply: ring-stone-3 dark:ring-stone-7;
+          --at-apply: ring-1 ring-stone-3 dark:ring-stone-7;
+          background-color: var(--g-bg);
         }
       }
     }

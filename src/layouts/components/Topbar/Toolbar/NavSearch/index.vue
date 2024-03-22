@@ -3,7 +3,7 @@ import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
 
 defineOptions({
-  name: 'ToolbarRightSide',
+  name: 'NavSearch',
 })
 
 const settingsStore = useSettingsStore()

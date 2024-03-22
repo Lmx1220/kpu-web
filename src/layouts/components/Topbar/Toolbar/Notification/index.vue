@@ -4,7 +4,7 @@ import useSettingsStore from '@/store/modules/settings.ts'
 import useNotificationStore from '@/store/modules/notification.ts'
 
 defineOptions({
-  name: 'PageReload',
+  name: 'Notification',
 })
 
 const settingsStore = useSettingsStore()

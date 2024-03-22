@@ -190,7 +190,7 @@ const useRouteStore = defineStore(
     function formatBackRoutes(routes: any, views = import.meta.glob('../../views/**/*.vue')): Route.recordMainRaw[] {
       return routes.map((route: any) => {
         switch (route.component) {
-          case 'Layout':
+          case 'LAYOUT':
             route.component = () => import('@/layouts/index.vue')
             break
           default:
@@ -210,7 +210,7 @@ const useRouteStore = defineStore(
     async function generateRoutesAtBack() {
       try {
         const res = await api.get<any>({
-          url: '/menu/routerInit',
+          url: '/anyone/visible/allRouter',
           // noLoading: true,
         })
         routesRaw.value = formatBackRoutes(res) as any
@@ -220,7 +220,7 @@ const useRouteStore = defineStore(
         isGenerate.value = true
       }
       catch (error: any) {
-        if (error.code === 'ERR_BAD_RESPONSE') {
+        if (['ERR_BAD_RESPONSE', 'ERR_BAD_REQUEST'].includes(error.code)) {
           isGenerate.value = true
         }
         else {

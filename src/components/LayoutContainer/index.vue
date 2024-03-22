@@ -77,50 +77,46 @@ const enabledRightSide = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-.flex-container {
+.flex-container{
   position: absolute;
+  display: flex;
   width: 100%;
   height: 100%;
-  display: flex;
   padding: 20px;
-
   .left-side,
   .right-side,
   .main {
     --container-padding: 15px;
-
     height: 100%;
     padding: var(--container-padding);
     background-color: var(--g-container-bg);
-    transition: background-color 0.3s;
+    transition: background-color .3s
   }
-
-  .left-side {
+  .left-side{
+    flex: none;
     margin-right: 20px;
-    flex: none;
     overflow: auto;
   }
-
-  .right-side {
+  .right-side{
+    flex: none;
     margin-left: 20px;
-    flex: none;
     overflow: auto;
   }
-
-  .main {
-    flex: 1;
+  .main{
     position: relative;
+    flex: 1;
     width: 100%;
-
-    .main-container {
+    .main-container{
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       padding: var(--container-padding);
-      overflow: auto;
+      overflow: auto
     }
+
   }
+
 }
 </style>

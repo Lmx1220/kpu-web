@@ -2,7 +2,7 @@
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import type { DictOption, Option } from '@/api/model/baseModel'
-import { findDictMapItemListByKey } from '@/api/modules/common/dict'
+import { asyncFindDictList } from '@/api/modules/common/dict'
 import type { RolePageQuery } from '@/api/modules/system/model/roleModel'
 import crudRole from '@/api/modules/system/role'
 import { getCategoryColor } from '@/enums/colorEnum'
@@ -194,7 +194,7 @@ function onBindUsers(row: any) {
 }
 
 async function getDict() {
-  const options: DictOption = await findDictMapItemListByKey([{
+  const options: DictOption = await asyncFindDictList([{
     type: 'ROLE_CATEGORY',
     extendFirst: true,
   }])

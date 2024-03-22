@@ -1,5 +1,8 @@
 <script lang="ts" setup>
+import useSettingsStore from '@/store/modules/settings.ts'
+
 const router = useRouter()
+const settingsStore = useSettingsStore()
 
 const data = ref({
   inter: Number.NaN,

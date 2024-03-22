@@ -20,8 +20,6 @@ import 'uno.css'
 
 import 'virtual:uno.css'
 
-// 全局样式
-import '@/assets/styles/globals.scss'
 import pinia from '@/store'
 import router from '@/router'
 
@@ -35,6 +33,9 @@ import directive from '@/directive'
 import 'virtual:svg-icons-register'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 import 'floating-vue/dist/style.css'
+
+// 全局样式
+import '@/assets/styles/globals.scss'
 
 if (icons.useType === 'offline') {
   for (const info of icons.collections) {

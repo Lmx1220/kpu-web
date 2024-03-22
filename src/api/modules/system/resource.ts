@@ -4,22 +4,36 @@ import defHttp from '@/api'
 import { RequestEnum } from '@/enums/httpEnum'
 import type { PageParams, PageResult } from '@/api/model/baseModel.ts'
 
-const MODULAR = 'resource'
+const MODULAR = 'defResource'
 const ServicePrefix = ''
 
 export const Api = {
   Page: { url: `${ServicePrefix}/${MODULAR}/page`, method: RequestEnum.POST } as AxiosRequestConfig,
+  Tree: {
+    url: `${ServicePrefix}/${MODULAR}/tree`,
+    method: RequestEnum.POST,
+  } as AxiosRequestConfig,
   TreeResourceAndView: { url: `${ServicePrefix}/${MODULAR}/treeResourceAndView`, method: RequestEnum.POST } as AxiosRequestConfig,
   ResourceAuthTree: { url: `${ServicePrefix}/${MODULAR}/resourceResourceTree`, method: RequestEnum.POST } as AxiosRequestConfig,
   Save: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.POST },
   Update: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.PUT },
   Delete: { url: `${ServicePrefix}/${MODULAR}`, method: RequestEnum.DELETE } as AxiosRequestConfig,
   Query: { url: `${ServicePrefix}/${MODULAR}/query`, method: RequestEnum.POST } as AxiosRequestConfig,
-  Detail: { url: `${ServicePrefix}/${MODULAR}/detail`, method: RequestEnum.GET } as AxiosRequestConfig,
+  Detail: (id: string) => {
+    return {
+      url: `${ServicePrefix}/${MODULAR}/${id}`,
+      method: RequestEnum.GET,
+    } as AxiosRequestConfig
+  },
   Copy: { url: `${ServicePrefix}/${MODULAR}/copy`, method: RequestEnum.POST } as AxiosRequestConfig,
   Move: { url: `${ServicePrefix}/${MODULAR}/move`, method: RequestEnum.POST } as AxiosRequestConfig,
   MoveUp: { url: `${ServicePrefix}/${MODULAR}/moveUp`, method: RequestEnum.POST } as AxiosRequestConfig,
   MoveDown: { url: `${ServicePrefix}/${MODULAR}/moveDown`, method: RequestEnum.POST } as AxiosRequestConfig,
+  tree: { url: `${ServicePrefix}/${MODULAR}/moveDown`, method: RequestEnum.POST } as AxiosRequestConfig,
+}
+
+export function tree(params?: ResourcePageQuery) {
+  return defHttp.request<ResourceResultVO[]>({ ...Api.Tree, params })
 }
 
 export function page(params: PageParams<ResourcePageQuery>) {
@@ -43,7 +57,7 @@ export function query(params: ResourcePageQuery) {
   return defHttp.request<ResourceResultVO[]>({ ...Api.Query, params })
 }
 export function detail(id: string) {
-  return defHttp.request<ResourceResultVO>({ ...Api.Detail, params: { id } })
+  return defHttp.request<ResourceResultVO>({ ...Api.Detail(id) })
 }
 export function copy(id: string) {
   return defHttp.request<ResourceResultVO>({ ...Api.Copy, params: { id } })

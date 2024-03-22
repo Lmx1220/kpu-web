@@ -2,13 +2,15 @@
 import { ElMessage } from 'element-plus'
 
 import Move from './components/move.vue'
-import crudResource, { moveDown, moveUp, treeResourceAndView } from '@/api/modules/system/resource'
-import useSettingsStore from '@/store/modules/settings'
+import DetailForm from './components/DetailForm/index.vue'
+import crudResource, { moveDown, moveUp } from '@/api/modules/system/resource'
 import type { DataConfig, Menu } from '@/types/global'
 import type { ResourceResultVO } from '@/api/modules/system/model/ResourceModel.ts'
 import eventBus from '@/util/eventBus.ts'
 import { useKeepAlive } from '@/hooks/useA.ts'
 import { forEach } from '@/util/helper/treeHelper'
+import LeftTree from '@/views/system/resource/leftTree.vue'
+import { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
   name: 'SystemResourceList',
@@ -53,13 +55,12 @@ const data: Ref<DataConfig<any, ResourceResultVO>> = ref(
     },
   },
 )
-const settingsStore = useSettingsStore()
 
 onMounted(() => {
-  getDataList()
+  // getDataList()
   if (data.value.formMode === 'router') {
     eventBus.on('get-data-list', () => {
-      getDataList()
+      // getDataList()
     })
   }
 })
@@ -73,10 +74,10 @@ onBeforeUnmount(() => {
 if (data.value.formMode === 'router') {
   useKeepAlive(() => eventBus.off('get-data-list'))
 }
-
+const leftTreeRef = ref<InstanceType<typeof LeftTree>>()
 function getDataList() {
   data.value.loading = true
-  treeResourceAndView().then((res) => {
+  leftTreeRef.value?.getTreeList().then((res) => {
     forEach(res, (item) => {
       if (!item.children) {
         item.children = []
@@ -89,47 +90,33 @@ function getDataList() {
   })
 }
 
-function onAdd(row?: ResourceResultVO) {
-  if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
-    tabbar.open({
-      name: 'SystemResourceCreate',
-      query: {
-        parentId: row?.id,
-        sort: row?.parentId ? row.children?.length ? row.children.length + 1 : 1 : data.value.dataList ? data.value.dataList.length + 1 : 1,
-      },
-    })
-  }
-  else {
-    router.push({
-      name: 'SystemResourceCreate',
-      query: {
-        parentId: row?.id,
-        sort: row?.parentId ? row.children?.length ? row.children.length + 1 : 1 : data.value.dataList ? data.value.dataList.length + 1 : 1,
-      },
-    })
-  }
+function onView(parent: any, row: Recordable) {
+  data.value.formModeProps.id = row?.id
+  data.value.formModeProps.visible = true
+  data.value.formModeProps.type = ActionEnum.VIEW
+  row.resourceApiList = row.resourceApiList || []
+  data.value.formModeProps.data = row
+  data.value.formModeProps.parent = parent
+}
+function onAdd(parent: any, row: Recordable) {
+  data.value.formModeProps.id = undefined
+  data.value.formModeProps.visible = true
+  data.value.formModeProps.type = ActionEnum.ADD
+  row.resourceApiList = row.resourceApiList || []
+  data.value.formModeProps.data = row
+  data.value.formModeProps.parent = parent
 }
 
-function onEdit(row: ResourceResultVO) {
-  if (settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.mergeTabsBy !== 'activeMenu') {
-    tabbar.open({
-      name: 'SystemResourcedit',
-      params: {
-        id: row.id,
-      },
-    })
-  }
-  else {
-    router.push({
-      name: 'SystemResourceEdit',
-      params: {
-        id: row.id,
-      },
-    })
-  }
+function onEdit(parent: any, row: Recordable) {
+  data.value.formModeProps.id = row?.id
+  data.value.formModeProps.visible = true
+  data.value.formModeProps.type = ActionEnum.EDIT
+  row.resourceApiList = row.resourceApiList || []
+  data.value.formModeProps.data = row
+  data.value.formModeProps.parent = parent
 }
 
-function onDel(row: ResourceResultVO) {
+function onDel(row: Recordable) {
   if (row.id) {
     crudResource.remove([row.id]).then(() => {
       getDataList()
@@ -172,116 +159,64 @@ function onMove(row: Menu.raw) {
   moveDialog.value.visible = true
   moveDialog.value.data = row
 }
+const form = ref<InstanceType<typeof DetailForm>>()
+const title = computed(() => {
+  const name = data.value.formModeProps.data?.name
+  switch (data.value.formModeProps.type) {
+    case 'add':
+      return `新增【${data.value.formModeProps.data?.applicationName}】中【${data.value.formModeProps.parent?.name}】的子资源`
+    case 'edit':
+      return `编辑【${data.value.formModeProps.data?.applicationName}】中的【${name}】`
+    case 'view':
+      return `查看【${data.value.formModeProps.data?.applicationName}】中的【${name}】`
+    default:
+      return `查看【${data.value.formModeProps.data?.applicationName}】中的【${name}】`
+  }
+})
 </script>
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <PageHeader :title="t('system.resource.table.title')" />
-    <PageMain>
-      <ElSpace>
-        <ElButton type="primary" @click="onAdd()">
-          <template #icon>
-            <SvgIcon name="ep:plus" />
-          </template>
-          {{ t('common.title.addRoot') }}
-        </ElButton>
-      </ElSpace>
-      <ElTable
-        v-loading="data.loading" class="my-4" :data="data.dataList" row-key="id" default-expand-all border
-        stripe highlight-current-row height="100%"
-      >
-        <ElTableColumn prop="title" :label="t('system.resource.title')" min-width="200" fixed="left" />
-
-        <ElTableColumn prop="path" :label="t('system.resource.path')" width="200">
-          <template #default="scope">
-            <span :title="scope.row.path">
-              {{ scope.row.path }}
-            </span>
-          </template>
-        </ElTableColumn>
-        <ElTableColumn prop="component" :label="t('system.resource.component')" width="200">
-          <template #default="scope">
-            <ElTag v-if="scope.row.component === 'Layout'">
-              {{ scope.row.component }}
-            </ElTag>
-            <span v-else :title="scope.row.component">
-              {{ scope.row.component }}
-            </span>
-          </template>
-        </ElTableColumn>
-        <ElTableColumn prop="icon" :label="t('system.resource.icon')" width="90" align="center">
-          <template #default="scope">
-            <div style="display: flex; justify-content: center;">
-              <SvgIcon v-if="scope.row.icon" :name="scope.row.icon" style="font-size: 24px;" />
-            </div>
-          </template>
-        </ElTableColumn>
-        <ElTableColumn prop="activeIcon" :label="t('system.resource.activeIcon')" width="90" align="center">
-          <template #default="scope">
-            <SvgIcon v-if="scope.row.activeIcon" :name="scope.row.activeIcon" style="font-size: 24px;" />
-          </template>
-        </ElTableColumn>
-        <ElTableColumn prop="sidebar" :label="t('system.resource.meta.sidebar')" width="80" align="center">
-          <template #default="scope">
-            <ElTag
-              v-if="typeof scope.row.meta.sidebar === 'boolean'"
-              :type="scope.row.meta.sidebar ? 'success' : 'danger'"
-            >
-              {{ scope.row.meta.sidebar ? '显示' : '隐藏' }}
-            </ElTag>
-          </template>
-        </ElTableColumn>
-        <ElTableColumn prop="breadcrumb" :label="t('system.resource.meta.breadcrumb')" width="80" align="center">
-          <template #default="scope">
-            <ElTag
-              v-if="typeof scope.row.meta.breadcrumb === 'boolean'"
-              :type="scope.row.meta.breadcrumb ? 'success' : 'danger'"
-            >
-              {{ scope.row.meta.breadcrumb ? '显示' : '隐藏' }}
-            </ElTag>
-          </template>
-        </ElTableColumn>
-        <!-- <el-table-column prop="sortValue" label="排序" min-width="80" fixed="right" /> -->
-        <ElTableColumn
-          v-if="auth.auth(['system:resource:add', 'system:resource:edit', 'system:resource:delete'])"
-          align="center" fixed="right" label="操作" width="350"
-        >
-          <template #default="scope">
-            <ElButton
-              v-show="scope.row.resourceType === '10'" v-auth="'system:resource:add'" link plain size="small"
-              type="info" @click="onAdd(scope.row)"
-            >
-              {{ t('common.title.addChildren') }}
-            </ElButton>
-            <ElButton v-auth="'system:resource:edit'" link size="small" type="primary" @click="onEdit(scope.row)">
-              {{ t('common.title.edit') }}
-            </ElButton>
-            <ElPopconfirm v-if="auth.auth('system:resource:del')" :title="t('common.tips.confirmDelete')" @confirm="onDel(scope.row)">
-              <ElButton link size="small" type="danger">
-                {{ t('common.title.delete') }}
+    <PageHeader title="字典管理" />
+    <div class="page-main">
+      <LayoutContainer left-side-width="25%">
+        <template #leftSide>
+          <LeftTree ref="leftTreeRef" @select="onView" @add="onAdd" @edit="onEdit" />
+        </template>
+        <template #default>
+          <div v-show="data.formModeProps.type" class="form">
+            <PageHeader :title="title" class="top-side">
+              <template v-if="data.formModeProps.type !== ActionEnum.VIEW" #default>
+                <ElButton type="primary" @click="form?.reset()">
+                  重置
+                </ElButton>
+                <ElButton type="primary" @click="form?.submit(() => { getDataList() })">
+                  保存
+                </ElButton>
+              </template>
+            </PageHeader>
+            <DetailForm
+              :id="data.formModeProps.data?.id " ref="form" v-model:type="data.formModeProps.type"
+              :current-data="data.formModeProps.data"
+              :parent="data.formModeProps.parent"
+              class="content-side"
+            />
+            <div v-if="data.formModeProps.type !== ActionEnum.VIEW" class="bottom-side">
+              <ElButton type="primary" @click="form?.reset()">
+                重置
               </ElButton>
-            </ElPopconfirm>
-            <ElPopconfirm v-if="auth.auth('system:resource:edit')" :title="t('common.tips.confirmMove')" @confirm="onMoveUp(scope.row)">
-              <template #reference>
-                <ElButton link size="small" type="danger">
-                  {{ t('common.title.moveUp') }}
-                </ElButton>
-              </template>
-            </ElPopconfirm>
-            <ElPopconfirm v-if="auth.auth('system:resource:edit')" :title="t('common.tips.confirmMove')" @confirm="onMoveDown(scope.row)">
-              <template #reference>
-                <ElButton link size="small" type="danger">
-                  {{ t('common.title.moveDown') }}
-                </ElButton>
-              </template>
-            </ElPopconfirm>
-            <ElButton v-auth="'system:resource:edit'" link size="small" type="danger" @click="onMove(scope.row)">
-              {{ t('common.title.move') }}
-            </ElButton>
-          </template>
-        </ElTableColumn>
-      </ElTable>
-    </PageMain>
+              <ElButton type="primary" @click="form?.submit(() => { getDataList() })">
+                保存
+              </ElButton>
+            </div>
+          </div>
+          <div v-show="!data.formModeProps.type" class="empty">
+            请在左侧点击一个资源
+          </div>
+        </template>
+      </LayoutContainer>
+    </div>
+
     <Move :id="moveDialog.id" v-model="moveDialog.visible" :data="moveDialog.data" @success="getDataList" />
   </div>
 </template>
@@ -295,19 +230,61 @@ function onMove(row: Menu.raw) {
   flex-direction: column;
 
   .page-main {
+    display: flex;
     flex: 1;
+    flex-direction: column;
     overflow: auto;
-
-    :deep(.main-container) {
-      flex: 1;
-      overflow: auto;
-      display: flex;
-      flex-direction: column;
+    .flex-container {
+      position: static;
     }
   }
 
   .page-header {
     margin-bottom: 0;
+  }
+}
+.flex-container {
+  :deep(.main .main-container) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+  }
+
+  .empty {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: var(--el-text-color-placeholder);
+  }
+}
+.form{
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  overflow: auto;
+  .top-side {
+    padding-bottom: 0;
+  }
+  .content-side{
+    display: flex;
+    flex: 1;
+    height: 0
+  }
+
+  .bottom-side{
+    display: flex;
+    justify-content: center;
+    padding: var(--container-padding);
+    background-color: var(--g-container-bg);
+    border-top: 1px dashed var(--el-disabled-border-color);
+    transition: background-color .3s
   }
 }
 </style>

@@ -4,7 +4,7 @@ import defHttp from '@/api'
 import { RequestEnum } from '@/enums/httpEnum'
 import type { PageParams, PageResult } from '@/api/model/baseModel'
 
-const MODULAR = 'dict'
+const MODULAR = 'defDict'
 const ServicePrefix = ''
 
 export const Api = {

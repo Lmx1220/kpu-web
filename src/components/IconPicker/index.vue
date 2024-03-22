@@ -1,10 +1,10 @@
-<script lang="ts" setup>
+<script lang="ts" setup xmlns="http://www.w3.org/1999/html">
 import { icons } from '@/iconify'
 
 defineOptions({
   name: 'IconPicker',
+  inheritAttrs: false,
 })
-
 const props = withDefaults(
   defineProps<{
     modelValue: string
@@ -15,13 +15,12 @@ const props = withDefaults(
     size: 'default',
   },
 )
-
 const emits = defineEmits<{
   'update:modelValue': [
     value: string,
   ]
 }>()
-
+const attrs = useAttrs()
 const myValue = ref('')
 watch(() => props.modelValue, (value) => {
   myValue.value = value
@@ -40,7 +39,10 @@ const pagination = ref({
 const iconList = computed(() => {
   let iconsFilter = icons.filter((item) => {
     return item.prefix === activeName.value
-  })[0].icons
+  })[0]?.icons
+  if (!iconsFilter) {
+    iconsFilter = []
+  }
   if (search.value) {
     iconsFilter = iconsFilter.filter((item) => {
       return item.includes(search.value)
@@ -89,66 +91,75 @@ function removeIcon() {
 </script>
 
 <template>
-  <SvgIcon
-    :class="{ empty: myValue === '', [`icon-picker--${size}`]: true }" :name="myValue !== '' ? myValue : 'i-ep:plus'"
-    class="icon-picker" @click="dialogVisible = true"
-  />
-  <ElDialog v-model="dialogVisible" :show-close="true" append-to-body width="600px">
-    <div class="icon-picker-dialog-body">
-      <ElTabs v-model="activeName" class="demo-tabs" tab-position="left" @tab-change="handleTabChange">
-        <ElTabPane v-for="item in icons" :key="item.prefix" :name="item.prefix">
-          <template #label>
-            <div class="icon-label">
-              <div class="name">
-                {{ item.info.name }}
+  <div :class="{ 'empty': myValue === '', [`icon-picker--${size}`]: true, 'is-disabled': attrs.disabled === true }" class="icon-picker" @click="dialogVisible = true">
+    <SvgIcon
+      :name="myValue !== '' ? myValue : 'i-ep:plus'"
+    />
+    <ElDialog v-model="dialogVisible" :show-close="true" append-to-body width="600px">
+      <div class="icon-picker-dialog-body">
+        <ElTabs v-model="activeName" class="demo-tabs" tab-position="left" @tab-change="handleTabChange">
+          <ElTabPane v-for="item in icons" :key="item.prefix" :name="item.prefix">
+            <template #label>
+              <div class="icon-label">
+                <div class="name">
+                  {{ item.info.name }}
+                </div>
+                <div class="total">
+                  {{ item.info.total }} 个
+                </div>
               </div>
-              <div class="total">
-                {{ item.info.total }} 个
-              </div>
-            </div>
-          </template>
-        </ElTabPane>
-      </ElTabs>
-      <div class="main-container">
-        <div class="search-bar">
-          <ElInput v-model="search" clearable placeholder="搜索..." size="large">
-            <template #prefix>
-              <SvgIcon name="i-ep:search" />
             </template>
-          </ElInput>
-        </div>
-        <div class="list-icon">
-          <SvgIcon class="list-icon-item empty" name="i-ep:delete" @click="removeIcon" />
-          <SvgIcon
-            v-for="(icon, index) in currentIconList" :key="index" :name="`${activeName}:${icon}`"
-            class="list-icon-item" @click="chooseIcon(`${activeName}:${icon}`)"
-            @mouseout="hidePreviewIcon" @mouseover="showPreviewIcon(`${activeName}:${icon}`, index + 1)"
+          </ElTabPane>
+        </ElTabs>
+        <div class="main-container">
+          <div class="search-bar">
+            <ElInput v-model="search" clearable placeholder="搜索..." size="large">
+              <template #prefix>
+                <SvgIcon name="i-ep:search" />
+              </template>
+            </ElInput>
+          </div>
+          <div class="list-icon">
+            <SvgIcon class="list-icon-item empty" name="i-ep:delete" @click="removeIcon" />
+            <SvgIcon
+              v-for="(icon, index) in currentIconList" :key="index" :name="`${activeName}:${icon}`"
+              class="list-icon-item" @click="chooseIcon(`${activeName}:${icon}`)"
+              @mouseout="hidePreviewIcon" @mouseover="showPreviewIcon(`${activeName}:${icon}`, index + 1)"
+            />
+            <SvgIcon :class="previewIcon && previewIconPosition" :name="previewIcon" class="list-icon-preview-item" />
+          </div>
+          <ElPagination
+            v-model:current-page="pagination.page" :page-size="pagination.pageSize" :pager-count="5"
+            :total="iconList.length" background layout="prev, pager, next"
           />
-          <SvgIcon :class="previewIcon && previewIconPosition" :name="previewIcon" class="list-icon-preview-item" />
         </div>
-        <ElPagination
-          v-model:current-page="pagination.page" :page-size="pagination.pageSize" :pager-count="5"
-          :total="iconList.length" background layout="prev, pager, next"
-        />
       </div>
-    </div>
-  </ElDialog>
+    </ElDialog>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .icon-picker {
-  width: 40px;
-  height: 40px;
-  line-height: 36px;
-  text-align: center;
+  --icon-picker-size: var(--el-component-size);
+  --icon-picker-font-size: var(--el-font-size-large);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-picker-size);
+  height: var(--icon-picker-size);
+  font-size: var(--icon-picker-font-size);
   color: var(--el-text-color-regular);
-  border: 1px solid var(--el-border-color);
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-  font-size: 24px;
   vertical-align: middle;
-
+  cursor: pointer;
+  border: var(--el-border);
+  border-radius: var(--el-border-radius-base);
+  transition: .3s;
+  &.is-disabled{
+    color: var(--el-text-color-disabled);
+    border-color: var(--el-border-color-light);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
   &:hover {
     border: 1px solid var(--el-border-color-darker);
   }
@@ -167,7 +178,9 @@ function removeIcon() {
 .icon-picker-dialog-body {
   display: flex;
   height: 500px;
+  /*
   margin: calc((var(--el-dialog-padding-primary) + 10px + 30px) * -1) calc(var(--el-dialog-padding-primary) * -1) calc((var(--el-dialog-padding-primary) + 10px) * -1) calc(var(--el-dialog-padding-primary) * -1);
+  */
 
   .el-tabs {
     :deep(.el-tabs__nav-prev),
@@ -227,7 +240,8 @@ function removeIcon() {
   .main-container {
     flex: 1;
     margin-right: 11px;
-
+    display: flex;
+    flex-direction: column;
     .search-bar {
       margin: 0 75px;
 
@@ -240,7 +254,7 @@ function removeIcon() {
       position: relative;
       margin: 15px 0;
       min-height: 160px;
-
+      overflow-y: auto;
       .list-icon-item {
         margin: 5px;
         box-sizing: content-box;

@@ -123,14 +123,14 @@ onMounted(() => {
     isShow.value = !isShow.value
   })
   hotkeys('alt+s', (e) => {
-    if (settingsStore.settings.navSearch.enable) {
+    if (settingsStore.settings.toolbar.navSearch) {
       e.preventDefault()
       toSearch()
       isShow.value = true
     }
   })
   hotkeys('esc', (e) => {
-    if (settingsStore.settings.navSearch.enable) {
+    if (settingsStore.settings.toolbar.navSearch) {
       e.preventDefault()
       isShow.value = false
     }
@@ -170,7 +170,7 @@ function hasChildren(item: RouteRecordRaw) {
   return flag
 }
 
-function getSourceList(arr: RouteRecordRaw[], path?: string, icon?: string, baseBreadcrumb?: { i18n?: string; title: string }[]) {
+function getSourceList(arr: RouteRecordRaw[], basePath?: string, icon?: string, baseBreadcrumb?: { i18n?: string; title: string }[]) {
   arr?.forEach((item) => {
     if (item.meta?.sidebar !== false) {
       if (item.children && hasChildren(item)) {
@@ -179,7 +179,7 @@ function getSourceList(arr: RouteRecordRaw[], path?: string, icon?: string, base
           title: item.meta?.title as string,
           i18n: item.meta?.i18n,
         })
-        getSourceList(item.children, resolveRoutePath(`${path}`, item.path), item.meta?.icon as string, breadcrumb)
+        getSourceList(item.children, resolveRoutePath(basePath, item.path), item.meta?.icon as string, breadcrumb)
       }
       else {
         const breadcrumb = deepClone(baseBreadcrumb) ?? []
@@ -191,9 +191,9 @@ function getSourceList(arr: RouteRecordRaw[], path?: string, icon?: string, base
           icon: item.meta?.icon ?? icon,
           title: typeof item.meta?.title === 'function' ? item.meta.title() : item.meta?.title ?? '',
           i18n: item.meta?.i18n,
-          link: isExternalLink(item.path) ? `${path}${item.path}` : undefined,
+          link: isExternalLink(item.path) ? `${basePath}${item.path}` : undefined,
           breadcrumb,
-          path: resolveRoutePath(`${path}`, item.path),
+          path: resolveRoutePath(basePath, item.path),
         })
       }
     }

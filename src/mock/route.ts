@@ -16,7 +16,7 @@ export default defineFakeRoute([
           children: [
             {
               path: '/multilevel_menu_example',
-              component: 'Layout',
+              component: 'LAYOUT',
               redirect: '/multilevel_menu_example/page',
               name: 'multilevelMenuExample',
               meta: {
@@ -77,7 +77,7 @@ export default defineFakeRoute([
               }],
             }, {
               path: '/permission_example',
-              component: 'Layout',
+              component: 'LAYOUT',
               redirect: '/permission_example/index',
               name: 'permissionExample',
               meta: {
@@ -118,7 +118,7 @@ export default defineFakeRoute([
           },
           children: [{
             path: '/pages_example/general',
-            component: 'Layout',
+            component: 'LAYOUT',
             redirect: '/pages_example/general/manager',
             name: 'pagesExampleGeneral',
             meta: {

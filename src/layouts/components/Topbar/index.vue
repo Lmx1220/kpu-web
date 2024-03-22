@@ -17,7 +17,7 @@ const toolbar = computed(() => {
         return false
       }
       else {
-        return !settingsStore.settings.toolbar[item]
+        return settingsStore.settings.toolbar[item]
       }
     }
     return false

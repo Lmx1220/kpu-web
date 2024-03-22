@@ -5,7 +5,6 @@ interface TreeHelperConfig {
   name: string
 }
 
-// 默认配置
 const DEFAULT_CONFIG: TreeHelperConfig = {
   id: 'id',
   children: 'children',
@@ -15,47 +14,12 @@ const DEFAULT_CONFIG: TreeHelperConfig = {
 
 // 获取配置。  Object.assign 从一个或多个源对象复制到目标对象
 const getConfig = (config: Partial<TreeHelperConfig>) => Object.assign({}, DEFAULT_CONFIG, config)
-export function findNodeByKey(key: string, list: any[], options: Partial<TreeHelperConfig> = {}): Record<string, any> | null {
-  const defaultOptions = getConfig(options)
-  const {
-    id,
-    name,
-    children,
-  } = defaultOptions
 
-  if (key === '0') {
-    return {
-      [id]: '0',
-      [name]: '根节点',
-    }
-  }
-
-  if (!key) {
-    return {
-      [id]: key,
-      [name]: '根节点',
-    }
-  }
-
-  for (let index = 0; index < list.length; index++) {
-    const node = list[index]
-
-    if (node[id] === key) {
-      return node
-    }
-
-    if (node[children]) {
-      const foundNode = findNodeByKey(key, node[children])
-      if (foundNode) {
-        return foundNode
-      }
-    }
-  }
-
-  return null
-}
-// tree from list
-// 列表中的树
+/**
+ * 将list集合转换为tree型集合
+ * @param list
+ * @param config
+ */
 export function listToTree<T = any>(list: any[], config: Partial<TreeHelperConfig> = {}): T[] {
   const conf = getConfig(config) as TreeHelperConfig
   const nodeMap = new Map()
@@ -73,6 +37,11 @@ export function listToTree<T = any>(list: any[], config: Partial<TreeHelperConfi
   return result
 }
 
+/**
+ * 将tree集合转换为list型集合
+ * @param tree
+ * @param config
+ */
 export function treeToList<T = any>(tree: any, config: Partial<TreeHelperConfig> = {}): T {
   config = getConfig(config)
   const { children } = config
@@ -86,6 +55,42 @@ export function treeToList<T = any>(tree: any, config: Partial<TreeHelperConfig>
   return result
 }
 
+/**
+ * 根据 key 在Tree结构集合中 查询节点
+ * @param key 唯一键
+ * @param tree 树列表
+ */
+export function findNodeByKey(key: any, tree: any[], config: Partial<TreeHelperConfig> = {}): any {
+  const conf = getConfig(config) as TreeHelperConfig
+  const { id, name, children } = conf
+  if (key === '0') {
+    return { [id]: '0', [name]: '根节点' }
+  }
+  if (!key) {
+    return { [id]: key, [name]: '根节点' }
+  }
+
+  for (let i = 0; i < tree.length; i++) {
+    const item = tree[i]
+    if (item[id] === key) {
+      return item
+    }
+    if (item[children]) {
+      const res = findNodeByKey(key, item[children])
+      if (res) {
+        return res
+      }
+    }
+  }
+  return null
+}
+
+/**
+ * 在tree结构中根据func回调查找节点
+ * @param tree
+ * @param func
+ * @param config
+ */
 export function findNode<T = any>(
   tree: any,
   func: Fn,
@@ -103,6 +108,12 @@ export function findNode<T = any>(
   return null
 }
 
+/**
+ * 在tree结构中根据func回调查找节点
+ * @param tree
+ * @param func
+ * @param config
+ */
 export function findNodeAll<T = any>(
   tree: any,
   func: Fn,
@@ -247,12 +258,78 @@ export function treeMapEach(
   }
 }
 
-/**
- * 递归遍历树结构
- * @param treeDatas 树
- * @param callBack 回调
- * @param parentNode 父节点
- */
+// 根据父id查找子节点的id
+export function findChildrenByParentId<T = string | number, N = Recordable>(
+  nodeKey: T,
+  treeData: N[] = [],
+  config: Partial<TreeHelperConfig> = {},
+): T[] {
+  const keys: T[] = []
+  config = getConfig(config)
+  const { children: childrenField, id: keyField } = config
+  if (!keyField || !childrenField) {
+    return keys
+  }
+  for (let index = 0; index < treeData.length; index++) {
+    const node = treeData[index]
+    const children = node[childrenField as keyof N]
+    if (nodeKey === node[keyField as keyof N]) {
+      keys.push(node[keyField]!)
+      if (children && children.length) {
+        keys.push(...(findAllKeys(children, config) as T[]))
+      }
+    }
+    else {
+      if (children && children.length) {
+        keys.push(...findChildrenByParentId(nodeKey, children))
+      }
+    }
+  }
+  return keys
+}
+
+export function findAllKeys<N = Recordable>(treeData: N[], config: Partial<TreeHelperConfig> = {}) {
+  const keys: any[] = []
+  config = getConfig(config)
+  const { children: childrenField, id: keyField } = config
+  if (!keyField || !childrenField) {
+    return keys
+  }
+
+  for (let index = 0; index < treeData.length; index++) {
+    const node = treeData[index]
+    keys.push(node[keyField]!)
+    const children = node[childrenField]
+    if (children && children.length) {
+      keys.push(...(findAllKeys(children) as any[]))
+    }
+  }
+  return keys as any[]
+}
+
+// 根据父id查找子节点
+export function getById<T = string | number, N = Recordable>(
+  nodeKey: T,
+  treeData: N[],
+  config: Partial<TreeHelperConfig> = {},
+): N {
+  config = getConfig(config)
+  const { children: childrenField, id: keyField } = config
+  if (!keyField || !childrenField) {
+    return {} as N
+  }
+  const list: N[] = [...treeData]
+  for (let i = 0; i < list.length; i++) {
+    // func 返回true就终止遍历，避免大量节点场景下无意义循环，引起浏览器卡顿
+    if (nodeKey === list[i][keyField]) {
+      return list[i]
+    }
+    childrenField && list[i][childrenField] && list.splice(i + 1, 0, ...list[i][childrenField])
+  }
+  return {} as N
+}
+
+// 遍历树结构
 export function eachTree(treeDatas: any[], callBack: Fn, parentNode = {}) {
   treeDatas.forEach((element) => {
     const newNode = callBack(element, parentNode) || element

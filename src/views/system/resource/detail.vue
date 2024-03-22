@@ -251,7 +251,7 @@ function handleAddNoCache() {
   noCacheShow.value = true
 
   nextTick(() => {
-    InputCacheRef.value.input.focus()
+    InputNoCacheRef.value.input.focus()
   },
   )
 }
@@ -378,11 +378,11 @@ function TableSortable() {
                   {{ t('system.resource.path') }}
                   <span class="label-tip"> 顶级路由请设置 <ElLink
                     type="primary" :underline="true"
-                    @click.prevent="() => form.component = 'Layout'"
+                    @click.prevent="() => form.component = 'LAYOUT'"
                   >Layout</ElLink>”，中间层级路由无需设置</span>
                 </template>
                 <ElInput v-model="form.component" clearable>
-                  <template v-if="form.component !== 'Layout'" #prepend>
+                  <template v-if="form.component !== 'LAYOUT'" #prepend>
                     /src/views/
                   </template>
                 </ElInput>

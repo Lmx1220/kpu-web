@@ -153,8 +153,10 @@ function onDsChange() {
 <template>
   <BaseDialog
     :ok-button-props="{ disabled: !data.batch.selectionDataList.length }" loading-tip="加载"
-    title="导入表结构" @ok="onOk"
+    title="导入表结构" width="80%"
+    @ok="onOk"
     @visible-change="visibleChange"
+    @register="registerModal"
   >
     <SearchBar
       :fold="data.searchFold"

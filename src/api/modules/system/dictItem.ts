@@ -4,7 +4,7 @@ import defHttp from '@/api'
 import { RequestEnum } from '@/enums/httpEnum'
 import type { PageParams, PageResult } from '@/api/model/baseModel'
 
-const MODULAR = 'dictItem'
+const MODULAR = 'defDictItem'
 const ServicePrefix = ''
 export const Api: Record<string, any> = {
   Page: { url: `${ServicePrefix}/${MODULAR}/page`, method: RequestEnum.POST } as AxiosRequestConfig,

@@ -70,16 +70,12 @@ watch([
 })
 onMounted(() => {
   settingsStore.setMode(document.documentElement.clientWidth)
-  window.onresize = () => {
+  window.addEventListener('resize', () => {
     settingsStore.setMode(document.documentElement.clientWidth)
-  }
+  })
   hotkeys('alt+i', () => {
     eventBus.emit('global-system-info-toggle')
   })
-
-  return () => {
-    window.onresize = null
-  }
 })
 
 import.meta.env.VITE_APP_DEBUG_TOOL === 'eruda' && eruda.init()

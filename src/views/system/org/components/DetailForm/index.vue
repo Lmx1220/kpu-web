@@ -4,7 +4,7 @@ import { ElMessage } from 'element-plus'
 import crudOrg from '@/api/modules/system/org'
 import stautsEnum from '@/enums/stautsEnum'
 import type { DictOption, Option } from '@/api/model/baseModel'
-import { findDictMapItemListByKey } from '@/api/modules/common/dict'
+import { asyncFindDictList } from '@/api/modules/common/dict'
 import { ActionEnum } from '@/enums/commonEnum.ts'
 
 export interface Props {
@@ -87,7 +87,7 @@ function getInfo() {
 }
 
 async function getDict() {
-  const options: DictOption = await findDictMapItemListByKey([{
+  const options: DictOption = await asyncFindDictList([{
     type: 'ORG_TYPE',
     extendFirst: true,
   }])

@@ -2,7 +2,7 @@
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import type { DictOption, Option } from '@/api/model/baseModel'
-import { findDictMapItemListByKey } from '@/api/modules/common/dict'
+import { asyncFindDictList } from '@/api/modules/common/dict'
 
 import crudRole from '@/api/modules/system/role'
 import stautsEnum from '@/enums/stautsEnum'
@@ -65,7 +65,7 @@ onMounted(() => {
 })
 
 async function getDict() {
-  const options: DictOption = await findDictMapItemListByKey([{
+  const options: DictOption = await asyncFindDictList([{
     type: 'ROLE_CATEGORY',
     extendFirst: true,
   }])

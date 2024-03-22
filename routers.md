@@ -2,7 +2,7 @@
 ```ts
 const name = [{
   path: '/standard_module_example',
-  component: 'Layout',
+  component: 'LAYOUT',
   name: 'standardModuleExample',
   meta: {
     title: '标准模块',

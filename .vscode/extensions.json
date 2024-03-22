@@ -4,12 +4,14 @@
     "mikestead.dotenv",
     "dbaeumer.vscode-eslint",
     "stylelint.vscode-stylelint",
-    //    "bradlc.vscode-tailwindcss",
     "antfu.iconify",
     "Vue.volar",
-    "Vue.vscode-typescript-vue-plugin",
     "Lokalise.i18n-ally",
-    "antfu.unocss"
+    "antfu.unocss",
+    "vue.volar",
+    "esbenp.prettier-vscode",
+    "mrmlnc.vscode-less",
+    "heybourn.headwind"
   ]
 
 }

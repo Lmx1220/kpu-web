@@ -261,10 +261,10 @@ function handleCommand(command: string) {
       expandAll(false)
       break
     case 'checkStrictly':
-      onStrictlyChange(true)
+      onStrictlyChange(false)
       break
     case 'checkUnStrictly':
-      onStrictlyChange(false)
+      onStrictlyChange(true)
       break
     default:
       break
@@ -284,7 +284,7 @@ const getBindValues = computed(() => {
     ...attrs,
     ...props,
     'defaultExpandedKeys': state.expandedKeys,
-    'checkStrictly': state.checkStrictly,
+    'check-strictly': state.checkStrictly,
     'show-checkbox': props.checkable,
     'node-key': toValue(getFieldNames).key,
     'props': unref(getFieldNames),

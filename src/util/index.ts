@@ -46,7 +46,7 @@ export function isExternalLink(path: string) {
   return /^(https?:|mailto:|tel:)/.test(path)
 }
 
-export function resolveRoutePath(basePath: string, routePath?: string) {
+export function resolveRoutePath(basePath?: string, routePath?: string) {
   return basePath ? path.resolve(basePath, routePath ?? '') : routePath ?? ''
 }
 
