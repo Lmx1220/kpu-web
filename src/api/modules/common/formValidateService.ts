@@ -415,7 +415,8 @@ export async function getValidateRuleObj(Api: AxiosRequestConfig,
     //     )
     //   }
     // }
-    formValidateApi.url = `/form/validator${formValidateApi.url}`
+
+    formValidateApi.url = `/form/validator${Api.url}`
     try {
       if (!formValidateApi.url) {
         ElMessage.error('ServicePrefixEnum枚举类未正确配置！')
