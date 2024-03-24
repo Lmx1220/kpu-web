@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import type { DictOption, Option } from '@/api/model/baseModel'
-import { asyncFindDictList } from '@/api/modules/common/dict'
+
+// import type { DictOption, Option } from '@/api/model/baseModel'
+// import { asyncFindDictList } from '@/api/modules/common/dict'
 import { treeOrg } from '@/api/modules/system/org'
 import crudUser from '@/api/modules/system/user'
 import stautsEnum from '@/enums/stautsEnum'
-import { ActionEnum } from '@/enums/commonEnum.ts'
+import { ActionEnum, DictEnum } from '@/enums/commonEnum.ts'
+import { dictComponentProps } from '@/util/common.ts'
 
 export interface Props {
   id?: string
@@ -32,7 +34,7 @@ const data = ref({
     education: '',
     positionStatus: '',
   },
-  dicts: new Map<string, Option[]>(),
+  // dicts: new Map<string, Option[]>(),
   orgTree: [] as any[],
   rules: {
     username: [
@@ -61,22 +63,22 @@ const data = ref({
 })
 
 async function getDict() {
-  const options: DictOption = await asyncFindDictList([{
-    type: 'SEX',
-    extendFirst: true,
-  }, {
-    type: 'POSITION_STATUS',
-    extendFirst: true,
-  }, {
-    type: 'NATION',
-    extendFirst: true,
-  }, {
-    type: 'EDUCATION',
-    extendFirst: true,
-  }])
-  Object.entries(options).forEach(([key, value]) => {
-    data.value.dicts.set(key, value)
-  })
+  // const options: DictOption = await asyncFindDictList([{
+  //   type: 'SEX',
+  //   extendFirst: true,
+  // }, {
+  //   type: 'POSITION_STATUS',
+  //   extendFirst: true,
+  // }, {
+  //   type: 'NATION',
+  //   extendFirst: true,
+  // }, {
+  //   type: 'EDUCATION',
+  //   extendFirst: true,
+  // }])
+  // Object.entries(options).forEach(([key, value]) => {
+  //   data.value.dicts.set(key, value)
+  // })
 }
 
 const form = ref<FormInstance>()
@@ -167,37 +169,16 @@ defineExpose({
           <ElInput v-model="data.form.mobile" :disabled="type === ActionEnum.VIEW" placeholder="请输入手机号" />
         </ElFormItem>
         <ElFormItem label="性别" prop="sex">
-          <ElRadioGroup v-model="data.form.sex" :disabled="type === ActionEnum.VIEW">
-            <ElRadio v-for="(item, index) in data.dicts.get('SEX')" :key="index" :label="item?.value">
-              {{ item?.label }}
-            </ElRadio>
-          </ElRadioGroup>
+          <ApiRadioGroup
+            v-model="data.form.sex" v-bind="dictComponentProps(DictEnum.SEX)"
+            :disabled="type === ActionEnum.VIEW"
+          />
         </ElFormItem>
         <ElFormItem label="民族" prop="nation">
-          <ElSelect
-            v-model="data.form.nation" :disabled="type === ActionEnum.VIEW" clearable placeholder="请选择"
-            size="default"
-          >
-            <ElOption
-              v-for="item in data.dicts.get('NATION') || []"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </ElSelect>
+          <ApiSelect v-model="data.form.nation" v-bind="dictComponentProps(DictEnum.NATION)" clearable />
         </ElFormItem>
         <ElFormItem label="学历" prop="education">
-          <ElSelect
-            v-model="data.form.education" :disabled="type === ActionEnum.VIEW" clearable placeholder="请选择"
-            size="default"
-          >
-            <ElOption
-              v-for="item in data.dicts.get('EDUCATION') || []"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </ElSelect>
+          <ApiSelect v-model="data.form.education" v-bind="dictComponentProps(DictEnum.EDUCATION)" clearable />
         </ElFormItem>
         <ElDivider content-position="left">
           职位信息
@@ -224,31 +205,11 @@ defineExpose({
             value-key="id"
           />
         </ElFormItem>
-        <ElFormItem label="岗位" prop="org">
-          <ElSelect
-            v-model="data.form.positionId" :disabled="type === ActionEnum.VIEW" clearable placeholder="请选择"
-            size="default"
-          >
-            <ElOption
-              v-for="item in data.dicts.get('POSITION_STATUS') || []"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </ElSelect>
+        <ElFormItem label="岗位" prop="positionId">
+          <ApiSelect v-model="data.form.positionId" v-bind="dictComponentProps(DictEnum.POSITION_STATUS)" clearable />
         </ElFormItem>
         <ElFormItem label="职位状态" prop="positionStatus">
-          <ElSelect
-            v-model="data.form.positionStatus" :disabled="type === ActionEnum.VIEW" clearable placeholder="请选择"
-            size="default"
-          >
-            <ElOption
-              v-for="item in data.dicts.get('POSITION_STATUS') || []"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </ElSelect>
+          <ApiSelect v-model="data.form.positionStatus" v-bind="dictComponentProps(DictEnum.POSITION_STATUS)" clearable />
         </ElFormItem>
       </ElRow>
     </ElForm>

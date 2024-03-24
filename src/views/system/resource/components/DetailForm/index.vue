@@ -136,7 +136,7 @@ function getInfo(id: string) {
   crudResource.detail(id).then((res) => {
     data.value.loading = false
     Object.assign(data.value.form, res)
-    data.value.form.parentName = props.parent?.name as string ?? ''
+    data.value.form.parentName = props.parent?.title as string ?? ''
     data.value.auths = []
     data.value.form.meta = JSON.parse(res.metaJson ?? '')
     data.value.form.meta.auth = data.value.form.meta.auth ?? []

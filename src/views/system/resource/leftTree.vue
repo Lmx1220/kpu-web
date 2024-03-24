@@ -53,7 +53,7 @@ async function getTreeList() {
       dataTree.value.tree,
       (item, parent) => {
         item.key = item.id
-        item.title = item.name
+        item.title = item.title
         item.keyLinks = [...(parent.keyLinks || []), item.id]
         return item
       },
@@ -156,7 +156,7 @@ defineExpose({ getTreeList })
           <ElTag :type="getResourceTagColor(data.resourceType, data.isHidden)" class="mr-1">
             {{ data?.echoMap?.resourceType }}
           </ElTag>
-          <span>{{ data.name }}</span>
+          <span>{{ data.title }}</span>
         </span>
       </template>
       <template #action="{ data }">
