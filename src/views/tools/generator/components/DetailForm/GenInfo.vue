@@ -6,10 +6,9 @@ import yesOrNoEnum from '@/enums/common/yesOrNoEnum'
 import type { FormConfig } from '#/global'
 import type { GenTableUpdateVO } from '@/api/modules/tools/model/genTableModel'
 import { query as getListDatasourceConfigQuery } from '@/api/modules/tools/datasourceConfig'
-import type { DictOption } from '@/api/model/baseModel'
-import { findEnumListByType } from '@/api/modules/common/dict'
 import { resourceAuthTree } from '@/api/modules/system/resource.ts'
 import crudGenerator from '@/api/modules/tools/genTable'
+import { findEnumListByType } from '@/api/modules/common/general.ts'
 
 export interface Props {
   id?: string | string[]
@@ -303,7 +302,7 @@ onMounted(() => {
 })
 
 async function getDict() {
-  const options: DictOption = await findEnumListByType([
+  const options = await findEnumListByType([
     {
       type: 'EntitySuperClassEnum',
       extendFirst: true,
@@ -780,7 +779,7 @@ defineExpose({
               show-checkbox
             >
               <template #default="{ data }">
-                <SvgIcon :name="data.icon" class="mr-1 ml-1" size="16" />
+                <SvgIcon :name="data.icon" class="ml-1 mr-1" size="16" />
                 <ElTag :type="getResourceTagColor(data.resourceType)" class="mr-1">
                   {{ data?.echoMap?.resourceType }}
                 </ElTag>

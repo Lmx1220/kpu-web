@@ -140,7 +140,7 @@ export function downloadFile(response: AxiosResponse<Blob>) {
     const reader = new FileReader()
     reader.onload = (e) => {
       if (e?.target?.readyState === 2) {
-        const data = JSON.parse(<string>e?.target?.result)
+        const data = JSON.parse(e?.target?.result as string)
         ElMessage.warning(data.msg)
       }
     }

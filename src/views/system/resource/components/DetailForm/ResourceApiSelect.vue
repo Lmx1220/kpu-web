@@ -88,7 +88,7 @@ function handleControllerChange(value: string) {
   }
   const selectedOptions = getSelectedOptions(value)
   if (formData.value) {
-    formData.value.uri = selectedOptions
+    formData.value.uri = selectedOptions as any
     oldUri = selectedOptions
   }
 }
@@ -133,7 +133,7 @@ function addSelectedData(obj: any) {
 }
 
 async function delSelectedDataByCard(obj: any) {
-  const uris = formData.value?.uri
+  const uris = formData.value?.uri as any
   if (uris) {
     const index = uris.findIndex((uri: string) => {
       const selected = split(uri, '#')
@@ -148,7 +148,7 @@ async function delSelectedDataByCard(obj: any) {
     }
 
     if (uris && uris.length > 0) {
-      formData.value && (formData.value.uri = uris)
+      formData.value && (formData.value.uri = uris as any)
     }
     else {
       formData.value && (formData.value.uri = undefined)

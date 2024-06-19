@@ -13,7 +13,9 @@ const DEFAULT_CONFIG: TreeHelperConfig = {
 }
 
 // 获取配置。  Object.assign 从一个或多个源对象复制到目标对象
-const getConfig = (config: Partial<TreeHelperConfig>) => Object.assign({}, DEFAULT_CONFIG, config)
+function getConfig(config: Partial<TreeHelperConfig>) {
+  return Object.assign({}, DEFAULT_CONFIG, config)
+}
 
 /**
  * 将list集合转换为tree型集合
@@ -226,7 +228,7 @@ export function forEach<T = any>(
  * @description: Extract tree specified structure
  * @description: 提取树指定结构
  */
-export function treeMap<T = any>(treeData: T[], opt: { children?: string; conversion: Fn }): T[] {
+export function treeMap<T = any>(treeData: T[], opt: { children?: string, conversion: Fn }): T[] {
   return treeData.map(item => treeMapEach(item, opt))
 }
 
@@ -236,7 +238,7 @@ export function treeMap<T = any>(treeData: T[], opt: { children?: string; conver
  */
 export function treeMapEach(
   data: any,
-  { children = 'children', conversion }: { children?: string; conversion: Fn },
+  { children = 'children', conversion }: { children?: string, conversion: Fn },
 ) {
   const haveChildren = Array.isArray(data[children]) && data[children].length > 0
   const conversionData = conversion(data) || {}
@@ -258,6 +260,11 @@ export function treeMapEach(
   }
 }
 
+// 安全地访问对象属性，避免访问undefined或null时出错
+function safePropertyAccess<T, K extends keyof T>(obj: T | null | undefined, key: K): T[K] | undefined {
+  return obj?.[key] // 使用可选链操作符避免错误
+}
+
 // 根据父id查找子节点的id
 export function findChildrenByParentId<T = string | number, N = Recordable>(
   nodeKey: T,
@@ -265,46 +272,43 @@ export function findChildrenByParentId<T = string | number, N = Recordable>(
   config: Partial<TreeHelperConfig> = {},
 ): T[] {
   const keys: T[] = []
-  config = getConfig(config)
-  const { children: childrenField, id: keyField } = config
+  const { children: childrenField, id: keyField } = getConfig(config)
   if (!keyField || !childrenField) {
     return keys
   }
-  for (let index = 0; index < treeData.length; index++) {
-    const node = treeData[index]
-    const children = node[childrenField as keyof N]
-    if (nodeKey === node[keyField as keyof N]) {
-      keys.push(node[keyField]!)
-      if (children && children.length) {
-        keys.push(...(findAllKeys(children, config) as T[]))
+  for (const node of treeData) {
+    const nodeKeyVal = safePropertyAccess(node, keyField as keyof N)
+    const children = safePropertyAccess(node, childrenField as keyof N)
+    if (nodeKeyVal === nodeKey) {
+      keys.push(nodeKeyVal as T)
+      if (Array.isArray(children)) {
+        keys.push(...findChildrenByParentId(nodeKey, children as N[], config))
       }
     }
-    else {
-      if (children && children.length) {
-        keys.push(...findChildrenByParentId(nodeKey, children))
-      }
+    else if (Array.isArray(children)) {
+      keys.push(...findChildrenByParentId(nodeKey, children as N[], config))
     }
   }
   return keys
 }
 
-export function findAllKeys<N = Recordable>(treeData: N[], config: Partial<TreeHelperConfig> = {}) {
+export function findAllKeys<N = Recordable>(treeData: N[], config: Partial<TreeHelperConfig> = {}): any[] {
   const keys: any[] = []
-  config = getConfig(config)
-  const { children: childrenField, id: keyField } = config
+  const { children: childrenField, id: keyField } = getConfig(config)
   if (!keyField || !childrenField) {
     return keys
   }
-
-  for (let index = 0; index < treeData.length; index++) {
-    const node = treeData[index]
-    keys.push(node[keyField]!)
-    const children = node[childrenField]
-    if (children && children.length) {
-      keys.push(...(findAllKeys(children) as any[]))
+  for (const node of treeData) {
+    const nodeKeyVal = safePropertyAccess(node, keyField as keyof N)
+    const children = safePropertyAccess(node, childrenField as keyof N)
+    if (nodeKeyVal !== undefined) {
+      keys.push(nodeKeyVal)
+    }
+    if (Array.isArray(children)) {
+      keys.push(...findAllKeys(children as N[], config))
     }
   }
-  return keys as any[]
+  return keys
 }
 
 // 根据父id查找子节点
@@ -320,11 +324,12 @@ export function getById<T = string | number, N = Recordable>(
   }
   const list: N[] = [...treeData]
   for (let i = 0; i < list.length; i++) {
+    const nodeKeyVal = safePropertyAccess(list[i], keyField as keyof N)
     // func 返回true就终止遍历，避免大量节点场景下无意义循环，引起浏览器卡顿
-    if (nodeKey === list[i][keyField]) {
+    if (nodeKey === nodeKeyVal) {
       return list[i]
     }
-    childrenField && list[i][childrenField] && list.splice(i + 1, 0, ...list[i][childrenField])
+    childrenField && safePropertyAccess(list[i], childrenField as keyof N) && list.splice(i + 1, 0, ...safePropertyAccess(list[i], childrenField as keyof N) as N[])
   }
   return {} as N
 }

@@ -46,12 +46,12 @@ export default defineFakeRoute([
   {
     url: '/mock/member/edit/password',
     method: 'post',
-    response: {
+    response: () => ({
       msg: '',
       code: 1,
       data: {
         isSuccess: true,
       },
-    },
+    }),
   },
 ])

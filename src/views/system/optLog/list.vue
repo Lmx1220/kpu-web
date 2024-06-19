@@ -2,14 +2,13 @@
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
-import type { DictOption, Option } from '@/api/model/baseModel'
-import { findEnumListByType } from '@/api/modules/common/dict'
 import type { OptLogPageQuery } from '@/api/modules/system/model/optLogModel'
 import crudOptLog, { clear } from '@/api/modules/system/optLog'
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
 import { ActionEnum } from '@/enums/commonEnum.ts'
+import { findEnumListByType } from '@/api/modules/common/general.ts'
 
 defineOptions({
   name: 'SystemOptLogList',
@@ -59,7 +58,7 @@ const data = ref<DataConfig>({
   },
   // 列表数据
   dataList: [],
-  dicts: new Map<string, Option[]>(),
+  dicts: new Map<string, any>(),
 })
 
 const table = ref<InstanceType<typeof ElTable>>()
@@ -179,7 +178,7 @@ function onCommand(type: number) {
 }
 
 async function getDict() {
-  const options: DictOption = await findEnumListByType([{
+  const options = await findEnumListByType([{
     type: 'LogType',
     extendFirst: true,
   }])
@@ -199,7 +198,7 @@ async function getDict() {
       >
         <template #default="{ fold }">
           <ElForm
-            :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
+            :model="data.search" class="search-form" inline-message inline label-suffix="：" label-width="100px"
             size="default"
           >
             <ElFormItem label="日志类型">
@@ -325,9 +324,9 @@ async function getDict() {
         </ElDropdown>
       </ElSpace>
       <ElTable
-        ref="table" v-loading="data.loading" :data="data.dataList" border class="my-4" height="100%"
-        highlight-current-row
-        stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
+        ref="table" v-loading="data.loading" :data="data.dataList" class="my-4" height="100%"
+
+        highlight-current-row stripe border @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
         <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
         <ElTableColumn align="center" label="序号" width="100">

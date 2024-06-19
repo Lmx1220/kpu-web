@@ -63,7 +63,7 @@ function findRealSrc() {
   else {
     timeDelayReqFindUrlById(props.fileId).then((res) => {
       if (res && res.code === 0) {
-        realSrc.value = res.data
+        realSrc.value = res.data as string
       }
     })
   }

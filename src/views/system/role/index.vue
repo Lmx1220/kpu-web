@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
-import type { DictOption, Option } from '@/api/model/baseModel'
-import { asyncFindDictList } from '@/api/modules/common/dict'
 import type { RolePageQuery } from '@/api/modules/system/model/roleModel'
 import crudRole from '@/api/modules/system/role'
 import { getCategoryColor } from '@/enums/colorEnum'
@@ -14,6 +12,7 @@ import FormMode from '@/views/system/role/components/FormMode/index.vue'
 import MenuTree from '@/views/system/role/components/MenuTree.vue'
 import type { DataConfig } from '@/types/global'
 import { ActionEnum } from '@/enums/commonEnum.ts'
+import { asyncFindDictList } from '@/api/modules/common/general.ts'
 
 defineOptions({
   name: 'SystemRoleList',
@@ -57,7 +56,7 @@ const data = ref<DataConfig>({
   },
   // 列表数据
   dataList: [],
-  dicts: new Map<string, Option[]>(),
+  dicts: new Map<string, any>(),
 })
 
 const table = ref<InstanceType<typeof ElTable>>()
@@ -194,7 +193,7 @@ function onBindUsers(row: any) {
 }
 
 async function getDict() {
-  const options: DictOption = await asyncFindDictList([{
+  const options = await asyncFindDictList([{
     type: 'ROLE_CATEGORY',
     extendFirst: true,
   }])
@@ -212,7 +211,7 @@ async function getDict() {
         <SearchBar :fold="data.searchFold" :show-toggle="false">
           <template #default="{ fold }">
             <ElForm
-              :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
+              :model="data.search" class="search-form" inline-message inline label-suffix="：" label-width="100px"
               size="default"
             >
               <ElFormItem label="名称">
@@ -277,8 +276,8 @@ async function getDict() {
           </ElButton>
         </ElSpace>
         <ElTable
-          ref="table" v-loading="data.loading" :data="data.dataList" border class="my-4" height="100%"
-          highlight-current-row stripe @sort-change="sortChange"
+          ref="table" v-loading="data.loading" :data="data.dataList" class="my-4" height="100%"
+          highlight-current-row stripe border @sort-change="sortChange"
           @current-change="data.current = $event || {}"
           @selection-change="data.batch.selectionDataList = $event"
         >
@@ -337,7 +336,7 @@ async function getDict() {
       </LayoutContainer>
     </div>
     <FormMode
-      v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id"
+      v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id || ''"
       v-model="data.formModeProps.visible"
       :mode="data.formMode" :type="data.formModeProps.type" @success="getDataList"
     />

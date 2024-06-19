@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<{
 })
 
 const emits = defineEmits<{
-  change: [DefResourceApiVO[]]
+  change: [any[]]
 }>()
 const resourceApiList = defineModel<any[]>({
   default: () => [],
@@ -154,7 +154,7 @@ function handleEditSuccess(addData: DefResourceApiVO) {
 </script>
 
 <template>
-  <div class="resource-api border-solid border-1 border-stone-2 p-4 w-full">
+  <div class="resource-api w-full border-1 border-stone-2 border-solid p-4">
     <PageHeader class="w-full" title="资源关联的接口">
       <template v-if="props.type !== ActionEnum.VIEW" #default>
         <ElButton size="default" round @click="handleAdd">
@@ -165,7 +165,7 @@ function handleEditSuccess(addData: DefResourceApiVO) {
         </ElButton>
       </template>
     </PageHeader>
-    <ElTable ref="authsTableRef" :key="authsTableKey" :data="resourceApiList" border stripe highlight-current-row>
+    <ElTable ref="authsTableRef" :key="authsTableKey" :data="resourceApiList" stripe highlight-current-row border>
       <ElTableColumn align="center" fixed :label="t('system.resource.sortValue')" prop="sortValue" width="60">
         <template v-if="props.type !== ActionEnum.VIEW" #header>
           <ElButton type="primary" size="small" plain circle @click="() => handleAddAuths()">

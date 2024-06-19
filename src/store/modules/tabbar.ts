@@ -332,14 +332,14 @@ const useTabbarStore = defineStore(
       list.value.splice(newIndex, 0, list.value.splice(oldIdex, 1)[0])
     }
     // 修改标签页标题
-    function editTitle({ tabId, title }: { tabId: string; title: string | Function }) {
+    function editTitle({ tabId, title }: { tabId: string, title: string }) {
       list.value.forEach((item) => {
         if (item.tabId === tabId && item.title !== title) {
           item.title = title
         }
       })
     }
-    function setCustomTitle({ tabId, title }: { tabId: string;title?: string }) {
+    function setCustomTitle({ tabId, title }: { tabId: string, title?: string }) {
       list.value.forEach((item) => {
         if (item.tabId === tabId) {
           const customTitle = item.customTitleList.find(title => title.fullPath === item.fullPath)

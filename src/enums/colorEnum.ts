@@ -3,7 +3,7 @@ export function getCategoryColor(category: string) {
     case '10':
       return 'success'
     case '20':
-      return ''
+      return 'primary'
     case '30':
       return 'danger'
     default:

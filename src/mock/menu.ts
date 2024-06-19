@@ -622,33 +622,33 @@ export default defineFakeRoute([
   {
     url: '/mock/menu/create',
     method: 'post',
-    response: {
+    response: () => ({
       msg: '',
       code: 1,
       data: {
         isSuccess: true,
       },
-    },
+    }),
   }, {
     url: '/mock/menu/edit',
     method: 'post',
-    response: {
+    response: () => ({
       msg: '',
       code: 1,
       data: {
         isSuccess: true,
       },
-    },
+    }),
   }, {
     url: '/mock/menu/delete',
     method: 'post',
-    response: {
+    response: () => ({
       msg: '',
       code: 1,
       data: {
         isSuccess: true,
       },
-    },
+    }),
   },
 ])
 // const menuThreeList = [

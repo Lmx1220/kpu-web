@@ -3,9 +3,8 @@ import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import crudOrg from '@/api/modules/system/org'
 import stautsEnum from '@/enums/stautsEnum'
-import type { DictOption, Option } from '@/api/model/baseModel'
-import { asyncFindDictList } from '@/api/modules/common/dict'
 import { ActionEnum } from '@/enums/commonEnum.ts'
+import { asyncFindDictList } from '@/api/modules/common/general.ts'
 
 export interface Props {
   id?: string
@@ -61,7 +60,7 @@ const data = ref({
       },
     ],
   },
-  dicts: new Map<string, Option[]>(),
+  dicts: new Map<string, any>(),
 })
 
 const form = ref<FormInstance>()
@@ -87,7 +86,7 @@ function getInfo() {
 }
 
 async function getDict() {
-  const options: DictOption = await asyncFindDictList([{
+  const options = await asyncFindDictList([{
     type: 'ORG_TYPE',
     extendFirst: true,
   }])

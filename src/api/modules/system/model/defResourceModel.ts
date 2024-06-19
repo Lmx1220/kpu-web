@@ -96,4 +96,5 @@ export interface DefResourceApiVO {
   requestMethod: string
   isInput: boolean
   tempId?: string
+  service?: string
 }

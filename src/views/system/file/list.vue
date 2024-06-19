@@ -2,8 +2,6 @@
 import { ElMessage, ElMessageBox, ElTable } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
-import { findEnumListByType } from '@/api/modules/common/dict'
-import type { DictOption } from '@/api/model/baseModel'
 import crudFile from '@/api/modules/system/file'
 import type { FilePageQuery, FileResultVO } from '@/api/modules/system/model/fileModel'
 import { downloadIds, uploadApi } from '@/api/modules/system/upload'
@@ -11,6 +9,7 @@ import type { DataConfig } from '@/types/global'
 import { downloadFile } from '@/util'
 import eventBus from '@/util/eventBus'
 import usePagination from '@/util/usePagination.js'
+import { findEnumListByType } from '@/api/modules/common/general.ts'
 
 defineOptions({
   name: 'SystemFileList',
@@ -96,7 +95,7 @@ async function getDataList(current?: number) {
   }, 100)
 }
 async function getDict() {
-  const options: DictOption = await findEnumListByType([{
+  const options = await findEnumListByType([{
     type: 'FileStorageType',
     extendFirst: true,
   }, {
@@ -173,7 +172,7 @@ function handleChange(list: FileResultVO[]) {
       >
         <template #default="{ fold }">
           <ElForm
-            :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
+            :model="data.search" class="search-form" inline-message inline label-suffix="：" label-width="100px"
             size="default"
           >
             <ElFormItem label="原始文件名">
@@ -279,8 +278,8 @@ function handleChange(list: FileResultVO[]) {
         </ElButton>
       </ElSpace>
       <ElTable
-        ref="table" v-loading="data.loading" :data="data.dataList" border class="my-4" height="100%" highlight-current-row
-        stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
+        ref="table" v-loading="data.loading" :data="data.dataList" class="my-4" height="100%"
+        highlight-current-row stripe border @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
         <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
         <ElTableColumn align="center" label="文件预览" prop="path">

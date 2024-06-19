@@ -211,14 +211,14 @@ defineExpose({
     </template>
   </ElSpace>
   <div class="title flex items-center">
-    <div class="flex-1 flex items-center cursor-pointer">
-      <ElInput v-model="filterText" class="mr-1 ml-5 " placeholder="搜素">
+    <div class="flex flex-1 cursor-pointer items-center">
+      <ElInput v-model="filterText" class="ml-5 mr-1" placeholder="搜素">
         <template #append>
           <SvgIcon name="i-ep:search" />
         </template>
       </ElInput>
       <ElDropdown class="inline" @command="handleCommand">
-        <SvgIcon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
+        <SvgIcon :size="26" class="ml-1 mr-1" name="i-ant-design:more-outlined" />
         <template #dropdown>
           <ElDropdownMenu>
             <ElDropdownItem command="expand">
@@ -246,7 +246,7 @@ defineExpose({
           class="custom-tree-node"
         >
           <span>
-            <ElTag :type="data.type === '01' ? 'danger' : ''" class="mr-1">
+            <ElTag :type="data.type === '01' ? 'danger' : 'primary'" class="mr-1">
               {{ data?.echoMap?.type }} {{ data.type }}
             </ElTag>
             {{ node.label }}</span>

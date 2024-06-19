@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { tree } from '@/api/modules/system/resource.ts'
+import { remove, tree } from '@/api/modules/system/resource.ts'
 import { query } from '@/api/modules/system/defApplication.ts'
 import { eachTree, findNodeByKey } from '@/util/helper/treeHelper.ts'
 import type { KeyType } from '@/components/BasicTree/tree.ts'
@@ -53,6 +53,7 @@ async function getTreeList() {
       dataTree.value.tree,
       (item, parent) => {
         item.key = item.id
+        // eslint-disable-next-line no-self-assign
         item.title = item.title
         item.keyLinks = [...(parent.keyLinks || []), item.id]
         return item
@@ -79,8 +80,8 @@ function handleTreeSelect(keys: KeyType[]) {
     emits('select', parent, node)
   }
 }
-function onMove() {
-
+function onMove(data?: any) {
+  console.log(data)
 }
 function onAdd(key?: string) {
   const parent = findNodeByKey(key || '0', dataTree.value.tree)
@@ -109,10 +110,10 @@ function onDel(row?: any) {
     ids.push(row.id)
   }
   else {
-    ids = data.value.batch.selectionDataList.map(item => item.id)
+    ids = dataTree.value.batch.selectionDataList.map(item => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
-    crudR.remove(ids).then(() => {
+    remove(ids).then(() => {
       getTreeList()
       ElMessage.success({
         message: '删除成功',
@@ -130,7 +131,7 @@ defineExpose({ getTreeList })
     <div>
       <ElSelect
         v-model="dataTree.search.applicationId" clearable placeholder="" size="default"
-        class="w-full mb"
+        class="mb w-full"
         @change="() => getTreeList()"
       >
         <ElOption
@@ -152,7 +153,7 @@ defineExpose({ getTreeList })
     <BasicTree :tree-data="dataTree.tree" title="资源列表" checkable toolbar search @select="handleTreeSelect">
       <template #title="{ data }">
         <span>
-          <SvgIcon v-if="data.icon" :name="data.icon" :size="16" class="mr-1 ml-1" />
+          <SvgIcon v-if="data.icon" :name="data.icon" :size="16" class="ml-1 mr-1" />
           <ElTag :type="getResourceTagColor(data.resourceType, data.isHidden)" class="mr-1">
             {{ data?.echoMap?.resourceType }}
           </ElTag>

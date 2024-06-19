@@ -78,12 +78,12 @@ const leftTreeRef = ref<InstanceType<typeof LeftTree>>()
 function getDataList() {
   data.value.loading = true
   leftTreeRef.value?.getTreeList().then((res) => {
-    forEach(res, (item) => {
+    forEach(res as any, (item) => {
       if (!item.children) {
         item.children = []
       }
     })
-    data.value.dataList = res
+    data.value.dataList = res as any
     data.value.loading = false
   }).catch(() => {
     data.value.loading = false
@@ -148,7 +148,7 @@ function onMoveDown(row: Menu.raw) {
   })
 }
 
-const moveDialog = ref<{ id?: string; visible: boolean; data: object }>({
+const moveDialog = ref<{ id?: string, visible: boolean, data: object }>({
   id: undefined,
   visible: false,
   data: {},

@@ -48,34 +48,34 @@ export default defineFakeRoute([
   {
     url: '/mock/system/role',
     method: 'post',
-    response: {
+    response: () => ({
       errorMsg: '',
       code: 0,
       data: {
         isSuccess: true,
       },
-    },
+    }),
   },
   {
     url: '/mock/system/role',
     method: 'put',
-    response: {
+    response: () => ({
       errorMsg: '',
       code: 0,
       data: {
         isSuccess: true,
       },
-    },
+    }),
   },
   {
     url: '/mock/system/role',
     method: 'delete',
-    response: {
+    response: () => ({
       errorMsg: '',
       code: 0,
       data: {
         isSuccess: true,
       },
-    },
+    }),
   },
 ])

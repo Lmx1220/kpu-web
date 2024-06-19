@@ -1,5 +1,6 @@
 import type { FormRules } from 'element-plus'
 import type { RouteRecordRaw } from 'vue-router'
+import type { NativeElements, ReservedProps, VNode } from '@vue/runtime-dom'
 import type { ActionEnum } from '@/enums/commonEnum'
 import type { LocaleType } from '#/config'
 
@@ -450,6 +451,25 @@ interface CustomTitleList {
   fullPath: string
   title?: string
 }
+
+declare global {
+  namespace JSX {
+    export interface Element extends VNode {}
+    export interface ElementClass {
+      $props: {}
+    }
+    export interface ElementAttributesProperty {
+      $props: {}
+    }
+    export interface IntrinsicElements extends NativeElements {
+      // allow arbitrary elements
+      // @ts-expect-error suppress ts:2374 = Duplicate string index signature.
+      [name: string]: any
+    }
+    export interface IntrinsicAttributes extends ReservedProps {}
+  }
+}
+
 declare namespace Route {
   interface recordMainRaw {
     meta?: {
@@ -484,6 +504,7 @@ declare namespace Menu {
       activeIcon?: string
       i18n?: string
       defaultOpened?: boolean
+      newWindow?: boolean
       auth?: string | string[]
       sidebar?: boolean
       badge?: boolean | number | string | Function

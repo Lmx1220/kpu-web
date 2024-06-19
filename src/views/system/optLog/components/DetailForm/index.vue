@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import type { DictOption, Option } from '@/api/model/baseModel'
-import { findEnumListByType } from '@/api/modules/common/dict'
 import crudOptLog from '@/api/modules/system/optLog'
 import { ActionEnum } from '@/enums/commonEnum.ts'
+import { findEnumListByType } from '@/api/modules/common/general.ts'
 
 export interface Props {
   id?: string
@@ -52,7 +51,7 @@ const data = ref({
       },
     ],
   },
-  dicts: new Map<string, Option[]>(),
+  dicts: new Map<string, any>(),
 })
 
 const form = ref<FormInstance>()
@@ -75,7 +74,7 @@ function getInfo() {
 }
 
 async function getDict() {
-  const options: DictOption = await findEnumListByType([{
+  const options = await findEnumListByType([{
     type: 'LogType',
     extendFirst: true,
   },

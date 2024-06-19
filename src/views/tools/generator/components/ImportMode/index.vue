@@ -156,7 +156,6 @@ function onDsChange() {
     title="导入表结构" width="80%"
     @ok="onOk"
     @visible-change="visibleChange"
-    @register="registerModal"
   >
     <SearchBar
       :fold="data.searchFold"
@@ -164,7 +163,7 @@ function onDsChange() {
     >
       <template #default="{ fold }">
         <ElForm
-          :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
+          :model="data.search" class="search-form" inline-message inline label-suffix="：" label-width="100px"
           size="default"
         >
           <ElFormItem label="数据源">
@@ -196,8 +195,8 @@ function onDsChange() {
       </template>
     </SearchBar>
     <ElTable
-      ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
-      stripe @selection-change="data.batch.selectionDataList = $event"
+      ref="table" v-loading="data.loading" :data="data.dataList" class="list-table" height="100%"
+      highlight-current-row stripe border @selection-change="data.batch.selectionDataList = $event"
     >
       <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
       <ElTableColumn align="center" label="序号" width="100">

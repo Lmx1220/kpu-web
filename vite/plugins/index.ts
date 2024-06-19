@@ -16,6 +16,7 @@ import createVisualizer from './visualizer'
 import createConsole from './console'
 import createArchiver from './archiver'
 import appInfo from './app-info'
+import createDevtools from "./devtools";
 
 export default function creactVitePlugins(viteEnv, isBuild = false) {
   const vitePlugins: (PluginOption | PluginOption[])[] = [
@@ -30,7 +31,7 @@ export default function creactVitePlugins(viteEnv, isBuild = false) {
       ],
     }),
   ]
-  // vitePlugins.push(createDevtools(viteEnv))
+  vitePlugins.push(createDevtools(viteEnv))
   vitePlugins.push(createAutoImport())
   vitePlugins.push(createComponents())
   vitePlugins.push(createUnoCss())

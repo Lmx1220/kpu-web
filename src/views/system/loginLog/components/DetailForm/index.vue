@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import type { DictOption, Option } from '@/api/model/baseModel'
-import { asyncFindDictList } from '@/api/modules/common/dict'
 import crudLoginLog from '@/api/modules/system/loginLog'
 import { ActionEnum } from '@/enums/commonEnum.ts'
+import { asyncFindDictList } from '@/api/modules/common/general.ts'
 
 export interface Props {
   id?: string
@@ -41,7 +40,7 @@ const data = ref({
       },
     ],
   },
-  dicts: new Map<string, Option[]>(),
+  dicts: new Map<string, any>(),
 })
 
 const form = ref<FormInstance>()
@@ -62,7 +61,7 @@ function getInfo() {
 }
 
 async function getDict() {
-  const options: DictOption = await asyncFindDictList([{
+  const options = await asyncFindDictList([{
     type: 'LoginStatusEnum',
     extendFirst: true,
   }])

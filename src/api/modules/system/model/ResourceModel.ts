@@ -1,6 +1,8 @@
 export interface ResourcePageQuery {
   code?: string // 编码
   title?: string // 标题
+  applicationId?: string
+  applicationName?: string
   name?: string // 名称
   resourceType?: string // 类型
   remarks?: string // 描述
@@ -102,4 +104,12 @@ export interface ResourceResultVO {
   meta: Record<string, any>
   auths: Record<string, any>[]
   children?: Record<string, any>[]
+  //
+  parentName?: string
+  applicationId?: string
+  subGroup?: string
+  fieldIsSecret?: boolean
+  fieldIsEdit?: boolean
+  isHidden?: boolean
+  resourceApiList?: any
 }

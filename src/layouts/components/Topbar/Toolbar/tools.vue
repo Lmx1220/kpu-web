@@ -28,50 +28,64 @@ const components = computed(() => {
   }
   return components
 })
-const regexDigit: RegExp = /\d/
+
 const specialChars: string[] = ['-', '_', '/', '.']
 
 function isUpperCase(char: string): boolean {
-  return !regexDigit.test(char) && char !== char.toLowerCase()
+  return char === char.toUpperCase() && char !== char.toLowerCase()
 }
 
 function splitStringBySpecialChars(input: string, specialCharsArray?: string[]): string[] {
   const specialCharsToUse = specialCharsArray ?? specialChars
   const result: string[] = []
+
   if (!input || typeof input !== 'string') {
     return result
   }
+
   let temp: string = ''
-  let prevIsSpecialChar: boolean | undefined, currentIsSpecialChar: boolean
+  let prevIsSpecialChar: boolean | undefined
+  let currentIsSpecialChar: boolean
+
   for (const char of input) {
-    const isSpecialChar: boolean = specialCharsToUse.includes(char)
-    if (isSpecialChar) {
-      result.push(temp)
-      temp = ''
-      prevIsSpecialChar = undefined
+    currentIsSpecialChar = specialCharsToUse.includes(char)
+
+    if (currentIsSpecialChar) {
+      if (temp.length > 0) {
+        result.push(temp)
+        temp = ''
+      }
+      prevIsSpecialChar = true
       continue
     }
-    const isUpper: boolean = isUpperCase(char)
-    if (!currentIsSpecialChar) {
-      if (prevIsSpecialChar === false && isUpper) {
+
+    const isUpper = isUpperCase(char)
+
+    if (prevIsSpecialChar === false && isUpper) {
+      if (temp.length > 0) {
         result.push(temp)
         temp = char
-        prevIsSpecialChar = isUpper
-        continue
       }
-      if (prevIsSpecialChar === true && !isUpper && temp.length > 1) {
-        const lastChar: string = temp.charAt(temp.length - 1)
-        result.push(temp.slice(0, Math.max(0, temp.length - 1)))
-        temp = lastChar + char
-        prevIsSpecialChar = isUpper
-        continue
-      }
+      prevIsSpecialChar = isUpper
+      continue
     }
+
+    if (prevIsSpecialChar === true && !isUpper && temp.length > 1) {
+      const lastChar = temp.charAt(temp.length - 1)
+      result.push(temp.slice(0, Math.max(0, temp.length - 1)))
+      temp = lastChar + char
+      prevIsSpecialChar = isUpper
+      continue
+    }
+
     temp += char
     prevIsSpecialChar = isUpper
-    currentIsSpecialChar = isSpecialChar
   }
-  result.push(temp)
+
+  if (temp.length > 0) {
+    result.push(temp)
+  }
+
   return result
 }
 

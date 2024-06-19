@@ -99,7 +99,7 @@ const data = ref<FormConfig<ResourceResultVO>>({
       trigger: 'blur',
     }],
   },
-  dicts: new Map<string, Option[]>(),
+  dicts: new Map<string, any>(),
 })
 
 const form = ref<FormInstance>()
@@ -280,7 +280,7 @@ defineExpose({
 </script>
 
 <template>
-  <ElForm ref="form" v-loading="data.loading" class="w-full h-full" :model="data.form" :rules="data.rules" label-position="top">
+  <ElForm ref="form" v-loading="data.loading" class="h-full w-full" :model="data.form" :rules="data.rules" label-position="top">
     <div class="form-left-side">
       <PageHeader v-if="data.form.parentId" title="基础配置" content="标准路由配置，包含 path/redirect/name/component" />
       <ElRow v-if="data.form.parentId" :gutter="30" style="padding: 20px;">

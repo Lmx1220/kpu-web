@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { ElMessage } from 'element-plus'
-import type { DictOption } from '@/api/model/baseModel'
-import { findEnumListByType } from '@/api/modules/common/dict'
 import { downloadZip, generatorCode, getFieldTemplate, getFileOverrideStrategy } from '@/api/modules/tools/genTable'
 import { downloadFile } from '@/util'
 import { isArray } from '@/util/is'
 import { ActionEnum } from '@/enums/commonEnum.ts'
+import { findEnumListByType } from '@/api/modules/common/general.ts'
 
 defineOptions({
   name: 'BuildNow',
@@ -46,7 +45,7 @@ onMounted(() => {
 })
 
 async function getDict() {
-  const options: DictOption = await findEnumListByType([
+  const options = await findEnumListByType([
     {
       type: 'FileOverrideStrategyEnum',
       extendFirst: true,
