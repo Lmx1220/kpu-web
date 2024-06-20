@@ -46,19 +46,19 @@ function open() {
 
 <style lang="scss" scoped>
 .link-view {
-  display: flex;
-  flex-direction: column;
   position: absolute;
   top: 0;
   left: 0;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 
   .page-main {
     display: flex;
+    flex: 1;
     flex-direction: column;
     height: 100%;
-    flex: 1;
 
     .container {
       display: flex;
@@ -75,8 +75,8 @@ function open() {
       }
 
       .link {
-        margin: 10px 0;
         max-width: 300px;
+        margin: 10px 0;
         font-size: 14px;
         color: var(--el-text-color-disabled);
 

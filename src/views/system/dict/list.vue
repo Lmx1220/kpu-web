@@ -164,7 +164,7 @@ function onDel(row?: any) {
         <SearchBar :fold="data.searchFold" :show-toggle="false">
           <template #default>
             <ElForm
-              :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
+              :model="data.search" class="search-form" inline-message inline label-suffix="：" label-width="100px"
               size="default"
             >
               <ElFormItem label="标识">
@@ -208,8 +208,8 @@ function onDel(row?: any) {
           </ElButton>
         </ElSpace>
         <ElTable
-          ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
-          stripe @sort-change="sortChange"
+          ref="table" v-loading="data.loading" :data="data.dataList" class="list-table" height="100%"
+          highlight-current-row stripe border @sort-change="sortChange"
           @current-change="data.current = $event || {}"
           @selection-change="data.batch.selectionDataList = $event"
         >
@@ -263,10 +263,10 @@ function onDel(row?: any) {
 
 .absolute-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 
   .page-header {
     margin-bottom: 0;
@@ -277,29 +277,29 @@ function onDel(row?: any) {
     overflow: auto;
 
     :deep(.main-container) {
-      flex: 1;
-      overflow: auto;
       display: flex;
+      flex: 1;
       flex-direction: column;
+      overflow: auto;
     }
 
     .flex-container {
       position: static;
 
       :deep(.main-container) {
-        overflow: auto;
         display: flex;
         flex-direction: column;
+        overflow: auto;
       }
 
       :deep(.right-side) {
-        height: 100%;
         display: flex;
         flex-direction: column;
+        height: 100%;
 
         > .empty {
-          flex: 1;
           display: flex;
+          flex: 1;
           align-items: center;
           justify-content: center;
           font-size: 32px;

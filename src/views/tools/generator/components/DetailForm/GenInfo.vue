@@ -843,8 +843,8 @@ defineExpose({
 <style lang="scss" scoped>
 .page-main {
   .page-header {
-    margin-bottom: 0;
     padding: 0;
+    margin-bottom: 0;
   }
 
   &.gen-info {
@@ -857,9 +857,9 @@ defineExpose({
     position: static;
 
     .page-header {
-      background-color: var(--el-disabled-bg-color);
       margin-inline: -15px;
       margin-top: -15px;
+      background-color: var(--el-disabled-bg-color);
     }
   }
 }

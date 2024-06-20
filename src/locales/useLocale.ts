@@ -34,7 +34,7 @@ export function useLocale() {
   const getLocale = computed(() => settingsStore.settings.app.defaultLang)
   // const getShowLocalePicker = computed(() => localeStore.getShowPicker)
   const getElementLocale = computed((): any => {
-    const localeMessage = i18n.global.getLocaleMessage<{ elementLocale: { name: string; el: TranslatePair } }>(unref(getLocale))
+    const localeMessage = i18n.global.getLocaleMessage<{ elementLocale: { name: string, el: TranslatePair } }>(unref(getLocale))
     return localeMessage?.elementLocale ?? {}
   })
 

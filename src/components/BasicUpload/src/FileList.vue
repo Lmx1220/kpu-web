@@ -53,7 +53,7 @@ const { t } = useI18n()
     <ElTableColumn prop="name" align="left" :label="t('component.upload.fileName')">
       <template #default="{ row, column }">
         <span>
-          <p class="truncate mb-1" :title="column">
+          <p class="mb-1 truncate" :title="column">
             {{ row.name }}
           </p>
           <ElProgress :percentage="row.percent" size="small" :status="formatStatus(row)" />

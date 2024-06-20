@@ -83,8 +83,8 @@ function getThreeData() {
       item.key = item.id
       item.keyLinks = [...options.keyLinks || [], item.id]
       item.disabled = item.id === props.data.parentId
-          || item.id === props.data.id
-          || item.treePath.includes(`/${props.data.id}/`)
+      || item.id === props.data.id
+      || item.treePath.includes(`/${props.data.id}/`)
       item.id === props.data.parentId
         ? item.label = `${item.label}(不能移动到他的父节点)`
         : item.id === props.data.id
@@ -184,14 +184,14 @@ function handleCancel() {
       <span class="">
         移动：【{{ props.data.title }}】
       </span>
-      <div class="flex-1 flex items-center cursor-pointer">
-        <ElInput v-model="filterText" class="mr-1 ml-5 " placeholder="搜素">
+      <div class="flex flex-1 cursor-pointer items-center">
+        <ElInput v-model="filterText" class="ml-5 mr-1" placeholder="搜素">
           <template #append>
             <SvgIcon name="i-ep:search" />
           </template>
         </ElInput>
         <ElDropdown class="inline" @command="handleCommand">
-          <SvgIcon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
+          <SvgIcon :size="26" class="ml-1 mr-1" name="i-ant-design:more-outlined" />
           <template #dropdown>
             <ElDropdownMenu>
               <ElDropdownItem command="expand">
@@ -217,7 +217,7 @@ function handleCancel() {
             class="custom-tree-node"
             @click="() => !node.disabled && onNodeClick(data)"
           >
-            <SvgIcon :name="data.icon" :size="16" class="mr-1 ml-1" />
+            <SvgIcon :name="data.icon" :size="16" class="ml-1 mr-1" />
             <ElTag :type="getResourceTagColor(data.resourceType)" class="mr-1">
               {{ data?.echoMap?.resourceType }}
             </ElTag>
@@ -245,11 +245,11 @@ function handleCancel() {
 <style lang="scss" scoped>
 .el-tree :deep(.el-tree-node__content) {
   > .custom-tree-node {
+    display: flex;
+    align-items: center;
     width: 100%;
     height: 26px;
     line-height: 26px;
-    display: flex;
-    align-items: center;
 
     &.is-disabled {
       color: #00000040;

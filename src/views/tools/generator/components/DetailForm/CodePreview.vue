@@ -181,15 +181,15 @@ pre {
 
   code.hljs {
     display: block;
-    overflow-x: auto;
     padding: 1em;
+    overflow-x: auto;
   }
 }
 
 .el-button.active {
   color: var(--el-button-active-text-color);
-  border-color: var(--el-button-active-border-color);
   background-color: var(--el-button-active-bg-color);
+  border-color: var(--el-button-active-border-color);
   outline: none;
 }
 </style>

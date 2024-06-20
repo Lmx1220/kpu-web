@@ -17,7 +17,7 @@ const slots = useSlots()
 
 <template>
   <div
-    class="page-header flex items-center justify-between flex-wrap gap-5 mb-5 px-5 py-4 bg-[var(--g-container-bg)] transition-background-color-300"
+    class="page-header mb-5 flex flex-wrap items-center justify-between gap-5 bg-[var(--g-container-bg)] px-5 py-4 transition-background-color-300"
   >
     <div class="main flex-[1_1_70%]">
       <div class="text-2xl">
@@ -31,7 +31,7 @@ const slots = useSlots()
         </slot>
       </div>
     </div>
-    <div v-if="slots.default" class="flex-none ml-a">
+    <div v-if="slots.default" class="ml-a flex-none">
       <slot />
     </div>
   </div>

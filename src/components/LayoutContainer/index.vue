@@ -44,21 +44,21 @@ const enabledRightSide = computed(() => {
     <div class="main">
       <div
         v-if="enabledLeftSide && !hideLeftSideToggle"
-        class="left-side-icon z-1 flex-center w-6 h-6 rounded-1/2 absolute top-1/2 -left-3 bg-[var(--g-container-bg)] cursor-pointer"
+        class="left-side-icon absolute top-1/2 z-1 h-6 w-6 flex-center cursor-pointer rounded-1/2 bg-[var(--g-container-bg)] -left-3"
       >
         <SvgIcon
           :name="leftSideVisiable ? 'i-ep:caret-left' : 'i-ep:caret-right'"
-          class="op-30 hover:op-100 transition-opacity"
+          class="op-30 transition-opacity hover:op-100"
           @click="leftSideVisiable = !leftSideVisiable"
         />
       </div>
       <div
         v-if="enabledRightSide && !hideRightSideToggle"
-        class="right-side-icon z-1 flex-center w-6 h-6 rounded-1/2 absolute top-1/2 -right-3 bg-[var(--g-container-bg)] cursor-pointer"
+        class="right-side-icon absolute top-1/2 z-1 h-6 w-6 flex-center cursor-pointer rounded-1/2 bg-[var(--g-container-bg)] -right-3"
       >
         <SvgIcon
           :name="rightSideVisiable ? 'i-ep:caret-right' : 'i-ep:caret-left'"
-          class="op-30 hover:op-100 transition-opacity"
+          class="op-30 transition-opacity hover:op-100"
           @click="rightSideVisiable = !rightSideVisiable"
         />
       </div>
@@ -77,46 +77,50 @@ const enabledRightSide = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-.flex-container{
+.flex-container {
   position: absolute;
   display: flex;
   width: 100%;
   height: 100%;
   padding: 20px;
+
   .left-side,
   .right-side,
   .main {
     --container-padding: 15px;
+
     height: 100%;
     padding: var(--container-padding);
     background-color: var(--g-container-bg);
-    transition: background-color .3s
+    transition: background-color 0.3s;
   }
-  .left-side{
+
+  .left-side {
     flex: none;
     margin-right: 20px;
     overflow: auto;
   }
-  .right-side{
+
+  .right-side {
     flex: none;
     margin-left: 20px;
     overflow: auto;
   }
-  .main{
+
+  .main {
     position: relative;
     flex: 1;
     width: 100%;
-    .main-container{
+
+    .main-container {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       padding: var(--container-padding);
-      overflow: auto
+      overflow: auto;
     }
-
   }
-
 }
 </style>

@@ -67,7 +67,7 @@ export function downloadByUrl({
   const isChrome = window.navigator.userAgent.toLowerCase().includes('chrome')
   const isSafari = window.navigator.userAgent.toLowerCase().includes('safari')
 
-  if (/(iP)/g.test(window.navigator.userAgent)) {
+  if (/(iP)/.test(window.navigator.userAgent)) {
     console.error('Your browser does not support download!')
     return false
   }

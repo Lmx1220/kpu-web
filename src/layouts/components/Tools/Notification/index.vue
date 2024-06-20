@@ -17,7 +17,7 @@ const activeName = ref('message')
         { label: `消息${notificationStore.message > 0 ? `(${notificationStore.message})` : ''}`, value: 'message' },
         { label: `待办${notificationStore.message > 0 ? `(${notificationStore.message})` : ''} `, value: 'todo' },
       ]"
-      class="flex! m-3" @click.stop="() => {}"
+      class="m-3 flex!" @click.stop="() => {}"
     />
     <template v-if="activeName === 'message'">
       <OverlayScrollbarsComponent
@@ -87,7 +87,7 @@ const activeName = ref('message')
         </div>
       </OverlayScrollbarsComponent>
       <RouterLink :to="{ name: 'personalNotification' }" custom>
-        <div class="py-4 text-center text-sm text-stone-5 cursor-pointer">
+        <div class="cursor-pointer py-4 text-center text-sm text-stone-5">
           进入通知列表
         </div>
       </RouterLink>
@@ -127,7 +127,7 @@ const activeName = ref('message')
         </div>
       </OverlayScrollbarsComponent>
       <RouterLink :to="{ name: 'personalNotification' }" custom>
-        <div class="py-4 text-center text-sm text-stone-5 cursor-pointer">
+        <div class="cursor-pointer py-4 text-center text-sm text-stone-5">
           进入待办列表
         </div>
       </RouterLink>

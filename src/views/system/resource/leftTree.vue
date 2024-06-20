@@ -173,10 +173,10 @@ defineExpose({ getTreeList })
 <style scoped lang="scss">
 .absolute-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 
   .page-header {
     margin-bottom: 0;
@@ -187,10 +187,10 @@ defineExpose({ getTreeList })
     overflow: auto;
 
     :deep(.main-container) {
-      flex: 1;
-      overflow: auto;
       display: flex;
+      flex: 1;
       flex-direction: column;
+      overflow: auto;
     }
 
     .flex-container {
@@ -219,9 +219,9 @@ defineExpose({ getTreeList })
     height: 100%;
 
     .empty {
-      text-align: center;
       font-size: 32px;
       color: var(--el-text-color-placeholder);
+      text-align: center;
     }
   }
 }

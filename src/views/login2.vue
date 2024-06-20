@@ -326,15 +326,15 @@ function testAccount(account: string) {
 [data-mode="mobile"] {
   #login-box {
     position: relative;
-    width: 100%;
-    height: 100%;
     top: inherit;
     left: inherit;
-    transform: translate(0) translateY(0);
     flex-direction: column;
     justify-content: start;
+    width: 100%;
+    height: 100%;
     border-radius: 0;
     box-shadow: none;
+    transform: translate(0) translateY(0);
 
     .login-banner {
       width: 100%;
@@ -342,14 +342,14 @@ function testAccount(account: string) {
 
       .banner {
         position: relative;
-        left: inherit;
-        right: inherit;
-        width: 100%;
-        height: 100%;
-        max-width: 375px;
-        margin: 0 auto;
-        display: inherit;
         top: inherit;
+        right: inherit;
+        left: inherit;
+        display: inherit;
+        width: 100%;
+        max-width: 375px;
+        height: 100%;
+        margin: 0 auto;
         transform: translateY(0);
       }
     }
@@ -372,26 +372,26 @@ function testAccount(account: string) {
 
 :deep(.i18n-selector) {
   position: absolute;
-  z-index: 1;
   top: 20px;
   right: 20px;
-  cursor: pointer;
+  z-index: 1;
   font-size: 18px;
   color: var(--el-text-color-primary);
+  cursor: pointer;
 }
 
 #login-box {
+  position: absolute;
   display: flex;
   justify-content: space-between;
-  position: absolute;
   width: 100%;
   height: 100%;
 
   .login-banner {
-    flex: 1;
     position: relative;
-    background: radial-gradient(circle at center, var(--g-container-bg), var(--g-bg));
+    flex: 1;
     overflow: hidden;
+    background: radial-gradient(circle at center, var(--g-container-bg), var(--g-bg));
 
     .banner {
       width: calc(50%);
@@ -415,8 +415,8 @@ function testAccount(account: string) {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 500px;
     width: 500px;
+    min-height: 500px;
     padding: 50px;
     overflow: hidden;
 
@@ -424,10 +424,10 @@ function testAccount(account: string) {
       position: relative;
 
       .title {
-        font-size: 1.3em;
-        color: var(--el-text-color-primary);
         margin: 0 auto 30px;
+        font-size: 1.3em;
         font-weight: 700;
+        color: var(--el-text-color-primary);
       }
     }
   }
@@ -436,9 +436,9 @@ function testAccount(account: string) {
     margin-bottom: 24px;
 
     :deep(.el-input) {
+      width: 100%;
       height: 48px;
       line-height: inherit;
-      width: 100%;
 
       input {
         height: 48px;
@@ -488,8 +488,8 @@ function testAccount(account: string) {
 .copyright {
   position: absolute;
   bottom: 0;
-  padding: 20px;
   width: 100%;
+  padding: 20px;
   margin: 0;
 }
 

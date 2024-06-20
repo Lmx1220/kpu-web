@@ -190,10 +190,10 @@ const title = computed(() => {
 <style lang="scss" scoped>
 .absolute-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 
   .page-header {
     margin-bottom: 0;
@@ -204,10 +204,10 @@ const title = computed(() => {
     overflow: auto;
 
     :deep(.main-container) {
-      flex: 1;
-      overflow: auto;
       display: flex;
+      flex: 1;
       flex-direction: column;
+      overflow: auto;
     }
 
     .flex-container {
@@ -236,9 +236,9 @@ const title = computed(() => {
     height: 100%;
 
     .empty {
-      text-align: center;
       font-size: 32px;
       color: var(--el-text-color-placeholder);
+      text-align: center;
     }
   }
 }

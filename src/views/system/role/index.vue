@@ -319,7 +319,7 @@ async function getDict() {
                 </template>
               </ElButton>
               <ElDivider direction="vertical" />
-              <ElButton bg plain size="small" text type="primary" @click="onBindUsers(scope.row)">
+              <ElButton size="small" plain text bg type="primary" @click="onBindUsers(scope.row)">
                 绑定用户
               </ElButton>
             </template>
@@ -351,10 +351,10 @@ async function getDict() {
 
 .absolute-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 
   .page-header {
     margin-bottom: 0;
@@ -365,29 +365,29 @@ async function getDict() {
     overflow: auto;
 
     :deep(.main-container) {
-      flex: 1;
-      overflow: auto;
       display: flex;
+      flex: 1;
       flex-direction: column;
+      overflow: auto;
     }
 
     .flex-container {
       position: static;
 
       :deep(.main-container) {
-        overflow: auto;
         display: flex;
         flex-direction: column;
+        overflow: auto;
       }
 
       :deep(.right-side) {
-        height: 100%;
         display: flex;
         flex-direction: column;
+        height: 100%;
 
         .empty {
-          flex: 1;
           display: flex;
+          flex: 1;
           align-items: center;
           justify-content: center;
           font-size: 32px;

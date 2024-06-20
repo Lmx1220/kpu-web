@@ -35,7 +35,7 @@ vue3-vite-ts
 ├── plop-templates // plop模板
 ├── public // 静态资源
 ├── scripts // 脚本
-│   └── generate.icons.js // 生成svg图标脚本
+│   └── generate.icons.ts // 生成svg图标脚本
 ├── src // 源码
 │   ├── api // 接口
 │   ├── assets // 静态资源

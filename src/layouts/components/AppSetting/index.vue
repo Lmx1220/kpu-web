@@ -75,7 +75,7 @@ function handleCopy() {
 
 <template>
   <HSlideover v-model="isShow" title="应用配置">
-    <div class="px-4 py-2 rounded-2 text-sm/6 c-rose bg-rose/20 ">
+    <div class="rounded-2 bg-rose/20 px-4 py-2 text-sm/6 c-rose">
       <p class="my-1">
         应用配置可实时预览效果，但只是临时生效，要想真正应用于项目，可以点击下方的「复制配置」按钮，并将配置粘贴到
         src/settings.ts 文件中。
@@ -87,7 +87,7 @@ function handleCopy() {
     <div class="divider">
       颜色主题风格
     </div>
-    <div class="flex justify-center items-center pb-4">
+    <div class="flex items-center justify-center pb-4">
       <HTabList
         v-model="settingsStore.settings.app.colorScheme"
         :options="[
@@ -197,7 +197,7 @@ function handleCopy() {
     <div v-if="settingsStore.mode === 'pc'" class="divider">
       页面切换动画
     </div>
-    <div class="flex justify-center items-center pb-4">
+    <div class="flex items-center justify-center pb-4">
       <HToggle v-model="settingsStore.settings.mainPage.enableTransition" />
     </div>
     <div v-if="settingsStore.settings.mainPage.enableTransition" class="transition-mode">

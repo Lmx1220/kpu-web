@@ -238,9 +238,9 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
 
   .sidebar-container {
     position: fixed;
-    z-index: 1010;
     top: 0;
     bottom: 0;
+    z-index: 1010;
     display: flex;
     width: calc(var(--g-main-sidebar-actual-width) + var(--g-sub-sidebar-actual-width));
     box-shadow: -1px 0 0 0 var(--g-border-color), 1px 0 0 0 var(--g-border-color);
@@ -249,21 +249,21 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
 
   .sidebar-mask {
     position: fixed;
-    z-index: 1000;
     top: 0;
     left: 0;
+    z-index: 1000;
     width: 100%;
     height: 100%;
+    visibility: hidden;
     background-image: radial-gradient(transparent 1px, rgb(0 0 0 / 30%) 1px);
     background-size: 4px 4px;
     backdrop-filter: saturate(50%) blur(4px);
-    transition: all 0.2s;
     opacity: 0;
-    visibility: hidden;
+    transition: all 0.2s;
 
     &.show {
-      opacity: 1;
       visibility: visible;
+      opacity: 1;
     }
   }
 
@@ -281,29 +281,30 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
     transition: margin-left 0.3s, background-color 0.3s, box-shadow 0.3s;
 
     .main {
-      height: 100%;
-      flex: auto;
       position: relative;
+      flex: auto;
+      height: 100%;
       overflow: hidden;
       transition: 0.3s;
 
       .exit-main-page-maximize {
-        --at-apply: bg-stone-7 color-stone-3
-        dark: bg-stone-3
-        dark: color-stone-7;
+        --at-apply:
+          bg-stone-7 color-stone-3
+          dark: bg-stone-3
+          dark: color-stone-7;
 
-        opacity: 0.5;
-        transition-property: opacity;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 0.15s;
         position: fixed;
-        z-index: 1000;
-        right: -40px;
         top: -40px;
+        right: -40px;
+        z-index: 1000;
         width: 80px;
         height: 80px;
-        border-radius: 50%;
         cursor: pointer;
+        border-radius: 50%;
+        opacity: 0.5;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 0.15s;
+        transition-property: opacity;
 
         &:hover {
           opacity: 1;
@@ -359,18 +360,18 @@ header:not(.header-leave-active) + .wrapper {
   @apply bg-ui-primary color-white dark:color-dark ;
 
   position: fixed;
+  top: calc(50% + 250px);
+  right: 0;
+  z-index: 10;
+  display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
-  right: 0;
-  top: calc(50% + 250px);
   width: 50px;
   height: 50px;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
   font-size: 24px;
   cursor: pointer;
-  display: flex;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 
   .icon {
     animation: rotate 5s linear infinite;
@@ -409,34 +410,34 @@ header:not(.header-leave-active) + .wrapper {
 }
 
 .slide-left-enter-from {
-  opacity: 0;
   margin-left: 20px;
+  opacity: 0;
 }
 
 .slide-left-leave-to,
 .slide-right-enter-from {
-  opacity: 0;
   margin-left: -20px;
+  opacity: 0;
 }
 
 .slide-right-leave-to {
-  opacity: 0;
   margin-left: 20px;
+  opacity: 0;
 }
 
 .slide-top-enter-from {
-  opacity: 0;
   margin-top: 20px;
+  opacity: 0;
 }
 
 .slide-top-leave-to,
 .slide-bottom-enter-from {
-  opacity: 0;
   margin-top: -20px;
+  opacity: 0;
 }
 
 .slide-bottom-leave-to {
-  opacity: 0;
   margin-top: 20px;
+  opacity: 0;
 }
 </style>

@@ -39,5 +39,5 @@ function onDataReceive(data: any) {
 </template>
 
 <style lang="scss" scoped>
-
+/* scss */
 </style>

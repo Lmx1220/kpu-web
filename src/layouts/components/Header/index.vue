@@ -61,7 +61,7 @@ function handlerMouserScroll(event: any) {
                         size="20"
                       />
                       <span
-                        class="flex-1 text-sm w-full text-center truncate transition-width transition-height transition-opacity"
+                        class="w-full flex-1 truncate text-center text-sm transition-height transition-opacity transition-width"
                       >{{
                         generateI18nTitle(item.meta?.i18n, item.meta?.title)
                       }}</span>
@@ -100,32 +100,32 @@ function handlerMouserScroll(event: any) {
 
 header {
   position: fixed;
-  z-index: 2000;
   top: 0;
-  left: 0;
   right: 0;
+  left: 0;
+  z-index: 2000;
   display: flex;
   align-items: center;
-  margin: 0 auto;
-  padding: 0 20px;
   width: 100%;
   height: var(--g-header-height);
+  padding: 0 20px;
+  margin: 0 auto;
   color: var(--g-header-color);
   background-color: var(--g-header-bg);
   box-shadow: -1px 0 0 0 var(--g-border-color), 1px 0 0 0 var(--g-border-color), 0 1px 0 0 var(--g-border-color);
   transition: background-color 0.3s;
 
   .header-container {
-    width: var(--g-header-width);
-    height: 100%;
-    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: var(--g-header-width);
+    height: 100%;
+    margin: 0 auto;
 
     .main {
-      flex: 1;
       display: flex;
+      flex: 1;
       flex-wrap: wrap;
       align-items: center;
       height: 100%;
@@ -134,14 +134,14 @@ header {
         &-arrow {
           .item-container::before,
           :deep(.menu-item)::before {
-            content: "";
-            opacity: 0;
             bottom: 0;
             width: 0;
             height: 0;
+            content: "";
             border-right: 5px solid transparent;
-            border-left: 5px solid transparent;
             border-bottom: 5px solid var(--g-header-bg);
+            border-left: 5px solid transparent;
+            opacity: 0;
             transition: all 0.3s;
 
             @include position-center(x);
@@ -149,22 +149,22 @@ header {
 
           .item-container.active::before,
           :deep(.menu-item).active::before {
-            opacity: 1;
             bottom: 8px;
+            opacity: 1;
           }
         }
 
         &-line {
           .item-container::before,
           :deep(.menu-item)::before {
-            content: "";
-            opacity: 0;
             bottom: 6px;
             width: 0;
             height: 4px;
-            border-radius: 2px;
+            content: "";
             background-color: var(--g-header-menu-active-bg);
+            border-radius: 2px;
             box-shadow: 0 0 0 1px var(--g-header-bg);
+            opacity: 0;
             transition: all 0.3s;
 
             @include position-center(x);
@@ -172,22 +172,22 @@ header {
 
           .item-container.active::before,
           :deep(.menu-item).active::before {
-            opacity: 1;
             width: 20px;
+            opacity: 1;
           }
         }
 
         &-dot {
           .item-container::before,
           :deep(.menu-item)::before {
-            content: "";
-            opacity: 0;
             bottom: 0;
             width: 10px;
             height: 10px;
-            border-radius: 50%;
+            content: "";
             background-color: var(--g-header-menu-active-bg);
+            border-radius: 50%;
             box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
+            opacity: 0;
             transition: all 0.3s;
 
             @include position-center(x);
@@ -195,8 +195,8 @@ header {
 
           .item-container.active::before,
           :deep(.menu-item).active::before {
-            opacity: 1;
             bottom: 4px;
+            opacity: 1;
           }
         }
       }
@@ -223,8 +223,8 @@ header {
 
     span {
       font-size: 24px;
-      letter-spacing: 1px;
       color: var(--g-header-color);
+      letter-spacing: 1px;
     }
   }
 
@@ -243,7 +243,7 @@ header {
 
     .menu {
       display: inline-flex;
-      height: 100%
+      height: 100%;
     }
 
     :deep(.menu-item) {
@@ -252,29 +252,29 @@ header {
 
         &:hover {
           color: var(--g-header-menu-hover-color);
-          background-color: var(--g-header-menu-hover-bg)
+          background-color: var(--g-header-menu-hover-bg);
         }
       }
 
       &.active .menu-item-container {
-        color: var(--g-header-menu-active-color)!important;
-        background-color: var(--g-header-menu-active-bg)!important
+        color: var(--g-header-menu-active-color) !important;
+        background-color: var(--g-header-menu-active-bg) !important;
       }
     }
   }
 
-  //:deep(.tools) {
-  //  padding: 0;
-  //
-  //  .buttons .item .icon {
-  //    color: var(--g-header-color);
-  //  }
-  //
-  //  .user-container {
-  //    font-size: 16px;
-  //    color: var(--g-header-color);
-  //  }
-  //}
+  /*  :deep(.tools) {
+    padding: 0;
+
+    .buttons .item .icon {
+      color: var(--g-header-color);
+    }
+
+    .user-container {
+      font-size: 16px;
+      color: var(--g-header-color);
+    }
+  } */
 }
 
 // 头部动画

@@ -143,7 +143,7 @@ export class TimeDelayReq {
         }
       }
       // 处理没有结果的内容
-      this.doError(errRejMap, Error('请求无结果'))
+      this.doError(errRejMap, new Error('请求无结果'))
     }
     catch (error: any) {
       this.doError(errRejMap, error)

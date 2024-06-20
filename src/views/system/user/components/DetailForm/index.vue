@@ -170,7 +170,7 @@ defineExpose({
         </ElFormItem>
         <ElFormItem label="性别" prop="sex">
           <ApiRadioGroup
-            v-model="data.form.sex" v-bind="dictComponentProps(DictEnum.SEX)"
+            v-model="data.form.sex" v-bind="dictComponentProps(DictEnum.GLOBAL_SEX)"
             :disabled="type === ActionEnum.VIEW"
           />
         </ElFormItem>
@@ -194,13 +194,8 @@ defineExpose({
               label: 'name',
             }"
             :render-after-expand="false"
-            check-on-click-node
-            check-strictly
-            collapse-tags
-            collapse-tags-tooltip
-            filterable
-            multiple
-            show-checkbox
+
+            check-on-click-node check-strictly filterable multiple show-checkbox collapse-tags collapse-tags-tooltip
             style="width: 250px;"
             value-key="id"
           />

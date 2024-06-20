@@ -36,11 +36,11 @@ export default defineConfig<Theme>({
         Object.keys(themes).forEach((key) => {
           if (themes[key]['color-scheme'] === 'light') {
             const lightCss = entriesToCss(Object.entries(themes[key]))
-            returnCss.push(lightRoots.map(root => `${root.replace(/\{\s*}/g, `[data-theme=${key}]`)}{${lightCss}}`).join(''))
+            returnCss.push(lightRoots.map(root => `${root.replace(/\{\s*\}/g, `[data-theme=${key}]`)}{${lightCss}}`).join(''))
           }
           else {
             const darkCss = entriesToCss(Object.entries(themes[key]))
-            returnCss.push(darkRoots.map(root => `${root.replace(/\{\s*}/g, `[data-theme=${key}]`)}{${darkCss}}`).join(''))
+            returnCss.push(darkRoots.map(root => `${root.replace(/\{\s*\}/g, `[data-theme=${key}]`)}{${darkCss}}`).join(''))
           }
         })
 

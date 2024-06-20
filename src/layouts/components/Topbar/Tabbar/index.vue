@@ -456,12 +456,12 @@ onUnmounted(
 
 <style lang="scss">
 .mx-menu-bar {
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: row;
   align-items: center;
-  background-color: var(--mx-menu-backgroud);
   padding: 5px 0;
+  background-color: var(--mx-menu-backgroud);
 
   &.mini {
     flex-grow: 0;
@@ -475,14 +475,14 @@ onUnmounted(
 
   .mx-menu-bar-item {
     padding: 2px 8px;
-    border-radius: 5px;
+    color: var(--mx-menu-text);
     user-select: none;
     background-color: var(--mx-menu-backgroud);
-    color: var(--mx-menu-text);
+    border-radius: 5px;
 
     &:hover {
-      background-color: var(--mx-menu-hover-backgroud);
       color: var(--mx-menu-hover-text);
+      background-color: var(--mx-menu-hover-backgroud);
 
       .mx-menu-bar-icon-menu {
         fill: var(--mx-menu-hover-text);
@@ -491,8 +491,8 @@ onUnmounted(
 
     &.active,
     &:active {
-      background-color: var(--mx-menu-active-backgroud);
       color: var(--mx-menu-active-text);
+      background-color: var(--mx-menu-active-backgroud);
     }
 
     &.active .mx-menu-bar-icon-menu,
@@ -502,9 +502,9 @@ onUnmounted(
   }
 
   .mx-menu-bar-icon-menu {
-    fill: var(--mx-menu-text);
     width: var(--mx-menu-icon-size);
     height: var(--mx-menu-icon-size);
+    fill: var(--mx-menu-text);
   }
 
   &.flat .mx-menu-bar-item {
@@ -568,9 +568,6 @@ onUnmounted(
     padding: 15px 15px 10px;
 
     .button {
-      transition-property: color,background-color,border-color,outline-color,text-decoration-color,fill,stroke;
-      transition-timing-function: cubic-bezier(.4,0,.2,1);
-      transition-duration: .15s;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -581,6 +578,9 @@ onUnmounted(
       border: none;
       border-radius: 5px;
       outline: none;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 0.15s;
+      transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
 
       &:hover:not(:disabled) {
         --at-apply: color-ui-primary;
@@ -620,7 +620,7 @@ onUnmounted(
       margin: 0 15px;
       background-color: var(--g-container-bg);
       border-radius: 5px;
-      transition: background-color .3s;
+      transition: background-color 0.3s;
 
       &.actived {
         background-color: var(--g-bg);
@@ -632,8 +632,8 @@ onUnmounted(
 
       &:hover {
         .title {
-          opacity: 1;
           margin-right: 20px;
+          opacity: 1;
           mask-image: linear-gradient(to right, #000 calc(100% - 44px), transparent);
         }
       }
@@ -643,19 +643,19 @@ onUnmounted(
       }
 
       .title {
-        opacity: 0.7;
-        transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 0.15s;
         position: relative;
         display: flex;
         align-items: center;
         height: 100%;
-        font-size: 14px;
         overflow: hidden;
+        font-size: 14px;
         white-space: nowrap;
         cursor: pointer;
+        opacity: 0.7;
         mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 0.15s;
+        transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
 
         .i {
           margin-right: 5px;
@@ -664,24 +664,25 @@ onUnmounted(
       }
 
       .action-icon {
-        transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 0.15s;
         position: absolute;
-        z-index: 10;
         top: 50%;
         right: 6px;
-        margin-top: -9px;
+        z-index: 10;
         width: 1.5em;
         height: 1.5em;
-        border-radius: 50%;
+        margin-top: -9px;
         font-size: 12px;
-        opacity: 0;
-        pointer-events: all;
         color: var(--g-tabbar-tab-color);
+        pointer-events: all;
+        border-radius: 50%;
+        opacity: 0;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 0.15s;
+        transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
 
         &:hover {
           --at-apply: ring-1 ring-stone-3 dark:ring-stone-7;
+
           background-color: var(--g-bg);
         }
       }
@@ -703,8 +704,8 @@ onUnmounted(
 
   .tabs {
     position: absolute;
-    left: 0;
     right: 0;
+    left: 0;
     padding-right: 50px;
     overflow-y: hidden;
     white-space: nowrap;
@@ -723,15 +724,17 @@ onUnmounted(
 
     .tab-container {
       display: inline-block;
-      &:after {
+
+      &::after {
         position: absolute;
         bottom: 0;
-        left: v-bind('leftPx');
+        left: v-bind("leftPx");
         z-index: 10;
-        width: v-bind('widthPx');
+        width: v-bind("widthPx");
         content: "";
-        transition: width .3s,left .3s
+        transition: width 0.3s, left 0.3s;
       }
+
       &:not(.dragging) {
         .tab {
           &:not(.actived):hover {
@@ -741,9 +744,11 @@ onUnmounted(
             &::after {
               content: none;
             }
-            &+.tab .tab-dividers:before{
-              opacity: 0
+
+            & + .tab .tab-dividers::before {
+              opacity: 0;
             }
+
             .tab-content {
               .title,
               .action-icon {
@@ -757,14 +762,14 @@ onUnmounted(
       .tab {
         position: relative;
         display: inline-block;
-        max-width: var(--g-tabbar-tab-max-width);
         min-width: var(--g-tabbar-tab-min-width);
+        max-width: var(--g-tabbar-tab-max-width);
         height: var(--g-tabbar-height);
+        font-size: 14px;
         line-height: calc(var(--g-tabbar-height) - 2px);
         vertical-align: bottom;
-        font-size: 14px;
-        cursor: pointer;
         pointer-events: none;
+        cursor: pointer;
 
         * {
           user-select: none;
@@ -777,19 +782,21 @@ onUnmounted(
           &::after {
             content: none;
           }
-          &+.tab .tab-dividers:before{
-            opacity: 0
+
+          & + .tab .tab-dividers::before {
+            opacity: 0;
           }
+
           .tab-content {
             .title,
             .action-icon {
               color: var(--g-tabbar-tab-active-color);
             }
           }
-          .tab-background {
-            background-color: var(--g-container-bg)
-          }
 
+          .tab-background {
+            background-color: var(--g-container-bg);
+          }
         }
 
         &.tab-ghost {
@@ -815,7 +822,7 @@ onUnmounted(
             content: "";
             background-color: var(--g-tabbar-dividers-bg);
             opacity: 1;
-            transition: opacity .2s ease,background-color .3s;
+            transition: opacity 0.2s ease, background-color 0.3s;
           }
         }
 
@@ -825,31 +832,31 @@ onUnmounted(
 
         .tab-background {
           position: absolute;
-          z-index: 0;
           top: 0;
           left: 0;
+          z-index: 0;
           width: 100%;
           height: 100%;
           pointer-events: none;
         }
 
         .tab-content {
+          display: flex;
           width: 100%;
           height: 100%;
-          display: flex;
           pointer-events: all;
 
           .title {
             display: flex;
+            flex: 1;
             align-items: center;
             height: 100%;
             padding: 0 10px;
             margin-right: 10px;
-            flex: 1;
             overflow: hidden;
+            color: var(--g-tabbar-tab-color);
             white-space: nowrap;
             mask-image: linear-gradient(to right, #000 calc(100% - 20px), transparent);
-            color: var(--g-tabbar-tab-color);
             transition: margin-right 0.3s;
 
             &:has(+.action-icon) {
@@ -863,15 +870,15 @@ onUnmounted(
 
           .action-icon {
             position: absolute;
-            z-index: 10;
             top: 50%;
             right: 0.5em;
-            transform: translateY(-50%);
+            z-index: 10;
             width: 1.5em;
             height: 1.5em;
-            border-radius: 50%;
             font-size: 12px;
             color: var(--g-tabbar-tab-color);
+            border-radius: 50%;
+            transform: translateY(-50%);
 
             &:hover {
               --at-apply: ring-1 ring-stone-3 dark:ring-stone-7;
@@ -917,9 +924,9 @@ onUnmounted(
 
         .tab {
           height: calc(var(--g-tabbar-height) - 10px);
-          line-height: calc(var(--g-tabbar-height) - 12px);
-          margin-left: 10px;
           margin-right: -10px;
+          margin-left: 10px;
+          line-height: calc(var(--g-tabbar-height) - 12px);
 
           &:last-child {
             margin-right: 0;
@@ -934,17 +941,17 @@ onUnmounted(
           }
 
           .tab-background {
-            border-radius: 10px 10px 0 0;
             background-color: var(--g-tabbar-tab-hover-bg);
+            border-radius: 10px 10px 0 0;
             transition: opacity 0.3s, background-color 0.3s;
 
             &::before,
             &::after {
-              content: "";
               position: absolute;
               bottom: 0;
               width: 20px;
               height: 20px;
+              content: "";
               border-radius: 100%;
               box-shadow: 0 0 0 20px transparent;
               transition: box-shadow 0.3s;
@@ -967,8 +974,8 @@ onUnmounted(
             }
 
             .tab-background {
-              opacity: 1;
               background-color: var(--g-container-bg);
+              opacity: 1;
 
               &::before,
               &::after {
@@ -992,9 +999,9 @@ onUnmounted(
 
         .tab {
           height: calc(var(--g-tabbar-height) - 10px);
-          line-height: calc(var(--g-tabbar-height) - 12px);
           margin-top: 5px;
           margin-left: 5px;
+          line-height: calc(var(--g-tabbar-height) - 12px);
 
           .tab-dividers {
             display: none;
@@ -1015,41 +1022,43 @@ onUnmounted(
     }
 
     &.tabs-square {
-
       .tab-container {
         &::after {
           height: 2px;
+
           --at-apply: bg-ui-primary;
         }
+
         &:has(>.tab.tab-ontop) {
-          &:after {
+          &::after {
             top: 0;
-            bottom: unset
-          }
-          .tab .tab-background {
-            top: 0;
-            bottom: unset
+            bottom: unset;
           }
 
+          .tab .tab-background {
+            top: 0;
+            bottom: unset;
+          }
         }
 
         .tab:not(.actived):hover {
-
           .tab-background {
             height: 100%;
           }
         }
+
         .tab {
           .tab-background {
             top: unset;
             bottom: 0;
             height: 0;
             background-color: var(--g-tabbar-tab-hover-bg);
-            transition: height .3s;
+            transition: height 0.3s;
           }
+
           &.actived .tab-background {
             height: 100%;
-            background-color: var(--g-container-bg)
+            background-color: var(--g-container-bg);
           }
         }
       }
@@ -1058,14 +1067,14 @@ onUnmounted(
 
   .more-action {
     position: absolute;
-    z-index: 10;
     top: 0;
     right: 0;
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
     width: 50px;
+    height: 100%;
     background-image: linear-gradient(to right, transparent, var(--g-bg));
 
     .icon {

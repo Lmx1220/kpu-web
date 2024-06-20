@@ -236,7 +236,7 @@ defineExpose({
   <ElScrollbar v-loading="dataTree.loading">
     <ElTree
       ref="treeRef" :data="dataTree.tree" :expand-on-click-node="false" :filter-node-method="filterNode"
-      :props="defaultProps" :show-checkbox="!query" check-strictly class="filter-tree" default-expand-all highlight-current
+      :props="defaultProps" :show-checkbox="!query" class="filter-tree" check-strictly highlight-current default-expand-all
       node-key="id"
       @node-click="onNodeClick"
       @check-change="onCheckChange"
@@ -266,12 +266,12 @@ defineExpose({
 <style lang="scss" scoped>
 // scss
 .custom-tree-node {
-  flex: 1;
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: space-between;
-  font-size: 14px;
   padding-right: 8px;
+  font-size: 14px;
 
   &:hover {
     .tree__actions {

@@ -68,8 +68,8 @@ watch(scrollTop, (value, oldValue) => {
 <style lang="scss" scoped>
 .topbar-container {
   position: absolute;
-  z-index: 999;
   top: 0;
+  z-index: 999;
   display: flex;
   flex-direction: column;
   box-shadow: 0 1px 0 0 var(--g-border-color);

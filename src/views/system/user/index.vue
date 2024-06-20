@@ -209,7 +209,7 @@ function onResetPassword(row: any) {
       >
         <template #default="{ fold }">
           <ElForm
-            :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
+            :model="data.search" class="search-form" inline-message inline label-suffix="：" label-width="100px"
             size="default"
           >
             <ElFormItem label="用户账号">
@@ -283,10 +283,10 @@ function onResetPassword(row: any) {
         </ElButton>
       </ElSpace>
       <ElTable
-        ref="table" v-loading="data.loading" :data="data.dataList" border class="my-4"
+        ref="table" v-loading="data.loading" :data="data.dataList" class="my-4"
         height="100%"
-        highlight-current-row
-        stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
+
+        highlight-current-row stripe border @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
         <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
         <ElTableColumn align="center" label="序号" width="100">
@@ -320,7 +320,7 @@ function onResetPassword(row: any) {
               绑定角色
             </ElButton>
             <ElDropdown>
-              <SvgIcon class="mr-1 ml-1" flip="both" name="ep:more-filled" />
+              <SvgIcon class="ml-1 mr-1" flip="both" name="ep:more-filled" />
               <template #dropdown>
                 <ElDropdownMenu>
                   <ElDropdownItem command="edit" @click.stop="onEdit(scope.row)">
@@ -360,10 +360,10 @@ function onResetPassword(row: any) {
 
 .absolute-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 
   .page-header {
     margin-bottom: 0;
@@ -374,10 +374,10 @@ function onResetPassword(row: any) {
     overflow: auto;
 
     :deep(.main-container) {
-      flex: 1;
-      overflow: auto;
       display: flex;
+      flex: 1;
       flex-direction: column;
+      overflow: auto;
     }
 
     .search-container {
@@ -406,8 +406,8 @@ function onResetPassword(row: any) {
   }
 
   .el-divider {
-    margin-inline: -20px;
     width: calc(100% + 40px);
+    margin-inline: -20px;
   }
 
   .el-dropdown {

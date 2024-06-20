@@ -189,7 +189,7 @@ function onReset() {
             <SearchBar :fold="data.searchFold" :show-toggle="false">
               <template #default>
                 <ElForm
-                  :model="data.search" class="search-form" inline inline-message label-suffix="："
+                  :model="data.search" class="search-form" inline-message inline label-suffix="："
                   label-width="100px" size="default"
                 >
                   <ElFormItem label="名称">
@@ -234,8 +234,8 @@ function onReset() {
               </ElButton>
             </ElSpace>
             <ElTable
-              ref="table" v-loading="data.loading" :data="data.dataList" border class="my-4" height="100%"
-              highlight-current-row stripe @sort-change="sortChange"
+              ref="table" v-loading="data.loading" :data="data.dataList" class="my-4" height="100%"
+              highlight-current-row stripe border @sort-change="sortChange"
               @selection-change="data.batch.selectionDataList = $event"
             >
               <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
@@ -286,10 +286,10 @@ function onReset() {
 <style lang="scss" scoped>
 .absolute-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 
   .page-header {
     margin-bottom: 0;
@@ -300,10 +300,10 @@ function onReset() {
     overflow: auto;
 
     :deep(.main-container) {
-      flex: 1;
-      overflow: auto;
       display: flex;
+      flex: 1;
       flex-direction: column;
+      overflow: auto;
     }
 
     .flex-container {
@@ -332,9 +332,9 @@ function onReset() {
     height: 100%;
 
     .empty {
-      text-align: center;
       font-size: 32px;
       color: var(--el-text-color-placeholder);
+      text-align: center;
     }
   }
 }

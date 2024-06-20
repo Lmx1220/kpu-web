@@ -32,8 +32,8 @@ const settingsStore = useSettingsStore()
   .left-box {
     display: flex;
     align-items: center;
-    padding-left: 10px;
     padding-right: 50px;
+    padding-left: 10px;
     overflow: hidden;
     mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 50px), transparent);
 
@@ -44,9 +44,9 @@ const settingsStore = useSettingsStore()
       &.breadcrumb-modern {
         :deep(.breadcrumb-item) {
           .text {
-            background-color: rgb(231 229 228 / 80%);
             padding: 6px 16px;
             clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%, 8px 50%);
+            background-color: rgb(231 229 228 / 80%);
 
             @at-root .dark & {
               background-color: rgb(41 37 36 / 80%);
@@ -60,8 +60,8 @@ const settingsStore = useSettingsStore()
           &:first-child {
             .text {
               padding-left: 12px;
-              border-radius: 6px 0 0 6px;
               clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
+              border-radius: 6px 0 0 6px;
             }
 
             &:not(:first-child) {

@@ -17,7 +17,7 @@ const emits = defineEmits<{
   'update:modelValue': [
     value: boolean,
   ]
-  success: []
+  'success': []
 }>()
 
 export interface Props extends DetailFormProps {

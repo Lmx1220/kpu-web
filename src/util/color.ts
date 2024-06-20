@@ -8,7 +8,7 @@ import { ResourceTypeEnum } from '@/enums/common/tenant.ts'
  * @params   String  color   十六进制颜色值
  */
 export function isHexColor(color: string) {
-  const reg = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/
+  const reg = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i
   return reg.test(color)
 }
 

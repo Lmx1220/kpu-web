@@ -367,7 +367,7 @@ watch(
         <ElRadio v-model="state.second.cronEvery" label="3">
           具体秒数(可多选)
         </ElRadio>
-        <ElSelect v-model="state.second.specificSpecific" multiple clearable style="width: 140px;">
+        <ElSelect v-model="state.second.specificSpecific" clearable multiple style="width: 140px;">
           <ElOption v-for="(item, index) in 60" :key="index" :label="index" :value="index" />
         </ElSelect>
       </div>
@@ -653,35 +653,35 @@ watch(
 }
 
 .v3c-tab {
-  padding: 0;
-  list-style: none;
-  margin: 0;
-  background-color: #f5f7fa;
   display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  background-color: #f5f7fa;
 }
 
 .v3c-tab-item {
   flex: 1;
+  padding: 6px;
   text-align: center;
   cursor: pointer;
-  padding: 6px;
 }
 
 .v3c-tab-item.v3c-active {
-  background-color: #409eff;
   color: #fff;
+  background-color: #409eff;
 }
 
 .v3c-lang-btn {
-  background-color: #61ddaa;
   color: #fff;
+  background-color: #61ddaa;
 
   /* border-radius: 10px; */
 }
 
 .v3c-content {
-  padding: 20px;
   max-height: v-bind(maxHeight);
+  padding: 20px;
   overflow: hidden;
   overflow-y: auto;
 }
@@ -691,66 +691,66 @@ watch(
 }
 
 .v3c-footer {
-  background-color: #f5f7fa;
+  display: flex;
   padding-top: 10px;
   padding-bottom: 10px;
-  display: flex;
   text-align: center;
+  background-color: #f5f7fa;
 }
 
 .btn-ok {
-  line-height: 1.5715;
   position: relative;
   display: inline-block;
+  height: 32px;
+  padding: 4px 15px;
+  font-size: 14px;
   font-weight: 400;
-  white-space: nowrap;
+  line-height: 1.5715;
+  color: #fff;
   text-align: center;
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  white-space: nowrap;
+  touch-action: manipulation;
+  cursor: pointer;
+  user-select: none;
   background: #409eff;
   background-image: none;
   border: 1px solid transparent;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  user-select: none;
-  touch-action: manipulation;
-  height: 32px;
-  padding: 4px 15px;
-  font-size: 14px;
-  border-radius: 2px;
-  color: #fff;
   border-color: #409eff;
-  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  border-radius: 2px;
   box-shadow: 0 2px #0000000b;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 .btn-close {
-  line-height: 1.5715;
   position: relative;
   display: inline-block;
-  font-weight: 400;
-  white-space: nowrap;
-  text-align: center;
-  background: #61ddaa;
-  background-image: none;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  user-select: none;
-  touch-action: manipulation;
   height: 32px;
   padding: 4px 15px;
   font-size: 14px;
-  border-radius: 2px;
+  font-weight: 400;
+  line-height: 1.5715;
   color: #fff;
-  border-color: #61ddaa;
+  text-align: center;
   text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+  white-space: nowrap;
+  touch-action: manipulation;
+  cursor: pointer;
+  user-select: none;
+  background: #61ddaa;
+  background-image: none;
+  border: 1px solid transparent;
+  border-color: #61ddaa;
+  border-radius: 2px;
   box-shadow: 0 2px #0000000b;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 .cron {
-  background-color: #61ddaa;
   padding: 5px;
-  padding-left: 10px;
   padding-right: 10px;
+  padding-left: 10px;
   color: #fff;
+  background-color: #61ddaa;
 }
 </style>

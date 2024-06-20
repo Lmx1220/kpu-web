@@ -331,20 +331,20 @@ defineExpose({
 </script>
 
 <template>
-  <div class="flex flex-col min-h-0">
-    <div v-if="title || toolbar || search || slots.headerTitle" class="tree-header py-1.5 title flex items-center">
+  <div class="min-h-0 flex flex-col">
+    <div v-if="title || toolbar || search || slots.headerTitle" class="title tree-header flex items-center py-1.5">
       <slot name="headerTitle">
-        <span v-if="title" class="mr-1 ml-5 ">{{ title }}</span>
+        <span v-if="title" class="ml-5 mr-1">{{ title }}</span>
       </slot>
-      <div class="flex flex-1 items-center cursor-pointe">
-        <ElInput v-if="search" v-model="filterText" class="mr-1 w-full ml-5 " :placeholder="t('common.searchText')">
+      <div class="cursor-pointe flex flex-1 items-center">
+        <ElInput v-if="search" v-model="filterText" class="ml-5 mr-1 w-full" :placeholder="t('common.searchText')">
           <template #append>
             <SvgIcon name="i-ep:search" />
           </template>
         </ElInput>
         <slot name="toolbar">
           <ElDropdown v-if="toolbar" class="inline" @command="handleCommand">
-            <SvgIcon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
+            <SvgIcon :size="26" class="ml-1 mr-1" name="i-ant-design:more-outlined" />
             <template #dropdown>
               <ElDropdownMenu>
                 <ElDropdownItem v-if="toolbarStrictly" command="checkAll">
@@ -409,12 +409,12 @@ defineExpose({
 }
 
 .custom-tree-node {
-  flex: 1;
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: space-between;
-  font-size: 14px;
   padding-right: 8px;
+  font-size: 14px;
 
   &:hover {
     .tree__actions {

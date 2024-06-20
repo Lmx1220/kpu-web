@@ -22,7 +22,7 @@ const emits = defineEmits<{
   'update:modelValue': [
     value: boolean,
   ]
-  success: []
+  'success': []
 }>()
 const {
   pagination,
@@ -165,7 +165,7 @@ async function onBindUser(flag: boolean, id?: string) {
     <SearchBar :fold="data.searchFold" :show-toggle="false">
       <template #default="{ fold }">
         <ElForm
-          :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
+          :model="data.search" class="search-form" inline-message inline label-suffix="：" label-width="100px"
           size="default"
         >
           <ElFormItem label="编码">
@@ -226,8 +226,8 @@ async function onBindUser(flag: boolean, id?: string) {
       </ElButton>
     </ElSpace>
     <ElTable
-      ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%"
-      row-key="id" stripe
+      ref="table" v-loading="data.loading" :data="data.dataList" class="list-table" height="100%"
+      row-key="id" stripe border
 
       @sort-change="sortChange"
       @current-change="data.current = $event"

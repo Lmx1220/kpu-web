@@ -29,7 +29,7 @@ function usePagination<T extends Record<string, any>>() {
 
         if (
           typeof value === 'string'
-                    && value.trim() === ''
+          && value.trim() === ''
         ) {
           target[key as keyof T] = undefined! as T[keyof T]
         }

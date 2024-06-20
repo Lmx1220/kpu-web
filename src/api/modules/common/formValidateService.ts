@@ -55,7 +55,7 @@ function compareDate2Now(dateStr: string, _timeType = 'Date', compareType = 'Pas
 
 function getMessage(attrs: Recordable) {
   if (attrs && attrs.message) {
-    const reg = /({([a-zA-Z0-9]*)})/g
+    const reg = /(\{([a-z0-9]*)\})/gi
     let result: any
     let message = attrs.message
     // eslint-disable-next-line no-cond-assign

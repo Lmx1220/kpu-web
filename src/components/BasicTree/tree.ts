@@ -1,8 +1,8 @@
 export type KeyType = string | number
 
 export type CheckKeys =
-    | KeyType[]
-    | { checked: string[] | number[]; halfChecked: string[] | number[] }
+  | KeyType[]
+  | { checked: string[] | number[], halfChecked: string[] | number[] }
 export interface TreeState {
   expandedKeys: KeyType[]
   selectedKeys: KeyType[]

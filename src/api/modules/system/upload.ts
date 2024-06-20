@@ -45,7 +45,7 @@ export function findUrlById(data: string[]) {
   })
 }
 function formatData(params: string[], cacheKey: (param: any) => string, data: { [key: string]: string }) {
-  const map = new Map<string, { key: string;isOk: boolean; data: any }>()
+  const map = new Map<string, { key: string, isOk: boolean, data: any }>()
   params.forEach((param) => {
     const key = cacheKey(param)
     const value = data[param]

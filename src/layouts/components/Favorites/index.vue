@@ -34,13 +34,13 @@ watch(() => favoritesContainer.value, (value) => {
       </div>
       <template v-if="favoritesStore.canAdd(route.fullPath)">
         <SvgIcon
-          v-if="favoritesStore.isAdd(route.fullPath)" class="text-xl cursor-pointer" name="mdi:star-remove"
+          v-if="favoritesStore.isAdd(route.fullPath)" class="cursor-pointer text-xl" name="mdi:star-remove"
           title="从收藏夹移除"
           @click="favoritesStore.remove(route.fullPath)"
         />
 
         <SvgIcon
-          v-else class="text-xl cursor-pointer" name="mdi:star-plus-outline" title="添加到收藏夹"
+          v-else class="cursor-pointer text-xl" name="mdi:star-plus-outline" title="添加到收藏夹"
           @click="favoritesStore.add(route)"
         />
       </template>
@@ -55,21 +55,21 @@ watch(() => favoritesContainer.value, (value) => {
       }"
       class="max-h-220px" defer
     >
-      <div ref="favoritesContainer" class="flex items-center justify-between flex-wrap gap-2 px-4 pb-4">
+      <div ref="favoritesContainer" class="flex flex-wrap items-center justify-between gap-2 px-4 pb-4">
         <div
           v-for="favorites in favoritesStore.list" :key="favorites.fullPath"
-          class="draggable-item relative w-[calc(50%-0.25rem)] px-2 py-2 flex items-center gap-1 rounded cursor-pointer ring-1 ring-inset ring-stone-3 dark:ring-stone-7 hover:bg-stone-1 dark:hover:bg-dark/50"
+          class="draggable-item relative w-[calc(50%-0.25rem)] flex cursor-pointer items-center gap-1 rounded px-2 py-2 ring-1 ring-stone-3 ring-inset hover:bg-stone-1 dark:ring-stone-7 dark:hover:bg-dark/50"
           :title="generateI18nTitle(favorites.i18n, favorites.title)"
           @click="router.push(favorites.fullPath)"
         >
           <SvgIcon :name="favorites.icon ?? ''" :size="18" />
-          <div class="name flex-1 pe-4 truncate">
+          <div class="name flex-1 truncate pe-4">
             {{ favorites.icon }}
             {{ generateI18nTitle(favorites.i18n, favorites.title) }}
           </div>
           <SvgIcon
             :size="14"
-            class="!absolute right-1 w-6 h-5 rounded-full text-stone-3 dark:text-stone-7 hover:text-stone-7 dark:hover:text-stone-3" name="ep:delete" @click.stop="favoritesStore.remove(favorites.fullPath)"
+            class="right-1 h-5 w-6 rounded-full text-stone-3 !absolute dark:text-stone-7 hover:text-stone-7 dark:hover:text-stone-3" name="ep:delete" @click.stop="favoritesStore.remove(favorites.fullPath)"
           />
         </div>
       </div>
@@ -79,9 +79,9 @@ watch(() => favoritesContainer.value, (value) => {
       <p m-2 text-base>
         收藏夹是空的
       </p>
-      <p v-show="favoritesStore.canAdd(route.fullPath)" flex-center m-0 op-75 text-sm>
+      <p v-show="favoritesStore.canAdd(route.fullPath)" m-0 flex-center text-sm op-75>
         点击右上角
-        <SvgIcon :size="20" dark:text-stone-4 mx-1 name="mdi:star-plus-outline" text-stone-6 />
+        <SvgIcon :size="20" name="mdi:star-plus-outline" mx-1 text-stone-6 dark:text-stone-4 />
         将当前页面添加到收藏夹
       </p>
     </div>

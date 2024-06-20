@@ -18,7 +18,7 @@ const emits = defineEmits<{
   'update:modelValue': [
     value: boolean,
   ]
-  success: []
+  'success': []
 }>()
 
 const myVisible = computed({

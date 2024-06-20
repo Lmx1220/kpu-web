@@ -36,8 +36,8 @@ const props = defineProps({
   loadingTip: { type: String },
 })
 const emits = defineEmits<{
-  'heightChange': [number]
-  'extHeight': [number]
+  heightChange: [number]
+  extHeight: [number]
 }
 >()
 const wrapperRef = ref()

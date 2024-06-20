@@ -199,22 +199,22 @@ function isAllCheckedByKey(node: any) {
 </script>
 
 <template>
-  <div v-if="data.id" class="flex flex-col h-full">
+  <div v-if="data.id" class="h-full flex flex-col">
     <PageHeader :title="`【${data?.name || ''}】拥有的应用资源`">
       <ElButton round type="primary" @click="handleSubmit()">
         保存
       </ElButton>
     </PageHeader>
-    <div v-loading="loading" class="flex flex-col" style="min-height: 0;flex: 1;">
+    <div v-loading="loading" class="flex flex-col" style="flex: 1;min-height: 0;">
       <div class="title flex items-center">
-        <div class="flex-1 flex items-center cursor-pointer">
-          <ElInput v-model="filterText" class="mr-1 ml-5 " placeholder="搜素">
+        <div class="flex flex-1 cursor-pointer items-center">
+          <ElInput v-model="filterText" class="ml-5 mr-1" placeholder="搜素">
             <template #append>
               <SvgIcon name="i-ep:search" />
             </template>
           </ElInput>
           <ElDropdown class="inline" @command="handleCommand">
-            <SvgIcon :size="26" class="mr-1 ml-1" name="i-ant-design:more-outlined" />
+            <SvgIcon :size="26" class="ml-1 mr-1" name="i-ant-design:more-outlined" />
             <template #dropdown>
               <ElDropdownMenu>
                 <ElDropdownItem command="checkAll">
@@ -249,7 +249,7 @@ function isAllCheckedByKey(node: any) {
             <div
               class="custom-tree-node"
             >
-              <SvgIcon :name="data.icon" class="mr-1 ml-1" size="16" />
+              <SvgIcon :name="data.icon" class="ml-1 mr-1" size="16" />
               <ElTag :type="getResourceTagColor(data.resourceType)" class="mr-1">
                 {{ data?.echoMap?.resourceType }}
               </ElTag>
@@ -271,18 +271,18 @@ function isAllCheckedByKey(node: any) {
 
 <style lang="scss" scoped>
 .page-header {
-  background-color: var(--el-disabled-bg-color);
   margin-inline: -15px;
   margin-top: -15px;
+  background-color: var(--el-disabled-bg-color);
 }
 
 .el-tree :deep(.el-tree-node__content) {
   > .custom-tree-node {
+    display: flex;
+    align-items: center;
     width: 100%;
     height: 26px;
     line-height: 26px;
-    display: flex;
-    align-items: center;
   }
 }
 

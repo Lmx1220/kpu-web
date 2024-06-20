@@ -405,8 +405,8 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
         </ElDropdown>
       </ElSpace>
       <ElTable
-        ref="table" v-loading="data.loading" :data="data.dataList" border class="my-4" height="100%" highlight-current-row
-        stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
+        ref="table" v-loading="data.loading" :data="data.dataList" class="my-4" height="100%"
+        highlight-current-row stripe border @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
         <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
         <ElTableColumn align="center" label="序号" width="100">
@@ -484,10 +484,10 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
 
 .absolute-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 
   .page-header {
     margin-bottom: 0;
@@ -498,10 +498,10 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
     overflow: auto;
 
     :deep(.main-container) {
-      flex: 1;
-      overflow: auto;
       display: flex;
+      flex: 1;
       flex-direction: column;
+      overflow: auto;
     }
 
     .search-container {
@@ -530,8 +530,8 @@ function onPreview(template: 'WEB_PLUS' | 'BACKEND', row?: any) {
   }
 
   .el-divider {
-    margin-inline: -20px;
     width: calc(100% + 40px);
+    margin-inline: -20px;
   }
 }
 </style>

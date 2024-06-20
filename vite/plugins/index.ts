@@ -16,7 +16,7 @@ import createVisualizer from './visualizer'
 import createConsole from './console'
 import createArchiver from './archiver'
 import appInfo from './app-info'
-import createDevtools from "./devtools";
+import createDevtools from './devtools'
 
 export default function creactVitePlugins(viteEnv, isBuild = false) {
   const vitePlugins: (PluginOption | PluginOption[])[] = [

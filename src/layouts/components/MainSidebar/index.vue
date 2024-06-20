@@ -43,7 +43,7 @@ const { switchTo } = useMenu()
                 'rounded-2': settingsStore.settings.menu.isRounded,
               }"
               :title="generateI18nTitle(item.meta?.i18n, item.meta?.title)"
-              class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 py-4 text-[var(--g-main-sidebar-menu-color)] transition-all hover:bg-[var(--g-main-sidebar-menu-hover-bg)] hover:text-[var(--g-main-sidebar-menu-hover-color)] px-2!"
+              class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 py-4 text-[var(--g-main-sidebar-menu-color)] transition-all hover:bg-[var(--g-main-sidebar-menu-hover-bg)] px-2! hover:text-[var(--g-main-sidebar-menu-hover-color)]"
               @click="switchTo(index)"
             >
               <div class="w-full inline-flex flex-1 flex-col items-center justify-center gap-1">
@@ -52,7 +52,7 @@ const { switchTo } = useMenu()
                   async class="menu-item-container-icon transition-transform group-hover:scale-120"
                 />
                 <span
-                  class="flex-1 text-sm w-full text-center truncate transition-width transition-height transition-opacity"
+                  class="w-full flex-1 truncate text-center text-sm transition-height transition-opacity transition-width"
                 >{{
                   generateI18nTitle(item.meta?.i18n, item.meta?.title)
                 }}</span>
@@ -70,8 +70,8 @@ const { switchTo } = useMenu()
         :menu="menuStore.allMenus"
         :rounded="settingsStore.settings.menu.isRounded"
         :value="route.meta.activeMenu || route.path"
-        class="menu" collapse
-        show-collapse-name
+        class="menu"
+        show-collapse-name collapse
       />
     </div>
   </Transition>
@@ -79,10 +79,10 @@ const { switchTo } = useMenu()
 
 <style lang="scss" scoped>
 .main-sidebar-container {
-  display: flex;
-  flex-direction: column;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
   width: var(--g-main-sidebar-width);
   color: var(--g-main-sidebar-menu-color);
   background-color: var(--g-main-sidebar-bg);
@@ -98,14 +98,14 @@ const { switchTo } = useMenu()
     &-arrow {
       .item-container::before,
       :deep(.menu-item::before) {
-        content: "";
-        opacity: 0;
         right: -5px;
         width: 0;
         height: 0;
+        content: "";
         border-top: 5px solid transparent;
-        border-bottom: 5px solid transparent;
         border-right: 5px solid var(--g-sub-sidebar-bg);
+        border-bottom: 5px solid transparent;
+        opacity: 0;
         transition: all 0.3s;
 
         @include position-center(y);
@@ -113,22 +113,22 @@ const { switchTo } = useMenu()
 
       .item-container.active::before,
       :deep(.menu-item.active::before) {
-        opacity: 1;
         right: 8px;
+        opacity: 1;
       }
     }
 
     &-line {
       .item-container::before,
       :deep(.menu-item::before) {
-        content: "";
-        opacity: 0;
         left: 6px;
         width: 4px;
         height: 0;
-        border-radius: 2px;
+        content: "";
         background-color: var(--g-main-sidebar-menu-active-bg);
+        border-radius: 2px;
         box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
+        opacity: 0;
         transition: all 0.3s;
 
         @include position-center(y);
@@ -136,22 +136,22 @@ const { switchTo } = useMenu()
 
       .item-container.active::before,
       :deep(.menu-item.active::before) {
-        opacity: 1;
         height: 20px;
+        opacity: 1;
       }
     }
 
     &-dot {
       .item-container::before,
       :deep(.menu-item::before) {
-        content: "";
-        opacity: 0;
         left: 0;
         width: 10px;
         height: 10px;
-        border-radius: 50%;
+        content: "";
         background-color: var(--g-main-sidebar-menu-active-bg);
+        border-radius: 50%;
         box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
+        opacity: 0;
         transition: all 0.3s;
 
         @include position-center(y);
@@ -159,8 +159,8 @@ const { switchTo } = useMenu()
 
       .item-container.active::before,
       :deep(.menu-item.active::before) {
-        opacity: 1;
         left: 4px;
+        opacity: 1;
       }
     }
   }
@@ -180,12 +180,14 @@ const { switchTo } = useMenu()
 
     :deep(.menu-item) {
       .menu-item-container {
-        padding-block:8px;
+        padding-block: 8px;
         color: var(--g-main-sidebar-menu-color);
+
         &:hover {
           color: var(--g-main-sidebar-menu-hover-color);
-          background-color: var(--g-main-sidebar-menu-hover-bg)
+          background-color: var(--g-main-sidebar-menu-hover-bg);
         }
+
         .menu-item-container-icon {
           font-size: 24px !important;
         }

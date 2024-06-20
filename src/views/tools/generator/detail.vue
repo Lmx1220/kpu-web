@@ -142,8 +142,8 @@ const id = computed(() => {
   }
 
   .steps {
-    margin-bottom: 20px;
     padding: 0 16px 20px;
+    margin-bottom: 20px;
     background-color: var(--g-container-bg);
     transition: background-color 0.3s;
   }

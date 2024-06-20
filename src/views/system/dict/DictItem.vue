@@ -172,7 +172,7 @@ function onDel(row?: any) {
     <SearchBar :fold="data.searchFold" :show-toggle="false">
       <template #default>
         <ElForm
-          :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
+          :model="data.search" class="search-form" inline-message inline label-suffix="：" label-width="100px"
           size="default"
         >
           <ElFormItem label="标识">
@@ -216,8 +216,8 @@ function onDel(row?: any) {
       </ElButton>
     </ElSpace>
     <ElTable
-      ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
-      stripe @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
+      ref="table" v-loading="data.loading" :data="data.dataList" class="list-table" height="100%"
+      stripe highlight-current-row border @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
     >
       <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
       <ElTableColumn align="center" label="序号" width="100">

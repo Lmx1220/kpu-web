@@ -25,9 +25,9 @@ const props = withDefaults(defineProps<Props>(), {
   maxSize: 2,
 })
 const emits = defineEmits<{
-  'change': [FileResultVO[]]
-  'register': [DialogMethods, string]
-  'delete': [FileItem]
+  change: [FileResultVO[]]
+  register: [DialogMethods, string]
+  delete: [FileItem]
 }>()
 const { t } = useI18n()
 const isUploadingRef = ref(false)
@@ -54,7 +54,7 @@ async function handleCloseFunc() {
 const getIsSelectFile = computed(() => {
   return (
     fileListRef.value.length > 0
-      && !fileListRef.value.every(item => item.status === UploadResultStatus.SUCCESS)
+    && !fileListRef.value.every(item => item.status === UploadResultStatus.SUCCESS)
   )
 })
 const getOkButtonProps = computed(() => {

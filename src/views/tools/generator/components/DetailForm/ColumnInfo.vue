@@ -297,7 +297,7 @@ function formatterIsNot(yesOrNo: boolean) {
     >
       <template #default="{ fold }">
         <ElForm
-          :model="data.search" class="search-form" inline inline-message label-suffix="：" label-width="100px"
+          :model="data.search" class="search-form" inline-message inline label-suffix="：" label-width="100px"
           size="default"
         >
           <ElFormItem label="列名称">
@@ -343,8 +343,8 @@ function formatterIsNot(yesOrNo: boolean) {
     </ElSpace>
     <ElForm :model="data">
       <ElTable
-        ref="table" v-loading="data.loading" :data="data.dataList" border class="list-table" height="100%" highlight-current-row
-        stripe @sort-change="sortChange"
+        ref="table" v-loading="data.loading" :data="data.dataList" class="list-table" height="100%"
+        highlight-current-row stripe border @sort-change="sortChange"
         @selection-change="data.batch.selectionDataList = $event"
       >
         <ElTableColumn v-if="data.batch.enable" align="center" fixed type="selection" />
@@ -357,8 +357,8 @@ function formatterIsNot(yesOrNo: boolean) {
         <ElTableColumn fixed label="列类型" prop="type" width="100" />
         <ElTableColumn label="列描述" prop="comment" width="800" show-overflow-tooltip>
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -378,8 +378,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="文档描述" prop="swaggerComment" width="140" show-overflow-tooltip>
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -399,8 +399,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="JAVA类型" prop="javaType" width="150">
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -428,8 +428,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="JAVA字段名" min-width="150" prop="javaField">
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -449,8 +449,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="TS类型" min-width="100" prop="tsType">
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -479,8 +479,8 @@ function formatterIsNot(yesOrNo: boolean) {
 
         <ElTableColumn label="长度" prop="size" width="100">
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -503,8 +503,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="主键" prop="isPk" width="90">
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -526,8 +526,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="必填" prop="isRequired" width="90">
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -549,8 +549,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="逻辑删除" prop="isLogicDeleteField" width="120">
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -572,8 +572,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="乐观锁" prop="isVersionField" width="100">
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -595,8 +595,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="自增" prop="isIncrement" width="90">
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -618,7 +618,7 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="填充类型" prop="fill" width="120">
           <template #header="{ column }">
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -642,8 +642,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="编辑" prop="isEdit" width="90">
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -665,8 +665,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="列表" prop="isList" width="90">
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -688,8 +688,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="查询" prop="isQuery" width="90">
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -711,7 +711,7 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="宽度" prop="width" width="100">
           <template #header="{ column }">
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -730,7 +730,7 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="查询方式" min-width="140" prop="queryType">
           <template #header="{ column }">
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -754,8 +754,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="组件" min-width="140" prop="component" show-overflow-tooltip>
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -775,8 +775,8 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="Vxe组组件" min-width="140" prop="vxeComponent" show-overflow-tooltip>
           <template #header="{ column }">
-            <i class="align-middle required-icon" />
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <i class="required-icon align-middle" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -796,7 +796,7 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="字典类型" min-width="140" prop="dictType" show-overflow-tooltip>
           <template #header="{ column }">
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -812,7 +812,7 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="Echo" min-width="100" prop="echoStr" show-overflow-tooltip>
           <template #header="{ column }">
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -828,7 +828,7 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="枚举" min-width="100" prop="enumStr" show-overflow-tooltip>
           <template #header="{ column }">
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -844,7 +844,7 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="默认值" min-width="100" prop="editDefValue">
           <template #header="{ column }">
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -860,7 +860,7 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="提示信息" min-width="100" prop="editHelpMessage" show-overflow-tooltip>
           <template #header="{ column }">
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -876,7 +876,7 @@ function formatterIsNot(yesOrNo: boolean) {
         </ElTableColumn>
         <ElTableColumn label="主页提示信息" min-width="140" prop="indexHelpMessage" show-overflow-tooltip>
           <template #header="{ column }">
-            <SvgIcon class="align-middle mr-1" name="ep:edit" />
+            <SvgIcon class="mr-1 align-middle" name="ep:edit" />
             <span>  {{ column.label }}</span>
           </template>
           <template #default="{ row, $index }">
@@ -940,21 +940,21 @@ function formatterIsNot(yesOrNo: boolean) {
   }
 
   .required-icon {
+    position: relative;
     display: inline-block;
-    color: var(--vxe-table-validate-error-color);
     width: 0.8em;
     height: 1em;
-    line-height: 1em;
     font-family: var(--vxe-icon-font-family);
     font-weight: 400;
-    position: relative;
+    line-height: 1em;
+    color: var(--vxe-table-validate-error-color);
 
     &::after {
-      content: "*";
       position: absolute;
-      left: 0;
       top: 0.1em;
+      left: 0;
       color: var(--el-color-danger);
+      content: "*";
     }
   }
 
@@ -964,13 +964,13 @@ function formatterIsNot(yesOrNo: boolean) {
     }
 
     &.col--dirty::before {
-      content: "";
+      position: absolute;
       top: -5px;
       left: -5px;
-      position: absolute;
-      border-width: 5px;
-      border-style: solid;
+      content: "";
       border-color: transparent #f56c6c transparent transparent;
+      border-style: solid;
+      border-width: 5px;
       transform: rotate(45deg);
     }
   }

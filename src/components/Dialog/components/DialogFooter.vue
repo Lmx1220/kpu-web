@@ -27,8 +27,8 @@ withDefaults(defineProps<Props>(), {
   // okButtonProps: () => ({}),
 })
 const emits = defineEmits<{
-  'ok': [Event]
-  'cancel': [Event]
+  ok: [Event]
+  cancel: [Event]
 }>()
 
 function handleOk(e: Event) {

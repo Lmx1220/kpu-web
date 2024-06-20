@@ -79,9 +79,9 @@ function pathCompile(path: string) {
   &.breadcrumb-modern {
     :deep(.breadcrumb-item) {
       .text {
-        background-color: rgb(231 229 228 / 80%);
         padding: 6px 16px;
         clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%, 8px 50%);
+        background-color: rgb(231 229 228 / 80%);
 
         @at-root .dark & {
           background-color: rgb(41 37 36 / 80%);
@@ -95,16 +95,16 @@ function pathCompile(path: string) {
       &:first-child {
         .text {
           padding-left: 12px;
-          border-radius: 6px 0 0 6px;
           clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
+          border-radius: 6px 0 0 6px;
         }
-
       }
 
       &:last-child:not(:first-child) {
         .text {
           --at-apply: bg-stone-2 dark:bg-stone-8;
-          clip-path:polygon(0 0,100% 0,100% 100%,0 100%,8px 50%);
+
+          clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 8px 50%);
           border-radius: 0 6px 6px 0;
         }
       }

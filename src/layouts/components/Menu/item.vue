@@ -107,7 +107,7 @@ defineExpose({
               rootMenu.isMenuPopup && level === 0 && 'opacity-0',
               rootMenu.isMenuPopup && level !== 0 && '-rotate-90 -top-[1.5px]',
             ]"
-            class="relative w-[10px] ml-1 before:(content-empty absolute w-[6px] h-[1.5px] bg-current -translate-y-[1px] transition-transform-200) after:(content-empty absolute w-[6px] h-[1.5px] bg-current -translate-y-[1px] transition-transform-200)"
+            class="relative ml-1 w-[10px] after:(absolute h-[1.5px] w-[6px] bg-current transition-transform-200 content-empty -translate-y-[1px]) before:(absolute h-[1.5px] w-[6px] bg-current transition-transform-200 content-empty -translate-y-[1px])"
           />
         </component>
       </HTooltip>

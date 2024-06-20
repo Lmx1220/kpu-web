@@ -110,6 +110,6 @@ function transformString(input: string | string[], options?: TransformStringOpti
 
 <style lang="scss" scoped>
   .item {
-  --at-apply: flex px-2 py-1 cursor-pointer;
+    --at-apply: flex px-2 py-1 cursor-pointer;
   }
 </style>

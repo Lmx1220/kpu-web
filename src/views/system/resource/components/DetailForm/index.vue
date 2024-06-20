@@ -294,7 +294,7 @@ defineExpose({
         </ElCol>
         <ElCol :xl="12" :lg="24">
           <ElFormItem prop="parentName" :label="t('system.resource.parentName')">
-            <ElInput v-model="data.form.parentName" disabled clearable />
+            <ElInput v-model="data.form.parentName" clearable disabled />
           </ElFormItem>
         </ElCol>
         <ElCol :xl="12" :lg="24">
@@ -631,24 +631,27 @@ defineExpose({
 // scss
 .el-form {
   display: flex;
-  flex: 1
+  flex: 1;
 }
 
 .page-header {
   margin-bottom: 0;
-  background-color: var(--el-disabled-bg-color)
+  background-color: var(--el-disabled-bg-color);
 }
+
 .form-left-side {
   flex: 1;
   padding: var(--container-padding);
   overflow: auto;
   background-color: var(--g-container-bg);
-  transition: background-color .3s;
+  transition: background-color 0.3s;
+
   .label-tip {
     display: inline-flex;
     margin-left: 10px;
     color: var(--el-text-color-disabled);
   }
+
   .el-scrollbar__view {
     overflow-x: hidden;
   }
@@ -661,7 +664,6 @@ defineExpose({
   padding: var(--container-padding);
   background-color: var(--g-container-bg);
   border-left: 1px dashed var(--el-disabled-border-color);
-  transition: background-color .3s;
-
+  transition: background-color 0.3s;
 }
 </style>

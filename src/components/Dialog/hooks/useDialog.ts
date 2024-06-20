@@ -18,11 +18,11 @@ export function useDialog(): UseDialogReturnType {
     }
     uid.value = uuid
     isProdMode()
-        && onUnmounted(() => {
-          dialog.value = null
-          visible.value = false
-          dataTransfer[unref(uid)] = null
-        })
+    && onUnmounted(() => {
+      dialog.value = null
+      visible.value = false
+      dataTransfer[unref(uid)] = null
+    })
     if (unref(visible) && isProdMode() && dialogMethod === unref(dialog)) {
       return
     }
@@ -96,9 +96,9 @@ export function useDialogInner(callbackFn?: Fn): UseDialogInnerReturnType {
 
   const register = (dialogInstance: DialogMethods, uuid: string) => {
     isProdMode()
-        && tryOnUnmounted(() => {
-          dialogInstanceRef.value = null
-        })
+    && tryOnUnmounted(() => {
+      dialogInstanceRef.value = null
+    })
     uidRef.value = uuid
     dialogInstanceRef.value = dialogInstance
     currentInstance?.emit('register', dialogInstance, uuid)

@@ -56,7 +56,6 @@ export enum DictEnum {
   GLOBAL_SEX = 'GLOBAL_SEX',
   AREA_LEVEL = 'GLOBAL_AREA_LEVEL',
   NATION = 'GLOBAL_NATION',
-  SEX = 'GLOBAL_SEX',
   EDUCATION = 'GLOBAL_EDUCATION',
 
   // base

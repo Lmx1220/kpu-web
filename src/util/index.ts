@@ -118,7 +118,7 @@ export function setObjToUrlParams(baseUrl: string, obj: any): string {
 
 export function openWindow(
   url: string,
-  opt?: { target?: TargetContext | string; noopener?: boolean; noreferrer?: boolean },
+  opt?: { target?: TargetContext | string, noopener?: boolean, noreferrer?: boolean },
 ) {
   const {
     target = '__blank',

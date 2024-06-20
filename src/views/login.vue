@@ -335,15 +335,15 @@ function testAccount(account: string) {
 [data-mode="mobile"] {
   #login-box {
     position: relative;
-    width: 100%;
-    height: 100%;
     top: inherit;
     left: inherit;
-    transform: translateX(0) translateY(0);
     flex-direction: column;
     justify-content: start;
+    width: 100%;
+    height: 100%;
     border-radius: 0;
     box-shadow: none;
+    transform: translateX(0) translateY(0);
 
     .login-banner {
       width: 100%;
@@ -351,12 +351,12 @@ function testAccount(account: string) {
 
       .banner {
         position: relative;
+        top: inherit;
         right: inherit;
+        display: inherit;
         width: 100%;
         max-width: 375px;
         margin: 0 auto;
-        display: inherit;
-        top: inherit;
         transform: translateY(0);
       }
     }
@@ -387,25 +387,25 @@ function testAccount(account: string) {
 
 :deep(.i18n-selector) {
   position: absolute;
-  z-index: 1;
   top: 20px;
   right: 20px;
-  cursor: pointer;
+  z-index: 1;
   font-size: 18px;
   color: var(--el-text-color-primary);
+  cursor: pointer;
 }
 
 #login-box {
-  display: flex;
-  justify-content: space-between;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%) translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
   background-color: var(--g-container-bg);
   border-radius: 10px;
-  overflow: hidden;
   box-shadow: var(--el-box-shadow);
+  transform: translate(-50%) translateY(-50%);
 
   .login-banner {
     position: relative;
@@ -432,8 +432,8 @@ function testAccount(account: string) {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 500px;
     width: 500px;
+    min-height: 500px;
     padding: 50px;
     overflow: hidden;
 
@@ -441,10 +441,10 @@ function testAccount(account: string) {
       position: relative;
 
       .title {
-        font-size: 1.3em;
-        color: var(--el-text-color-primary);
         margin: 0 auto 30px;
+        font-size: 1.3em;
         font-weight: 700;
+        color: var(--el-text-color-primary);
       }
     }
   }
@@ -453,9 +453,9 @@ function testAccount(account: string) {
     margin-bottom: 24px;
 
     :deep(.el-input) {
+      width: 100%;
       height: 48px;
       line-height: inherit;
-      width: 100%;
 
       input {
         height: 48px;
@@ -505,9 +505,9 @@ function testAccount(account: string) {
 .copyright {
   position: absolute;
   bottom: 0;
+  width: 100%;
   padding: 20px;
   margin: 0;
-  width: 100%;
 }
 
 .login-switcher {

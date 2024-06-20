@@ -312,7 +312,7 @@ function TableSortable() {
                 </p>
               </template>
             </PageHeader>
-            <ElTable ref="authsTableRef" :key="authsTableKey" :data="form.auths" border stripe highlight-current-row>
+            <ElTable ref="authsTableRef" :key="authsTableKey" :data="form.auths" stripe highlight-current-row border>
               <ElTableColumn align="center" fixed :label="t('system.resource.sortValue')" prop="sortValue" width="60">
                 <template #header>
                   <ElButton type="primary" size="small" plain circle @click="handleAddAuths">
@@ -590,10 +590,10 @@ function TableSortable() {
 <style lang="scss" scoped>
 .absolute-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 
   .page-header {
     margin-bottom: 0;
@@ -601,10 +601,10 @@ function TableSortable() {
 
   .page-main,
   .el-form {
-    flex: 1;
-    overflow: auto;
     display: flex;
+    flex: 1;
     flex-direction: column;
+    overflow: auto;
   }
 
   .page-main {
@@ -612,9 +612,9 @@ function TableSortable() {
       position: static;
 
       .page-header {
-        background-color: var(--el-disabled-bg-color);
         margin-inline: -15px;
         margin-top: -15px;
+        background-color: var(--el-disabled-bg-color);
       }
 
       :deep(.main .label-tip) {

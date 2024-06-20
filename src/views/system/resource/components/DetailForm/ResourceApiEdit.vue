@@ -86,41 +86,46 @@ function onOk() {
 </template>
 
 <style lang="scss" scoped>
-.resourceApiSelect{
+.resourceApiSelect {
   .card-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
   }
 
-.card-meta-title {
-  overflow: hidden;
-  color: rgba(0, 0, 0, 0.85);
-  font-weight: 500;
-  font-size: 16px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-  .cardDesc {
-    background: rgb(97 175 254 / 10%);
-    font-size: 14px;
-    white-space: nowrap;
+  .card-meta-title {
     overflow: hidden;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(0 0 0 / 85%);
     text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cardDesc {
     max-width: 100%;
+    overflow: hidden;
+    font-size: 14px;
     font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: rgb(97 175 254 / 10%);
   }
 }
-:deep(.el-card) {
-  .el-card__header{
-    --at-apply: p-x-2 p-y-3;
 
-  } .el-card__body{
+:deep(.el-card) {
+  .el-card__header {
+    --at-apply: p-x-2 p-y-3;
+  }
+
+  .el-card__body {
     --at-apply: p-4;
+
     > div:not(:last-child) {
       margin-bottom: 8px;
     }
   }
+
   .el-card__footer {
     --at-apply: p0 border-t-0;
   }

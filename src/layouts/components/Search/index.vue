@@ -170,7 +170,7 @@ function hasChildren(item: RouteRecordRaw) {
   return flag
 }
 
-function getSourceList(arr: RouteRecordRaw[], basePath?: string, icon?: string, baseBreadcrumb?: { i18n?: string; title: string }[]) {
+function getSourceList(arr: RouteRecordRaw[], basePath?: string, icon?: string, baseBreadcrumb?: { i18n?: string, title: string }[]) {
   arr?.forEach((item) => {
     if (item.meta?.sidebar !== false) {
       if (item.children && hasChildren(item)) {
@@ -272,16 +272,16 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
 <template>
   <TransitionRoot :show="isShow" as="template">
     <Dialog
-      :initial-focus="searchInputRef" class="fixed inset-0 flex z-2000"
+      :initial-focus="searchInputRef" class="fixed inset-0 z-2000 flex"
       @close="isShow && eventBus.emit('global-search-toggle')"
     >
       <TransitionChild as="template" v-bind="overlayTransitionClass">
-        <div class="fixed inset-0 transition-opacity bg-stone-200/75 dark:bg-stone-8/75 backdrop-blur-sm" />
+        <div class="fixed inset-0 bg-stone-200/75 backdrop-blur-sm transition-opacity dark:bg-stone-8/75" />
       </TransitionChild>
       <div class="fixed inset-0">
-        <div class="flex h-full items-end sm:items-center justify-center text-center p-4 sm:p-0">
+        <div class="h-full flex items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <TransitionChild as="template" v-bind="transitionClass">
-            <DialogPanel class="relative text-left w-full sm:max-w-2xl h-full max-h-4/5 flex flex-col">
+            <DialogPanel class="relative h-full max-h-4/5 w-full flex flex-col text-left sm:max-w-2xl">
               <HTabList
                 v-model="switchType"
                 :options="[
@@ -291,11 +291,11 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
                 class="mb-4 flex!" @change="toSwitchType"
                 @click.stop="() => {}"
               />
-              <div class="flex flex-col bg-white dark:bg-stone-8 rounded-xl shadow-xl overflow-y-auto">
+              <div class="flex flex-col overflow-y-auto rounded-xl bg-white shadow-xl dark:bg-stone-8">
                 <div border-b="~ solid stone-2 dark:stone-7" class="flex items-center px-4 py-3">
                   <SvgIcon :size="18" class="text-stone-5" name="ep:search" />
                   <input
-                    ref="searchInputRef" v-model="searchInput" class="w-full focus:outline-none border-0 rounded-md placeholder-stone-4 dark:placeholder-stone-5 text-base px-3 bg-transparent text-dark dark:text-white"
+                    ref="searchInputRef" v-model="searchInput" class="w-full border-0 rounded-md bg-transparent px-3 text-base text-dark dark:text-white focus:outline-none placeholder-stone-4 dark:placeholder-stone-5"
                     placeholder="搜索页面，支持标题、URL模糊查询"
                     @keydown.esc="eventBus.emit('global-search-toggle')" @keydown.up.prevent="keyUp"
                     @keydown.down.prevent="keyDown" @keydown.enter.prevent="keyEnter"
@@ -312,7 +312,7 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
                       <a
                         v-for="(item, index) in resultList" :key="item.path" ref="searchResultItemRef"
                         :class="{ 'bg-stone-2/40 dark:bg-stone-7/40': index === actived }"
-                        :data-index="index" class="flex items-center cursor-pointer"
+                        :data-index="index" class="flex cursor-pointer items-center"
                         @click="pageJump(item.path, item.link)" @mouseover="actived = index"
                       >
                         <SvgIcon
@@ -321,9 +321,9 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
                         />
                         <div
                           border-l="~ solid stone-2 dark:stone-7"
-                          class="flex-1 flex flex-col gap-1 px-4 py-3 truncate"
+                          class="flex flex-1 flex-col gap-1 truncate px-4 py-3"
                         >
-                          <div class="text-base font-bold truncate">{{
+                          <div class="truncate text-base font-bold">{{
                             generateI18nTitle(item.i18n, item.title)
                           }}
                           </div>
@@ -347,7 +347,7 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
                 </DialogDescription>
                 <div
                   v-if="settingsStore.mode === 'pc'" border-t="~ solid stone-2 dark:stone-7"
-                  class="px-4 py-3 flex justify-between"
+                  class="flex justify-between px-4 py-3"
                 >
                   <div class="flex gap-8">
                     <div class="inline-flex items-center gap-1 text-xs">
@@ -388,25 +388,25 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
 <style lang="scss" scoped>
 #search {
   position: fixed;
-  z-index: 2000;
   top: 0;
   left: 0;
+  z-index: 2000;
   width: 100%;
   height: 100%;
+  visibility: hidden;
   background-image: radial-gradient(transparent 1px, rgb(0 0 0 / 30%) 1px);
   background-size: 4px 4px;
   backdrop-filter: saturate(50%) blur(4px);
-  transition: all 0.2s;
   opacity: 0;
-  visibility: hidden;
+  transition: all 0.2s;
 
   &.searching {
-    opacity: 1;
     visibility: visible;
+    opacity: 1;
 
     .container {
-      transform: initial;
       filter: initial;
+      transform: initial;
     }
   }
 
@@ -416,9 +416,9 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
     max-width: 800px;
     height: 100%;
     margin: 0 auto;
+    filter: blur(10px);
     transition: all 0.2s;
     transform: scale(1.1);
-    filter: blur(10px);
 
     .search-box {
       margin: 50px 20px 40px;
@@ -438,8 +438,8 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
         align-items: center;
         justify-content: space-evenly;
         margin-top: 20px;
-        line-height: 24px;
         font-size: 14px;
+        line-height: 24px;
         color: #fff;
 
         .tip {
@@ -471,10 +471,10 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
     .result {
       position: relative;
       margin: 0 20px 50px;
-      // max-height: calc(100% - 250px);
-      border-radius: 5px;
       overflow: auto;
       background-color: var(--el-bg-color);
+      // max-height: calc(100% - 250px);
+      border-radius: 5px;
       box-shadow: 0 0 0 1px var(--el-border-color-darker);
 
       &.mobile {
@@ -517,20 +517,20 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
           text-align: center;
 
           .icon {
-            color: var(--el-color-info);
             font-size: 20px;
+            color: var(--el-color-info);
             transition: all 0.1s;
           }
         }
 
         .info {
-          flex: 1;
-          height: 70px;
           display: flex;
+          flex: 1;
           flex-direction: column;
           justify-content: space-around;
-          border-left: 1px solid var(--el-border-color-lighter);
+          height: 70px;
           padding: 5px 10px 7px;
+          border-left: 1px solid var(--el-border-color-lighter);
           transition: all 0.1s;
 
           @include text-overflow(1, true);

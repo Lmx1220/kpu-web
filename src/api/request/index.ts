@@ -159,8 +159,8 @@ class HttpRequest {
 
     if (
       contentType !== ContentTypeEnum.FORM_URLENCODED
-        || !Reflect.has(config, 'data')
-        || config.method?.toUpperCase() === RequestEnum.GET
+      || !Reflect.has(config, 'data')
+      || config.method?.toUpperCase() === RequestEnum.GET
     ) {
       return config
     }

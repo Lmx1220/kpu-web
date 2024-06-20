@@ -34,7 +34,7 @@ const transitionClass = ref({
       <template v-if="visible" #default>
         <span
           :class="{ '-indent-9999 w-1.5 h-1.5 px-0! left-[100%]! -translate-x-[50%] before:content-empty before:block before:bg-ui-primary before:w-full before:h-full before:rounded-full before:absolute before:left-0 before:top-0 before:animate-ping': value === true }"
-          class="absolute top-0 left-[50%] z-20 -translate-y-[50%] whitespace-nowrap bg-ui-primary text-ui-text ring-1 ring-light dark:ring-dark px-1.5 text-xs rounded-full"
+          class="absolute left-[50%] top-0 z-20 whitespace-nowrap rounded-full bg-ui-primary px-1.5 text-xs text-ui-text ring-1 ring-light -translate-y-[50%] dark:ring-dark"
         >
           {{ value }}
         </span>

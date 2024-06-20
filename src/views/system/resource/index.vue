@@ -224,16 +224,17 @@ const title = computed(() => {
 <style lang="scss" scoped>
 .absolute-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 
   .page-main {
     display: flex;
     flex: 1;
     flex-direction: column;
     overflow: auto;
+
     .flex-container {
       position: static;
     }
@@ -243,6 +244,7 @@ const title = computed(() => {
     margin-bottom: 0;
   }
 }
+
 .flex-container {
   :deep(.main .main-container) {
     display: flex;
@@ -262,29 +264,32 @@ const title = computed(() => {
     color: var(--el-text-color-placeholder);
   }
 }
-.form{
+
+.form {
   position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
   width: 100%;
   overflow: auto;
+
   .top-side {
     padding-bottom: 0;
   }
-  .content-side{
+
+  .content-side {
     display: flex;
     flex: 1;
-    height: 0
+    height: 0;
   }
 
-  .bottom-side{
+  .bottom-side {
     display: flex;
     justify-content: center;
     padding: var(--container-padding);
     background-color: var(--g-container-bg);
     border-top: 1px dashed var(--el-disabled-border-color);
-    transition: background-color .3s
+    transition: background-color 0.3s;
   }
 }
 </style>

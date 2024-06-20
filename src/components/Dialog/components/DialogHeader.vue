@@ -15,8 +15,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emits = defineEmits<{
-  'fullscreen': [Event]
-  'cancel': [Event]
+  fullscreen: [Event]
+  cancel: [Event]
 }>()
 function handleFullScreen(e: Event) {
   e?.stopPropagation()
@@ -64,15 +64,15 @@ function handleTitleDbClick(e: Event) {
   position: absolute;
   top: 6px;
   right: 0;
-  padding: 0;
   width: 86px;
   height: 54px;
+  padding: 0;
+  font-size: var(--el-message-close-size, 16px);
   line-height: 54px;
+  cursor: pointer;
   background: transparent;
   border: none;
   outline: none;
-  cursor: pointer;
-  font-size: var(--el-message-close-size, 16px);
 
   > i {
     margin-left: 16px;

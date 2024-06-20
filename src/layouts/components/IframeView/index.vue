@@ -42,11 +42,11 @@ watch(
 <style lang="scss" scoped>
 .iframe-view,
 .iframe {
-  display: flex;
-  flex-direction: column;
   position: absolute;
   top: 0;
   left: 0;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 
@@ -70,12 +70,12 @@ watch(
 }
 
 .iframe-enter-from {
-  opacity: 0;
   margin-left: -20px;
+  opacity: 0;
 }
 
 .iframe-leave-to {
-  opacity: 0;
   margin-left: 20px;
+  opacity: 0;
 }
 </style>

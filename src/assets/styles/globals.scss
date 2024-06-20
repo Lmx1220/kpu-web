@@ -8,8 +8,8 @@
 
 :root::view-transition-old(root),
 :root::view-transition-new(root) {
-  animation: none;
   mix-blend-mode: normal;
+  animation: none;
 }
 
 :root::view-transition-old(root) {
@@ -57,11 +57,11 @@ html {
 }
 
 body {
+  box-sizing: border-box;
   height: 100%;
   margin: 0;
-  background-color: var(--g-container-bg);
-  box-sizing: border-box;
   font-family: Lato, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background-color: var(--g-container-bg);
   -webkit-tap-highlight-color: transparent;
 
   &.overflow-hidden {
@@ -75,8 +75,8 @@ body {
 
 [data-fixed-calc-width] {
   position: fixed;
-  left: 50%;
   right: 0;
+  left: 50%;
 }
 
 [data-app-width-mode="adaption"] [data-fixed-calc-width],

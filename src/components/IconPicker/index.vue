@@ -120,7 +120,7 @@ function removeIcon() {
             </ElInput>
           </div>
           <div class="list-icon">
-            <SvgIcon class="list-icon-item empty" name="i-ep:delete" @click="removeIcon" />
+            <SvgIcon class="empty list-icon-item" name="i-ep:delete" @click="removeIcon" />
             <SvgIcon
               v-for="(icon, index) in currentIconList" :key="index" :name="`${activeName}:${icon}`"
               class="list-icon-item" @click="chooseIcon(`${activeName}:${icon}`)"
@@ -142,6 +142,7 @@ function removeIcon() {
 .icon-picker {
   --icon-picker-size: var(--el-component-size);
   --icon-picker-font-size: var(--el-font-size-large);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -153,13 +154,15 @@ function removeIcon() {
   cursor: pointer;
   border: var(--el-border);
   border-radius: var(--el-border-radius-base);
-  transition: .3s;
-  &.is-disabled{
+  transition: 0.3s;
+
+  &.is-disabled {
     color: var(--el-text-color-disabled);
-    border-color: var(--el-border-color-light);
-    cursor: not-allowed;
     pointer-events: none;
+    cursor: not-allowed;
+    border-color: var(--el-border-color-light);
   }
+
   &:hover {
     border: 1px solid var(--el-border-color-darker);
   }
@@ -178,6 +181,7 @@ function removeIcon() {
 .icon-picker-dialog-body {
   display: flex;
   height: 500px;
+
   /*
   margin: calc((var(--el-dialog-padding-primary) + 10px + 30px) * -1) calc(var(--el-dialog-padding-primary) * -1) calc((var(--el-dialog-padding-primary) + 10px) * -1) calc(var(--el-dialog-padding-primary) * -1);
   */
@@ -200,17 +204,17 @@ function removeIcon() {
 
       .el-tabs__item {
         position: relative;
-        margin-bottom: -2px;
         height: auto;
+        margin-bottom: -2px;
         transition: 0.3s;
 
         &::after {
-          content: "";
           position: absolute;
-          left: 0;
           bottom: 0;
+          left: 0;
           width: 100%;
           height: 2px;
+          content: "";
           background-image: linear-gradient(to right, transparent, var(--el-fill-color));
         }
 
@@ -218,15 +222,15 @@ function removeIcon() {
           display: flex;
           flex-direction: column;
           width: 120px;
-          text-align: left;
-          line-height: 20px;
           padding: 15px 0;
+          line-height: 20px;
+          text-align: left;
 
           .name {
-            font-size: 16px;
             margin-bottom: 2px;
-            white-space: normal;
+            font-size: 16px;
             word-break: initial;
+            white-space: normal;
           }
 
           .total {
@@ -238,10 +242,11 @@ function removeIcon() {
   }
 
   .main-container {
-    flex: 1;
-    margin-right: 11px;
     display: flex;
+    flex: 1;
     flex-direction: column;
+    margin-right: 11px;
+
     .search-bar {
       margin: 0 75px;
 
@@ -252,13 +257,14 @@ function removeIcon() {
 
     .list-icon {
       position: relative;
-      margin: 15px 0;
       min-height: 160px;
+      margin: 15px 0;
       overflow-y: auto;
+
       .list-icon-item {
-        margin: 5px;
         box-sizing: content-box;
         padding: 15px;
+        margin: 5px;
         font-size: 28px;
         cursor: pointer;
         border: 1px solid var(--el-border-color);
@@ -269,15 +275,15 @@ function removeIcon() {
         }
 
         &:not(.empty):hover {
-          border-color: var(--el-border-color-darker);
-          background-color: var(--el-fill-color);
           color: var(--el-color-primary);
+          background-color: var(--el-fill-color);
+          border-color: var(--el-border-color-darker);
           transition: background-color 0.3s, var(--el-transition-border), var(--el-transition-color);
         }
 
         &.empty {
-          border-color: transparent;
           color: var(--el-text-color-placeholder);
+          border-color: transparent;
           transition: var(--el-transition-color);
 
           &:hover {
@@ -287,37 +293,37 @@ function removeIcon() {
       }
 
       .list-icon-preview-item {
-        display: none;
         position: absolute;
         box-sizing: content-box;
+        display: none;
         padding: 10px;
-        border: 1px solid var(--el-border-color-darker);
         font-size: 108px;
-        background: var(--el-fill-color);
         color: var(--el-color-primary);
+        background: var(--el-fill-color);
+        border: 1px solid var(--el-border-color-darker);
 
         &.top-left {
-          display: block;
           top: 5px;
           left: 5px;
+          display: block;
         }
 
         &.top-right {
-          display: block;
           top: 5px;
           right: 5px;
+          display: block;
         }
 
         &.bottom-left {
-          display: block;
           bottom: 5px;
           left: 5px;
+          display: block;
         }
 
         &.bottom-right {
-          display: block;
-          bottom: 5px;
           right: 5px;
+          bottom: 5px;
+          display: block;
         }
       }
     }

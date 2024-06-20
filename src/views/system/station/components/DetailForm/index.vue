@@ -114,10 +114,8 @@ defineExpose({
             label: 'name',
           }"
           :render-after-expand="false"
-          check-on-click-node
-          check-strictly
-          filterable
-          show-checkbox
+
+          check-strictly show-checkbox filterable check-on-click-node
           value-key="id"
         />
       </ElFormItem>

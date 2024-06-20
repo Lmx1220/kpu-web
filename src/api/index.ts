@@ -123,8 +123,8 @@ const transform: AxiosTransform = {
         formatDate && formatRequestDate(params)
         if (
           Reflect.has(config, 'data')
-            && config.data
-            && (Object.keys(config.data).length > 0 || config.data instanceof FormData)
+          && config.data
+          && (Object.keys(config.data).length > 0 || config.data instanceof FormData)
         ) {
           config.data = data
           config.params = params
@@ -217,7 +217,7 @@ const transform: AxiosTransform = {
     const retryRequest = new AxiosRetry()
     const { isOpenRetry } = config.requestOptions.retryRequest
     config.method?.toUpperCase() === RequestEnum.GET
-      && error?.response?.status !== 401
+    && error?.response?.status !== 401
     && isOpenRetry
     && retryRequest.retry(axiosInstance, error)
     return Promise.reject(error)
