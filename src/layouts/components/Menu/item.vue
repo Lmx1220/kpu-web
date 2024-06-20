@@ -9,6 +9,7 @@ const props = withDefaults(
     level: 0,
     subMenu: false,
     expand: false,
+    alwaysExpand: false,
   },
 )
 const { generateI18nTitle } = useI18nTitle()
@@ -26,6 +27,13 @@ const isItemActive = computed(() => {
   return isActived.value && (!props.subMenu || rootMenu.isMenuPopup)
 })
 
+const icon = computed(() => {
+  let icon = props.item.meta?.icon
+  if (isActived.value && props.item.meta?.activeIcon) {
+    icon = props.item.meta?.activeIcon
+  }
+  return icon
+})
 // 缩进样式
 const indentStyle = computed(() => {
   return !rootMenu.isMenuPopup
@@ -59,11 +67,17 @@ defineExpose({
               target: item.meta?.newWindow || item.meta?.link ? '_blank' : '_self',
               class: 'no-underline',
             }),
-          }" class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 px-5 py-4 text-[var(--g-sub-sidebar-menu-color)] transition-all hover:(bg-[var(--g-sub-sidebar-menu-hover-bg)] text-[var(--g-sub-sidebar-menu-hover-color)])" :class="{
-            'text-[var(--g-sub-sidebar-menu-active-color)]! bg-[var(--g-sub-sidebar-menu-active-bg)]!': isItemActive,
-            'rounded-2': rootMenu.props.rounded,
-            'px-2!': rootMenu.isMenuPopup && level === 0,
-            'py-3!': rootMenu.props.rounded && rootMenu.isMenuPopup && level !== 0,
+          }" class="group menu-item-container h-full w-full flex items-center justify-between gap-1 px-5 py-4"
+          :class="{
+            ...rootMenu.isMenuPopup || !props.alwaysExpand ? {
+              'cursor-pointer text-[var(--g-sub-sidebar-menu-color)] transition-all hover-bg-[var(--g-sub-sidebar-menu-hover-bg)] hover-text-[var(--g-sub-sidebar-menu-hover-color)]': true,
+              'text-[var(--g-sub-sidebar-menu-active-color)]! bg-[var(--g-sub-sidebar-menu-active-bg)]!': isItemActive,
+              'rounded-2': rootMenu.props.rounded,
+              'px-2!': rootMenu.isMenuPopup && level === 0,
+              'py-3!': rootMenu.props.rounded && rootMenu.isMenuPopup && level !== 0 }
+              : {
+                'py-2! opacity-30': true,
+              },
           }" :title="generateI18nTitle(item.meta?.i18n, item.meta?.title)" v-on="{
             ...(!subMenu && {
               click: navigate,
@@ -78,8 +92,11 @@ defineExpose({
             }" :style="indentStyle" class="inline-flex flex-1 items-center justify-center gap-[12px]"
           >
             <SvgIcon
-              v-if="props.item.meta?.icon" :name="props.item.meta.icon" :size="20"
-              async class="menu-item-container-icon transition-transform group-hover:scale-120"
+              v-if="icon" :name="icon" :size="20"
+              async class="menu-item-container-icon"
+              :class="{
+                'transition-transform group-hover-scale-120': rootMenu.isMenuPopup || !props.alwaysExpand,
+              }"
             />
             <span
               v-if="!(rootMenu.isMenuPopup && level === 0 && !rootMenu.props.showCollapseName)"
@@ -101,7 +118,7 @@ defineExpose({
             />
           </div>
           <i
-            v-if="subMenu && !(rootMenu.isMenuPopup && level === 0)"
+            v-if="subMenu && (!rootMenu.isMenuPopup || level !== 0) && (rootMenu.isMenuPopup || !props.alwaysExpand)"
             :class="[
               expand ? 'before:(-rotate-45 -translate-x-[2px]) after:(rotate-45 translate-x-[2px])' : 'before:(rotate-45 -translate-x-[2px]) after:(-rotate-45 translate-x-[2px])',
               rootMenu.isMenuPopup && level === 0 && 'opacity-0',

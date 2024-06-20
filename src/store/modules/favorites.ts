@@ -24,7 +24,7 @@ const useFavoritesStore = defineStore(
     function hasChildren(route: RouteRecordRaw) {
       let flag = true
       if (route.children) {
-        if (route.children.every(item => item.meta?.sidebar === false)) {
+        if (route.children.every(item => item.meta?.menu === false)) {
           flag = false
         }
       }
@@ -36,7 +36,7 @@ const useFavoritesStore = defineStore(
     function generateRoutePaths(route: RouteRecordRaw[], currentPath: string = '') {
       const routePaths: RouteRecordRedirectOption[] = []
       route.forEach((route) => {
-        if (route.meta?.sidebar !== false) {
+        if (route.meta?.menu !== false) {
           if (route.children && hasChildren(route)) {
             routePaths.push(...generateRoutePaths(route.children, resolveRoutePath(currentPath, route.path)))
           }

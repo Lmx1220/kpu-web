@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { useNProgress } from '@vueuse/integrations/useNProgress'
 import '@/assets/styles/nprogress.scss'
 import router from './router'
-import { asyncRoutes } from './router/routes'
+import { asyncRoutes, asyncRoutesByFilesystem } from './router/routes'
 import useRouteStore from '@/store/modules/route'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
@@ -78,12 +78,24 @@ router.beforeEach(async (to, from, next) => {
         case 'backend':
           await routeStore.generateRoutesAtBack()
           break
+        case 'filesystem':
+          routeStore.generateRoutesAtFilesystem(asyncRoutesByFilesystem)
+          // 文件系统生成的路由，需要手动生成导航数据
+          switch (settingsStore.settings.menu.baseOn) {
+            case 'frontend':
+              menuStore.generateMenusAtFront()
+              break
+            case 'backend':
+              await menuStore.generateMenusAtBack()
+              break
+          }
+          break
       }
       // 重置路由
       const removeRoutes: Function[] = []
       // 生成路由
       routeStore.flatRoutes.forEach((route) => {
-        if (!/^(https?:|mailto:|tel:)/.test(route.path)) {
+        if (!/^(?:https?:|mailto:|tel:)/.test(route.path)) {
           removeRoutes.push(router.addRoute(route as RouteRecordRaw))
         }
       })

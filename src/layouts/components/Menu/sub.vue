@@ -25,6 +25,9 @@ const rootMenu = inject(rootMenuInjectionKey)!
 const opened = computed(() => {
   return rootMenu.openedMenus.includes(props.uniqueKey[props.uniqueKey.length - 1])
 })
+const alwaysOpeneds = computed(() => {
+  return rootMenu.alwaysOpenedsMenus.includes(props.uniqueKey[props.uniqueKey.length - 1])
+})
 
 const transitionEvent = computed(() => {
   return rootMenu.isMenuPopup
@@ -97,7 +100,7 @@ const transitionClass = computed(() => {
 const hasChildren = computed(() => {
   let flag = true
   if (props.menu.children) {
-    if (props.menu.children.every((item: any) => item.meta?.sidebar === false)) {
+    if (props.menu.children.every((item: any) => item.meta?.menu === false)) {
       flag = false
     }
   }
@@ -108,6 +111,9 @@ const hasChildren = computed(() => {
 })
 
 function handleClick() {
+  if (alwaysOpeneds.value) {
+    return
+  }
   if (rootMenu.isMenuPopup && hasChildren.value) {
     return
   }
@@ -180,7 +186,7 @@ function handleMouseleave() {
 
 <template>
   <Item
-    ref="itemRef" :expand="opened" :item="menu" :level="level" :sub-menu="hasChildren" :unique-key="uniqueKey"
+    ref="itemRef" :expand="opened" :always-expand="alwaysOpeneds" :item="menu" :level="level" :sub-menu="hasChildren" :unique-key="uniqueKey"
     @click="handleClick" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave"
   />
   <Teleport v-if="hasChildren" :disabled="!rootMenu.isMenuPopup" to="body">
@@ -196,7 +202,7 @@ function handleMouseleave() {
       >
         <template v-for="item in menu.children" :key="item.path ?? JSON.stringify(item)">
           <SubMenu
-            v-if="item.meta?.sidebar !== false" :level="level + 1" :menu="item"
+            v-if="item.meta?.menu !== false" :level="level + 1" :menu="item"
             :unique-key="[...uniqueKey, item.path ?? JSON.stringify(item)]"
           />
         </template>

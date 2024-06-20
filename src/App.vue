@@ -37,7 +37,7 @@ const subSidebarActualWidth = computed(() => {
     && menuStore.sidebarMenus.length === 1
     && (
       !menuStore.sidebarMenus[0].children
-      || menuStore.sidebarMenus[0]?.children.every(item => item.meta?.sidebar === false)
+      || menuStore.sidebarMenus[0]?.children.every(item => item.meta?.menu === false)
     )
   ) {
     actualWidth = 0

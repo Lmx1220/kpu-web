@@ -12,6 +12,8 @@ import createBanner from './banner'
 import createCompression from './compression'
 import createPwa from './pwa'
 import createMock from './mock'
+import createLayouts from './layouts'
+import createPages from './pages'
 import createVisualizer from './visualizer'
 import createConsole from './console'
 import createArchiver from './archiver'
@@ -37,6 +39,8 @@ export default function createVitePlugins(viteEnv, isBuild = false) {
   vitePlugins.push(createUnoCss())
   vitePlugins.push(createSvgIcon(isBuild))
   vitePlugins.push(createMock(viteEnv, isBuild))
+  vitePlugins.push(createLayouts())
+  vitePlugins.push(createPages())
   vitePlugins.push(...createCompression(viteEnv, isBuild))
   vitePlugins.push(createArchiver(viteEnv))
   vitePlugins.push(createConsole())

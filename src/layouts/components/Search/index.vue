@@ -160,7 +160,7 @@ function toSearch(_switchType = 'menu') {
 function hasChildren(item: RouteRecordRaw) {
   let flag = true
   if (item.children) {
-    if (item.children.every(i => i.meta?.sidebar === false)) {
+    if (item.children.every(i => i.meta?.menu === false)) {
       flag = false
     }
   }
@@ -172,7 +172,7 @@ function hasChildren(item: RouteRecordRaw) {
 
 function getSourceList(arr: RouteRecordRaw[], basePath?: string, icon?: string, baseBreadcrumb?: { i18n?: string, title: string }[]) {
   arr?.forEach((item) => {
-    if (item.meta?.sidebar !== false) {
+    if (item.meta?.menu !== false) {
       if (item.children && hasChildren(item)) {
         const breadcrumb = deepClone(baseBreadcrumb) ?? []
         breadcrumb.push({

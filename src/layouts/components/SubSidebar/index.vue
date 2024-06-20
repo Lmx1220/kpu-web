@@ -45,7 +45,7 @@ const enableSidebar = computed(() => {
       && menuStore.sidebarMenus.length === 1
       && (
         !menuStore.sidebarMenus[0].children
-        || menuStore.sidebarMenus[0]?.children.every(item => item.meta?.sidebar === false)
+        || menuStore.sidebarMenus[0]?.children.every(item => item.meta?.menu === false)
       )
     )
   )
@@ -90,6 +90,7 @@ const isCollapse = computed(() => {
                 :accordion="settingsStore.settings.menu.subMenuUniqueOpened"
                 :collapse="isCollapse"
                 :default-openeds="menuStore.defaultOpenedPaths"
+                :always-openeds="menuStore.alwaysOpenedPaths"
                 :menu="mainItem.children"
                 :rounded="settingsStore.settings.menu.isRounded"
                 :value="route.meta.activeMenu || route.path" class="menu"

@@ -150,7 +150,7 @@ declare namespace Settings {
      * @默认值 `'frontend'` 前端
      * @可选值 `'backend'` 后端
      */
-    // baseOn?: 'frontend' | 'backend'
+    baseOn?: 'frontend' | 'backend'
     /**
      * 导航栏模式
      * @默认值 `'side'` 侧边栏模式（有主导航）
@@ -504,9 +504,10 @@ declare namespace Menu {
       activeIcon?: string
       i18n?: string
       defaultOpened?: boolean
+      alwaysOpened?: boolean
       newWindow?: boolean
       auth?: string | string[]
-      sidebar?: boolean
+      menu?: boolean
       badge?: boolean | number | string | Function
       link?: string
     }

@@ -13,6 +13,7 @@ const props = withDefaults(
   {
     accordion: true,
     defaultOpeneds: () => [],
+    alwaysOpeneds: () => [],
     mode: 'vertical',
     collapse: false,
     showCollapseName: false,
@@ -25,7 +26,8 @@ const router = useRouter()
 const activeIndex = ref<MenuInjection['activeIndex']>(props.value)
 const items = ref<MenuInjection['items']>({})
 const subMenus = ref<MenuInjection['subMenus']>({})
-const openedMenus = ref<MenuInjection['openedMenus']>(props.defaultOpeneds.slice(0))
+const openedMenus = ref<MenuInjection['openedMenus']>(Array.from(new Set([...props.alwaysOpeneds.slice(0), ...props.defaultOpeneds.slice(0)])))
+const alwaysOpenedsMenus = ref<MenuInjection['openedMenus']>(props.alwaysOpeneds.slice(0))
 const mouseInMenu = ref<MenuInjection['mouseInMenu']>([])
 const isMenuPopup = computed<MenuInjection['isMenuPopup']>(() => {
   return props.mode === 'horizontal' || (props.mode === 'vertical' && props.collapse)
@@ -58,7 +60,7 @@ const openMenu: MenuInjection['openMenu'] = (index, indexPath) => {
     return
   }
   if (props.accordion) {
-    openedMenus.value = openedMenus.value.filter(key => indexPath.includes(key))
+    openedMenus.value = openedMenus.value.filter(key => indexPath.includes(key) || alwaysOpenedsMenus.value.includes(key))
   }
   openedMenus.value.push(index)
 }
@@ -148,6 +150,9 @@ watch(() => props.collapse, (value) => {
   if (value) {
     openedMenus.value = []
   }
+  else {
+    openedMenus.value = props.alwaysOpeneds.slice(0)
+  }
   initMenu()
 })
 
@@ -157,6 +162,7 @@ provide(rootMenuInjectionKey, reactive({
   subMenus,
   activeIndex,
   openedMenus,
+  alwaysOpenedsMenus,
   mouseInMenu,
   isMenuPopup,
   openMenu,
@@ -176,8 +182,10 @@ provide(rootMenuInjectionKey, reactive({
     }" class="flex flex-col of-hidden transition-all"
   >
     <template v-for="(item, index) in menu" :key="index">
-      <SubMenu v-if="item.children?.length" :menu="item" :unique-key="[item.path ?? JSON.stringify(item)]" />
-      <Item v-else :item="item" :unique-key="[item.path ?? JSON.stringify(item)]" @click="handleMenuItemClick(item.path ?? JSON.stringify(item), item.meta)" />
+      <template v-if="item.meta?.menu !== false">
+        <SubMenu v-if="item.children?.length" :menu="item" :unique-key="[item.path ?? JSON.stringify(item)]" />
+        <Item v-else :item="item" :unique-key="[item.path ?? JSON.stringify(item)]" @click="handleMenuItemClick(item.path ?? JSON.stringify(item), item.meta)" />
+      </template>
     </template>
   </div>
 </template>

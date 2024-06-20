@@ -2,6 +2,7 @@ import useRouteStore from './route'
 import useSettingsStore from './settings'
 import type { Menu } from '#/global'
 import { resolveRoutePath } from '@/util'
+import menu from '@/menu'
 
 const useMenuStore = defineStore(
   // 唯一ID
@@ -17,6 +18,7 @@ const useMenuStore = defineStore(
     }])
     const actived = ref(0)
     // 将多级导航的每一级 path 都转换为完整路径
+    // #TODO 需要修改
     function convertToFullPath(menu: any[], path: string = '') {
       return menu.map((item) => {
         item.path = resolveRoutePath(path, item.path)
@@ -28,10 +30,7 @@ const useMenuStore = defineStore(
     }
     // 完整导航数据
     const allMenus = computed(() => {
-      let returnMenus: Menu.recordMainRaw[] = [{
-        meta: {},
-        children: [],
-      }]
+      let returnMenus: Menu.recordMainRaw[] = []
 
       if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
         if (settingsStore.settings.menu.menuMode === 'single') {
@@ -65,7 +64,7 @@ const useMenuStore = defineStore(
     function getDeepestPath(menu: Menu.recordRaw, rootPath = '') {
       let retnPath = ''
       if (menu.children) {
-        const item = menu.children.find(item => item.meta?.sidebar !== false)
+        const item = menu.children.find(item => item.meta?.menu !== false)
         if (item) {
           retnPath = getDeepestPath(item, resolveRoutePath(rootPath, menu.path))
         }
@@ -80,17 +79,19 @@ const useMenuStore = defineStore(
     }
     // 默认展开的导航路径
     const defaultOpenedPaths = computed(() => {
-      let defaultOpenedPaths: string[] = []
+      const defaultOpenedPaths: string[] = []
       if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
-        defaultOpenedPaths = getDefaultOpenedPaths(sidebarMenus.value)
+        allMenus.value.forEach((item) => {
+          defaultOpenedPaths.push(...getDefaultOpenedPaths(item.children))
+        })
       }
       return defaultOpenedPaths
     })
     function getDefaultOpenedPaths(menus: Menu.recordRaw[], rootPath = '') {
       const defaultOpenedPaths: string[] = []
       menus.forEach((item) => {
-        if (item.meta?.defaultOpened && item.children) {
-          defaultOpenedPaths.push(resolveRoutePath(rootPath, item.path))
+        if (item.children) {
+          item.meta?.defaultOpened && defaultOpenedPaths.push(resolveRoutePath(rootPath, item.path))
           const childrenDefaultOpenedPaths = getDefaultOpenedPaths(item.children, resolveRoutePath(rootPath, item.path))
           if (childrenDefaultOpenedPaths.length > 0) {
             defaultOpenedPaths.push(...childrenDefaultOpenedPaths)
@@ -98,6 +99,52 @@ const useMenuStore = defineStore(
         }
       })
       return defaultOpenedPaths
+    }
+
+    //
+    const alwaysOpenedPaths = computed(() => {
+      const defaultOpenedPaths: string[] = []
+      if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
+        allMenus.value.forEach((item) => {
+          try {
+            defaultOpenedPaths.push(...getAlwaysOpenedPaths(item.children))
+          }
+          catch (e) {
+            console.log(e)
+          }
+        },
+        )
+      }
+      return defaultOpenedPaths
+    },
+    )
+    function getAlwaysOpenedPaths(menus: Menu.recordRaw[], rootPath = '') {
+      const alwaysOpenedOpenedPaths: string[] = []
+      try {
+        menus.forEach((item) => {
+          if (item.children) {
+            item.meta?.alwaysOpened && alwaysOpenedOpenedPaths.push(resolveRoutePath(rootPath, item.path))
+            const childrenDefaultOpenedPaths = getAlwaysOpenedPaths(item.children, resolveRoutePath(rootPath, item.path))
+            if (childrenDefaultOpenedPaths.length > 0) {
+              alwaysOpenedOpenedPaths.push(...childrenDefaultOpenedPaths)
+            }
+          }
+        })
+      }
+      catch (e) {
+        console.log(e)
+      }
+      return alwaysOpenedOpenedPaths
+    }
+    // 生成导航（前端生成）
+    async function generateMenusAtFront() {
+      menus.value = menu.filter(item => item.children.length !== 0)
+    }
+    // 生成导航（后端生成）
+    async function generateMenusAtBack() {
+      // await apiApp.menuList().then(async (res) => {
+      //   menus.value = (res.data as Menu.recordMainRaw[]).filter(item => item.children.length !== 0)
+      // }).catch(() => {})
     }
     // 切换主导航
     function setActived(data: number | string) {
@@ -120,6 +167,9 @@ const useMenuStore = defineStore(
       sidebarMenus,
       sidebarMenusFirstDeepestPath,
       defaultOpenedPaths,
+      alwaysOpenedPaths,
+      generateMenusAtFront,
+      generateMenusAtBack,
       setActived,
     }
   },

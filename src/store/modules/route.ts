@@ -7,7 +7,7 @@ import useTabbarStore from './tabbar'
 import { resolveRoutePath } from '@/util'
 import type { Route } from '#/global'
 import api from '@/api'
-import systemRoutes from '@/router/modules/systemRoutes'
+import { systemRoutes } from '@/router/routes'
 
 const useRouteStore = defineStore(
   'route',
@@ -230,6 +230,12 @@ const useRouteStore = defineStore(
         console.error(error)
       }
     }
+    // 生成路由（文件系统生成）
+    function generateRoutesAtFilesystem(asyncRoutes: RouteRecordRaw[]) {
+      // 设置 routes 数据
+      filesystemRoutesRaw.value = cloneDeep(asyncRoutes) as any
+      isGenerate.value = true
+    }
     // 记录 accessRoutes 路由，用于登出时删除路由
     function setCurrentRemoveRoutes(routes: Function[]) {
       currentRemoveRoutes.value = routes
@@ -252,6 +258,7 @@ const useRouteStore = defineStore(
       flatSystemRoutes,
       generateRoutesAtFront,
       generateRoutesAtBack,
+      generateRoutesAtFilesystem,
       setCurrentRemoveRoutes,
       removeRoutes,
     }

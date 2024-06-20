@@ -2,7 +2,7 @@ import type { Settings } from '#/global'
 
 const globalSettings: Settings.all = {
   app: {
-    enablePermission: true,
+    // enablePermission: true,
     enableDynamicTitle: true,
     // enableErrorLog: true,
     // enableAppSetting: true,
@@ -14,7 +14,7 @@ const globalSettings: Settings.all = {
     enableProgress: true,
     storagePrefix: 'fa_',
     enableWatermark: false,
-    routeBaseOn: 'backend',
+    // routeBaseOn: 'backend',
     enableUserPreferences: false,
   },
   layout: {
@@ -26,8 +26,7 @@ const globalSettings: Settings.all = {
     menuActiveStyle: 'dot',
     enableSubMenuCollapseButton: true,
     enableHotkeys: true,
-    // baseOn: 'frontend',
-    menuMode: 'head',
+    // menuMode: 'head',
     switchMainMenuAndPageJump: false,
     subMenuUniqueOpened: true,
     subMenuOnlyOneHide: false,

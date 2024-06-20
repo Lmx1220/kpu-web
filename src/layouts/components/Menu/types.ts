@@ -12,6 +12,7 @@ export interface MenuProps {
   value: string
   accordion?: boolean
   defaultOpeneds?: string[]
+  alwaysOpeneds?: string[]
   mode?: 'horizontal' | 'vertical'
   collapse?: boolean
   showCollapseName?: boolean
@@ -24,6 +25,7 @@ export interface MenuInjection {
   subMenus: Record<string, MenuItem>
   activeIndex: MenuProps['value']
   openedMenus: string[]
+  alwaysOpenedsMenus: string[]
   mouseInMenu: string[]
   isMenuPopup: boolean
   openMenu: (index: string, indexPath: string[]) => void
@@ -46,4 +48,5 @@ export interface SubMenuItemProps {
   level?: number
   subMenu?: boolean
   expand?: boolean
+  alwaysExpand?: boolean
 }
