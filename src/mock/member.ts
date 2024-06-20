@@ -2,16 +2,16 @@ import { defineFakeRoute } from 'vite-plugin-fake-server/client'
 
 export default defineFakeRoute([
   {
-    url: '/mock/member/login',
+    url: '/mock/anyTenant/login',
     method: 'post',
     response: (option: any) => {
       return {
         msg: '',
-        code: 1,
+        code: 0,
         data: {
-          account: option.body.account,
+          username: option.body.username,
           token: '@string',
-          failure_time: Math.ceil(new Date().getTime() / 1000) + 24 * 60 * 60,
+          expiration: Math.ceil(new Date().getTime()) + 24 * 60 * 60,
         },
       }
     },

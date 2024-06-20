@@ -222,7 +222,7 @@ function onTabbarContextmenu(event: MouseEvent, routeItem: Tabbar.recordRaw) {
       },
       {
         label: routeItem.isPin ? t('app.tabbar.unpin') : t('app.tabbar.pin'),
-        icon: routeItem.isPin ? 'i-ri:pushpin-line' : 'i-ri:pushpin-2-line',
+        icon: routeItem.isPin ? 'i-lucide:pin-off' : 'i-lucide:pin',
         // 控制台页面不允许被固定，因为如果固定控制台且控制台被关闭后，会导致登录时进入路由死循环状态
         disabled: routeItem.fullPath === '/dashboard' || routeItem.isPermanent,
         onClick: () => {
@@ -237,13 +237,21 @@ function onTabbarContextmenu(event: MouseEvent, routeItem: Tabbar.recordRaw) {
       {
         label: t('app.tabbar.maximize'),
         icon: 'i-ri:picture-in-picture-exit-line',
-        divided: true,
         onClick: () => {
           if (routeItem.tabId !== activedTabId.value) {
             router.push(`${routeItem.fullPath}`)
           }
           tabbarMaximizeTip()
           settingsStore.setMainPageMaximize()
+        },
+      },
+      {
+        label: t('app.tabbar.newWindow'),
+        icon: 'i-ci:window',
+        divided: true,
+        onClick: () => {
+          const resolve = router.resolve(routeItem.fullPath)
+          window.open(resolve.href, '_blank')
         },
       },
       {
@@ -360,15 +368,18 @@ onUnmounted(
               }}
             </div>
 
-            <SvgIcon
-              v-if="!element.isPermanent && element.isPin" class="action-icon"
-              name="i-ri:pushpin-2-fill" @click.stop="tabbarStore.unPin(`${element.tabId}`)"
-            />
+            <div class="action-icon">
+              <SvgIcon
+                v-if="!element.isPermanent && element.isPin"
+                name="i-ri:pushpin-2-fill" @click.stop="tabbarStore.unPin(`${element.tabId}`)"
+              />
 
-            <SvgIcon
-              v-else-if="!element.isPermanent && tabbarStore.list.length > 1" class="action-icon"
-              name="i-ri:close-fill" @click.stop="tabbar.closeById(`${element.tabId}`)"
-            />
+              <SvgIcon
+                v-else-if="!element.isPermanent && tabbarStore.list.length > 1"
+                name="i-ri:close-fill" @click.stop="tabbar.closeById(`${element.tabId}`)"
+              />
+            </div>
+
             <div v-show="altKey.alt && index < 9" class="hotkey-number">
               {{ index + 1 }}
             </div>
@@ -664,9 +675,12 @@ onUnmounted(
       }
 
       .action-icon {
+        transition-property: color,background-color,border-color,outline-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;
+        transition-timing-function: cubic-bezier(.4,0,.2,1);
+        transition-duration: .15s;
         position: absolute;
+        inset-inline-end: 6px;
         top: 50%;
-        right: 6px;
         z-index: 10;
         width: 1.5em;
         height: 1.5em;
@@ -676,9 +690,6 @@ onUnmounted(
         pointer-events: all;
         border-radius: 50%;
         opacity: 0;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 0.15s;
-        transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
 
         &:hover {
           --at-apply: ring-1 ring-stone-3 dark:ring-stone-7;
@@ -870,9 +881,12 @@ onUnmounted(
 
           .action-icon {
             position: absolute;
+            inset-inline-end: .5em;
             top: 50%;
-            right: 0.5em;
             z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 1.5em;
             height: 1.5em;
             font-size: 12px;

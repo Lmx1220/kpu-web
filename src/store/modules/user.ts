@@ -41,6 +41,7 @@ const useUserStore = defineStore(
       // 通过 mock 进行登录
       const res = await api.post<any>({
         url: '/anyTenant/login',
+        baseURL: '/mock/',
         data: {
           username: data.username,
           password: data.password,

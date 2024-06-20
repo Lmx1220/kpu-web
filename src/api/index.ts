@@ -252,7 +252,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
         // 消息提示类型
         errorMessageMode: 'message',
         // 接口地址
-        apiUrl: '/proxy',
+        apiUrl: '',
         // 接口拼接地址
         urlPrefix: '',
         //  是否加入时间戳

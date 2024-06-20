@@ -19,7 +19,7 @@ const mainPage = useMainPage()
 // 模拟账号切换
 async function accountChange(val: any) {
   await userStore.login({
-    account: val,
+    username: val,
     password: '',
   })
   await userStore.getPermissions()

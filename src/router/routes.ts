@@ -7,9 +7,13 @@ import KeepAliveExample from './modules/keep.alive.example'
 import MultilevelMenuExample from './modules/multilevel.menu.example.ts'
 import BreadcrumbExample from './modules/breadcrumb.example.ts'
 import AlwaysOpenedExample from './modules/always.opened.example.ts'
-import type { Route } from '@/types/global'
+import MenuIconExample from './modules/menu.icon.example.ts'
+import MenuBadgeExample from './modules/menu.badge.example.ts'
+
+import TabExample from './modules/tab.example.ts'
 import useSettingsStore from '@/store/modules/settings.ts'
-import MenuIconExample from '@/router/modules/menu.icon.example.ts'
+
+import type { Route } from '@/types/global'
 // 固定路由
 const constantRoutes: RouteRecordRaw[] = [
   {
@@ -98,6 +102,8 @@ const asyncRoutes: Route.recordMainRaw[] = [
       KeepAliveExample,
       AlwaysOpenedExample,
       MenuIconExample,
+      MenuBadgeExample,
+      TabExample,
       // LinkExample,
       // SystemExample,
       // Monitorxample,
