@@ -18,7 +18,7 @@ import createArchiver from './archiver'
 import appInfo from './app-info'
 import createDevtools from './devtools'
 
-export default function creactVitePlugins(viteEnv, isBuild = false) {
+export default function createVitePlugins(viteEnv, isBuild = false) {
   const vitePlugins: (PluginOption | PluginOption[])[] = [
     appInfo(),
     vue(),
@@ -41,7 +41,7 @@ export default function creactVitePlugins(viteEnv, isBuild = false) {
   vitePlugins.push(createArchiver(viteEnv))
   vitePlugins.push(createConsole())
   vitePlugins.push(createBanner())
-  process.env.REPORT === 'true' && vitePlugins.push(createVisualizer())
+  process.env.REPORT === 'true' && vitePlugins.push(createVisualizer() as any)
   viteEnv.VITE_BUILD_PWA === 'true' && vitePlugins.push(createPwa())
   return vitePlugins
 }
