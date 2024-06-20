@@ -774,9 +774,9 @@ defineExpose({
               :data="data.dicts?.get('menuList') || []"
               :render-after-expand="false"
               :default-expanded-keys="['10']"
-              highlight-current
+
               node-key="id"
-              show-checkbox
+              show-checkbox highlight-current
             >
               <template #default="{ data }">
                 <SvgIcon :name="data.icon" class="ml-1 mr-1" size="16" />

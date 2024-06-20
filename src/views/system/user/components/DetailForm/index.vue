@@ -195,7 +195,7 @@ defineExpose({
             }"
             :render-after-expand="false"
 
-            check-on-click-node check-strictly filterable multiple show-checkbox collapse-tags collapse-tags-tooltip
+            check-on-click-node check-strictly filterable show-checkbox collapse-tags collapse-tags-tooltip multiple
             style="width: 250px;"
             value-key="id"
           />

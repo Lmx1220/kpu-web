@@ -315,7 +315,7 @@ function TableSortable() {
             <ElTable ref="authsTableRef" :key="authsTableKey" :data="form.auths" stripe highlight-current-row border>
               <ElTableColumn align="center" fixed :label="t('system.resource.sortValue')" prop="sortValue" width="60">
                 <template #header>
-                  <ElButton type="primary" size="small" plain circle @click="handleAddAuths">
+                  <ElButton type="primary" size="small" circle plain @click="handleAddAuths">
                     <SvgIcon name="i-ep:plus" />
                   </ElButton>
                 </template>
