@@ -1,6 +1,9 @@
+import type { RouteRecordRaw } from 'vue-router'
+import { cloneDeep } from 'lodash-es'
 import useRouteStore from './route'
 import useSettingsStore from './settings'
-import type { Menu } from '#/global'
+import useUserStore from './user'
+import type { Menu, Route } from '#/global'
 import { resolveRoutePath } from '@/util'
 import menu from '@/menu'
 
@@ -11,41 +14,78 @@ const useMenuStore = defineStore(
     const settingsStore = useSettingsStore()
     // const userStore = useUserStore()
     const routeStore = useRouteStore()
+    const userStore = useUserStore()
     // 菜单列表
-    const menus = ref<Menu.recordMainRaw[]>([{
-      meta: {},
-      children: [],
-    }])
+    const filesystemMenusRaw = ref<Menu.recordMainRaw[]>([])
+
     const actived = ref(0)
-    // 将多级导航的每一级 path 都转换为完整路径
-    // #TODO 需要修改
-    function convertToFullPath(menu: any[], path: string = '') {
-      return menu.map((item) => {
-        item.path = resolveRoutePath(path, item.path)
-        if (item.children) {
-          item.children = convertToFullPath(item.children, item.path)
+    // 将原始路由转换成导航菜单
+    function convertRouteToMenu(routes: Route.recordMainRaw[]): Menu.recordMainRaw[] {
+      const returnMenus: Menu.recordMainRaw[] = []
+      routes.forEach((item) => {
+        if (settingsStore.settings.menu.menuMode === 'single') {
+          returnMenus.length === 0 && returnMenus.push({
+            meta: {},
+            children: [],
+          })
+          returnMenus[0].children.push(...convertRouteToMenuRecursive(item.children))
         }
-        return item
+        else {
+          const menuItem: Menu.recordMainRaw = {
+            meta: {
+              title: item?.meta?.title,
+              i18n: item?.meta?.i18n,
+              icon: item?.meta?.icon,
+              activeIcon: item?.meta?.activeIcon,
+              auth: item?.meta?.auth,
+            },
+            children: [],
+          }
+          menuItem.children = convertRouteToMenuRecursive(item.children)
+          returnMenus.push(menuItem)
+        }
       })
+      return returnMenus
     }
+    function convertRouteToMenuRecursive(routes: RouteRecordRaw[], basePath = ''): Menu.recordRaw[] {
+      const returnMenus: Menu.recordRaw[] = []
+      routes.forEach((item) => {
+        const menuItem: Menu.recordRaw = {
+          path: resolveRoutePath(basePath, item.path),
+          meta: {
+            title: item?.meta?.title,
+            i18n: item?.meta?.i18n,
+            icon: item?.meta?.icon,
+            activeIcon: item?.meta?.activeIcon,
+            defaultOpened: item?.meta?.defaultOpened,
+            alwaysOpened: item?.meta?.alwaysOpened,
+            auth: item?.meta?.auth,
+            menu: item?.meta?.menu,
+            badge: item?.meta?.badge,
+            newWindow: item?.meta?.newWindow,
+            link: item?.meta?.link,
+          },
+        }
+        if (item.children) {
+          menuItem.children = convertRouteToMenuRecursive(item.children, menuItem.path)
+        }
+        returnMenus.push(menuItem)
+      })
+      return returnMenus
+    }
+
     // 完整导航数据
     const allMenus = computed(() => {
       let returnMenus: Menu.recordMainRaw[] = []
-
       if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
-        if (settingsStore.settings.menu.menuMode === 'single') {
-          returnMenus[0].children = []
-          routeStore.routes.forEach((item) => {
-            returnMenus[0].children?.push(...item.children as Menu.recordRaw[])
-          })
-        }
-        else {
-          returnMenus = routeStore.routes as Menu.recordMainRaw[]
-        }
-        returnMenus.map(item => convertToFullPath(item.children))
+        returnMenus = convertRouteToMenu(routeStore.routesRaw)
       }
       else {
-        returnMenus = menus.value
+        returnMenus = filesystemMenusRaw.value
+      }
+      // 如果权限功能开启，则需要对导航数据进行筛选过滤
+      if (settingsStore.settings.app.enablePermission) {
+        returnMenus = filterAsyncMenus(returnMenus, userStore.permissions)
       }
       return returnMenus
     })
@@ -106,12 +146,7 @@ const useMenuStore = defineStore(
       const defaultOpenedPaths: string[] = []
       if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
         allMenus.value.forEach((item) => {
-          try {
-            defaultOpenedPaths.push(...getAlwaysOpenedPaths(item.children))
-          }
-          catch (e) {
-            console.log(e)
-          }
+          defaultOpenedPaths.push(...getAlwaysOpenedPaths(item.children))
         },
         )
       }
@@ -120,30 +155,67 @@ const useMenuStore = defineStore(
     )
     function getAlwaysOpenedPaths(menus: Menu.recordRaw[], rootPath = '') {
       const alwaysOpenedOpenedPaths: string[] = []
-      try {
-        menus.forEach((item) => {
-          if (item.children) {
-            item.meta?.alwaysOpened && alwaysOpenedOpenedPaths.push(resolveRoutePath(rootPath, item.path))
-            const childrenDefaultOpenedPaths = getAlwaysOpenedPaths(item.children, resolveRoutePath(rootPath, item.path))
-            if (childrenDefaultOpenedPaths.length > 0) {
-              alwaysOpenedOpenedPaths.push(...childrenDefaultOpenedPaths)
-            }
+      menus.forEach((item) => {
+        if (item.children) {
+          item.meta?.alwaysOpened && alwaysOpenedOpenedPaths.push(resolveRoutePath(rootPath, item.path))
+          const childrenDefaultOpenedPaths = getAlwaysOpenedPaths(item.children, resolveRoutePath(rootPath, item.path))
+          if (childrenDefaultOpenedPaths.length > 0) {
+            alwaysOpenedOpenedPaths.push(...childrenDefaultOpenedPaths)
+          }
+        }
+      })
+
+      return alwaysOpenedOpenedPaths
+    }
+
+    // 判断是否有权限
+    function hasPermission(permissions: string[], menu: Menu.recordMainRaw | Menu.recordRaw) {
+      let isAuth = false
+      if (menu.meta?.auth) {
+        isAuth = permissions.some((auth) => {
+          if (typeof menu.meta?.auth === 'string') {
+            return menu.meta.auth !== '' ? menu.meta.auth === auth : true
+          }
+          else if (typeof menu.meta?.auth === 'object') {
+            return menu.meta.auth.length > 0 ? menu.meta.auth.includes(auth) : true
+          }
+          else {
+            return false
           }
         })
       }
-      catch (e) {
-        console.log(e)
+      else {
+        isAuth = true
       }
-      return alwaysOpenedOpenedPaths
+      return isAuth
     }
+    // 根据权限过滤导航
+    function filterAsyncMenus<T extends Menu.recordMainRaw[] | Menu.recordRaw[]>(menus: T, permissions: string[]): T {
+      const res: any = []
+      menus.forEach((menu) => {
+        if (hasPermission(permissions, menu)) {
+          const tmpMenu = cloneDeep(menu)
+          if (tmpMenu.children && tmpMenu.children.length > 0) {
+            tmpMenu.children = filterAsyncMenus(tmpMenu.children, permissions) as Menu.recordRaw[]
+            tmpMenu.children.length > 0 && res.push(tmpMenu)
+          }
+          else {
+            delete tmpMenu.children
+            res.push(tmpMenu)
+          }
+        }
+      })
+      return res
+    }
+
     // 生成导航（前端生成）
     async function generateMenusAtFront() {
-      menus.value = menu.filter(item => item.children.length !== 0)
+      filesystemMenusRaw.value = menu.filter(item => item.children.length !== 0)
     }
     // 生成导航（后端生成）
     async function generateMenusAtBack() {
       // await apiApp.menuList().then(async (res) => {
-      //   menus.value = (res.data as Menu.recordMainRaw[]).filter(item => item.children.length !== 0)
+      //   filesystemMenusRaw.value = (res.data as Menu.recordMainRaw[]).filter(item => item.children.length !== 0)
       // }).catch(() => {})
     }
     // 切换主导航
@@ -161,7 +233,6 @@ const useMenuStore = defineStore(
       }
     }
     return {
-      menus,
       actived,
       allMenus,
       sidebarMenus,

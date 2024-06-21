@@ -83,6 +83,7 @@ const useUserStore = defineStore(
         roleList: string[]
       }>({
         url: '/anyone/visible/resource',
+        baseURL: '/mock/',
         params: {
           account: account.value,
         },

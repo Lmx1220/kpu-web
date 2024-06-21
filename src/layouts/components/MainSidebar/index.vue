@@ -2,9 +2,9 @@
 import Logo from '../Logo/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
-import useI18nTitle from '@/util/composables/useI18nTitle'
 import useMenu from '@/util/composables/useMenu'
 import MainMenu from '@/layouts/components/Menu/index.vue'
+import { i18nTitleInjectionKey } from '@/layouts/components/Menu/types.ts'
 
 defineOptions({
   name: 'MainSidebar',
@@ -12,7 +12,7 @@ defineOptions({
 const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
-const { generateI18nTitle } = useI18nTitle()
+const i18nTitle = inject(i18nTitleInjectionKey)!
 const { switchTo } = useMenu()
 </script>
 
@@ -42,7 +42,7 @@ const { switchTo } = useMenu()
                 'text-[var(--g-main-sidebar-menu-active-color)]! bg-[var(--g-main-sidebar-menu-active-bg)]!': index === menuStore.actived,
                 'rounded-2': settingsStore.settings.menu.isRounded,
               }"
-              :title="generateI18nTitle(item.meta?.i18n, item.meta?.title)"
+              :title="i18nTitle(item.meta?.title)"
               class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 py-4 text-[var(--g-main-sidebar-menu-color)] transition-all hover:bg-[var(--g-main-sidebar-menu-hover-bg)] px-2! hover:text-[var(--g-main-sidebar-menu-hover-color)]"
               @click="switchTo(index)"
             >
@@ -54,7 +54,7 @@ const { switchTo } = useMenu()
                 <span
                   class="w-full flex-1 truncate text-center text-sm transition-height transition-opacity transition-width"
                 >{{
-                  generateI18nTitle(item.meta?.i18n, item.meta?.title)
+                  i18nTitle(item.meta?.title)
                 }}</span>
               </div>
             </div>

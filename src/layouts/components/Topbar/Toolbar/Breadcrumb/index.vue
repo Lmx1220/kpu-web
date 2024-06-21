@@ -4,6 +4,7 @@ import Breadcrumb from '../../../Breadcrumb/index.vue'
 import BreadcrumbItem from '../../../Breadcrumb/item.vue'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu.ts'
+import { i18nTitleInjectionKey } from '@/layouts/components/Menu/types.ts'
 
 defineOptions({
   name: 'Breadcrumb',
@@ -13,13 +14,13 @@ const route = useRoute()
 
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
-const { generateI18nTitle } = useI18nTitle()
+const i18nTitle = inject(i18nTitleInjectionKey)!
 const breadcrumbList = computed(() => {
   const breadcrumbList = []
   if (settingsStore.settings.home.enable) {
     breadcrumbList.push({
       path: settingsStore.settings.home.fullPath,
-      title: generateI18nTitle('route.home', settingsStore.settings.home.title),
+      title: settingsStore.settings.home.title,
     })
   }
   if (route.name !== 'home' && settingsStore.settings.breadcrumb.enableMainMenu && !['single'].includes(settingsStore.settings.menu.menuMode)) {
@@ -28,7 +29,7 @@ const breadcrumbList = computed(() => {
     if (parentMenu?.meta) {
       breadcrumbList.push({
         path: '',
-        title: generateI18nTitle(parentMenu.meta?.i18n, parentMenu.meta?.title),
+        title: i18nTitle(parentMenu.meta?.title),
       })
     }
   }
@@ -37,7 +38,7 @@ const breadcrumbList = computed(() => {
       if (item.hide === false) {
         breadcrumbList.push({
           path: item.path,
-          title: generateI18nTitle(item.i18n, item.title),
+          title: i18nTitle(item.title),
         })
       }
     })

@@ -19,7 +19,7 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
   },
   home: {
     enable: true,
-    title: '主页',
+    title: 'route.home',
     fullPath: '/',
   },
   navSearch: {

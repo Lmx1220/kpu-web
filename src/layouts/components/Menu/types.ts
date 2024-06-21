@@ -35,6 +35,10 @@ export interface MenuInjection {
 }
 
 export const rootMenuInjectionKey = createInjectionKey<MenuInjection>('rootMenu')
+export interface I18nTitle {
+  (key: string | undefined | (() => string) | Function): string
+}
+export const i18nTitleInjectionKey = createInjectionKey<I18nTitle>('i18nTitle')
 
 export interface SubMenuProps {
   uniqueKey: string[]

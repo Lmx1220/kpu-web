@@ -212,7 +212,7 @@ for (const key in main.devDependencies) {
     main.devDependencies[key] = dev.devDependencies[key]
   }
 }
-console.log(JSON.stringify(main, null, 2))
+// console.log(JSON.stringify(main, null, 2))
 
 // 找出不同的包
 const diff = {
@@ -264,3 +264,37 @@ for (const key in dev.devDependencies) {
   }
 }
 // console.log(JSON.stringify(diff3, null, 2))
+
+const i18n = {
+  key: {
+    app: () => {
+      return 'app'
+    },
+    subKey: {
+      subApp: () => {
+        return 'subApp'
+      },
+    },
+  },
+  key2: {
+    app1: () => {
+      return 'app1'
+    },
+  },
+}
+
+function executeFunctionsInObject(obj) {
+  for (const key in obj) {
+    if (typeof obj[key] === 'object' && obj[key] !== null) {
+      // 如果值是一个对象，递归调用自身
+      executeFunctionsInObject(obj[key])
+    }
+    else if (typeof obj[key] === 'function') {
+      // 如果值是一个函数，调用函数并将结果存回原位置
+      obj[key] = obj[key]({ normalize: val => `${val}` })
+    }
+  }
+}
+
+executeFunctionsInObject(i18n)
+console.log(JSON.stringify(i18n))

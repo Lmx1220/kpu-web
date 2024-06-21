@@ -4,7 +4,6 @@ import VConsole from 'vconsole'
 import hotkeys from 'hotkeys-js'
 import { useTitle as usePageTitle } from '@vueuse/core'
 import Provider from './ui-provider/index.vue'
-import useI18nTitle from '@/util/composables/useI18nTitle'
 
 import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
@@ -14,7 +13,6 @@ const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 const { auth } = useAuth()
-const { generateI18nTitle } = useI18nTitle()
 // 侧边栏主导航当前实际宽度
 const mainSidebarActualWidth = computed(() => {
   let actualWidth = Number.parseInt(getComputedStyle(document.documentElement).getPropertyValue('--g-main-sidebar-width'))
@@ -44,7 +42,13 @@ const subSidebarActualWidth = computed(() => {
   }
   return `${actualWidth}px`
 })
-provide('generateI18nTitle', generateI18nTitle)
+
+const { t, te } = useI18n()
+provide('i18nTitle', i18nTitleInjectionKey)
+function i18nTitleInjectionKey(key: string | Function = t('route.undefined')) {
+  return typeof key == 'function' ? key() : te(key) ? t(key) : key
+}
+
 const pageTitle = usePageTitle()
 watch([
   () => settingsStore.settings.app.enableDynamicTitle,
@@ -58,10 +62,10 @@ watch([
   const secondLastBreadcrumb = breadcrumbNeste?.at(-2)
   const hasDynamicTitle = settingsStore.settings.app.enableDynamicTitle && settingsStore.title
 
-  let title = hasDynamicTitle && (customTitle?.title || generateI18nTitle(route.meta.i18n, settingsStore.title))
+  let title = hasDynamicTitle && (customTitle?.title || i18nTitleInjectionKey(route.meta.title))
 
   if (hasDynamicTitle && !title && settingsStore.settings.app.routeBaseOn !== 'filesystem' && lastBreadcrumb?.i18n && secondLastBreadcrumb?.i18n) {
-    title = generateI18nTitle(secondLastBreadcrumb.i18n, settingsStore.title)
+    title = i18nTitleInjectionKey(secondLastBreadcrumb.title)
   }
 
   pageTitle.value = title ? `${title} - ${import.meta.env.VITE_APP_TITLE}` : import.meta.env.VITE_APP_TITLE

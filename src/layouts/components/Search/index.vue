@@ -1,20 +1,19 @@
 <script lang="ts" setup>
 import hotkeys from 'hotkeys-js'
-import type { RouteRecordRaw } from 'vue-router'
 import { Dialog, DialogDescription, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-vue'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+import { cloneDeep } from 'lodash-es'
 import Breadcrumb from '../Breadcrumb/index.vue'
 import BreadcrumbItem from '../Breadcrumb/item.vue'
-import type { Tabbar } from '@/types/global'
+import type { Menu, Tabbar } from '@/types/global'
 import useSettingsStore from '@/store/modules/settings'
-import useRouteStore from '@/store/modules/route'
 import useTabbarStore from '@/store/modules/tabbar'
 
-// import useMenuStore from '@/store/modules/menu'
-import { deepClone, isExternalLink, resolveRoutePath } from '@/util'
-import useI18nTitle from '@/util/composables/useI18nTitle'
+import useMenuStore from '@/store/modules/menu'
+import { resolveRoutePath } from '@/util'
 import eventBus from '@/util/eventBus'
+import { i18nTitleInjectionKey } from '@/layouts/components/Menu/types.ts'
 
 defineOptions({
   name: 'Search',
@@ -42,9 +41,8 @@ const transitionClass = computed(() => {
 const router = useRouter()
 const { t } = useI18n()
 const settingsStore = useSettingsStore()
-const routeStore = useRouteStore()
+const menuStore = useMenuStore()
 const tabbarStore = useTabbarStore()
-// const menuStore = useMenuStore()
 
 interface listTypes {
   path: string
@@ -57,7 +55,7 @@ interface listTypes {
 
 const switchType = ref()
 
-const { generateI18nTitle } = useI18nTitle()
+const i18nTitle = inject(i18nTitleInjectionKey)!
 const isShow = ref(false)
 
 const searchInput = ref('')
@@ -75,13 +73,13 @@ const resultList: Ref<listTypes[]> = computed(() => {
   let result = []
   result = sourceList.value.filter((item) => {
     let flag = false
-    if (generateI18nTitle(item.i18n, item.title).includes(searchInput.value)) {
+    if (i18nTitle(item.title).includes(searchInput.value)) {
       flag = true
     }
     if (item?.path.includes(searchInput.value)) {
       flag = true
     }
-    if (item.breadcrumb.some(b => generateI18nTitle(b.i18n, b.title).includes(searchInput.value))) {
+    if (item.breadcrumb.some(b => i18nTitle(b.title).includes(searchInput.value))) {
       flag = true
     }
     return flag
@@ -147,8 +145,8 @@ function toSearch(_switchType = 'menu') {
   switch (_switchType) {
     case 'menu':
       if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
-        routeStore.routes.forEach((item) => {
-          getSourceList(item.children)
+        menuStore.allMenus.forEach((item) => {
+          getSourceListByMenus(item.children)
         })
       }
       break
@@ -157,7 +155,7 @@ function toSearch(_switchType = 'menu') {
       break
   }
 }
-function hasChildren(item: RouteRecordRaw) {
+function hasChildren(item: Menu.recordRaw) {
   let flag = true
   if (item.children) {
     if (item.children.every(i => i.meta?.menu === false)) {
@@ -170,30 +168,26 @@ function hasChildren(item: RouteRecordRaw) {
   return flag
 }
 
-function getSourceList(arr: RouteRecordRaw[], basePath?: string, icon?: string, baseBreadcrumb?: { i18n?: string, title: string }[]) {
-  arr?.forEach((item) => {
+function getSourceListByMenus(arr: Menu.recordRaw[], basePath?: string, icon?: string, breadcrumb?: { title?: string | (() => string) }[]) {
+  arr.forEach((item) => {
     if (item.meta?.menu !== false) {
+      const breadcrumbTemp = cloneDeep(breadcrumb) || []
       if (item.children && hasChildren(item)) {
-        const breadcrumb = deepClone(baseBreadcrumb) ?? []
-        breadcrumb.push({
-          title: item.meta?.title as string,
-          i18n: item.meta?.i18n,
+        breadcrumbTemp.push({
+          title: item.meta?.title,
         })
-        getSourceList(item.children, resolveRoutePath(basePath, item.path), item.meta?.icon as string, breadcrumb)
+        getSourceListByMenus(item.children, resolveRoutePath(basePath, item.path), item.meta?.icon ?? icon, breadcrumbTemp)
       }
       else {
-        const breadcrumb = deepClone(baseBreadcrumb) ?? []
-        breadcrumb.push({
-          title: item.meta?.title as string,
-          i18n: item.meta?.i18n,
+        breadcrumbTemp.push({
+          title: item.meta?.title,
         })
         sourceList.value.push({
-          icon: item.meta?.icon ?? icon,
-          title: typeof item.meta?.title === 'function' ? item.meta.title() : item.meta?.title ?? '',
-          i18n: item.meta?.i18n,
-          link: isExternalLink(item.path) ? `${basePath}${item.path}` : undefined,
-          breadcrumb,
           path: resolveRoutePath(basePath, item.path),
+          icon: item.meta?.icon ?? icon,
+          title: item.meta?.title,
+          link: item.meta?.link,
+          breadcrumb: breadcrumbTemp,
         })
       }
     }
@@ -324,12 +318,12 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
                           class="flex flex-1 flex-col gap-1 truncate px-4 py-3"
                         >
                           <div class="truncate text-base font-bold">{{
-                            generateI18nTitle(item.i18n, item.title)
+                            i18nTitle(item.title)
                           }}
                           </div>
                           <Breadcrumb v-if="item.breadcrumb.length" class="truncate">
                             <BreadcrumbItem v-for="(bc, bcIndex) in item.breadcrumb" :key="bcIndex" class="text-xs">
-                              {{ generateI18nTitle(bc.i18n, bc.title) }}
+                              {{ i18nTitle(bc.title) }}
                             </BreadcrumbItem>
                           </Breadcrumb>
                         </div>

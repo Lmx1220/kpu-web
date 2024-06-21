@@ -13,13 +13,13 @@ const locales = computed(() => getElementLocales())
 
 const localesOptions = computed(() => Object.keys(locales.value).map(item => ({ label: locales.value[item].labelName, disabled: getLocale.value === item, handle: () => languageCommand(item) })))
 // 生成国际化标题
-// const { generateI18nTitle } = useI18nTitle()
+// const i18nTitle = inject(i18nTitleInjectionKey)!
 
 async function languageCommand(lang: LocaleType | string) {
   // 切换语言
   await changeLocale(lang as LocaleType)
   // 生成国际化标题
-  // generateI18nTitle('route.login', 'Login')
+  // i18nTitle('route.login', 'Login')
 }
 </script>
 

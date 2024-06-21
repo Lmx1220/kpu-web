@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { SubMenuItemProps } from './types'
-import { rootMenuInjectionKey } from './types'
-import useI18nTitle from '@/util/composables/useI18nTitle.ts'
+import { i18nTitleInjectionKey, rootMenuInjectionKey } from './types'
 
 const props = withDefaults(
   defineProps<SubMenuItemProps>(),
@@ -12,7 +11,7 @@ const props = withDefaults(
     alwaysExpand: false,
   },
 )
-const { generateI18nTitle } = useI18nTitle()
+const i18nTitle = inject(i18nTitleInjectionKey)!
 const rootMenu = inject(rootMenuInjectionKey)!
 
 const itemRef = ref<HTMLElement>()
@@ -57,7 +56,7 @@ defineExpose({
     <RouterLink v-slot="{ href, navigate }" custom :to="uniqueKey.at(-1) ?? ''">
       <HTooltip
         :enable="rootMenu.isMenuPopup && level === 0 && !subMenu"
-        :text="generateI18nTitle(item.meta?.i18n, item.meta?.title)"
+        :text="i18nTitle(item.meta?.title)"
         placement="right" class="h-full w-full"
       >
         <component
@@ -78,7 +77,7 @@ defineExpose({
               : {
                 'py-2! opacity-30': true,
               },
-          }" :title="generateI18nTitle(item.meta?.i18n, item.meta?.title)" v-on="{
+          }" :title="i18nTitle(item.meta?.title)" v-on="{
             ...(!subMenu && {
               click: navigate,
             }),
@@ -106,7 +105,7 @@ defineExpose({
               }"
               class="w-0 flex-1 truncate text-sm transition-height transition-opacity transition-width"
             >
-              {{ generateI18nTitle(item.meta?.i18n, item.meta?.title) }}
+              {{ i18nTitle(item.meta?.title) }}
             </span>
             <HBadge
               v-if="props.item.meta?.badge"

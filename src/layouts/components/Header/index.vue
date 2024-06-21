@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import Logo from '../Logo/index.vue'
 import MainMenu from '../Menu/index.vue'
-import useI18nTitle from '@/util/composables/useI18nTitle'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
 import useMenu from '@/util/composables/useMenu'
 import RightSide from '@/layouts/components/Topbar/Toolbar/rightSide.vue'
+import { i18nTitleInjectionKey } from '@/layouts/components/Menu/types.ts'
 
 defineOptions({
   name: 'LayoutHeader',
@@ -15,7 +15,7 @@ const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 const { switchTo } = useMenu()
 
-const { generateI18nTitle } = useI18nTitle()
+const i18nTitle = inject(i18nTitleInjectionKey)!
 const menuRef = ref()
 
 function handlerMouserScroll(event: any) {
@@ -63,7 +63,7 @@ function handlerMouserScroll(event: any) {
                       <span
                         class="w-full flex-1 truncate text-center text-sm transition-height transition-opacity transition-width"
                       >{{
-                        generateI18nTitle(item.meta?.i18n, item.meta?.title)
+                        i18nTitle(item.meta?.title)
                       }}</span>
                     </div>
                   </div>

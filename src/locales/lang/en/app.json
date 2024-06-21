@@ -3,34 +3,36 @@
   "captcha": "captcha",
   "check": "Submit",
   "goLogin": "go login",
-  "hotkeys": "Hotkeys Introduction",
   "login": "Login",
   "logout": "Logout",
   "newPassword": "new password",
   "password": "password",
-  "preferences": "Preferences",
   "profile": "Profile",
-  "search": {
-    "alt_s": "Wake up search panel",
-    "enter": "Visit page",
-    "esc": "Exit",
-    "input": "Search page, support title, URL fuzzy query",
-    "type": {
-      "menu": "Search menu",
-      "tab": "Search tag"
-    },
-    "up_down": "Switch search results"
-  },
+  "preferences": "Preferences",
+  "hotkeys": "Hotkeys Introduction",
   "sendCaptcha": "send captcha",
+  "search": {
+    "text": "Search",
+    "type": {
+      "menu": "Search menus",
+      "tab": "Search tabs"
+    },
+    "input": "Support title, URL fuzzy query",
+    "empty": "Not found",
+    "up_down": "Choice",
+    "enter": "Enter",
+    "esc": "Exit"
+  },
   "tabbar": {
-    "close": "Close",
-    "closeLeftSide": "Close Leftside Tabs",
-    "closeOtherSide": "Close Otherside Tabs",
-    "closeRightSide": "Close Rightside Tabs",
-    "maximize": "Maximize",
-    "searchTabs": "Search Tabs",
-    "pin": "Pin",
     "reload": "Reload",
-    "unpin": "Unpin"
+    "close": "Close",
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "maximize": "Maximize",
+    "newWindow": "Open In New Window",
+    "searchTabs": "Search Tabs",
+    "closeOtherSide": "Close Otherside Tabs",
+    "closeLeftSide": "Close Leftside Tabs",
+    "closeRightSide": "Close Rightside Tabs"
   }
 }

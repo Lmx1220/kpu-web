@@ -431,16 +431,20 @@ declare module 'vue-router' {
     icon?: string
     activeIcon?: string
     defaultOpened?: boolean
+    alwaysOpened?: boolean
     permanent?: boolean
     auth?: string | string[]
     sidebar?: boolean
+    menu?: boolean
     breadcrumb?: boolean
+    singleMenu?: boolean
     activeMenu?: string
     cache?: boolean | string | string[]
     noCache?: string | string[]
     badge?: boolean | string | number | Function
     iframe?: string
     link?: string
+    newWindow?: boolean
     copyright?: boolean
     paddingBottom?: string
     whiteList?: boolean
@@ -474,7 +478,9 @@ declare namespace Route {
   interface recordMainRaw {
     meta?: {
       title?: string | (() => string)
+      i18n?: string
       icon?: string
+      activeIcon?: string
       auth?: string | string[]
       customTitleList?: CustomTitleList[]
 
@@ -518,8 +524,9 @@ declare namespace Menu {
   interface recordMainRaw {
     meta?: {
       title?: string | (() => string)
-      icon?: string
       i18n?: string
+      icon?: string
+      activeIcon?: string
       auth?: string | string[]
       sidebar?: boolean
     }
@@ -597,9 +604,9 @@ declare namespace Iframe {
 
 declare namespace App {
 
-  interface GenerateI18nTitle {
-    (key: string | undefined, defaultTitle: string | undefined | (() => string) | Function): string
-  }
+  // interface I18nTitle {
+  //   (key: string | undefined | (() => string) | Function): string
+  // }
 }
 
 declare global {

@@ -2,6 +2,7 @@
 import Sortable from 'sortablejs'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import useFavoritesStore from '@/store/modules/favorites'
+import { i18nTitleInjectionKey } from '@/layouts/components/Menu/types.ts'
 
 defineOptions({
   name: 'Favorites',
@@ -10,7 +11,7 @@ defineOptions({
 const route = useRoute()
 const router = useRouter()
 const favoritesStore = useFavoritesStore()
-const { generateI18nTitle } = useI18nTitle()
+const i18nTitle = inject(i18nTitleInjectionKey)!
 const favoritesContainer = ref()
 watch(() => favoritesContainer.value, (value) => {
   value && new Sortable(favoritesContainer.value, {
@@ -59,13 +60,13 @@ watch(() => favoritesContainer.value, (value) => {
         <div
           v-for="favorites in favoritesStore.list" :key="favorites.fullPath"
           class="draggable-item relative w-[calc(50%-0.25rem)] flex cursor-pointer items-center gap-1 rounded px-2 py-2 ring-1 ring-stone-3 ring-inset hover:bg-stone-1 dark:ring-stone-7 dark:hover:bg-dark/50"
-          :title="generateI18nTitle(favorites.i18n, favorites.title)"
+          :title="i18nTitle(favorites.title)"
           @click="router.push(favorites.fullPath)"
         >
           <SvgIcon :name="favorites.icon ?? ''" :size="18" />
           <div class="name flex-1 truncate pe-4">
             {{ favorites.icon }}
-            {{ generateI18nTitle(favorites.i18n, favorites.title) }}
+            {{ i18nTitle(favorites.title) }}
           </div>
           <SvgIcon
             :size="14"

@@ -1,10 +1,11 @@
-import type { RouteLocationNormalizedLoaded, RouteRecordRaw, RouteRecordRedirectOption } from 'vue-router'
+import type { RouteLocationNormalizedLoaded, RouteRecordRedirectOption } from 'vue-router'
 import useSettingsStore from './settings'
-import useRouteStore from './route'
 import useUserStore from './user'
 import { resolveRoutePath } from '@/util'
 import storage from '@/util/storage'
 import api from '@/api'
+import useMenuStore from '@/store/modules/menu.ts'
+import type { Menu } from '#/global'
 
 interface Favorite {
   fullPath: string
@@ -18,10 +19,10 @@ const useFavoritesStore = defineStore(
   () => {
     const settingsStore = useSettingsStore()
     const userStore = useUserStore()
-    const routeStore = useRouteStore()
+    const menuStore = useMenuStore()
     // const menuStore = useMenuStore()
     const list = ref<Favorite[]>([])
-    function hasChildren(route: RouteRecordRaw) {
+    function hasChildren(route: Menu.recordRaw) {
       let flag = true
       if (route.children) {
         if (route.children.every(item => item.meta?.menu === false)) {
@@ -33,7 +34,7 @@ const useFavoritesStore = defineStore(
       }
       return flag
     }
-    function generateRoutePaths(route: RouteRecordRaw[], currentPath: string = '') {
+    function generateRoutePaths(route: Menu.recordRaw[], currentPath?: string) {
       const routePaths: RouteRecordRedirectOption[] = []
       route.forEach((route) => {
         if (route.meta?.menu !== false) {
@@ -41,7 +42,7 @@ const useFavoritesStore = defineStore(
             routePaths.push(...generateRoutePaths(route.children, resolveRoutePath(currentPath, route.path)))
           }
           else {
-            routePaths.push(route.redirect || resolveRoutePath(currentPath, route.path))
+            routePaths.push(route.path ?? resolveRoutePath(currentPath, route.path))
           }
         }
       })
@@ -50,11 +51,10 @@ const useFavoritesStore = defineStore(
 
     const routeList = computed(() => {
       const routes: RouteRecordRedirectOption[] = []
-      if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
-        routeStore.routes.forEach((route) => {
-          route.children && routes.push(...generateRoutePaths(route.children))
-        })
-      }
+
+      menuStore.allMenus.forEach((route) => {
+        routes.push(...generateRoutePaths(route.children))
+      })
 
       return routes
     })

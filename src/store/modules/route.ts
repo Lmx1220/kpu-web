@@ -9,6 +9,10 @@ import type { Route } from '#/global'
 import api from '@/api'
 import { systemRoutes } from '@/router/routes'
 
+function Layout() {
+  return import('@/layouts/index.vue')
+}
+
 const useRouteStore = defineStore(
   'route',
   () => {
@@ -126,6 +130,75 @@ const useRouteStore = defineStore(
       routes.forEach(item => flatAsyncRoutes(item))
       return routes
     })
+    // TODO 将设置 meta.sidebar 的属性转换成 meta.menu ，过渡处理，未来将被弃用
+    let isUsedDeprecatedAttribute = false
+    // TODO 将设置 meta.i18n 的属性转换成 meta.title ，过渡处理，未来将被弃用
+    let isUsedDeprecatedAttributeI18n = false
+    function converDeprecatedAttribute<T extends Route.recordMainRaw[]>(routes: T): T {
+      routes.forEach((route) => {
+        route.children = converDeprecatedAttributeRecursive(route.children)
+      })
+      if (isUsedDeprecatedAttribute) {
+        // turbo-console-disable-next-line
+        console.warn('[Fantastic-admin] 路由配置中的 "sidebar" 属性即将被弃用, 请尽快替换为 "menu" 属性')
+      }
+      if (isUsedDeprecatedAttributeI18n) {
+        // turbo-console-disable-next-line
+        console.warn('[Fantastic-admin] 路由配置中的 "i18n" 属性即将被弃用, 请尽快替换为 "title" 属性')
+      }
+      return routes
+    }
+    function converDeprecatedAttributeRecursive(routes: RouteRecordRaw[]) {
+      if (routes) {
+        routes.forEach((route) => {
+          if (typeof route.meta?.sidebar === 'boolean') {
+            isUsedDeprecatedAttribute = true
+            route.meta.menu = route.meta.sidebar
+            delete route.meta.sidebar
+          }
+          if (route.meta?.i18n) {
+            isUsedDeprecatedAttributeI18n = true
+            route.meta.title = route.meta.i18n
+            delete route.meta.sidebar
+          }
+          if (route.children) {
+            converDeprecatedAttributeRecursive(route.children)
+          }
+        })
+      }
+      return routes
+    }
+    function processRoutes(routes: Route.recordMainRaw[]) {
+      return routes.map((route) => {
+        if (route.children) {
+          route.children.forEach((child, index, array) => {
+            if (child.meta?.singleMenu) {
+              array[index] = {
+                ...child,
+                component: Layout,
+                children: [
+                  {
+                    path: '',
+                    name: child.name,
+                    component: child.component,
+                    meta: {
+                      title: child.meta.title,
+                      i18n: child.meta.i18n,
+                      menu: false,
+                      breadcrumb: false,
+                    },
+                  } as unknown as RouteRecordRaw,
+                ],
+              } as unknown as RouteRecordRaw
+              delete array[index].name
+              delete array[index].meta?.singleMenu
+            }
+          },
+          )
+        }
+        return route
+      })
+    }
 
     // 判断是否有权限
     function hasPermission(permissions: string[], route: Route.recordMainRaw | RouteRecordRaw) {
@@ -179,10 +252,7 @@ const useRouteStore = defineStore(
 
     // 根据权限动态生成路由（前端获取）
     async function generateRoutesAtFront(asyncRoutes: Route.recordMainRaw[]) {
-      routesRaw.value = cloneDeep(asyncRoutes) as any
-      if (settingsStore.settings.app.enablePermission) {
-        await userStore.getPermissions()
-      }
+      routesRaw.value = converDeprecatedAttribute(processRoutes(cloneDeep(asyncRoutes)))
       isGenerate.value = true
       settingsStore.settings.tabbar.enable && tabbarStore.initPermanentTab()
     }
@@ -213,10 +283,8 @@ const useRouteStore = defineStore(
           url: '/anyone/visible/allRouter',
           // noLoading: true,
         })
-        routesRaw.value = formatBackRoutes(res) as any
-        if (settingsStore.settings.app.enablePermission) {
-          userStore.getPermissions()
-        }
+        routesRaw.value = converDeprecatedAttribute(processRoutes(formatBackRoutes(res))) as any
+        settingsStore.settings.tabbar.enable && tabbarStore.initPermanentTab()
         isGenerate.value = true
       }
       catch (error: any) {
@@ -233,7 +301,7 @@ const useRouteStore = defineStore(
     // 生成路由（文件系统生成）
     function generateRoutesAtFilesystem(asyncRoutes: RouteRecordRaw[]) {
       // 设置 routes 数据
-      filesystemRoutesRaw.value = cloneDeep(asyncRoutes) as any
+      filesystemRoutesRaw.value = processRoutes(cloneDeep(asyncRoutes) as any) as any
       isGenerate.value = true
     }
     // 记录 accessRoutes 路由，用于登出时删除路由
@@ -249,9 +317,19 @@ const useRouteStore = defineStore(
       })
       currentRemoveRoutes.value = []
     }
+    // isGenerate: Ie,
+    // routesRaw: Fe,
+    // currentRemoveRoutes: qe,
+    // flatRoutes: bn,
+    // flatSystemRoutes: wn,
+    // generateRoutesAtFront: Cn,
+    // generateRoutesAtBack: Sn,
+    // generateRoutesAtFilesystem: Pn,
+    // setCurrentRemoveRoutes: Tn,
+    // removeRoutes: Nn,
     return {
       isGenerate,
-      routes,
+      // routes,
       routesRaw,
       currentRemoveRoutes,
       flatRoutes,

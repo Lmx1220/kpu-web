@@ -3,7 +3,7 @@ import Tools from './tools.vue'
 import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
 import useUserStore from '@/store/modules/user'
-import useI18nTitle from '@/util/composables/useI18nTitle.ts'
+import { i18nTitleInjectionKey } from '@/layouts/components/Menu/types.ts'
 
 defineOptions({
   name: 'Tools',
@@ -12,7 +12,7 @@ defineOptions({
 const router = useRouter()
 const { t } = useI18n()
 
-const { generateI18nTitle } = useI18nTitle()
+const i18nTitle = inject(i18nTitleInjectionKey)!
 const settingsStore = useSettingsStore()
 const userStore = useUserStore()
 
@@ -30,7 +30,7 @@ watch(() => userStore.avatar, () => {
     <HDropdownMenu
       :items="[
         [
-          { label: generateI18nTitle('route.home', settingsStore.settings.home.title), handle: () => router.push({ path: settingsStore.settings.home.fullPath }), hide: !settingsStore.settings.home.enable },
+          { label: i18nTitle(settingsStore.settings.home.title), handle: () => router.push({ path: settingsStore.settings.home.fullPath }), hide: !settingsStore.settings.home.enable },
           { label: t('app.profile'), handle: () => router.push({ name: 'personalSetting' }) },
           { label: t('app.preferences'),
             handle: () => eventBus.emit('global-preferences-toggle'),

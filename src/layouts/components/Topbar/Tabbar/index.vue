@@ -9,11 +9,11 @@ import { useMagicKeys } from '@vueuse/core'
 import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar'
 import storage from '@/util/storage'
-import useI18nTitle from '@/util/composables/useI18nTitle'
 import useTabbar from '@/util/composables/useTabbar'
 import eventBus from '@/util/eventBus'
 import type { Tabbar } from '@/types/global'
 import useMainPage from '@/util/composables/useMainPage'
+import { i18nTitleInjectionKey } from '@/layouts/components/Menu/types.ts'
 
 defineOptions({
   name: 'Tabbar',
@@ -29,7 +29,7 @@ const tabbar = useTabbar()
 const mainPage = useMainPage()
 const { t } = useI18n()
 
-const { generateI18nTitle } = useI18nTitle()
+const i18nTitle = inject(i18nTitleInjectionKey)!
 
 // 当前标签页指向路由
 const activedTabId = computed(() => tabbar.getId())
@@ -348,7 +348,7 @@ onUnmounted(
             'actived': element.tabId === activedTabId,
             'no-drag': element.isPermanent || element.isPin,
           }" :data-index="index" class="tab"
-          :title="element.customTitleList?.find((item) => item.fullPath === item.fullPath)?.title || generateI18nTitle(element.i18n, element.title)"
+          :title="element.customTitleList?.find((item) => item.fullPath === item.fullPath)?.title || i18nTitle(element.title)"
           @click="router.push(`${element.fullPath}`)" @dblclick="settingsStore.setMainPageMaximize()"
           @contextmenu="onTabbarContextmenu($event, element)"
         >
@@ -364,7 +364,7 @@ onUnmounted(
                 :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)" class="icon"
               />
               {{
-                element.customTitleList?.find((item) => item.fullPath === item.fullPath)?.title || generateI18nTitle(element.i18n, element.title)
+                element.customTitleList?.find((item) => item.fullPath === item.fullPath)?.title || i18nTitle(element.title)
               }}
             </div>
 
@@ -440,7 +440,7 @@ onUnmounted(
               >
                 <div
                   class="title"
-                  :title="element.customTitleList?.find((item:any) => item.fullPath === item.fullPath)?.title || generateI18nTitle(element.i18n, element.title)"
+                  :title="element.customTitleList?.find((item:any) => item.fullPath === item.fullPath)?.title || i18nTitle(element.title)"
                   @click="router.push(`${element.fullPath}`)"
                 >
                   <SvgIcon
@@ -449,7 +449,7 @@ onUnmounted(
                     :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
                   />
                   {{
-                    element.customTitleList?.find((item:any) => item.fullPath === item.fullPath)?.title || generateI18nTitle(element.i18n, element.title)
+                    element.customTitleList?.find((item:any) => item.fullPath === item.fullPath)?.title || i18nTitle(element.title)
                   }}
                 </div>
                 <SvgIcon

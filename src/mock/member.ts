@@ -17,11 +17,11 @@ export default defineFakeRoute([
     },
   },
   {
-    url: '/mock/member/permission',
+    url: '/mock/anyone/visible/resource',
     method: 'get',
     response: (option: any) => {
       let permissions: string[] = []
-      if (option.query.account === 'admin') {
+      if (option.query.account === 'kpu') {
         permissions = [
           'permission.browse',
           'permission.create',
@@ -36,9 +36,10 @@ export default defineFakeRoute([
       }
       return {
         msg: '',
-        code: 1,
+        code: 0,
         data: {
-          permissions,
+          resourceList: permissions,
+          roleList: [],
         },
       }
     },
@@ -48,7 +49,7 @@ export default defineFakeRoute([
     method: 'post',
     response: () => ({
       msg: '',
-      code: 1,
+      code: 0,
       data: {
         isSuccess: true,
       },

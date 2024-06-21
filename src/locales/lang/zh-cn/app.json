@@ -3,35 +3,36 @@
   "captcha": "验证码",
   "check": "确认",
   "goLogin": "去登录",
-  "hotkeys": "快捷键介绍",
   "login": "登录",
   "logout": "退出登录",
   "newPassword": "新密码",
   "password": "密码",
-  "preferences": "偏好设置",
   "profile": "个人设置",
+  "preferences": "偏好设置",
+  "hotkeys": "快捷键介绍",
+  "sendCaptcha": "发送验证码",
   "search": {
-    "alt_s": "唤醒搜索面板",
-    "enter": "访问页面",
-    "esc": "退出",
-    "input": "搜索页面，支持标题、URL模糊查询",
+    "text": "搜索",
     "type": {
       "menu": "搜索导航菜单",
       "tab": "搜索标签页"
     },
-    "up_down": "切换搜索结果"
+    "input": "支持标题、拼音(首字母)、URL模糊查询",
+    "empty": "没有找到你想要的",
+    "up_down": "切换",
+    "enter": "访问",
+    "esc": "退出"
   },
-  "sendCaptcha": "发送验证码",
   "tabbar": {
+    "reload": "重新加载",
     "close": "关闭标签页",
-    "closeLeftSide": "关闭左侧标签页",
-    "closeOtherSide": "关闭其它标签页",
-    "closeRightSide": "关闭右侧标签页",
+    "pin": "固定",
+    "unpin": "取消固定",
     "maximize": "最大化",
     "newWindow": "新窗口中打开",
     "searchTabs": "搜索标签页",
-    "pin": "固定",
-    "reload": "重新加载",
-    "unpin": "取消固定"
+    "closeOtherSide": "关闭其它标签页",
+    "closeLeftSide": "关闭左侧标签页",
+    "closeRightSide": "关闭右侧标签页"
   }
 }
