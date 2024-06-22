@@ -194,7 +194,7 @@ function handleMouseleave() {
       <OverlayScrollbarsComponent
         v-if="opened" ref="subMenuRef" :class="{
           'bg-[var(--g-sub-sidebar-bg)]': rootMenu.isMenuPopup,
-          'ring-1 ring-stone-2 dark:ring-stone-8 shadow-xl fixed z-3000 w-[200px]': rootMenu.isMenuPopup,
+          'ring-1 ring-stone-2 dark-ring-stone-8 shadow-xl fixed z-3000 w-[200px]': rootMenu.isMenuPopup,
           'mx-2': rootMenu.isMenuPopup && (rootMenu.props.mode === 'vertical' || level !== 0),
           'rounded-2 py-1': rootMenu.props.rounded && rootMenu.isMenuPopup,
         }" :options="{ scrollbars: { visibility: 'hidden' } }" class="sub-menu"

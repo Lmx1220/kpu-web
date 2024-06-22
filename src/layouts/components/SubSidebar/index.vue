@@ -111,14 +111,14 @@ const isCollapse = computed(() => {
     >
       <span
         v-show="!isCollapse || isCollapse && !settingsStore.settings.menu.enableSubMenuCollapseButton"
-        class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark:bg-stone-9 hover:bg-stone-2 dark:hover:bg-stone-8"
+        class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark-bg-stone-9 hover:bg-stone-2 dark-hover:bg-stone-8"
         @click="() => settingsStore.toggleSidebarAutoCollapse()"
       >
         <SvgIcon :name="settingsStore.settings.menu.subMenuAutoCollapse ? 'i-lucide:pin-off' : 'i-lucide:pin'" />
       </span>
       <span
         v-show="settingsStore.settings.menu.enableSubMenuCollapseButton"
-        class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark:bg-stone-9 hover:bg-stone-2 dark:hover:bg-stone-8"
+        class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark-bg-stone-9 hover:bg-stone-2 dark-hover:bg-stone-8"
         :class="{ '-rotate-z-180': settingsStore.settings.menu.subMenuCollapse }"
         @click="() => settingsStore.toggleSidebarCollapse()"
       >

@@ -3,33 +3,33 @@
 // 全局样式
 
 :root {
+  &::view-transition-old(root),
+  &::view-transition-new(root) {
+    mix-blend-mode: normal;
+    animation: none;
+  }
+
+  &::view-transition-old(root) {
+    z-index: 1;
+  }
+
+  &::view-transition-new(root) {
+    z-index: 9999;
+  }
+
   --g-box-shadow-color: rgb(0 0 0 / 12%);
-}
 
-:root::view-transition-old(root),
-:root::view-transition-new(root) {
-  mix-blend-mode: normal;
-  animation: none;
-}
+  &.dark {
+    &::view-transition-old(root) {
+      z-index: 9999;
+    }
 
-:root::view-transition-old(root) {
-  z-index: 1;
-}
+    &::view-transition-new(root) {
+      z-index: 1;
+    }
 
-:root::view-transition-new(root) {
-  z-index: 9999;
-}
-
-:root.dark {
-  --g-box-shadow-color: rgb(0 0 0 / 72%);
-}
-
-:root.dark::view-transition-old(root) {
-  z-index: 9999;
-}
-
-:root.dark::view-transition-new(root) {
-  z-index: 1;
+    --g-box-shadow-color: rgb(0 0 0 / 72%);
+  }
 }
 
 ::-webkit-scrollbar {
@@ -117,7 +117,7 @@ textarea {
 
 .v-popper--theme-dropdown .v-popper__inner,
 .v-popper--theme-tooltip .v-popper__inner {
-  --at-apply: bg-white dark:bg-stone-8 text-dark dark:text-white rounded shadow ring-1 ring-gray-200 dark:ring-gray-800 border border-solid border-stone/20 text-xs font-normal;
+  --at-apply: bg-white dark-bg-stone-8 text-dark dark-text-white rounded shadow ring-1 ring-gray-200 dark-ring-gray-800 border border-solid border-stone/20 text-xs font-normal;
 
   box-shadow: 0 6px 30px rgb(0 0 0 / 10%);
 }
@@ -126,7 +126,7 @@ textarea {
 .v-popper--theme-dropdown .v-popper__arrow-inner {
   visibility: visible;
 
-  --at-apply: border-white dark:border-stone-8;
+  --at-apply: border-white dark-border-stone-8;
 }
 
 .v-popper--theme-tooltip .v-popper__arrow-outer,

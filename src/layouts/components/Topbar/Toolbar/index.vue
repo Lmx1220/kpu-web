@@ -53,7 +53,7 @@ const settingsStore = useSettingsStore()
             }
 
             &.is-link:hover {
-              --at-apply: bg-stone-2 dark:bg-stone-8;
+              --at-apply: bg-stone-2 dark-bg-stone-8;
             }
           }
 
@@ -66,7 +66,7 @@ const settingsStore = useSettingsStore()
 
             &:not(:first-child) {
               .text {
-                --at-apply: bg-stone-2 dark:bg-stone-8;
+                --at-apply: bg-stone-2 dark-bg-stone-8;
 
                 border-radius: 0 6px 6px 0;
               }

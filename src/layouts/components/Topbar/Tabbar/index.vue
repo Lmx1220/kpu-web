@@ -536,7 +536,7 @@ onUnmounted(
   }
 
   .mx-context-menu {
-    --at-apply: flex ring-stone-3 dark:ring-stone-7;
+    --at-apply: flex ring-stone-3 dark-ring-stone-7;
 
     background-color: var(--g-container-bg);
 
@@ -544,7 +544,7 @@ onUnmounted(
       --at-apply: transition;
 
       &:not(.disabled):hover {
-        --at-apply: cursor-pointer bg-stone-1 dark:bg-stone-9;
+        --at-apply: cursor-pointer bg-stone-1 dark-bg-stone-9;
       }
 
       span {
@@ -565,7 +565,7 @@ onUnmounted(
       background-color: var(--g-container-bg);
 
       &::after {
-        --at-apply: bg-stone-2 dark:bg-stone-7;
+        --at-apply: bg-stone-2 dark-bg-stone-7;
       }
     }
   }
@@ -692,7 +692,7 @@ onUnmounted(
         opacity: 0;
 
         &:hover {
-          --at-apply: ring-1 ring-stone-3 dark:ring-stone-7;
+          --at-apply: ring-1 ring-stone-3 dark-ring-stone-7;
 
           background-color: var(--g-bg);
         }
@@ -895,14 +895,14 @@ onUnmounted(
             transform: translateY(-50%);
 
             &:hover {
-              --at-apply: ring-1 ring-stone-3 dark:ring-stone-7;
+              --at-apply: ring-1 ring-stone-3 dark-ring-stone-7;
 
               background-color: var(--g-bg);
             }
           }
 
           .hotkey-number {
-            --at-apply: ring-1 ring-stone-3 dark:ring-stone-7 flex-center absolute z-10 top-1\/2 right-[0.5em] -translate-y-1\/2 w-6 h-6 border-rd-1\/2 font-size-12px;
+            --at-apply: ring-1 ring-stone-3 dark-ring-stone-7 flex-center absolute z-10 top-1\/2 right-[0.5em] -translate-y-1\/2 w-6 h-6 border-rd-1\/2 font-size-12px;
 
             color: var(--g-tabbar-tab-color);
             background-color: var(--g-bg);

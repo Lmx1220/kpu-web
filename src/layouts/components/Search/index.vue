@@ -270,7 +270,7 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
       @close="isShow && eventBus.emit('global-search-toggle')"
     >
       <TransitionChild as="template" v-bind="overlayTransitionClass">
-        <div class="fixed inset-0 bg-stone-200/75 backdrop-blur-sm transition-opacity dark:bg-stone-8/75" />
+        <div class="fixed inset-0 bg-stone-200/75 backdrop-blur-sm transition-opacity dark-bg-stone-8/75" />
       </TransitionChild>
       <div class="fixed inset-0">
         <div class="h-full flex items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -285,11 +285,11 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
                 class="mb-4 flex!" @change="toSwitchType"
                 @click.stop="() => {}"
               />
-              <div class="flex flex-col overflow-y-auto rounded-xl bg-white shadow-xl dark:bg-stone-8">
-                <div border-b="~ solid stone-2 dark:stone-7" class="flex items-center px-4 py-3">
+              <div class="flex flex-col overflow-y-auto rounded-xl bg-white shadow-xl dark-bg-stone-8">
+                <div border-b="~ solid stone-2 dark-stone-7" class="flex items-center px-4 py-3">
                   <SvgIcon :size="18" class="text-stone-5" name="ep:search" />
                   <input
-                    ref="searchInputRef" v-model="searchInput" class="w-full border-0 rounded-md bg-transparent px-3 text-base text-dark dark:text-white focus:outline-none placeholder-stone-4 dark:placeholder-stone-5"
+                    ref="searchInputRef" v-model="searchInput" class="w-full border-0 rounded-md bg-transparent px-3 text-base text-dark dark-text-white focus:outline-none placeholder-stone-4 dark-placeholder-stone-5"
                     placeholder="搜索页面，支持标题、URL模糊查询"
                     @keydown.esc="eventBus.emit('global-search-toggle')" @keydown.up.prevent="keyUp"
                     @keydown.down.prevent="keyDown" @keydown.enter.prevent="keyEnter"
@@ -305,7 +305,7 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
                     <template v-if="resultList.length > 0">
                       <a
                         v-for="(item, index) in resultList" :key="item.path" ref="searchResultItemRef"
-                        :class="{ 'bg-stone-2/40 dark:bg-stone-7/40': index === actived }"
+                        :class="{ 'bg-stone-2/40 dark-bg-stone-7/40': index === actived }"
                         :data-index="index" class="flex cursor-pointer items-center"
                         @click="pageJump(item.path, item.link)" @mouseover="actived = index"
                       >
@@ -314,7 +314,7 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
                           class="basis-16 transition"
                         />
                         <div
-                          border-l="~ solid stone-2 dark:stone-7"
+                          border-l="~ solid stone-2 dark-stone-7"
                           class="flex flex-1 flex-col gap-1 truncate px-4 py-3"
                         >
                           <div class="truncate text-base font-bold">{{
@@ -340,7 +340,7 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
                   </OverlayScrollbarsComponent>
                 </DialogDescription>
                 <div
-                  v-if="settingsStore.mode === 'pc'" border-t="~ solid stone-2 dark:stone-7"
+                  v-if="settingsStore.mode === 'pc'" border-t="~ solid stone-2 dark-stone-7"
                   class="flex justify-between px-4 py-3"
                 >
                   <div class="flex gap-8">

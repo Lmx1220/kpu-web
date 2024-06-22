@@ -497,10 +497,10 @@ function handleCopy() {
       </div>
       <HToggle v-model="settingsStore.settings.toolbar.colorScheme" />
     </div>
-    <div ref="toolbarLayoutRef" class="mx-4 my-2 flex items-center rounded-2 px-2 py-1 ring-1 ring-stone-2 dark:ring-stone-7">
+    <div ref="toolbarLayoutRef" class="mx-4 my-2 flex items-center rounded-2 px-2 py-1 ring-1 ring-stone-2 dark-ring-stone-7">
       <span
         v-for="item in settingsStore.settings.toolbar.layout" :key="item" class="draggable flex-center p-1"
-        :class="{ 'flex-1 text-stone-3 dark:text-stone-7 no-drag': item === '->',
+        :class="{ 'flex-1 text-stone-3 dark-text-stone-7 no-drag': item === '->',
                   'cursor-ew-resize': item !== '->' && settingsStore.settings.toolbar[item],
                   'pointer-events-none w-0 op-0 p-0! no-drag': item !== '->' && !settingsStore.settings.toolbar[item],
         }"
@@ -700,7 +700,7 @@ function handleCopy() {
 
   &::before,
   &::after {
-    --at-apply: content-empty w-full h-1px bg-stone-2 dark:bg-stone-6;
+    --at-apply: content-empty w-full h-1px bg-stone-2 dark-bg-stone-6;
   }
 }
 
@@ -708,7 +708,7 @@ function handleCopy() {
   --at-apply: flex flex-wrap items-center justify-center gap-4 pb-4;
 
   .theme {
-    --at-apply: w-12 h-12 cursor-pointer flex items-center justify-center border-rd-2 ring-1 ring-stone-2 dark:ring-stone-7 transition;
+    --at-apply: w-12 h-12 cursor-pointer flex items-center justify-center border-rd-2 ring-1 ring-stone-2 dark-ring-stone-7 transition;
 
     &.active {
       --at-apply: ring-ui-primary ring-2;
@@ -728,7 +728,7 @@ function handleCopy() {
   --at-apply: flex items-center justify-center gap-4 pb-4;
 
   .mode {
-    --at-apply: relative w-16 h-12 rounded-2 ring-1 ring-stone-2 dark:ring-stone-7 cursor-pointer transition;
+    --at-apply: relative w-16 h-12 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer transition;
 
     &:hover {
       box-shadow: 0 0 5px 1px var(--el-border-color-darker);
@@ -824,7 +824,7 @@ function handleCopy() {
   --at-apply: flex-center gap-4 pb-4;
 
   .mode {
-    --at-apply: relative w16 h12 cursor-pointer overflow-hidden border-rd-2 ring-1 ring-stone-2 dark:ring-stone-7 transform;
+    --at-apply: relative w16 h12 cursor-pointer overflow-hidden border-rd-2 ring-1 ring-stone-2 dark-ring-stone-7 transform;
 
     &.active {
       --at-apply: ring-ui-primary ring-2;
@@ -832,7 +832,7 @@ function handleCopy() {
 
     &-adaption {
       &::before {
-        --at-apply: absolute w-full h-full bg-stone-1 dark:bg-stone-9 content-empty;
+        --at-apply: absolute w-full h-full bg-stone-1 dark-bg-stone-9 content-empty;
       }
 
       .left,
@@ -851,7 +851,7 @@ function handleCopy() {
 
     &-adaption-min-width {
       &::before {
-        --at-apply: absolute left-1\/2 w-1\/2 h-full -translate-x-1\/2 bg-stone-1 dark:bg-stone-9 content-empty;
+        --at-apply: absolute left-1\/2 w-1\/2 h-full -translate-x-1\/2 bg-stone-1 dark-bg-stone-9 content-empty;
       }
 
       .left,
@@ -870,13 +870,13 @@ function handleCopy() {
 
     &-center {
       &::before {
-        --at-apply: absolute left-1\/2 w-3\/5 h-full -translate-x-1\/2 bg-stone-1 dark:bg-stone-9 content-empty;
+        --at-apply: absolute left-1\/2 w-3\/5 h-full -translate-x-1\/2 bg-stone-1 dark-bg-stone-9 content-empty;
       }
     }
 
     &-center-max-width {
       &::before {
-        --at-apply: absolute left-1\/2 w-3\/5 h-full -translate-x-1\/2 bg-stone-1 dark:bg-stone-9 content-empty;
+        --at-apply: absolute left-1\/2 w-3\/5 h-full -translate-x-1\/2 bg-stone-1 dark-bg-stone-9 content-empty;
       }
 
       .left,
@@ -899,14 +899,14 @@ function handleCopy() {
   --at-apply: flex-center gap-4 pb-4;
 
   .mode {
-    --at-apply: relative w-14 h-10 flex-center cursor-pointer border-rd-2 ring-1 ring-stone-2 dark:ring-stone-7;
+    --at-apply: relative w-14 h-10 flex-center cursor-pointer border-rd-2 ring-1 ring-stone-2 dark-ring-stone-7;
 
     &.active {
       --at-apply: ring-ui-primary ring-2;
     }
 
     &::after {
-      --at-apply: absolute top-1\/5 left-1\/5 w-3\/5 h-3\/5 border-rd-2 bg-stone-2 dark:bg-stone-9 transform content-empty;
+      --at-apply: absolute top-1\/5 left-1\/5 w-3\/5 h-3\/5 border-rd-2 bg-stone-2 dark-bg-stone-9 transform content-empty;
     }
 
     &.mode-fade {
@@ -1037,7 +1037,7 @@ function handleCopy() {
 }
 
 .setting-item {
-  --at-apply: flex items-center justify-between gap-4 px-4 py-2 rounded-2 transition hover:bg-stone-1 dark:hover:bg-stone-9;
+  --at-apply: flex items-center justify-between gap-4 px-4 py-2 rounded-2 transition hover:bg-stone-1 dark-hover:bg-stone-9;
 
   .label {
     --at-apply: flex items-center flex-shrink-0 gap-2 text-sm;

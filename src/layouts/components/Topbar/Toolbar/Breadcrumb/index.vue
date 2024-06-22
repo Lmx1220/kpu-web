@@ -89,7 +89,7 @@ function pathCompile(path: string) {
         }
 
         &.is-link:hover {
-          --at-apply: bg-stone-2 dark:bg-stone-8;
+          --at-apply: bg-stone-2 dark-bg-stone-8;
         }
       }
 
@@ -103,7 +103,7 @@ function pathCompile(path: string) {
 
       &:last-child:not(:first-child) {
         .text {
-          --at-apply: bg-stone-2 dark:bg-stone-8;
+          --at-apply: bg-stone-2 dark-bg-stone-8;
 
           clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 8px 50%);
           border-radius: 0 6px 6px 0;

@@ -357,7 +357,7 @@ header:not(.header-leave-active) + .wrapper {
 }
 
 .app-setting {
-  @apply bg-ui-primary color-white dark:color-dark ;
+  @apply bg-ui-primary color-white dark-color-dark ;
 
   position: fixed;
   top: calc(50% + 250px);

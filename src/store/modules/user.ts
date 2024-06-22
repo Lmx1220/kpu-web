@@ -26,7 +26,7 @@ const useUserStore = defineStore(
     const isLogin = computed(() => {
       let retn = false
       if (token.value) {
-        if (new Date().getTime() < new Date(failure_time.value).getTime()) {
+        if (new Date().getTime() < new Date(Number(failure_time.value)).getTime()) {
           retn = true
         }
       }
@@ -48,10 +48,10 @@ const useUserStore = defineStore(
           grantType: 'PASSWORD',
         },
       })
-      // storage.local.set('account', res.username)
+      storage.local.set('account', res.username)
       storage.local.set('token', res.token)
       storage.local.set('failure_time', res.expiration)
-      // account.value = res.username
+      account.value = res.username
       token.value = res.token
       failure_time.value = res.expiration
     }

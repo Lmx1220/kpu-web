@@ -156,6 +156,15 @@ function removeIcon() {
   border-radius: var(--el-border-radius-base);
   transition: 0.3s;
 
+  &--small {
+    --icon-picker-size: var(--el-component-size-small);
+    --icon-picker-font-size: var(--el-font-size-medium)
+  }
+
+  &--large {
+    --icon-picker-size: var(--el-component-size-large);
+    --icon-picker-font-size: var(--el-font-size-extra-large)
+  }
   &.is-disabled {
     color: var(--el-text-color-disabled);
     pointer-events: none;
@@ -181,15 +190,18 @@ function removeIcon() {
 .icon-picker-dialog-body {
   display: flex;
   height: 500px;
+  margin: calc((var(--el-dialog-padding-primary) + 16px) * -1) calc((var(--el-dialog-padding-primary)) * -1) calc((var(--el-dialog-padding-primary)) * -1);
 
-  /*
-  margin: calc((var(--el-dialog-padding-primary) + 10px + 30px) * -1) calc(var(--el-dialog-padding-primary) * -1) calc((var(--el-dialog-padding-primary) + 10px) * -1) calc(var(--el-dialog-padding-primary) * -1);
-  */
+ /* margin: calc((var(--el-dialog-padding-primary) + 10px + 30px) * -1) calc(var(--el-dialog-padding-primary) * -1) calc((var(--el-dialog-padding-primary) + 10px) * -1) calc(var(--el-dialog-padding-primary) * -1);
+*/
 
   .el-tabs {
     :deep(.el-tabs__nav-prev),
     :deep(.el-tabs__nav-next) {
       background-image: linear-gradient(to right, transparent, var(--el-fill-color));
+      [dir=rtl] &{
+        background-image: linear-gradient(to left,transparent,var(--el-fill-color))
+      }
     }
 
     :deep(.el-tabs__header .el-tabs__nav) {
