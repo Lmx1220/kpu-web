@@ -52,7 +52,7 @@ defineExpose({
     form.value?.validate((valid) => {
       if (valid) {
         if (props.type === ActionEnum.ADD) {
-          crud.create(data.value.form).then(() => {
+          crud.save(data.value.form).then(() => {
             ElMessage.success({
               message: '新增成功',
               center: true,
@@ -61,7 +61,7 @@ defineExpose({
           })
         }
         else if (props.type === ActionEnum.EDIT) {
-          crud.edit(data.value.form).then(() => {
+          crud.update(data.value.form).then(() => {
             ElMessage.success({
               message: '编辑成功',
               center: true,

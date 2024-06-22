@@ -72,7 +72,7 @@ const useSettingsStore = defineStore(
     function setHoverSidebar(val: boolean) {
       isHoverSidebar.value = val
     }
-    const currentColorScheme = ref('')
+    const currentColorScheme = ref<any>('')
 
     const prefersColorScheme = window.matchMedia('(prefers-color-scheme: dark)')
     watch(() => settings.value.app.colorScheme, (value) => {

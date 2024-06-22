@@ -21,7 +21,7 @@ const data = ref(
     formModeProps: {
       visible: false,
       id: '',
-      type: '',
+      type: undefined as any,
     },
     search: {
       title: '',
@@ -135,7 +135,7 @@ function onDel(row: any) {
     ids.push(row.id)
   }
   else {
-    ids = data.value.batch.selectionDataList.map(item => item.id as string)
+    ids = data.value.batch.selectionDataList.map((item: { id: string }) => item.id)
   }
   ElMessageBox.confirm(`确认删除数量「${ids.length}」吗？`, '确认信息').then(() => {
     crud.remove(ids).then(() => {

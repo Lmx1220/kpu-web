@@ -53,6 +53,7 @@
     "vconsole": "^3.15.1",
     "vue": "^3.4.29",
     "vue-codemirror": "^6.1.1",
+    "vue-currency-input": "^3.1.0",
     "vue-i18n": "^9.13.1",
     "vue-json-pretty": "^2.3.0",
     "vue-m-message": "^4.0.2",

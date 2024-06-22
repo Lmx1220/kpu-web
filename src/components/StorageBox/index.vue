@@ -135,7 +135,7 @@ watch(() => containerRef.value, (value) => {
       </slot>
       <HDialog v-model="dialog.visible" title="请输入一个方便记忆的名称">
         <template #footer>
-          <HButton @click="dialog.visible = false">
+          <HButton mr-2 @click="dialog.visible = false">
             取消
           </HButton>
           <HButton @click="submit">
