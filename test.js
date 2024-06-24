@@ -1,15 +1,23 @@
 const main = {
   dependencies: {
+    '@antv/g2plot': '^2.4.31',
+    '@bytemd/plugin-gfm': '^1.21.0',
+    '@bytemd/vue-next': '^1.21.0',
     '@codemirror/lang-java': '^6.0.1',
     '@codemirror/lang-javascript': '^6.2.1',
     '@codemirror/theme-one-dark': '^6.1.2',
-    '@headlessui/vue': '^1.7.19',
-    '@imengyu/vue3-context-menu': '^1.3.8',
-    '@vueuse/core': '^10.7.2',
-    '@vueuse/integrations': '^10.7.2',
+    '@headlessui/vue': '^1.7.22',
+    '@imengyu/vue3-context-menu': '^1.4.1',
+    '@tinymce/tinymce-vue': '^6.0.1',
+    '@visactor/vchart': '^1.11.3',
+    '@vueuse/core': '^10.11.0',
+    '@vueuse/integrations': '^10.11.0',
     'add': '^2.0.6',
+    'animate.css': '^4.1.1',
     'axios': '^1.7.2',
+    'bytemd': '^1.21.0',
     'codemirror': '^6.0.1',
+    'echarts': '^5.5.0',
     'element-plus': '^2.7.5',
     'eruda': '^3.0.1',
     'floating-vue': '5.2.2',
@@ -20,19 +28,33 @@ const main = {
     'mitt': '^3.0.1',
     'mockjs': '^1.1.0',
     'nprogress': '^0.2.0',
+    'overlayscrollbars': '^2.9.1',
     'overlayscrollbars-vue': '^0.5.9',
     'path-browserify': '^1.0.1',
     'path-to-regexp': '^6.2.2',
     'pinia': '^2.1.7',
+    'pinyin-pro': '^3.22.2',
+    'print-js': '^1.6.0',
+    'qrcode': '^1.5.3',
     'qs': '^6.12.1',
     'sortablejs': '^1.15.2',
+    'spinkit': '^2.0.1',
+    'splitpanes': '^3.1.5',
+    'swiper': '^11.1.4',
+    'tinymce': '^7.2.0',
+    'v-wave': '^2.0.0',
     'vconsole': '^3.15.1',
     'vue': '^3.4.29',
     'vue-codemirror': '^6.1.1',
+    'vue-currency-input': '^3.1.0',
+    'vue-esign': '^1.1.4',
+    'vue-hooks-plus': '^2.2.0',
     'vue-i18n': '^9.13.1',
     'vue-json-pretty': '^2.3.0',
+    'vue-m-message': '^4.0.2',
     'vue-router': '^4.3.3',
     'vue3-blocks-tree': '^0.6.1',
+    'vue3-count-to': '^1.1.2',
     'vxe-table': '^4.7.16',
     'vxe-table-plugin-element': '^4.0.0',
     'xe-utils': '^3.5.27',
@@ -46,8 +68,10 @@ const main = {
     '@types/mockjs': '^1.0.10',
     '@types/nprogress': '^0.2.3',
     '@types/path-browserify': '^1.0.2',
+    '@types/qrcode': '^1.5.5',
     '@types/qs': '^6.9.15',
     '@types/sortablejs': '^1.15.8',
+    '@types/splitpanes': '^2.2.6',
     '@unocss/eslint-plugin': '^0.61.0',
     '@vitejs/plugin-legacy': '^5.4.1',
     '@vitejs/plugin-vue': '^5.0.5',
@@ -57,8 +81,8 @@ const main = {
     'boxen': '^7.1.1',
     'cross-env': '^7.0.3',
     'eslint': '^9.5.0',
-    'fs-extra': '^11.2.0',
     'esno': '^4.7.0',
+    'fs-extra': '^11.2.0',
     'http-server': '^14.1.1',
     'inquirer': '^9.2.23',
     'lint-staged': '^15.2.7',
@@ -76,7 +100,7 @@ const main = {
     'stylelint-scss': '^6.3.1',
     'svgo': '^3.3.2',
     'terser': '^5.27.1',
-    'typescript': '^5.4.5',
+    'typescript': '5.4.5',
     'unocss': '^0.61.0',
     'unplugin-auto-import': '^0.17.6',
     'unplugin-turbo-console': '^1.8.6',
@@ -85,9 +109,11 @@ const main = {
     'vite-plugin-banner': '^0.7.1',
     'vite-plugin-compression2': '^1.1.1',
     'vite-plugin-fake-server': '^2.1.1',
+    'vite-plugin-pages': '^0.32.2',
     'vite-plugin-pwa': '^0.17.5',
     'vite-plugin-svg-icons': '^2.0.1',
     'vite-plugin-vue-devtools': '^7.2.1',
+    'vite-plugin-vue-meta-layouts': '^0.4.3',
     'vue-tsc': '^2.0.21',
   },
 }
@@ -202,6 +228,7 @@ const dev = {
   },
 }
 // main 循环查找 dev 依赖一样的包就用 dev 的版本
+
 for (const key in main.dependencies) {
   if (dev.dependencies[key]) {
     main.dependencies[key] = dev.dependencies[key]
@@ -212,7 +239,8 @@ for (const key in main.devDependencies) {
     main.devDependencies[key] = dev.devDependencies[key]
   }
 }
-// console.log(JSON.stringify(main, null, 2))
+console.log('// main 循环查找 dev 依赖一样的包就用 dev 的版本')// eslint-disable-line no-console
+console.log(JSON.stringify(main, null, 2))// eslint-disable-line no-console
 
 // 找出不同的包
 const diff = {
@@ -229,7 +257,8 @@ for (const key in dev.devDependencies) {
     diff.devDependencies[key] = dev.devDependencies[key]
   }
 }
-// console.log(JSON.stringify(diff, null, 2))
+console.log('// 找出不同的包')// eslint-disable-line no-console
+console.log(JSON.stringify(diff, null, 2))// eslint-disable-line no-console
 
 // 找出 main 有 dev 没有的包
 const diff2 = {
@@ -246,7 +275,8 @@ for (const key in main.devDependencies) {
     diff2.devDependencies[key] = main.devDependencies[key]
   }
 }
-// console.log(JSON.stringify(diff2, null, 2))
+console.log('// 找出 main 有 dev 没有的包') // eslint-disable-line no-console
+console.log(JSON.stringify(diff2, null, 2)) // eslint-disable-line no-console
 
 // 找出 dev 有 main 没有的包
 const diff3 = {
@@ -263,38 +293,40 @@ for (const key in dev.devDependencies) {
     diff3.devDependencies[key] = dev.devDependencies[key]
   }
 }
-// console.log(JSON.stringify(diff3, null, 2))
 
-const i18n = {
-  key: {
-    app: () => {
-      return 'app'
-    },
-    subKey: {
-      subApp: () => {
-        return 'subApp'
-      },
-    },
-  },
-  key2: {
-    app1: () => {
-      return 'app1'
-    },
-  },
-}
+console.log('// 找出 dev 有 main 没有的包') // eslint-disable-line no-console
 
-function executeFunctionsInObject(obj) {
-  for (const key in obj) {
-    if (typeof obj[key] === 'object' && obj[key] !== null) {
-      // 如果值是一个对象，递归调用自身
-      executeFunctionsInObject(obj[key])
-    }
-    else if (typeof obj[key] === 'function') {
-      // 如果值是一个函数，调用函数并将结果存回原位置
-      obj[key] = obj[key]({ normalize: val => `${val}` })
-    }
-  }
-}
+console.log(JSON.stringify(diff3, null, 2)) // eslint-disable-line no-console
 
-executeFunctionsInObject(i18n)
-console.log(JSON.stringify(i18n))
+// const i18n = {
+//   key: {
+//     app: () => {
+//       return 'app'
+//     },
+//     subKey: {
+//       subApp: () => {
+//         return 'subApp'
+//       },
+//     },
+//   },
+//   key2: {
+//     app1: () => {
+//       return 'app1'
+//     },
+//   },
+// }
+
+// function executeFunctionsInObject(obj) {
+//   for (const key in obj) {
+//     if (typeof obj[key] === 'object' && obj[key] !== null) {
+//       // 如果值是一个对象，递归调用自身
+//       executeFunctionsInObject(obj[key])
+//     }
+//     else if (typeof obj[key] === 'function') {
+//       // 如果值是一个函数，调用函数并将结果存回原位置
+//       obj[key] = obj[key]({ normalize: val => `${val}` })
+//     }
+//   }
+// }
+//
+// executeFunctionsInObject(i18n)
