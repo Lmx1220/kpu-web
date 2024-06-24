@@ -279,30 +279,30 @@ function onDel(row: any) {
 <style lang="scss" scoped>
 .absolute-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 
   .page-main {
     flex: 1;
     overflow: auto;
 
     :deep(.main-container) {
-      flex: 1;
-      overflow: auto;
       display: flex;
+      flex: 1;
       flex-direction: column;
+      overflow: auto;
     }
 
-  .page-header {
-    margin-bottom: 0;
+    .page-header {
+      margin-bottom: 0;
+    }
   }
 }
 
-}
 .page-main {
-:deep(.search-form) {
+  :deep(.search-form) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
     margin-bottom: -18px;
@@ -314,14 +314,15 @@ function onDel(row: any) {
         grid-column-end: -1;
 
         .el-form-item__content {
-          justify-content: flex-end
+          justify-content: flex-end;
         }
       }
     }
-
   }
-  .el-divider{
+
+  .el-divider {
     width: calc(100% + 40px);
-    margin-inline:-20px}
+    margin-inline: -20px;
+  }
 }
 </style>

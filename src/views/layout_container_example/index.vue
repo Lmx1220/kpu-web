@@ -84,7 +84,3 @@ const layout = computed({
     </ListLayout>
   </div>
 </template>
-
-<style scoped lang="scss">
-
-</style>

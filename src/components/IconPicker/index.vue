@@ -1,4 +1,4 @@
-<script lang="ts" setup xmlns="http://www.w3.org/1999/html">
+<script lang="ts" setup>
 import { icons } from '@/iconify'
 
 defineOptions({
@@ -158,13 +158,14 @@ function removeIcon() {
 
   &--small {
     --icon-picker-size: var(--el-component-size-small);
-    --icon-picker-font-size: var(--el-font-size-medium)
+    --icon-picker-font-size: var(--el-font-size-medium);
   }
 
   &--large {
     --icon-picker-size: var(--el-component-size-large);
-    --icon-picker-font-size: var(--el-font-size-extra-large)
+    --icon-picker-font-size: var(--el-font-size-extra-large);
   }
+
   &.is-disabled {
     color: var(--el-text-color-disabled);
     pointer-events: none;
@@ -192,15 +193,16 @@ function removeIcon() {
   height: 500px;
   margin: calc((var(--el-dialog-padding-primary) + 16px) * -1) calc((var(--el-dialog-padding-primary)) * -1) calc((var(--el-dialog-padding-primary)) * -1);
 
- /* margin: calc((var(--el-dialog-padding-primary) + 10px + 30px) * -1) calc(var(--el-dialog-padding-primary) * -1) calc((var(--el-dialog-padding-primary) + 10px) * -1) calc(var(--el-dialog-padding-primary) * -1);
+  /* margin: calc((var(--el-dialog-padding-primary) + 10px + 30px) * -1) calc(var(--el-dialog-padding-primary) * -1) calc((var(--el-dialog-padding-primary) + 10px) * -1) calc(var(--el-dialog-padding-primary) * -1);
 */
 
   .el-tabs {
     :deep(.el-tabs__nav-prev),
     :deep(.el-tabs__nav-next) {
       background-image: linear-gradient(to right, transparent, var(--el-fill-color));
-      [dir=rtl] &{
-        background-image: linear-gradient(to left,transparent,var(--el-fill-color))
+
+      [dir="rtl"] & {
+        background-image: linear-gradient(to left, transparent, var(--el-fill-color));
       }
     }
 

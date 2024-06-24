@@ -43,7 +43,7 @@ export function deepClone<T>(target: T): T {
 }
 
 export function isExternalLink(path: string) {
-  return /^(https?:|mailto:|tel:)/.test(path)
+  return /^(?:https?:|mailto:|tel:)/.test(path)
 }
 
 export function resolveRoutePath(basePath?: string, routePath?: string) {

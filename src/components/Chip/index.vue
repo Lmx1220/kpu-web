@@ -31,7 +31,3 @@ const emits = defineEmits<{
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-
-</style>

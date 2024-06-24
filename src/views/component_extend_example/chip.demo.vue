@@ -44,7 +44,3 @@ function close() {
     </PageMain>
   </div>
 </template>
-
-<style scoped lang="scss">
-
-</style>

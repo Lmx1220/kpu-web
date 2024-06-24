@@ -68,6 +68,7 @@ router.beforeEach(async (to, from, next) => {
       }
     }
     else {
+      settingsStore.settings.app.enablePermission && await userStore.getPermissions()
       settingsStore.settings.app.enableUserPreferences && await userStore.getPreferences()
       settingsStore.settings.tabbar.enable && await tabbarStore.recoveryStorage()
       settingsStore.settings.toolbar.favorites && await favoritesStore.recoveryStorage()

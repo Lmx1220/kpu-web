@@ -41,7 +41,7 @@ const slots = useSlots()
 </script>
 
 <template>
-  <ElRadioGroup v-model="modelValue" v-bind="getProps" @change="(val) => emit('change', val)">
+  <ElRadioGroup v-model="modelValue" v-bind="getProps" @change="(val:any) => emit('change', val)">
     <template v-if="slots.default">
       <slot :dicts="dicts" />
     </template>

@@ -4,7 +4,10 @@ import useSettingsStore from '@/store/modules/settings.ts'
 const router = useRouter()
 const settingsStore = useSettingsStore()
 
-const data = ref({
+const data = ref<{
+  inter: NodeJS.Timeout | number
+  countdown: number
+}>({
   inter: Number.NaN,
   countdown: 5,
 })

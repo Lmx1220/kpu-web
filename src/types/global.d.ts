@@ -1,6 +1,6 @@
 import type { FormRules } from 'element-plus'
 import type { RouteRecordRaw } from 'vue-router'
-import type { NativeElements, ReservedProps, VNode } from '@vue/runtime-dom'
+import type { ComponentRenderProxy, VNode } from 'vue'
 import type { ActionEnum } from '@/enums/commonEnum'
 import type { LocaleType } from '#/config'
 
@@ -458,19 +458,19 @@ interface CustomTitleList {
 
 declare global {
   namespace JSX {
-    export interface Element extends VNode {}
-    export interface ElementClass {
-      $props: {}
+    // tslint:disable no-empty-interface
+    type Element = VNode
+    // tslint:disable no-empty-interface
+    type ElementClass = ComponentRenderProxy
+    interface ElementAttributesProperty {
+      $props: any
     }
-    export interface ElementAttributesProperty {
-      $props: {}
+    interface IntrinsicElements {
+      [elem: string]: any
     }
-    export interface IntrinsicElements extends NativeElements {
-      // allow arbitrary elements
-      // @ts-expect-error suppress ts:2374 = Duplicate string index signature.
-      [name: string]: any
+    interface IntrinsicAttributes {
+      [elem: string]: any
     }
-    export interface IntrinsicAttributes extends ReservedProps {}
   }
 }
 

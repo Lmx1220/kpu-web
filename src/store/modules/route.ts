@@ -2,7 +2,6 @@ import { cloneDeep } from 'lodash-es'
 import type { RouteMeta, RouteRecordRaw } from 'vue-router'
 import useSettingsStore from './settings'
 
-import useUserStore from './user'
 import useTabbarStore from './tabbar'
 import { resolveRoutePath } from '@/util'
 import type { Route } from '#/global'
@@ -17,7 +16,6 @@ const useRouteStore = defineStore(
   'route',
   () => {
     const settingsStore = useSettingsStore()
-    const userStore = useUserStore()
     const tabbarStore = useTabbarStore()
     // 是否已根据权限动态生成并注册路由
     const isGenerate = ref(false)
@@ -199,56 +197,6 @@ const useRouteStore = defineStore(
         return route
       })
     }
-
-    // 判断是否有权限
-    function hasPermission(permissions: string[], route: Route.recordMainRaw | RouteRecordRaw) {
-      let isAuth = false
-      if (route.meta?.auth) {
-        isAuth = permissions.some((auth) => {
-          if (typeof route.meta?.auth === 'string') {
-            return route.meta.auth !== '' ? route.meta.auth === auth : true
-          }
-          else if (typeof route.meta?.auth === 'object') {
-            return route.meta.auth.length > 0 ? route.meta.auth.includes(auth) : true
-          }
-          else {
-            return false
-          }
-        })
-      }
-      else {
-        isAuth = true
-      }
-      return isAuth
-    }
-    // 根据权限过滤路由
-    function filterAsyncRoutes<T extends Route.recordMainRaw[] | RouteRecordRaw[]>(routes: T, permissions: string[]): T {
-      const res: any = []
-      routes.forEach((route) => {
-        if (hasPermission(permissions, route)) {
-          const tmpRoute = cloneDeep(route)
-          if (tmpRoute.children) {
-            tmpRoute.children = filterAsyncRoutes(tmpRoute.children, permissions)
-            tmpRoute.children.length && res.push(tmpRoute)
-          }
-          else {
-            res.push(tmpRoute)
-          }
-        }
-      })
-      return res
-    }
-    const routes = computed(() => {
-      let returnRoutes: Route.recordMainRaw[]
-      // 如果权限功能开启，则需要对路由数据进行筛选过滤
-      if (settingsStore.settings.app.enablePermission && false) {
-        returnRoutes = filterAsyncRoutes(routesRaw.value as any, userStore.permissions)
-      }
-      else {
-        returnRoutes = cloneDeep(routesRaw.value) as any
-      }
-      return returnRoutes
-    })
 
     // 根据权限动态生成路由（前端获取）
     async function generateRoutesAtFront(asyncRoutes: Route.recordMainRaw[]) {

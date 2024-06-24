@@ -149,7 +149,3 @@ watch(() => containerRef.value, (value) => {
     </template>
   </HDropdown>
 </template>
-
-<style scoped lang="scss">
-
-</style>

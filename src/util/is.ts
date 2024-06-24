@@ -112,7 +112,8 @@ export const isServer = typeof window === 'undefined'
 export const isClient = !isServer
 
 export function isUrl(path: string): boolean {
-  const reg = /^http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?/
+  // eslint-disable-next-line regexp/strict
+  const reg = /^https?:\/\/(?:[\w-]+\.)+[\w-]+(?:\/[\w- ./?%&=]*)?/
   return reg.test(path)
 }
 export function eqEmptyValue(cellValue: any) {

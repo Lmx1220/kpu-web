@@ -27,7 +27,3 @@ const icon2 = ref('')
     </PageMain>
   </div>
 </template>
-
-<style scoped lang="scss">
-
-</style>

@@ -675,9 +675,6 @@ onUnmounted(
       }
 
       .action-icon {
-        transition-property: color,background-color,border-color,outline-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;
-        transition-timing-function: cubic-bezier(.4,0,.2,1);
-        transition-duration: .15s;
         position: absolute;
         inset-inline-end: 6px;
         top: 50%;
@@ -690,6 +687,9 @@ onUnmounted(
         pointer-events: all;
         border-radius: 50%;
         opacity: 0;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 0.15s;
+        transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
 
         &:hover {
           --at-apply: ring-1 ring-stone-3 dark-ring-stone-7;
@@ -881,7 +881,7 @@ onUnmounted(
 
           .action-icon {
             position: absolute;
-            inset-inline-end: .5em;
+            inset-inline-end: 0.5em;
             top: 50%;
             z-index: 10;
             display: flex;

@@ -42,11 +42,7 @@ const getOptions = computed(() => {
     }
     return prev
   }, [] as OptionsItem[])
-  console.log(reduce)
   return reduce
-})
-watch(dicts, (value) => {
-  console.log(value)
 })
 async function getDicts() {
   const api = props.api
@@ -89,6 +85,7 @@ async function getDicts() {
   }
 }
 function emitChange() {
+  // eslint-disable-next-line vue/custom-event-name-casing
   emit('options-change', unref(getOptions))
 }
 onMounted(() => {
@@ -115,7 +112,7 @@ function filterMethod(query: string) {
 </script>
 
 <template>
-  <ElSelect v-model="modelValue" :filterable="showSearch" :filter-method="filterMethod" v-bind="getProps" @change="(val) => emit('change', val)">
+  <ElSelect v-model="modelValue" :filterable="showSearch" :filter-method="filterMethod" v-bind="getProps" @change="(val:any) => emit('change', val)">
     <template v-if="slots.default">
       <slot :dicts="dicts" />
     </template>

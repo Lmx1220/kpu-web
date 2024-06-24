@@ -111,7 +111,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
             >
               <SvgIcon name="i-ri:logout-box-line" />
             </div>
-            <RouterView v-slot="{ Component, route }">
+            <RouterView v-slot="{ Component }">
               <!--              <transition name="main" mode="out-in" appear> -->
               <Transition
                 :name="settingsStore.settings.mainPage.enableTransition ? settingsStore.settings.mainPage.transitionMode : ''"

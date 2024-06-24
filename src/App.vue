@@ -89,7 +89,7 @@ import.meta.env.VITE_APP_DEBUG_TOOL === 'vconsole' && new VConsole()
 <template>
   <Provider>
     <RouterView
-      v-slot="{ Component, route }"
+      v-slot="{ Component }"
       :style="{
         '--g-main-sidebar-actual-width': mainSidebarActualWidth,
         '--g-sub-sidebar-actual-width': subSidebarActualWidth,
