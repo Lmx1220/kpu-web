@@ -9,6 +9,6 @@ export default {
     elementLocale,
     ...vxeZhCN,
   },
-  labelName: '中文(繁體)',
-  name: 'zh-tw',
+  labelName: '中文(简体)',
+  name: 'zh-cn',
 }

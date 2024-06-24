@@ -82,11 +82,14 @@ const closeMenu: MenuInjection['closeMenu'] = (index) => {
 }
 
 function setSubMenusActive(index: string) {
-  Object.keys(subMenus.value).forEach((index) => {
-    subMenus.value[index].active = false
+  for (const key in subMenus.value) {
+    subMenus.value[key].active = false
+  }
+  subMenus.value[index]?.indexPath.forEach((idx) => {
+    subMenus.value[idx].active = true
   })
-  items.value[index]?.indexPath.forEach((index) => {
-    subMenus.value[index].active = true
+  items.value[index]?.indexPath.forEach((idx) => {
+    subMenus.value[idx].active = true
   })
 }
 
@@ -94,13 +97,7 @@ const handleMenuItemClick: MenuInjection['handleMenuItemClick'] = (index, meta) 
   if (props.mode === 'horizontal' || props.collapse) {
     openedMenus.value = []
   }
-  activeIndex.value = index
   setSubMenusActive(index)
-  if (meta?.link) {
-    window.open(meta.link)
-    return
-  }
-  router.push(index)
 }
 const handleSubMenuClick: MenuInjection['handleSubMenuClick'] = (index, indexPath) => {
   if (openedMenus.value.includes(index)) {
@@ -184,7 +181,7 @@ provide(rootMenuInjectionKey, reactive({
     <template v-for="(item, index) in menu" :key="index">
       <template v-if="item.meta?.menu !== false">
         <SubMenu v-if="item.children?.length" :menu="item" :unique-key="[item.path ?? JSON.stringify(item)]" />
-        <Item v-else :item="item" :unique-key="[item.path ?? JSON.stringify(item)]" @click="handleMenuItemClick(item.path ?? JSON.stringify(item), item.meta)" />
+        <Item v-else :item="item" :unique-key="[item.path ?? JSON.stringify(item)]" @click.stop="handleMenuItemClick(item.path ?? JSON.stringify(item), item.meta)" />
       </template>
     </template>
   </div>

@@ -23,16 +23,16 @@ const rotate = ref(0)
       <div>
         <p>翻转：</p>
         <ElRadioGroup v-model="flip">
-          <ElRadioButton label="">
+          <ElRadioButton label="" value="">
             无
           </ElRadioButton>
-          <ElRadioButton label="horizontal">
+          <ElRadioButton label="horizontal" value="horizontal">
             水平翻转
           </ElRadioButton>
-          <ElRadioButton label="vertical">
+          <ElRadioButton label="vertical" value="vertical">
             垂直翻转
           </ElRadioButton>
-          <ElRadioButton label="both">
+          <ElRadioButton label="both" value="both">
             水平垂直翻转
           </ElRadioButton>
         </ElRadioGroup>

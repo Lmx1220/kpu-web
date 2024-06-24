@@ -21,6 +21,7 @@ import MockExample from './modules/mock.example.ts'
 import JsxExample from './modules/jsx.example.ts'
 import ExternalLinkExample from './modules/external.link.example.ts'
 import StandardModuleExample from './modules/standard.module.example.ts'
+import FeatureExample from './modules/feature.example.ts'
 import type { Route } from '@/types/global'
 import useSettingsStore from '@/store/modules/settings.ts'
 // 固定路由
@@ -115,6 +116,7 @@ const asyncRoutes: Route.recordMainRaw[] = [
       TabExample,
       ComponentExample,
       IconExample,
+      FeatureExample,
       LayoutContainerExample,
       PluginExample,
       PermissionExample,

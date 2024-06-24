@@ -140,80 +140,87 @@ router.afterEach((to, from) => {
   else {
     settingsStore.setTitle(to.meta.title, false)
   }
-  // 判断当前页面是否开启缓存，如果开启，则将当前页面的 name 信息存入 keep-alive 全局状态
-  if (to.meta.cache && !to.meta.iframe) {
-    const componentName = to.matched.at(-1)?.components?.default.name
-    if (componentName) {
-      keepAliveStore.add(componentName)
-    }
-    else {
-      console.warn('该页面组件未设置组件名，会导致缓存失效，请检查')
-    }
-  }
-  // 判断离开页面是否开启缓存，如果开启，则根据缓存规则判断是否需要清空 keep-alive 全局状态里离开页面的 name 信息
-  if (from.meta.cache && !from.meta.iframe) {
-    const componentName = from.matched.at(-1)?.components?.default.name
-    if (componentName) {
-      // 通过 meta.cache 判断针对哪些页面进行缓存
-      switch (typeof from.meta.cache) {
-        case 'string':
-          if (from.meta.cache !== to.name) {
-            keepAliveStore.remove(componentName)
-          }
-          break
-        case 'object':
-          if (!from.meta.cache.includes(to.name as string)) {
-            keepAliveStore.remove(componentName)
-          }
-          break
+  if (to.fullPath !== from.fullPath) {
+    // 判断当前页面是否开启缓存，如果开启，则将当前页面的 name 信息存入 keep-alive 全局状态
+    if (to.meta.cache && !to.meta.iframe) {
+      const componentName = to.matched.at(-1)?.components?.default.name
+      if (componentName) {
+        keepAliveStore.add(componentName)
       }
-      // 通过 meta.noCache 判断针对哪些页面不需要进行缓存
-      if (from.meta.noCache) {
-        switch (typeof from.meta.noCache) {
-          case 'string':
-            if (from.meta.noCache === to.name) {
-              keepAliveStore.remove(componentName)
-            }
-            break
-          case 'object':
-            if (from.meta.noCache.includes(to.name as string)) {
-              keepAliveStore.remove(componentName)
-            }
-            break
-        }
-      }
-      // 如果进入的是 reload 页面，则也将离开页面的缓存清空
-      if (to.name === 'reload') {
-        keepAliveStore.remove(componentName)
+      else {
+        console.warn('该页面组件未设置组件名，会导致缓存失效，请检查')
       }
     }
-  }
-  if (to.meta.iframe) {
-    iframeStore.open(to.fullPath)
-    if (from.meta.iframe) {
-      if (from.meta.cache) {
+    // 判断离开页面是否开启缓存，如果开启，则根据缓存规则判断是否需要清空 keep-alive 全局状态里离开页面的 name 信息
+    if (from.meta.cache && !from.meta.iframe) {
+      const componentName = from.matched.at(-1)?.components?.default.name
+      if (componentName) {
+        // 通过 meta.cache 判断针对哪些页面进行缓存
         switch (typeof from.meta.cache) {
           case 'string':
             if (from.meta.cache !== to.name) {
-              iframeStore.close(from.fullPath)
+              keepAliveStore.remove(componentName)
             }
             break
           case 'object':
-            from.meta.cache.includes(to.name as string) || iframeStore.close(from.fullPath)
+            if (!from.meta.cache.includes(to.name as string)) {
+              keepAliveStore.remove(componentName)
+            }
             break
+        }
+        // 通过 meta.noCache 判断针对哪些页面不需要进行缓存
+        if (from.meta.noCache) {
+          switch (typeof from.meta.noCache) {
+            case 'string':
+              if (from.meta.noCache === to.name) {
+                keepAliveStore.remove(componentName)
+              }
+              break
+            case 'object':
+              if (from.meta.noCache.includes(to.name as string)) {
+                keepAliveStore.remove(componentName)
+              }
+              break
+          }
+        }
+        // 如果进入的是 reload 页面，则也将离开页面的缓存清空
+        if (to.name === 'reload') {
+          keepAliveStore.remove(componentName)
         }
       }
-      if (from.meta.noCache) {
-        switch (typeof from.meta.noCache) {
-          case 'string':
-            if (from.meta.noCache === to.name) {
-              iframeStore.close(from.fullPath)
+    }
+    if (to.meta.iframe) {
+      iframeStore.open(to.fullPath)
+      if (from.meta.iframe) {
+        if (from.meta.cache) {
+          switch (typeof from.meta.cache) {
+            case 'string':
+              if (from.meta.cache !== to.name) {
+                iframeStore.close(from.fullPath)
+              }
+              break
+            case 'object':
+              from.meta.cache.includes(to.name as string) || iframeStore.close(from.fullPath)
+              break
+          }
+          if (from.meta.noCache) {
+            switch (typeof from.meta.noCache) {
+              case 'string':
+                if (from.meta.noCache === to.name) {
+                  iframeStore.close(from.fullPath)
+                }
+                break
+              case 'object':
+                from.meta.noCache.includes(to.name as string) && iframeStore.close(from.fullPath)
+                break
             }
-            break
-          case 'object':
-            from.meta.noCache.includes(to.name as string) && iframeStore.close(from.fullPath)
-            break
+          }
+          // 如果进入的是 reload 页面，则也将离开页面的缓存清空
+          if (to.name === 'reload') {
+            iframeStore.close(from.fullPath)
+          }
         }
+        iframeStore.close(from.fullPath)
       }
     }
   }
