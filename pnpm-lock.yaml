@@ -304,7 +304,7 @@ importers:
         specifier: ^5.27.1
         version: 5.31.1
       typescript:
-        specifier: 5.4.5
+        specifier: ^5.4.5
         version: 5.4.5
       unocss:
         specifier: ^0.61.0
