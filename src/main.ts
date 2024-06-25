@@ -128,6 +128,8 @@ async function bootstrap() {
   const app = createApp(App)
   VXETable.use(VXETablePluginElement)
 
+  // app.use(VWave)
+
   app.use(pinia)
   app.use(router)
   await useI18n(app)

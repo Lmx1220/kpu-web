@@ -34,7 +34,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'waves',
     name: 'featureExampleWaves',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/waves.vue'),
     meta: {
       title: 'route.feature.waves',
       icon: 'i-ph:waves-bold',

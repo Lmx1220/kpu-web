@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import VWave from 'v-wave'
+import logo from '@/assets/images/logo.png'
+
+const { vWave } = VWave.createLocalWaveDirective({
+})
+
 function toWave(url: string) {
   window.open(url, '_blank')
 }
@@ -7,40 +13,54 @@ function toWave(url: string) {
 <template>
   <div>
     <PageHeader title="水波纹" content="更多设置请查看文档">
-      <ElButton @click="toWave(url)">
+      <ElButton v-wave @click="toWave('https://github.com/justintaddei/v-wave')">
         <template #icon>
           <SvgIcon
             name="i-ep:link"
           />
         </template>
         访问 v-wave
-        </svgicon>
-      </elbutton>
-    </pageheader>
-  </div>
-</template>
-
       </ElButton>
-    </PageHeader>
-    <PageMain title="Digital 7">
-      <p class="digital-7">
-        admin
-      </p>
-      <p class="digital-7">
-        1234567890,.
-      </p>
-    </PageMain>
+    </pageheader>
+    <PageMain>
+      <ElButton v-wave>
+        默认按钮
+      </ElButton>
+      <ElButton v-wave type="primary">
+        主要按钮
+      </ElButton>
+      <ElButton v-wave type="success">
+        成功按钮
+      </ElButton>
+      <ElButton v-wave type="info">
+        信息按钮
+      </ElButton>
+      <ElButton v-wave type="warning">
+        警告按钮
+      </ElButton>
+      <ElButton v-wave type="danger">
+        危险按钮
+      </ElButton>
+      <div my4>
+        <ElImage v-wave :src="logo" class="h-25 w-25" />
+      </div>
+      <div v-wave my-4 h-25 w-25 flex-center border-1 border-stone-5 border-solid>
+        点击我
+      </div>
+      <div v-wave="{ color: '#f00', finalOpacity: 0.3 }" my-4 h-25 w-25 flex-center border-1 border-stone-5 border-solid>
+        设置颜色
+      </div>
+      <div w-50>
+        <ElInput v-wave>
+          <template #append>
+            <SvgIcon
 
-    <PageMain title="Digital 7（等宽）">
-      <p class="digital-7_mono">
-        admin
-      </p>
-      <p class="digital-7_mono">
-        1234567890,.
-      </p>
+              name="ep:search"
+              class="cursor-pointer"
+            />
+          </template>
+        </ElInput>
+      </div>
     </PageMain>
   </div>
 </template>
-
-<style lang="scss" scoped>
-</style>

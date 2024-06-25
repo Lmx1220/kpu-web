@@ -21,8 +21,6 @@ const props = withDefaults(
   },
 )
 
-const router = useRouter()
-
 const activeIndex = ref<MenuInjection['activeIndex']>(props.value)
 const items = ref<MenuInjection['items']>({})
 const subMenus = ref<MenuInjection['subMenus']>({})
@@ -93,7 +91,7 @@ function setSubMenusActive(index: string) {
   })
 }
 
-const handleMenuItemClick: MenuInjection['handleMenuItemClick'] = (index, meta) => {
+const handleMenuItemClick: MenuInjection['handleMenuItemClick'] = (index) => {
   if (props.mode === 'horizontal' || props.collapse) {
     openedMenus.value = []
   }
