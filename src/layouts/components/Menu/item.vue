@@ -73,7 +73,7 @@ defineExpose({
           }" class="group menu-item-container h-full w-full flex items-center justify-between gap-1 px-5 py-4" :class="{
             ...(rootMenu.isMenuPopup || !alwaysExpand
               ? {
-                'cursor-pointer text-[var(--g-sub-sidebar-menu-color)] transition-all hover:(bg-[var(--g-sub-sidebar-menu-hover-bg)] text-[var(--g-sub-sidebar-menu-hover-color)])': true,
+                'cursor-pointer text-[var(--g-sub-sidebar-menu-color)] transition-all hover-(bg-[var(--g-sub-sidebar-menu-hover-bg)] text-[var(--g-sub-sidebar-menu-hover-color)])': true,
                 'text-[var(--g-sub-sidebar-menu-active-color)]! bg-[var(--g-sub-sidebar-menu-active-bg)]!': isItemActive,
                 'rounded-2': rootMenu.props.rounded,
                 'px-3!': rootMenu.isMenuPopup && level === 0,
@@ -98,7 +98,7 @@ defineExpose({
           >
             <SvgIcon
               v-if="icon" :name="icon" :size="20" class="menu-item-container-icon" :class="{
-                'transition-transform group-hover:scale-120': rootMenu.isMenuPopup || !alwaysExpand,
+                'transition-transform group-hover-scale-120': rootMenu.isMenuPopup || !alwaysExpand,
               }"
             />
             <span
@@ -117,8 +117,8 @@ defineExpose({
               subMenu
                 && (!rootMenu.isMenuPopup || level !== 0) // 非收起模式，非一级的子菜单
                 && (rootMenu.isMenuPopup || !alwaysExpand) // 收起模式，非始终展开的子菜单
-            " class="relative ms-1 w-[10px] after:(absolute h-[1.5px] w-[6px] bg-current transition-transform-200 content-empty -translate-y-[1px]) before:(absolute h-[1.5px] w-[6px] bg-current transition-transform-200 content-empty -translate-y-[1px])" :class="[
-              expand ? 'before:(-rotate-45 -translate-x-[2px]) after:(rotate-45 translate-x-[2px])' : 'before:(rotate-45 -translate-x-[2px]) after:(-rotate-45 translate-x-[2px])',
+            " class="relative ms-1 w-[10px] after-(absolute h-[1.5px] w-[6px] bg-current transition-transform-200 content-empty -translate-y-[1px]) before-(absolute h-[1.5px] w-[6px] bg-current transition-transform-200 content-empty -translate-y-[1px])" :class="[
+              expand ? 'before-(-rotate-45 -translate-x-[2px]) after-(rotate-45 translate-x-[2px])' : 'before-(rotate-45 -translate-x-[2px]) after-(-rotate-45 translate-x-[2px])',
               rootMenu.isMenuPopup && level === 0 && 'opacity-0',
               rootMenu.isMenuPopup && level !== 0 && '-rotate-90 -top-[1.5px]',
             ]"

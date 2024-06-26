@@ -62,13 +62,13 @@ function handlerMouserScroll(event: WheelEvent) {
                 }"
               >
                 <div
-                  v-if="item.children && item.children.length !== 0" class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 px-3 text-[var(--g-header-menu-color)] transition-all hover:(bg-[var(--g-header-menu-hover-bg)] text-[var(--g-header-menu-hover-color)])" :class="{
+                  v-if="item.children && item.children.length !== 0" class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 px-3 text-[var(--g-header-menu-color)] transition-all hover-(bg-[var(--g-header-menu-hover-bg)] text-[var(--g-header-menu-hover-color)])" :class="{
                     'text-[var(--g-header-menu-active-color)]! bg-[var(--g-header-menu-active-bg)]!': index === menuStore.actived,
                     'rounded-2': settingsStore.settings.menu.isRounded,
                   }" :title="generateI18nTitle(item.meta?.title)" @click="switchTo(index)"
                 >
                   <div class="inline-flex flex-1 items-center justify-center gap-1">
-                    <SvgIcon v-if="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)" :name="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)!" :size="20" class="menu-item-container-icon transition-transform group-hover:scale-120" async />
+                    <SvgIcon v-if="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)" :name="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)!" :size="20" class="menu-item-container-icon transition-transform group-hover-scale-120" async />
                     <span class="w-full flex-1 truncate text-sm transition-height transition-opacity transition-width">
                       {{ generateI18nTitle(item.meta?.title) }}
                     </span>

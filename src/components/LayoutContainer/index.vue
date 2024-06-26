@@ -48,7 +48,7 @@ const enabledRightSide = computed(() => {
       >
         <SvgIcon
           :name="leftSideVisiable ? 'i-ep:caret-left' : 'i-ep:caret-right'"
-          class="op-30 transition-opacity hover:op-100"
+          class="op-30 transition-opacity hover-op-100"
           @click="leftSideVisiable = !leftSideVisiable"
         />
       </div>
@@ -58,7 +58,7 @@ const enabledRightSide = computed(() => {
       >
         <SvgIcon
           :name="rightSideVisiable ? 'i-ep:caret-right' : 'i-ep:caret-left'"
-          class="op-30 transition-opacity hover:op-100"
+          class="op-30 transition-opacity hover-op-100"
           @click="rightSideVisiable = !rightSideVisiable"
         />
       </div>

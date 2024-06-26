@@ -269,7 +269,7 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
   <TransitionRoot as="template" :show="isShow">
     <Dialog :initial-focus="searchInputRef" class="fixed inset-0 z-2000 flex" @close="isShow && eventBus.emit('global-search-toggle')">
       <TransitionChild as="template" v-bind="overlayTransitionClass">
-        <div class="fixed inset-0 bg-stone-200/75 backdrop-blur-sm transition-opacity dark:bg-stone-8/75" />
+        <div class="fixed inset-0 bg-stone-200/75 backdrop-blur-sm transition-opacity dark-bg-stone-8/75" />
       </TransitionChild>
       <div class="fixed inset-0">
         <div class="h-full flex items-end justify-center p-4 text-center lg:items-center">
@@ -282,17 +282,17 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
                   { label: t('app.search.type.tab'), value: 'tab' },
                 ]" class="mb-4 flex!" @click.stop @change="switchType"
               />
-              <div class="flex flex-col overflow-y-auto rounded-xl bg-white shadow-xl dark:bg-stone-8">
-                <div class="flex items-center px-4 py-3" border-b="~ solid stone-2 dark:stone-7">
+              <div class="flex flex-col overflow-y-auto rounded-xl bg-white shadow-xl dark-bg-stone-8">
+                <div class="flex items-center px-4 py-3" border-b="~ solid stone-2 dark-stone-7">
                   <SvgIcon name="i-ep:search" :size="18" class="text-stone-5" />
-                  <input ref="searchInputRef" v-model="searchInput" :placeholder="t('app.search.input')" class="w-full border-0 rounded-md bg-transparent px-3 text-base text-dark dark:text-white focus:outline-none placeholder-stone-4 dark:placeholder-stone-5" @keydown.esc="eventBus.emit('global-search-toggle')" @keydown.up.prevent="keyUp" @keydown.down.prevent="keyDown" @keydown.enter.prevent="keyEnter">
+                  <input ref="searchInputRef" v-model="searchInput" :placeholder="t('app.search.input')" class="w-full border-0 rounded-md bg-transparent px-3 text-base text-dark dark-text-white focus-outline-none placeholder-stone-4 dark-placeholder-stone-5" @keydown.esc="eventBus.emit('global-search-toggle')" @keydown.up.prevent="keyUp" @keydown.down.prevent="keyDown" @keydown.enter.prevent="keyEnter">
                 </div>
                 <DialogDescription class="relative m-0 of-y-hidden">
                   <OverlayScrollbarsComponent ref="searchResultRef" :options="{ scrollbars: { autoHide: 'leave', autoHideDelay: 300 } }" defer class="h-full">
                     <template v-if="resultList.length > 0">
-                      <a v-for="(item, index) in resultList" ref="searchResultItemRef" :key="item.path" class="flex cursor-pointer items-center" :class="{ 'bg-stone-2/40 dark:bg-stone-7/40': index === actived }" :data-index="index" @click="pageJump(item.path, item.link)" @mouseover="actived = index">
+                      <a v-for="(item, index) in resultList" ref="searchResultItemRef" :key="item.path" class="flex cursor-pointer items-center" :class="{ 'bg-stone-2/40 dark-bg-stone-7/40': index === actived }" :data-index="index" @click="pageJump(item.path, item.link)" @mouseover="actived = index">
                         <SvgIcon v-if="item.icon" :name="item.icon" :size="20" class="basis-16 transition" :class="{ 'scale-120 text-ui-primary': index === actived }" />
-                        <div class="flex flex-1 flex-col gap-1 truncate px-4 py-3" border-s="~ solid stone-2 dark:stone-7">
+                        <div class="flex flex-1 flex-col gap-1 truncate px-4 py-3" border-s="~ solid stone-2 dark-stone-7">
                           <div class="truncate text-start text-base font-bold">{{ generateI18nTitle(item.title) }}</div>
                           <Breadcrumb v-if="item.breadcrumb.length" class="truncate">
                             <BreadcrumbItem v-for="(bc, bcIndex) in item.breadcrumb" :key="bcIndex" class="text-xs">
@@ -312,7 +312,7 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
                     </template>
                   </OverlayScrollbarsComponent>
                 </DialogDescription>
-                <div v-if="settingsStore.mode === 'pc'" class="flex justify-between px-4 py-3" border-t="~ solid stone-2 dark:stone-7">
+                <div v-if="settingsStore.mode === 'pc'" class="flex justify-between px-4 py-3" border-t="~ solid stone-2 dark-stone-7">
                   <div class="flex gap-8">
                     <div class="inline-flex items-center gap-1 text-xs">
                       <HKbd>

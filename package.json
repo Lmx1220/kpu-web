@@ -8,8 +8,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:tsc": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc && vite build",
+    "build:test": "vue-tsc && vite build --mode test",
     "report": "cross-env REPORT=true npm run build",
     "preview": "vite preview",
     "serve:test": "http-server ./dist-test -o",
