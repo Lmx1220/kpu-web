@@ -107,7 +107,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'vueuse',
     name: 'featureExampleVueuse',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/vueuse.vue'),
     meta: {
       title: 'VueUse',
       icon: 'i-logos:vueuse',
@@ -115,7 +115,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'rules',
     name: 'featureExampleRules',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/rules.vue'),
     meta: {
       title: 'route.feature.rules',
       icon: 'i-mdi:regex',
@@ -123,7 +123,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'tableautoheight',
     name: 'featureExampleTableautoheight',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/table.autoheight.vue'),
     meta: {
       title: 'route.feature.tableautoheight',
       icon: 'i-tabler:arrow-autofit-height',
@@ -131,7 +131,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'reload',
     name: 'featureExampleReload',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/reload.vue'),
     meta: {
       title: 'route.feature.reload',
       icon: 'i-iconoir:refresh-double',
@@ -140,7 +140,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'menuswitch',
     name: 'featureExampleMenuswitch',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/menuswitch.vue'),
     meta: {
       title: 'route.feature.menuswitch',
       icon: 'i-charm:menu-hamburger',
@@ -148,7 +148,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'leavetips',
     name: 'featureExampleLeavetips',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/leavetips.vue'),
     meta: {
       title: 'route.feature.leavetips',
       icon: 'i-pepicons:leave',
@@ -156,7 +156,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'scroll',
     name: 'featureExampleScroll',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/scroll.vue'),
     meta: {
       title: 'route.feature.scroll',
       icon: 'i-carbon:auto-scroll',
