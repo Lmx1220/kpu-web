@@ -39,7 +39,7 @@ import '@/assets/styles/globals.scss'
 
 if (icons.isOfflineUse) {
   for (const info of icons.collections) {
-    // downloadAndInstall(info)
+    downloadAndInstall(info)
   }
 }
 VXETable.setup({

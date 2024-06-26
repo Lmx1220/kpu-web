@@ -25,70 +25,70 @@ const activeName = ref('message')
         },
       ]" class="m-3 flex!" @click.stop
     />
-<!--    <template v-if="activeName === 'message'">-->
-<!--      <OverlayScrollbarsComponent :options="{ scrollbars: { autoHide: 'leave', autoHideDelay: 300 } }" defer class="list max-h-300px">-->
-<!--        <div class="item">-->
-<!--          <SvgIcon name="i-ri:mail-fill" />-->
-<!--          <div class="info">-->
-<!--            <div class="title">-->
-<!--              你收到了 8 份日报-->
-<!--            </div>-->
-<!--            <div class="date">-->
-<!--              2020-10-10 10:00:00-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="item">-->
-<!--          <SvgIcon name="i-ri:service-fill" class="service" />-->
-<!--          <div class="info">-->
-<!--            <div class="title">-->
-<!--              你收到了 3 位同事的好友申请，请及时处理-->
-<!--            </div>-->
-<!--            <div class="date">-->
-<!--              2020-10-10 10:00:00-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="item">-->
-<!--          <SvgIcon name="i-ri:file-edit-fill" class="file-edit" />-->
-<!--          <div class="info">-->
-<!--            <div class="title">-->
-<!--              你有 3 份合同待审批-->
-<!--            </div>-->
-<!--            <div class="date">-->
-<!--              2020-10-10 10:00:00-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="item">-->
-<!--          <SvgIcon name="i-ri:mail-fill" />-->
-<!--          <div class="info">-->
-<!--            <div class="title">-->
-<!--              你收到了 8 份日报-->
-<!--            </div>-->
-<!--            <div class="date">-->
-<!--              2020-10-10 10:00:00-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="item">-->
-<!--          <SvgIcon name="i-ri:service-fill" class="service" />-->
-<!--          <div class="info">-->
-<!--            <div class="title">-->
-<!--              你收到了 3 位同事的好友申请，请及时处理-->
-<!--            </div>-->
-<!--            <div class="date">-->
-<!--              2020-10-10 10:00:00-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </OverlayScrollbarsComponent>-->
-<!--      <RouterLink v-slot="{ navigate }" :to="{ name: 'personalNotification' }" custom>-->
-<!--        <div class="cursor-pointer py-4 text-center text-sm text-stone-5" @click="navigate">-->
-<!--          进入消息列表-->
-<!--        </div>-->
-<!--      </RouterLink>-->
-<!--    </template>-->
+    <template v-if="activeName === 'message'">
+      <OverlayScrollbarsComponent :options="{ scrollbars: { autoHide: 'leave', autoHideDelay: 300 } }" defer class="list max-h-300px">
+        <div class="item">
+          <SvgIcon name="i-ri:mail-fill" />
+          <div class="info">
+            <div class="title">
+              你收到了 8 份日报
+            </div>
+            <div class="date">
+              2020-10-10 10:00:00
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <SvgIcon name="i-ri:service-fill" class="service" />
+          <div class="info">
+            <div class="title">
+              你收到了 3 位同事的好友申请，请及时处理
+            </div>
+            <div class="date">
+              2020-10-10 10:00:00
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <SvgIcon name="i-ri:file-edit-fill" class="file-edit" />
+          <div class="info">
+            <div class="title">
+              你有 3 份合同待审批
+            </div>
+            <div class="date">
+              2020-10-10 10:00:00
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <SvgIcon name="i-ri:mail-fill" />
+          <div class="info">
+            <div class="title">
+              你收到了 8 份日报
+            </div>
+            <div class="date">
+              2020-10-10 10:00:00
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <SvgIcon name="i-ri:service-fill" class="service" />
+          <div class="info">
+            <div class="title">
+              你收到了 3 位同事的好友申请，请及时处理
+            </div>
+            <div class="date">
+              2020-10-10 10:00:00
+            </div>
+          </div>
+        </div>
+      </OverlayScrollbarsComponent>
+      <RouterLink v-slot="{ navigate }" :to="{ name: 'personalNotification' }" custom>
+        <div class="cursor-pointer py-4 text-center text-sm text-stone-5" @click="() => navigate()">
+          进入消息列表
+        </div>
+      </RouterLink>
+    </template>
     <template v-if="activeName === 'todo'">
       <OverlayScrollbarsComponent :options="{ scrollbars: { autoHide: 'leave', autoHideDelay: 300 } }" defer class="list max-h-300px">
         <div class="flex flex-col items-center py-6 text-stone-5">
@@ -99,7 +99,7 @@ const activeName = ref('message')
         </div>
       </OverlayScrollbarsComponent>
       <RouterLink v-slot="{ navigate }" :to="{ name: 'personalNotification' }" custom>
-        <div class="cursor-pointer py-4 text-center text-sm text-stone-5" @click="navigate">
+        <div class="cursor-pointer py-4 text-center text-sm text-stone-5" @click="() => navigate()">
           进入待办列表
         </div>
       </RouterLink>

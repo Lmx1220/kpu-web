@@ -7,7 +7,7 @@ import pkg from './package.json'
 import createVitePlugins from './vite/plugins'
 
 // https://vitejs.dev/config/
-export default ({ mode, command }) => {
+export default async ({ mode, command }) => {
   const env = loadEnv(mode, process.cwd())
   // 全局 scss 资源
   const scssResources = []
@@ -16,23 +16,13 @@ export default ({ mode, command }) => {
       scssResources.push(`@use "src/assets/styles/resources/${dirname}" as *;`)
     }
   })
-  // css 精灵图相关
-  fs.readdirSync('src/assets/sprites').forEach((dirname) => {
-    if (fs.statSync(`src/assets/sprites/${dirname}`).isDirectory()) {
-      // css 精灵图生成的 scss 文件也需要放入全局 scss 资源
-      scssResources.push(`@use "src/assets/sprites/_${dirname}.scss" as *;`)
-    }
-  })
   return defineConfig({
-    // 开发服务器选项 https://cn.vitejs.dev/config/server-options.html
     base: './',
+    // 开发服务器选项 https://cn.vitejs.dev/config/#server-options
     server: {
       open: true,
       host: true,
       port: 9001,
-      fs: {
-        strict: true,
-      },
       proxy: {
         '/proxy': {
           target: env.VITE_APP_API_BASEURL,
@@ -41,17 +31,10 @@ export default ({ mode, command }) => {
         },
       },
     },
-    // 构建选项 https://cn.vitejs.dev/config/build-options.html
+    // 构建选项 https://cn.vitejs.dev/config/#server-fsserve-root
     build: {
       outDir: mode === 'production' ? 'dist' : `dist-${mode}`,
       sourcemap: env.VITE_BUILD_SOURCEMAP === 'true',
-      chunkSizeWarningLimit: 2000,
-      // minify: 'terser',
-      // terserOptions: {
-      //   compress: {
-      //     drop_console: env.VITE_BUILD_DROP_CONSOLE === 'true',
-      //   },
-      // },
     },
     define: {
       __SYSTEM_INFO__: JSON.stringify({

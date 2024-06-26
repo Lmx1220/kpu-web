@@ -1,8 +1,35 @@
-@use "./layout.scss" as *;
 @use "./vxe.scss" as *;
-// 全局样式
-
+// 页面布局 CSS 变量
 :root {
+  // 这是一个复合变量
+  // 当页宽模式为 adaption-min-width 时，它代表 最小宽度
+  // 当页宽模式为 center 时，它代表 固定宽度
+  // 当页宽模式为 center-max-width 时，它代表 最大宽度
+  --g-app-width: #{$g-app-width};
+  // 头部宽度（默认自适应宽度，可固定宽度，固定宽度后为居中显示）
+  --g-header-width: #{$g-header-width};
+  // 头部高度
+  --g-header-height: 60px;
+  // 侧边栏宽度
+  --g-main-sidebar-width: 80px;
+  --g-sub-sidebar-width: 220px;
+  --g-sub-sidebar-collapse-width: 64px;
+  // 侧边栏 Logo 区域高度
+  --g-sidebar-logo-height: 50px;
+  // 标签栏高度
+  --g-tabbar-height: 50px;
+  // 工具栏高度
+  --g-toolbar-height: 50px;
+  // 标签页最大最小宽度，两个宽度为同一数值时，则为固定宽度，反之将宽度设置为 unset 则为自适应
+  --g-tabbar-tab-max-width: 150px;
+  --g-tabbar-tab-min-width: 150px;
+}
+
+// 明暗模式 CSS 变量
+/* stylelint-disable-next-line no-duplicate-selectors */
+:root {
+  color-scheme: light;
+
   &::view-transition-old(root),
   &::view-transition-new(root) {
     mix-blend-mode: normal;
@@ -20,6 +47,8 @@
   --g-box-shadow-color: rgb(0 0 0 / 12%);
 
   &.dark {
+    color-scheme: dark;
+
     &::view-transition-old(root) {
       z-index: 9999;
     }
@@ -52,13 +81,13 @@
   background-color: transparent;
 }
 
-html {
+html,
+body {
   height: 100%;
 }
 
 body {
   box-sizing: border-box;
-  height: 100%;
   margin: 0;
   font-family: Lato, "PingFang SC", "Microsoft YaHei", sans-serif;
   background-color: var(--g-container-bg);
@@ -73,35 +102,56 @@ body {
   box-sizing: inherit;
 }
 
+// 右侧内容区针对fixed元素，有横向铺满的需求，可在fixed元素上设置 [data-fixed-calc-width]
 [data-fixed-calc-width] {
   position: fixed;
-  right: 0;
-  left: 50%;
+  inset-inline: 50% 0;
 }
 
-[data-app-width-mode="adaption"] [data-fixed-calc-width],
-[data-app-width-mode="adaption-min-width"] [data-fixed-calc-width] {
-  width: calc(100% - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
-  transform: translate(-50%) translate(calc(var(--g-main-sidebar-actual-width) / 2)) translate(calc(var(--g-sub-sidebar-actual-width) / 2));
-}
-
-[data-app-width-mode="center"] [data-fixed-calc-width],
-[data-app-width-mode="center-max-width"] [data-fixed-calc-width] {
-  width: calc(var(--g-app-width) - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
-  transform: translate(-50%) translate(calc(var(--g-main-sidebar-actual-width) / 2)) translate(calc(var(--g-sub-sidebar-actual-width) / 2));
-}
-
-@media screen and (width <= 1400px) {
-  [data-app-width-mode="center"] [data-fixed-calc-width],
-  [data-app-width-mode="center-max-width"] [data-fixed-calc-width] {
+[data-app-width-mode="adaption"],
+[data-app-width-mode="adaption-min-width"] {
+  [data-fixed-calc-width] {
     width: calc(100% - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
-    transform: translate(-50%) translate(calc(var(--g-main-sidebar-actual-width) / 2)) translate(calc(var(--g-sub-sidebar-actual-width) / 2));
+    transform: translateX(-50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2));
+
+    [dir="rtl"] & {
+      transform: translateX(50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2 * -1)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2 * -1));
+    }
   }
 }
 
-[data-mode="mobile"] [data-fixed-calc-width] {
-  width: 100% !important;
-  transform: translate(-50%) !important;
+[data-app-width-mode="center"],
+[data-app-width-mode="center-max-width"] {
+  [data-fixed-calc-width] {
+    width: calc(var(--g-app-width) - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
+    transform: translateX(-50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2));
+
+    [dir="rtl"] & {
+      transform: translateX(50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2 * -1)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2 * -1));
+    }
+  }
+
+  @media screen and (max-width: $g-app-width) {
+    [data-fixed-calc-width] {
+      width: calc(100% - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
+      transform: translateX(-50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2));
+
+      [dir="rtl"] & {
+        transform: translateX(50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2 * -1)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2 * -1));
+      }
+    }
+  }
+}
+
+[data-mode="mobile"] {
+  [data-fixed-calc-width] {
+    width: 100% !important;
+    transform: translateX(-50%) !important;
+
+    [dir="rtl"] & {
+      transform: translateX(50%) !important;
+    }
+  }
 }
 
 // textarea 字体跟随系统
@@ -139,10 +189,43 @@ textarea {
   transition: none !important;
 }
 
-[data-overlayscrollbars-contents] {
-  overscroll-behavior: contain;
+// medium-zoom
+.medium-zoom-overlay,
+.medium-zoom-image {
+  z-index: 3000;
 }
 
-.medium-zoom-overlay,.medium-zoom-image {
-  z-index: 3000
+// 后续添加
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.el-card {
+  box-shadow: 0 0 12px rgb(0 0 0 / 7%) !important;
+}
+
+.el-card__header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+
+  p.fx-b {
+    flex-shrink: 0;
+    width: 100%;
+  }
+}
+
+.el-card__header::after {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 3px;
+  height: 20px;
+  content: "";
+  background: linear-gradient(to bottom, #0081ff, #22cce2);
+  border-radius: 0 3px 3px 0;
+  transform: translateY(-50%);
 }
