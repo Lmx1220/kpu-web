@@ -142,3 +142,7 @@ textarea {
 [data-overlayscrollbars-contents] {
   overscroll-behavior: contain;
 }
+
+.medium-zoom-overlay,.medium-zoom-image {
+  z-index: 3000
+}

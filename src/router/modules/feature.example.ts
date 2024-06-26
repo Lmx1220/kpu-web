@@ -43,7 +43,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'zoomable',
     name: 'featureExampleZoomable',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/zoomable.vue'),
     meta: {
       title: 'route.feature.zoomable',
       icon: 'i-mingcute:zoom-in-line',
