@@ -1,27 +1,44 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import Logo from '../Logo/index.vue'
-import MainMenu from '../Menu/index.vue'
+import ToolbarRightSide from '../Topbar/Toolbar/rightSide.vue'
+import Menu from '../Menu/index.vue'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
-import useMenu from '@/util/composables/useMenu'
-import RightSide from '@/layouts/components/Topbar/Toolbar/rightSide.vue'
-import { i18nTitleInjectionKey } from '@/layouts/components/Menu/types.ts'
+import { i18nTitleInjectionKey } from '@/util/injectionKeys'
 
 defineOptions({
   name: 'LayoutHeader',
 })
+
 const route = useRoute()
+
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
+
 const { switchTo } = useMenu()
 
-const i18nTitle = inject(i18nTitleInjectionKey)!
+const generateI18nTitle = inject(i18nTitleInjectionKey, Function, true)
+
+function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
+  let name
+  if ((!isActive && icon) || (isActive && !activeIcon)) {
+    name = icon
+  }
+  else if (isActive && activeIcon) {
+    name = activeIcon
+  }
+  return name
+}
+
 const menuRef = ref()
 
-function handlerMouserScroll(event: any) {
-  menuRef.value.scrollBy({
-    left: (event.deltaY || event.detail) > 0 ? 50 : -50,
-  })
+// 顶部模式鼠标滚动
+function handlerMouserScroll(event: WheelEvent) {
+  if (event.deltaY || event.detail !== 0) {
+    menuRef.value.scrollBy({
+      left: (event.deltaY || event.detail) > 0 ? 50 : -50,
+    })
+  }
 }
 </script>
 
@@ -29,61 +46,45 @@ function handlerMouserScroll(event: any) {
   <Transition name="header">
     <header v-if="settingsStore.mode === 'pc' && ['head', 'only-head'].includes(settingsStore.settings.menu.menuMode)">
       <div class="header-container">
-        <div class="main">
-          <Logo class="title" title="" />
+        <Logo class="title" />
+        <div ref="menuRef" class="menu-container" @wheel.prevent="handlerMouserScroll">
           <!-- 顶部模式 -->
-          <div ref="menuRef" class="menu-container" @wheel.prevent="handlerMouserScroll">
-            <div
-              v-if="settingsStore.settings.menu.menuMode === 'head'"
-
-              :class="{
-                [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
-              }" class="menu flex of-hidden transition-all"
-            >
-              <template v-for="(item, index) in menuStore.allMenus" :key="index">
+          <div
+            v-if="settingsStore.settings.menu.menuMode === 'head'" class="menu flex of-hidden transition-all" :class="{
+              [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
+            }"
+          >
+            <template v-for="(item, index) in menuStore.allMenus" :key="index">
+              <div
+                class="menu-item relative transition-all" :class="{
+                  'active': index === menuStore.actived,
+                  'px-1 py-2': settingsStore.settings.menu.isRounded,
+                }"
+              >
                 <div
-                  v-if="item.children && item.children.length !== 0" :class="{ 'active': index === menuStore.actived, 'px-1 py-2': settingsStore.settings.menu.isRounded }"
-                  class="menu-item relative transition-all"
+                  v-if="item.children && item.children.length !== 0" class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 px-3 text-[var(--g-header-menu-color)] transition-all hover:(bg-[var(--g-header-menu-hover-bg)] text-[var(--g-header-menu-hover-color)])" :class="{
+                    'text-[var(--g-header-menu-active-color)]! bg-[var(--g-header-menu-active-bg)]!': index === menuStore.actived,
+                    'rounded-2': settingsStore.settings.menu.isRounded,
+                  }" :title="generateI18nTitle(item.meta?.title)" @click="switchTo(index)"
                 >
-                  <div
-                    :class="{
-                      'text-[var(--g-header-menu-active-color)]! bg-[var(--g-header-menu-active-bg)]!': index === menuStore.actived,
-                      'rounded-2': settingsStore.settings.menu.isRounded,
-                    }"
-                    class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 px-3 text-[var(--g-header-menu-color)] transition-all hover:bg-[var(--g-header-menu-hover-bg)] hover:text-[var(--g-header-menu-hover-color)]"
-                    @click="switchTo(index)"
-                  >
-                    <div class="inline-flex flex-1 items-center justify-center gap-1">
-                      <SvgIcon
-                        v-if="item.meta?.icon" :name="item.meta.icon"
-                        async
-                        class="menu-item-container-icon transition-transform group-hover:scale-120"
-                        size="20"
-                      />
-                      <span
-                        class="w-full flex-1 truncate text-center text-sm transition-height transition-opacity transition-width"
-                      >{{
-                        i18nTitle(item.meta?.title)
-                      }}</span>
-                    </div>
+                  <div class="inline-flex flex-1 items-center justify-center gap-1">
+                    <SvgIcon v-if="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)" :name="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)!" :size="20" class="menu-item-container-icon transition-transform group-hover:scale-120" async />
+                    <span class="w-full flex-1 truncate text-sm transition-height transition-opacity transition-width">
+                      {{ generateI18nTitle(item.meta?.title) }}
+                    </span>
                   </div>
                 </div>
-              </template>
-            </div>
-            <!-- 顶部精简模式 -->
-            <MainMenu
-              v-else-if="settingsStore.settings.menu.menuMode === 'only-head'" :class="{
-                [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
-              }"
-              :menu="menuStore.allMenus"
-              :rounded="settingsStore.settings.menu.isRounded"
-              :value="route.meta.activeMenu || route.path"
-              class="menu" mode="horizontal"
-              show-collapse-name
-            />
+              </div>
+            </template>
           </div>
+          <!-- 顶部精简模式 -->
+          <Menu
+            v-else-if="settingsStore.settings.menu.menuMode === 'only-head'" :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" mode="horizontal" show-collapse-name :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu" :class="{
+              [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
+            }"
+          />
         </div>
-        <RightSide />
+        <ToolbarRightSide />
       </div>
     </header>
   </Transition>
@@ -117,23 +118,52 @@ header {
 
   .header-container {
     display: flex;
+    gap: 30px;
     align-items: center;
     justify-content: space-between;
     width: var(--g-header-width);
     height: 100%;
     margin: 0 auto;
 
-    .main {
-      display: flex;
+    :deep(a.title) {
+      position: relative;
+      flex: 0;
+      width: inherit;
+      height: inherit;
+      padding: inherit;
+      background-color: inherit;
+
+      .logo {
+        width: initial;
+        height: 40px;
+      }
+
+      span {
+        font-size: 20px;
+        color: var(--g-header-color);
+        letter-spacing: 1px;
+      }
+    }
+
+    .menu-container {
       flex: 1;
-      flex-wrap: wrap;
-      align-items: center;
       height: 100%;
+      padding: 0 20px;
+      overflow-x: auto;
+      mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
+
+      // firefox隐藏滚动条
+      scrollbar-width: none;
+
+      // chrome隐藏滚动条
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
       .menu-active {
         &-arrow {
           .item-container::before,
-          :deep(.menu-item)::before {
+          :deep(.menu-item::before) {
             bottom: 0;
             width: 0;
             height: 0;
@@ -148,7 +178,7 @@ header {
           }
 
           .item-container.active::before,
-          :deep(.menu-item).active::before {
+          :deep(.menu-item.active::before) {
             bottom: 8px;
             opacity: 1;
           }
@@ -156,7 +186,7 @@ header {
 
         &-line {
           .item-container::before,
-          :deep(.menu-item)::before {
+          :deep(.menu-item::before) {
             bottom: 6px;
             width: 0;
             height: 4px;
@@ -171,7 +201,7 @@ header {
           }
 
           .item-container.active::before,
-          :deep(.menu-item).active::before {
+          :deep(.menu-item.active::before) {
             width: 20px;
             opacity: 1;
           }
@@ -179,7 +209,7 @@ header {
 
         &-dot {
           .item-container::before,
-          :deep(.menu-item)::before {
+          :deep(.menu-item::before) {
             bottom: 0;
             width: 10px;
             height: 10px;
@@ -194,9 +224,30 @@ header {
           }
 
           .item-container.active::before,
-          :deep(.menu-item).active::before {
+          :deep(.menu-item.active::before) {
             bottom: 4px;
             opacity: 1;
+          }
+        }
+      }
+
+      .menu {
+        display: inline-flex;
+        height: 100%;
+
+        :deep(.menu-item) {
+          .menu-item-container {
+            color: var(--g-header-menu-color);
+
+            &:hover {
+              color: var(--g-header-menu-hover-color);
+              background-color: var(--g-header-menu-hover-bg);
+            }
+          }
+
+          &.active .menu-item-container {
+            color: var(--g-header-menu-active-color) !important;
+            background-color: var(--g-header-menu-active-bg) !important;
           }
         }
       }
@@ -208,73 +259,6 @@ header {
       width: 100%;
     }
   }
-
-  :deep(a.title) {
-    position: relative;
-    width: inherit;
-    height: inherit;
-    padding: inherit;
-    background-color: inherit;
-
-    .logo {
-      width: initial;
-      height: 40px;
-    }
-
-    span {
-      font-size: 24px;
-      color: var(--g-header-color);
-      letter-spacing: 1px;
-    }
-  }
-
-  .menu-container {
-    flex: 1;
-    height: 100%;
-    padding: 0 20px;
-    margin: 0 30px;
-    overflow-x: auto;
-    mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    .menu {
-      display: inline-flex;
-      height: 100%;
-    }
-
-    :deep(.menu-item) {
-      .menu-item-container {
-        color: var(--g-header-menu-color);
-
-        &:hover {
-          color: var(--g-header-menu-hover-color);
-          background-color: var(--g-header-menu-hover-bg);
-        }
-      }
-
-      &.active .menu-item-container {
-        color: var(--g-header-menu-active-color) !important;
-        background-color: var(--g-header-menu-active-bg) !important;
-      }
-    }
-  }
-
-  /*  :deep(.tools) {
-    padding: 0;
-
-    .buttons .item .icon {
-      color: var(--g-header-color);
-    }
-
-    .user-container {
-      font-size: 16px;
-      color: var(--g-header-color);
-    }
-  } */
 }
 
 // 头部动画

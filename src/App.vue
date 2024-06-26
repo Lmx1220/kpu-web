@@ -44,8 +44,9 @@ const subSidebarActualWidth = computed(() => {
 })
 
 const { t, te } = useI18n()
-provide('i18nTitle', i18nTitleInjectionKey)
-function i18nTitleInjectionKey(key: string | Function = t('route.undefined')) {
+provide('i18nTitle', generateI18nTitle)
+
+function generateI18nTitle(key: string | Function = t('route.undefined')) {
   return typeof key == 'function' ? key() : te(key) ? t(key) : key
 }
 
@@ -62,10 +63,10 @@ watch([
   const secondLastBreadcrumb = breadcrumbNeste?.at(-2)
   const hasDynamicTitle = settingsStore.settings.app.enableDynamicTitle && settingsStore.title
 
-  let title = hasDynamicTitle && (customTitle?.title || i18nTitleInjectionKey(route.meta.title))
+  let title = hasDynamicTitle && (customTitle?.title || generateI18nTitle(route.meta.title))
 
   if (hasDynamicTitle && !title && settingsStore.settings.app.routeBaseOn !== 'filesystem' && lastBreadcrumb?.i18n && secondLastBreadcrumb?.i18n) {
-    title = i18nTitleInjectionKey(secondLastBreadcrumb.title)
+    title = generateI18nTitle(secondLastBreadcrumb.title)
   }
 
   pageTitle.value = title ? `${title} - ${import.meta.env.VITE_APP_TITLE}` : import.meta.env.VITE_APP_TITLE

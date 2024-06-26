@@ -1,19 +1,116 @@
 import { defaultsDeep } from 'lodash-es'
-import type { RouteMeta } from 'vue-router'
-import type { CustomTitleList, RecursiveRequired, Settings } from '#/global'
-import settingsCustom from '@/settings'
-import settingsDefault from '@/settings.default'
+import type { RouteLocationNormalized, RouteMeta } from 'vue-router'
+import type { Settings } from '#/global'
+// import { getLocales } from '@/locales'
+import settingsDefault from '@/settings'
 import type { LocaleType } from '#/config'
 
 const useSettingsStore = defineStore(
   // 唯一ID
   'settings',
   () => {
-    const mergeSettings: RecursiveRequired<Settings.all> = defaultsDeep(
-      settingsCustom,
-      settingsDefault,
-    )
-    const settings = ref(mergeSettings)
+    const settings = ref(settingsDefault)
+
+    const prefersColorScheme = window.matchMedia('(prefers-color-scheme: dark)')
+    const currentColorScheme = ref<Exclude<Settings.app['colorScheme'], ''>>()
+    watch(() => settings.value.app.colorScheme, (val) => {
+      if (val === '') {
+        prefersColorScheme.addEventListener('change', updateTheme)
+      }
+      else {
+        prefersColorScheme.removeEventListener('change', updateTheme)
+      }
+    }, {
+      immediate: true,
+    })
+    watch([
+      () => settings.value.app.colorScheme,
+      () => settings.value.app.lightTheme,
+      () => settings.value.app.darkTheme,
+    ], updateTheme, {
+      immediate: true,
+    })
+    function updateTheme() {
+      let colorScheme = settings.value.app.colorScheme
+      if (colorScheme === '') {
+        colorScheme = prefersColorScheme.matches ? 'dark' : 'light'
+      }
+      currentColorScheme.value = colorScheme
+      switch (colorScheme) {
+        case 'light':
+          document.documentElement.classList.remove('dark')
+          document.body.setAttribute('data-theme', settings.value.app.lightTheme)
+          break
+        case 'dark':
+          document.documentElement.classList.add('dark')
+          document.body.setAttribute('data-theme', settings.value.app.darkTheme)
+          break
+      }
+    }
+
+    watch(() => settings.value.layout.widthMode, (val) => {
+      document.body.setAttribute('data-app-width-mode', val)
+    }, {
+      immediate: true,
+    })
+    watch(() => settings.value.menu.menuMode, (val) => {
+      document.body.setAttribute('data-menu-mode', val)
+    }, {
+      immediate: true,
+    })
+
+    watch(() => settings.value.app.direction, (val) => {
+      document.documentElement.setAttribute('dir', val)
+    }, {
+      immediate: true,
+    })
+
+    // 操作系统
+    const os = ref<'mac' | 'windows' | 'linux' | 'other'>('other')
+    const agent = navigator.userAgent.toLowerCase()
+    switch (true) {
+      case agent.includes('mac os'):
+        os.value = 'mac'
+        break
+      case agent.includes('windows'):
+        os.value = 'windows'
+        break
+      case agent.includes('linux'):
+        os.value = 'linux'
+        break
+    }
+
+    // 页面标题
+    const title = ref<RouteMeta['title']>()
+    // 记录页面标题
+    function setTitle(_title: RouteMeta['title']) {
+      title.value = _title
+    }
+    // 自定义标题
+    const customTitleList = ref<{
+      fullPath: RouteLocationNormalized['fullPath']
+      title: string
+    }[]>([])
+    // 设置自定义标题
+    function setCustomTitle(fullPath: RouteLocationNormalized['fullPath'], title: string) {
+      const index = customTitleList.value.findIndex(item => item.fullPath === fullPath)
+      if (index > -1) {
+        customTitleList.value[index].title = title
+      }
+      else {
+        customTitleList.value.push({
+          fullPath,
+          title,
+        })
+      }
+    }
+    // 重置自定义标题
+    function resetCustomTitle(fullPath: RouteLocationNormalized['fullPath']) {
+      const index = customTitleList.value.findIndex(item => item.fullPath === fullPath)
+      if (index > -1) {
+        customTitleList.value.splice(index, 1)
+      }
+    }
 
     // 显示模式
     const mode = ref<'pc' | 'mobile'>('pc')
@@ -26,7 +123,7 @@ const useSettingsStore = defineStore(
         }
         else {
           // 如果是桌面设备，则根据页面宽度判断是否需要切换为移动端展示
-          mode.value = width < 992 ? 'mobile' : 'pc'
+          mode.value = width < 1024 ? 'mobile' : 'pc'
         }
       }
       else {
@@ -59,6 +156,7 @@ const useSettingsStore = defineStore(
       immediate: true,
     })
 
+    // 切换侧边栏导航自动收起
     function toggleSidebarAutoCollapse() {
       settings.value.menu.subMenuAutoCollapse = !settings.value.menu.subMenuAutoCollapse
       if (settings.value.menu.subMenuAutoCollapse && !settings.value.menu.subMenuCollapse) {
@@ -68,109 +166,45 @@ const useSettingsStore = defineStore(
         settings.value.menu.subMenuCollapse = false
       }
     }
+
+    // 是否鼠标悬浮在侧边栏导航上
     const isHoverSidebar = ref(false)
-    function setHoverSidebar(val: boolean) {
-      isHoverSidebar.value = val
-    }
-    const currentColorScheme = ref<any>('')
-
-    const prefersColorScheme = window.matchMedia('(prefers-color-scheme: dark)')
-    watch(() => settings.value.app.colorScheme, (value) => {
-      value === '' ? prefersColorScheme.addEventListener('change', changeColorScheme) : prefersColorScheme.removeEventListener('change', changeColorScheme)
-    }
-    , {
-      immediate: true,
-    })
-    watch(() => [settings.value.app.colorScheme, settings.value.app.lightTheme, settings.value.app.darkTheme], changeColorScheme, {
-      immediate: true,
-    })
-    function changeColorScheme() {
-      let colorScheme = settings.value.app.colorScheme
-      if (colorScheme === '') {
-        colorScheme = prefersColorScheme.matches ? 'dark' : 'light'
-      }
-      switch (colorScheme) {
-        case 'light':
-          currentColorScheme.value = colorScheme
-          document.documentElement.classList.remove('dark')
-          document.body.setAttribute('data-theme', settings.value.app.lightTheme)
-          break
-        case 'dark':
-          currentColorScheme.value = colorScheme
-          document.documentElement.classList.add('dark')
-          document.body.setAttribute('data-theme', settings.value.app.darkTheme)
-          break
-      }
-    }
-    watch(() => settings.value.menu.menuMode, (val) => {
-      document.body.setAttribute('data-menu-mode', val)
-    }, {
-      immediate: true,
-    })
-    watch(() => settings.value.layout.widthMode, (val) => {
-      document.body.setAttribute('data-app-width-mode', val)
-    }, {
-      immediate: true,
-    })
-    // 操作系统
-    const os = ref<'mac' | 'windows' | 'linux' | 'other'>('other')
-    const agent = navigator.userAgent.toLowerCase()
-    switch (true) {
-      case agent.includes('mac os'):
-        os.value = 'mac'
-        break
-      case agent.includes('windows'):
-        os.value = 'windows'
-        break
-      case agent.includes('linux'):
-        os.value = 'linux'
-        break
-    }
-    const customTitleList = ref<CustomTitleList[]>([])
-    // 页面标题
-    const title = ref<RouteMeta['title']>()
-    // 当同时设置了 i18n 时，页面标题的展示优先级，默认为 i18n
-    const titleFirst = ref(false)
-    // 设置网页标题
-    function setCustomTitle(fullPath: string, _title?: string) {
-      const index = customTitleList.value.findIndex(item => item.fullPath === fullPath)
-      if (index > -1) {
-        customTitleList.value[index].title = _title
-      }
-      else {
-        customTitleList.value.push({
-          fullPath,
-          title: _title,
-        })
-      }
+    function setHoverSidebar(value: boolean) {
+      isHoverSidebar.value = value
     }
 
-    function resetCustomTitle(fullPath: string) {
-      const index = customTitleList.value.findIndex(item => item.fullPath === fullPath)
-      if (index > -1) {
-        customTitleList.value.splice(index, 1)
-      }
-    }
-    function setTitle(_title: RouteMeta['title'], _titleFirst: boolean) {
-      title.value = _title
-      titleFirst.value = _titleFirst
-    }
-    // 更新应用配置
-    function updateSettings(data: Settings.all) {
-      settings.value = defaultsDeep(data, settings.value)
-    }
+    // 当前语言
+    // const lang = computed(() => {
+    //   // 如果没设置默认语言，则返回当前浏览器语言设置默认语言
+    //   if (settings.value.app.defaultLang === '') {
+    //     const lang = navigator.language.toLowerCase()
+    //     const locales = getLocales()
+    //     if (locales?.[lang]) {
+    //       return lang
+    //     }
+    //   }
+    //   return settings.value.app.defaultLang || 'zh-cn'
+    // })
     // 设置默认语言
     function setDefaultLang(lang: LocaleType) {
       settings.value.app.defaultLang = lang
     }
-    const mainPageMaximizeStatus = ref(false)
-    //
-    function setColorScheme(colorScheme: '' | 'light' | 'dark') {
-      settings.value.app.colorScheme = colorScheme
+
+    // 设置主题颜色模式
+    function setColorScheme(color: Required<Settings.app>['colorScheme']) {
+      settings.value.app.colorScheme = color
     }
 
-    function setMainPageMaximize(status?: boolean) {
-      mainPageMaximizeStatus.value = status ?? !mainPageMaximizeStatus.value
+    // 主页面是否最大化
+    const mainPageMaximizeStatus = ref(false)
+    // 切换当前主页面最大化
+    function setMainPageMaximize(value?: boolean) {
+      mainPageMaximizeStatus.value = value ?? !mainPageMaximizeStatus.value
+    }
+
+    // 更新应用配置
+    function updateSettings(data: Settings.all, fromBase = false) {
+      settings.value = defaultsDeep(data, fromBase ? settingsDefault : settings.value)
     }
 
     return {
@@ -198,4 +232,5 @@ const useSettingsStore = defineStore(
     }
   },
 )
+
 export default useSettingsStore

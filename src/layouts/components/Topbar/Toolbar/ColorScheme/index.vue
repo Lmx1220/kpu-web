@@ -40,9 +40,9 @@ function toggleColorScheme(event: MouseEvent) {
   <HDropdown class="flex-center cursor-pointer px-2 py-1">
     <SvgIcon
       :name="{
-        '': 'i-ri:computer-line',
         'light': 'i-ri:sun-line',
         'dark': 'i-ri:moon-line',
+        '': 'i-ri:computer-line',
       }[settingsStore.settings.app.colorScheme]" @click="toggleColorScheme"
     />
     <template #dropdown>

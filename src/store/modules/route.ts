@@ -1,27 +1,23 @@
 import { cloneDeep } from 'lodash-es'
 import type { RouteMeta, RouteRecordRaw } from 'vue-router'
 import useSettingsStore from './settings'
-
 import useTabbarStore from './tabbar'
 import { resolveRoutePath } from '@/util'
-import type { Route } from '#/global'
-import api from '@/api'
 import { systemRoutes } from '@/router/routes'
-
-function Layout() {
-  return import('@/layouts/index.vue')
-}
+import api from '@/api'
+import type { Route } from '#/global'
 
 const useRouteStore = defineStore(
+  // 唯一ID
   'route',
   () => {
     const settingsStore = useSettingsStore()
     const tabbarStore = useTabbarStore()
-    // 是否已根据权限动态生成并注册路由
     const isGenerate = ref(false)
     const routesRaw = ref<Route.recordMainRaw[]>([])
     const filesystemRoutesRaw = ref<RouteRecordRaw[]>([])
-    const currentRemoveRoutes = ref<Function[]>([])
+    const currentRemoveRoutes = ref<(() => void)[]>([])
+
     // 将多层嵌套路由处理成两层，保留顶层和最子层路由，中间层级将被拍平
     function flatAsyncRoutes<T extends RouteRecordRaw>(route: T): T {
       if (route.children) {
@@ -41,7 +37,7 @@ const useRouteStore = defineStore(
       routes.forEach((route) => {
         if (route.children) {
           const childrenBaseUrl = resolveRoutePath(baseUrl, route.path)
-          const childrenBaseAuth = baseAuth ?? route.meta?.auth
+          const childrenBaseAuth = !baseAuth || baseAuth === '' || baseAuth?.length === 0 ? route.meta?.auth : baseAuth
           const tmpBreadcrumb = cloneDeep(breadcrumb)
           tmpBreadcrumb.push({
             path: childrenBaseUrl,
@@ -83,15 +79,15 @@ const useRouteStore = defineStore(
           tmpBreadcrumb.push({
             path: tmpRoute.path,
             title: tmpRoute.meta?.title,
+            i18n: tmpRoute.meta?.i18n,
             icon: tmpRoute.meta?.icon,
             activeIcon: tmpRoute.meta?.activeIcon,
-            i18n: tmpRoute.meta?.i18n,
             hide: !tmpRoute.meta?.breadcrumb && tmpRoute.meta?.breadcrumb === false,
           })
           if (!tmpRoute.meta) {
             tmpRoute.meta = {}
           }
-          tmpRoute.meta.auth = baseAuth ?? tmpRoute.meta?.auth
+          tmpRoute.meta.auth = !baseAuth || baseAuth === '' || baseAuth?.length === 0 ? tmpRoute.meta?.auth : baseAuth
           tmpRoute.meta.breadcrumbNeste = tmpBreadcrumb
           res.push(tmpRoute)
         }
@@ -100,12 +96,11 @@ const useRouteStore = defineStore(
     }
     // 扁平化路由（将三级及以上路由数据拍平成二级）
     const flatRoutes = computed(() => {
-      const settingsStore = useSettingsStore()
       const returnRoutes: RouteRecordRaw[] = []
-      if (routesRaw.value) {
-        if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
-          routesRaw.value.forEach((item) => {
-            const tmpRoutes = cloneDeep(item.children || []) as RouteRecordRaw[]
+      if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
+        if (routesRaw.value) {
+          routesRaw.value.forEach((item: any) => {
+            const tmpRoutes = cloneDeep(item.children) as RouteRecordRaw[]
             tmpRoutes.map((v) => {
               if (!v.meta) {
                 v.meta = {}
@@ -117,9 +112,9 @@ const useRouteStore = defineStore(
           })
           returnRoutes.forEach(item => flatAsyncRoutes(item))
         }
-        else {
-          returnRoutes.push(...cloneDeep(filesystemRoutesRaw.value) as RouteRecordRaw[])
-        }
+      }
+      else {
+        returnRoutes.push(...cloneDeep(filesystemRoutesRaw.value) as RouteRecordRaw[])
       }
       return returnRoutes
     })
@@ -128,6 +123,40 @@ const useRouteStore = defineStore(
       routes.forEach(item => flatAsyncRoutes(item))
       return routes
     })
+
+    // 将设置 meta.singleMenu 的一级路由转换成二级路由
+    function convertSingleRoutes<T extends Route.recordMainRaw[]>(routes: T): T {
+      routes.map((route) => {
+        if (route.children) {
+          route.children.forEach((item, index, arr) => {
+            if (item.meta?.singleMenu) {
+              arr[index] = {
+                ...item,
+                component: () => import('@/layouts/index.vue'),
+                children: [
+                  {
+                    path: '',
+                    name: item.name,
+                    component: item.component,
+                    meta: {
+                      title: item.meta.title,
+                      i18n: item.meta.i18n,
+                      menu: false,
+                      breadcrumb: false,
+                    },
+                  },
+                ],
+              } as RouteRecordRaw
+              delete arr[index].name
+              delete arr[index].meta!.singleMenu
+            }
+          })
+        }
+        return route
+      })
+      return routes
+    }
+
     // TODO 将设置 meta.sidebar 的属性转换成 meta.menu ，过渡处理，未来将被弃用
     let isUsedDeprecatedAttribute = false
     // TODO 将设置 meta.i18n 的属性转换成 meta.title ，过渡处理，未来将被弃用
@@ -166,49 +195,22 @@ const useRouteStore = defineStore(
       }
       return routes
     }
-    function processRoutes(routes: Route.recordMainRaw[]) {
-      return routes.map((route) => {
-        if (route.children) {
-          route.children.forEach((child, index, array) => {
-            if (child.meta?.singleMenu) {
-              array[index] = {
-                ...child,
-                component: Layout,
-                children: [
-                  {
-                    path: '',
-                    name: child.name,
-                    component: child.component,
-                    meta: {
-                      title: child.meta.title,
-                      i18n: child.meta.i18n,
-                      menu: false,
-                      breadcrumb: false,
-                    },
-                  } as unknown as RouteRecordRaw,
-                ],
-              } as unknown as RouteRecordRaw
-              delete array[index].name
-              delete array[index].meta?.singleMenu
-            }
-          },
-          )
-        }
-        return route
-      })
-    }
 
-    // 根据权限动态生成路由（前端获取）
-    async function generateRoutesAtFront(asyncRoutes: Route.recordMainRaw[]) {
-      routesRaw.value = converDeprecatedAttribute(processRoutes(cloneDeep(asyncRoutes)))
+    // 生成路由（前端生成）
+    function generateRoutesAtFront(asyncRoutes: Route.recordMainRaw[]) {
+      // 设置 routes 数据
+      routesRaw.value = converDeprecatedAttribute(convertSingleRoutes(cloneDeep(asyncRoutes) as any))
       isGenerate.value = true
-      settingsStore.settings.tabbar.enable && tabbarStore.initPermanentTab()
+      // 加载常驻标签页
+      if (settingsStore.settings.tabbar.enable) {
+        tabbarStore.initPermanentTab()
+      }
     }
     // 格式化后端路由数据
     function formatBackRoutes(routes: any, views = import.meta.glob('../../views/**/*.vue')): Route.recordMainRaw[] {
       return routes.map((route: any) => {
         switch (route.component) {
-          case 'LAYOUT':
+          case 'Layout':
             route.component = () => import('@/layouts/index.vue')
             break
           default:
@@ -225,15 +227,20 @@ const useRouteStore = defineStore(
         return route
       })
     }
+    // 生成路由（后端获取）
     async function generateRoutesAtBack() {
       try {
         const res = await api.get<any>({
           url: '/anyone/visible/allRouter',
-          // noLoading: true,
+        // noLoading: true,
         })
-        routesRaw.value = converDeprecatedAttribute(processRoutes(formatBackRoutes(res))) as any
-        settingsStore.settings.tabbar.enable && tabbarStore.initPermanentTab()
+        // 设置 routes 数据
+        routesRaw.value = converDeprecatedAttribute(convertSingleRoutes(formatBackRoutes(res.data) as any))
         isGenerate.value = true
+        // 初始化常驻标签页
+        if (settingsStore.settings.tabbar.enable) {
+          tabbarStore.initPermanentTab()
+        }
       }
       catch (error: any) {
         if (['ERR_BAD_RESPONSE', 'ERR_BAD_REQUEST'].includes(error.code)) {
@@ -249,35 +256,30 @@ const useRouteStore = defineStore(
     // 生成路由（文件系统生成）
     function generateRoutesAtFilesystem(asyncRoutes: RouteRecordRaw[]) {
       // 设置 routes 数据
-      filesystemRoutesRaw.value = processRoutes(cloneDeep(asyncRoutes) as any) as any
+      filesystemRoutesRaw.value = convertSingleRoutes(cloneDeep(asyncRoutes) as any)
       isGenerate.value = true
+      // 加载常驻标签页
+      if (settingsStore.settings.tabbar.enable) {
+        tabbarStore.initPermanentTab()
+      }
     }
     // 记录 accessRoutes 路由，用于登出时删除路由
-    function setCurrentRemoveRoutes(routes: Function[]) {
+    function setCurrentRemoveRoutes(routes: (() => void)[]) {
       currentRemoveRoutes.value = routes
     }
     // 清空动态路由
     function removeRoutes() {
       isGenerate.value = false
       routesRaw.value = []
+      filesystemRoutesRaw.value = []
       currentRemoveRoutes.value.forEach((removeRoute) => {
         removeRoute()
       })
       currentRemoveRoutes.value = []
     }
-    // isGenerate: Ie,
-    // routesRaw: Fe,
-    // currentRemoveRoutes: qe,
-    // flatRoutes: bn,
-    // flatSystemRoutes: wn,
-    // generateRoutesAtFront: Cn,
-    // generateRoutesAtBack: Sn,
-    // generateRoutesAtFilesystem: Pn,
-    // setCurrentRemoveRoutes: Tn,
-    // removeRoutes: Nn,
+
     return {
       isGenerate,
-      // routes,
       routesRaw,
       currentRemoveRoutes,
       flatRoutes,
@@ -290,4 +292,5 @@ const useRouteStore = defineStore(
     }
   },
 )
+
 export default useRouteStore

@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import Tabbar from './Tabbar/index.vue'
 import Toolbar from './Toolbar/index.vue'
 import useSettingsStore from '@/store/modules/settings'
@@ -6,33 +6,30 @@ import useSettingsStore from '@/store/modules/settings'
 defineOptions({
   name: 'Topbar',
 })
-const hide = ref(false)
+
 const settingsStore = useSettingsStore()
 
-const toolbar = computed(() => {
-  const indexSeparator = settingsStore.settings.toolbar.layout.findIndex(item => item === '->')
-  const hasInvalidItemBeforeSeparator = settingsStore.settings.toolbar.layout.some((item, index) => {
-    if (index < indexSeparator && item !== '->') {
+const enableToolbar = computed(() => {
+  const index = settingsStore.settings.toolbar.layout.findIndex(item => item === '->')
+  const enableToolbarLeftSide = settingsStore.settings.toolbar.layout.some((item, i) => {
+    if (i < index && item !== '->') {
       if (settingsStore.settings.app.routeBaseOn === 'filesystem' && item === 'breadcrumb') {
         return false
       }
-      else {
-        return settingsStore.settings.toolbar[item]
-      }
+      return settingsStore.settings.toolbar[item]
     }
     return false
   })
-
-  return !['head', 'only-head'].includes(settingsStore.settings.menu.menuMode) || hasInvalidItemBeforeSeparator
-})
-
-const topbar = computed(() => {
-  const tabbarHeight = settingsStore.settings.tabbar.enable ? Number.parseInt(getComputedStyle(document.documentElement || document.body).getPropertyValue('--g-tabbar-height')) : 0
-  const toolbarHeight = toolbar.value ? Number.parseInt(getComputedStyle(document.documentElement || document.body).getPropertyValue('--g-toolbar-height')) : 0
-  return tabbarHeight + toolbarHeight
+  return !['head', 'only-head'].includes(settingsStore.settings.menu.menuMode) || enableToolbarLeftSide
 })
 
 const scrollTop = ref(0)
+const scrollOnHide = ref(false)
+const topbarHeight = computed(() => {
+  const tabbarHeight = settingsStore.settings.tabbar.enable ? Number.parseInt(getComputedStyle(document.documentElement || document.body).getPropertyValue('--g-tabbar-height')) : 0
+  const toolbarHeight = enableToolbar.value ? Number.parseInt(getComputedStyle(document.documentElement || document.body).getPropertyValue('--g-toolbar-height')) : 0
+  return tabbarHeight + toolbarHeight
+})
 onMounted(() => {
   window.addEventListener('scroll', onScroll)
 })
@@ -40,12 +37,10 @@ onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
 })
 function onScroll() {
-  scrollTop.value = document.documentElement.scrollTop || document.body.scrollTop
+  scrollTop.value = (document.documentElement || document.body).scrollTop
 }
-watch(scrollTop, (value, oldValue) => {
-  if (settingsStore.settings.topbar.mode === 'sticky') {
-    hide.value = value > oldValue && value > topbar.value
-  }
+watch(scrollTop, (val, oldVal) => {
+  scrollOnHide.value = settingsStore.settings.topbar.mode === 'sticky' && val > oldVal && val > topbarHeight.value
 })
 </script>
 
@@ -53,15 +48,15 @@ watch(scrollTop, (value, oldValue) => {
   <div
     class="topbar-container" :class="{
       'has-tabbar': settingsStore.settings.tabbar.enable,
-      'has-toolbar': toolbar,
+      'has-toolbar': enableToolbar,
       [`topbar-${settingsStore.settings.topbar.mode}`]: true,
       'shadow': !settingsStore.settings.topbar.switchTabbarAndToolbar && scrollTop,
-      hide,
+      'hide': scrollOnHide,
       'switch-tabbar-toolbar': settingsStore.settings.topbar.switchTabbarAndToolbar,
     }" data-fixed-calc-width
   >
     <Tabbar v-if="settingsStore.settings.tabbar.enable" />
-    <Toolbar v-if="toolbar" />
+    <Toolbar v-if="enableToolbar" />
   </div>
 </template>
 
@@ -84,10 +79,8 @@ watch(scrollTop, (value, oldValue) => {
     }
   }
 
-  &.topbar-sticky {
-    &.hide {
-      top: calc((var(--g-tabbar-height) + var(--g-toolbar-height)) * -1) !important;
-    }
+  &.topbar-sticky.hide {
+    top: calc((var(--g-tabbar-height) + var(--g-toolbar-height)) * -1) !important;
   }
 
   &.switch-tabbar-toolbar {

@@ -88,7 +88,7 @@ export default defineFakeRoute([
               children: [{
                 path: 'index',
                 name: 'permissionExampleIndex',
-                component: 'permission_example/index.vue',
+                component: 'permission_example/iframe.vue',
                 meta: {
                   title: '权限验证',
                   i18n: 'route.permission',

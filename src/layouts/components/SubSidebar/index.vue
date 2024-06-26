@@ -10,6 +10,7 @@ defineOptions({
 })
 
 const route = useRoute()
+
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 
@@ -23,19 +24,7 @@ function onSidebarScroll() {
   const scrollHeight = subSidebarRef.value.scrollHeight
   showShadowBottom.value = Math.ceil(scrollTop + clientHeight) < scrollHeight
 }
-const menuRef = ref()
 
-onMounted(() => {
-  onSidebarScroll()
-  const { height } = useElementSize(menuRef)
-  watch(() => height.value, () => {
-    if (height.value > 0) {
-      onSidebarScroll()
-    }
-  }, {
-    immediate: true,
-  })
-})
 const enableSidebar = computed(() => {
   return settingsStore.mode === 'mobile' || (
     ['side', 'head', 'single'].includes(settingsStore.settings.menu.menuMode)
@@ -50,13 +39,42 @@ const enableSidebar = computed(() => {
     )
   )
 })
+
+watch(enableSidebar, (val) => {
+  if (val) {
+    nextTick(() => {
+      onSidebarScroll()
+    })
+  }
+}, {
+  immediate: true,
+})
+
+const menuRef = ref()
+
+onMounted(() => {
+  if (enableSidebar.value) {
+    const { height } = useElementSize(menuRef)
+    watch(() => height.value, () => {
+      if (height.value > 0) {
+        onSidebarScroll()
+      }
+    }, {
+      immediate: true,
+    })
+  }
+})
+
 const isCollapse = computed(() => {
   if (settingsStore.mode === 'pc') {
-    return !!(settingsStore.settings.menu.subMenuCollapse && (!settingsStore.isHoverSidebar || (settingsStore.isHoverSidebar && !settingsStore.settings.menu.subMenuAutoCollapse)))
+    if (settingsStore.settings.menu.subMenuCollapse && (!settingsStore.isHoverSidebar || (settingsStore.isHoverSidebar && !settingsStore.settings.menu.subMenuAutoCollapse))) {
+      return true
+    }
+    else {
+      return false
+    }
   }
-  else {
-    return settingsStore.settings.menu.subMenuCollapse
-  }
+  return settingsStore.settings.menu.subMenuCollapse
 })
 </script>
 
@@ -68,60 +86,37 @@ const isCollapse = computed(() => {
     }"
   >
     <Logo
-      :class="{
+      :show-logo="settingsStore.settings.menu.menuMode === 'single'" class="sidebar-logo" :class="{
         'sidebar-logo-bg': settingsStore.settings.menu.menuMode === 'single',
-      }" :show-logo="settingsStore.settings.menu.menuMode === 'single'"
-      class="sidebar-logo"
+      }"
     />
     <div
-      ref="subSidebarRef"
-      class="sub-sidebar flex-1 transition-shadow-300"
-      :class="{
+      ref="subSidebarRef" class="sub-sidebar flex-1 transition-shadow-300" :class="{
         'shadow-top': showShadowTop,
         'shadow-bottom': showShadowBottom,
       }" @scroll="onSidebarScroll"
     >
-      <!-- 侧边栏模式（无主导航）或侧边栏精简模式 -->
       <div ref="menuRef">
         <TransitionGroup name="sub-sidebar">
           <template v-for="(mainItem, mainIndex) in menuStore.allMenus" :key="mainIndex">
             <div v-show="mainIndex === menuStore.actived">
-              <Menu
-                :accordion="settingsStore.settings.menu.subMenuUniqueOpened"
-                :collapse="isCollapse"
-                :default-openeds="menuStore.defaultOpenedPaths"
-                :always-openeds="menuStore.alwaysOpenedPaths"
-                :menu="mainItem.children"
-                :rounded="settingsStore.settings.menu.isRounded"
-                :value="route.meta.activeMenu || route.path" class="menu"
-              />
+              <Menu :menu="mainItem.children" :value="route.meta.activeMenu || route.path" :default-openeds="menuStore.defaultOpenedPaths" :always-openeds="menuStore.alwaysOpenedPaths" :accordion="settingsStore.settings.menu.subMenuUniqueOpened" :collapse="isCollapse" :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu" />
             </div>
           </template>
         </TransitionGroup>
       </div>
     </div>
     <div
-      v-if="settingsStore.mode === 'pc'"
-      class="relative flex items-center px-4 py-3"
-      :class="{
+      v-if="settingsStore.mode === 'pc'" class="relative flex items-center px-4 py-3" :class="{
         'justify-center': isCollapse,
         'justify-between': !isCollapse && settingsStore.settings.menu.enableSubMenuCollapseButton,
         'justify-end': !isCollapse && !settingsStore.settings.menu.enableSubMenuCollapseButton,
       }"
     >
-      <span
-        v-show="!isCollapse || isCollapse && !settingsStore.settings.menu.enableSubMenuCollapseButton"
-        class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark-bg-stone-9 hover:bg-stone-2 dark-hover:bg-stone-8"
-        @click="() => settingsStore.toggleSidebarAutoCollapse()"
-      >
+      <span v-show="!isCollapse || (isCollapse && !settingsStore.settings.menu.enableSubMenuCollapseButton)" class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark:bg-stone-9 hover:bg-stone-2 dark:hover:bg-stone-8" @click="settingsStore.toggleSidebarAutoCollapse()">
         <SvgIcon :name="settingsStore.settings.menu.subMenuAutoCollapse ? 'i-lucide:pin-off' : 'i-lucide:pin'" />
       </span>
-      <span
-        v-show="settingsStore.settings.menu.enableSubMenuCollapseButton"
-        class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark-bg-stone-9 hover:bg-stone-2 dark-hover:bg-stone-8"
-        :class="{ '-rotate-z-180': settingsStore.settings.menu.subMenuCollapse }"
-        @click="() => settingsStore.toggleSidebarCollapse()"
-      >
+      <span v-show="settingsStore.settings.menu.enableSubMenuCollapseButton" class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark:bg-stone-9 hover:bg-stone-2 dark:hover:bg-stone-8" :class="{ '-rotate-z-180': settingsStore.settings.menu.subMenuCollapse }" @click="settingsStore.toggleSidebarCollapse()">
         <SvgIcon name="toolbar-collapse" />
       </span>
     </div>
@@ -131,14 +126,15 @@ const isCollapse = computed(() => {
 <style lang="scss" scoped>
 .sub-sidebar-container {
   position: absolute;
+  inset-inline-start: 0;
   top: 0;
   bottom: 0;
-  left: 0;
   display: flex;
   flex-direction: column;
   width: var(--g-sub-sidebar-width);
   background-color: var(--g-sub-sidebar-bg);
-  transition: background-color 0.3s, left 0.3s, width 0.3s;
+  box-shadow: -1px 0 0 0 var(--g-border-color), 1px 0 0 0 var(--g-border-color);
+  transition: background-color 0.3s, inset-inline-start 0.3s, width 0.3s, box-shadow 0.3s;
 
   &.is-collapse {
     width: var(--g-sub-sidebar-collapse-width);
@@ -152,6 +148,10 @@ const isCollapse = computed(() => {
         display: none;
       }
     }
+  }
+
+  &.shadow-side {
+    box-shadow: 10px 0 10px -10px var(--g-box-shadow-color);
   }
 
   .sidebar-logo {
@@ -179,8 +179,16 @@ const isCollapse = computed(() => {
       display: none;
     }
 
-    &.shadow {
-      box-shadow: inset 0 10px 10px -10px var(--g-box-shadow-color);
+    &.shadow-top {
+      box-shadow: inset 0 10px 10px -10px var(--g-box-shadow-color), inset 0 0 0 transparent;
+    }
+
+    &.shadow-bottom {
+      box-shadow: inset 0 0 0 transparent, inset 0 -10px 10px -10px var(--g-box-shadow-color);
+    }
+
+    &.shadow-top.shadow-bottom {
+      box-shadow: inset 0 10px 10px -10px var(--g-box-shadow-color), inset 0 -10px 10px -10px var(--g-box-shadow-color);
     }
   }
 

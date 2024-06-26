@@ -30,20 +30,16 @@ export default defineConfig<Theme>({
   preflights: [
     {
       getCSS: () => {
-        const returnCss: any = []
-        const lightRoots = toArray(['{},{} *,{} ::before,{} ::after', '{} ::backdrop'])
-        const darkRoots = toArray(['html.dark {},html.dark {} *,html.dark {} ::before,html.dark {} ::after', 'html.dark {} ::backdrop'])
+        const returnCss = []
         Object.keys(themes).forEach((key) => {
-          if (themes[key]['color-scheme'] === 'light') {
-            const lightCss = entriesToCss(Object.entries(themes[key]))
-            returnCss.push(lightRoots.map(root => `${root.replace(/\{\s*\}/g, `[data-theme=${key}]`)}{${lightCss}}`).join(''))
-          }
-          else {
-            const darkCss = entriesToCss(Object.entries(themes[key]))
-            returnCss.push(darkRoots.map(root => `${root.replace(/\{\s*\}/g, `[data-theme=${key}]`)}{${darkCss}}`).join(''))
-          }
+          const css = entriesToCss(Object.entries(themes[key]))
+          const roots = toArray(
+            themes[key]['color-scheme'] === 'light'
+              ? [`[data-theme="${key}"],[data-theme="${key}"] *,[data-theme="${key}"] ::before,[data-theme="${key}"] ::after`, `[data-theme="${key}"] ::backdrop`]
+              : [`html.dark [data-theme="${key}"],html.dark [data-theme="${key}"] *,html.dark [data-theme="${key}"] ::before,html.dark [data-theme="${key}"] ::after`, `html.dark [data-theme="${key}"] ::backdrop`],
+          )
+          returnCss.push(roots.map(root => `${root}{${css}}`).join(''))
         })
-
         return returnCss.join('')
       },
     },

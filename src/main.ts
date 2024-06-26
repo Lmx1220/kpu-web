@@ -1,15 +1,17 @@
 import './util/baidu'
 import './util/system.copyright'
 
+import FloatingVue from 'floating-vue'
+import 'floating-vue/dist/style.css'
+
+import VWave from 'v-wave'
+
 import VXETable from 'vxe-table'
 import VXETablePluginElement from 'vxe-table-plugin-element'
 import 'vxe-table-plugin-element/dist/style.css'
 import 'overlayscrollbars/overlayscrollbars.css'
 
-import FloatingVue from 'floating-vue'
 import App from './App.vue'
-
-// 加载 iconify 图标
 
 import errorLog from './util/error.log'
 import ui from './ui-provider'
@@ -17,8 +19,6 @@ import { downloadAndInstall } from '@/iconify'
 import icons from '@/iconify/index.json'
 
 import 'uno.css'
-
-import 'virtual:uno.css'
 
 import pinia from '@/store'
 import router from '@/router'
@@ -31,15 +31,15 @@ import directive from '@/directive'
 
 // 加载svg图标
 import 'virtual:svg-icons-register'
+
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
-import 'floating-vue/dist/style.css'
 
 // 全局样式
 import '@/assets/styles/globals.scss'
 
-if (icons.useType === 'offline') {
+if (icons.isOfflineUse) {
   for (const info of icons.collections) {
-    downloadAndInstall(info)
+    // downloadAndInstall(info)
   }
 }
 VXETable.setup({
@@ -128,7 +128,7 @@ async function bootstrap() {
   const app = createApp(App)
   VXETable.use(VXETablePluginElement)
 
-  // app.use(VWave)
+  app.use(VWave, {})
 
   app.use(pinia)
   app.use(router)
@@ -136,9 +136,12 @@ async function bootstrap() {
   app.use(directive)
   errorLog(app)
 
-  app.use(FloatingVue)
+  app.use(FloatingVue, {
+    distance: 12,
+  })
   app.use(ui)
   app.use(VXETable)
+
   app.mount('#app')
 }
 bootstrap()

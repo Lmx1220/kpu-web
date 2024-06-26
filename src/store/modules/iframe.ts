@@ -1,47 +1,53 @@
 import useSettingsStore from './settings'
+import type { Iframe } from '#/global'
 
-interface IFrame {
-  path: string
-  src: string
-  isOpen: boolean
-  isLoading: boolean
-}
 const useIframeStore = defineStore(
   // 唯一ID
   'iframe',
   () => {
     const settingsStore = useSettingsStore()
-    const list = ref<IFrame[]>([])
-    const pathList = ref<string[]>([])
+
     const isGenerate = ref(false)
+    const list = ref<Iframe.recordRaw[]>([])
+    const recentPathList = ref<Iframe.recordRaw['path'][]>([])
     const openedList = computed(() => list.value.filter(item => item.isOpen))
-    function generateList(iframe: IFrame[]) {
-      if (iframe) {
-        list.value = iframe
-        isGenerate.value = true
+
+    // 生成 iframe 列表
+    function generateList(val?: Iframe.recordRaw[]) {
+      if (val) {
+        list.value = val
       }
+      isGenerate.value = true
     }
+    // 关闭加载状态
     function closeLoading(path: string) {
       const index = list.value.findIndex(item => item.path === path)
-      index > -1 && (list.value[index].isLoading = false)
+      if (index > -1) {
+        list.value[index].isLoading = false
+      }
     }
+    // 打开 iframe
     function open(path: string) {
-      const he = list.value.find(xe => xe.path === path)
-      if (he) {
-        he.isOpen = true
-        const index = pathList.value.findIndex(item => item === path)
+      const item = list.value.find(item => item.path === path)
+      if (item) {
+        item.isOpen = true
+        const index = recentPathList.value.findIndex(item => item === path)
         if (index > -1) {
-          pathList.value.splice(0, 0, pathList.value[index])
-          pathList.value.splice(index + 1, 1)
+          recentPathList.value.splice(0, 0, recentPathList.value[index])
+          recentPathList.value.splice(index + 1, 1)
         }
         else {
-          pathList.value.unshift(path)
+          recentPathList.value.unshift(path)
         }
       }
+      // 最大缓存数量检测，超过缓存数量则关闭最早打开的 iframe
       let count = 0
-      pathList.value.forEach((xe) => {
-        if ((list.value.find($e => $e.path === xe)?.isOpen && count++) && count > settingsStore.settings.mainPage.iframeCacheMax) {
-          const index = list.value.findIndex($e => $e.path === xe)
+      recentPathList.value.forEach((item) => {
+        if (list.value.find(v => v.path === item)?.isOpen) {
+          count++
+        }
+        if (count > settingsStore.settings.mainPage.iframeCacheMax) {
+          const index = list.value.findIndex(v => v.path === item)
           if (index > -1) {
             list.value[index].isOpen = false
             list.value[index].isLoading = true
@@ -49,23 +55,24 @@ const useIframeStore = defineStore(
         }
       })
     }
+    // 关闭 iframe
     function close(path: string | string[]) {
-      if (typeof path == 'string') {
+      if (typeof path === 'string') {
         const index = list.value.findIndex(item => item.path === path)
         if (index > -1) {
           list.value[index].isOpen = false
           list.value[index].isLoading = true
-          pathList.value = pathList.value.filter(item => item !== path)
         }
+        recentPathList.value = recentPathList.value.filter(item => item !== path)
       }
       else {
         path.forEach((item) => {
-          const index = list.value.findIndex(iframe => iframe.path === item)
+          const index = list.value.findIndex(v => v.path === item)
           if (index > -1) {
             list.value[index].isOpen = false
             list.value[index].isLoading = true
-            pathList.value = pathList.value.filter(path => path !== item)
           }
+          recentPathList.value = recentPathList.value.filter(v => v !== item)
         })
       }
     }

@@ -1,77 +1,73 @@
 <script setup lang="ts">
 import Logo from '../Logo/index.vue'
+import Menu from '../Menu/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
-import useMenu from '@/util/composables/useMenu'
-import MainMenu from '@/layouts/components/Menu/index.vue'
-import { i18nTitleInjectionKey } from '@/layouts/components/Menu/types.ts'
+import { i18nTitleInjectionKey } from '@/util/injectionKeys'
 
 defineOptions({
   name: 'MainSidebar',
 })
+
 const route = useRoute()
+
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
-const i18nTitle = inject(i18nTitleInjectionKey)!
+
 const { switchTo } = useMenu()
+
+const generateI18nTitle = inject(i18nTitleInjectionKey, Function, true)
+
+function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
+  let name
+  if ((!isActive && icon) || (isActive && !activeIcon)) {
+    name = icon
+  }
+  else if (isActive && activeIcon) {
+    name = activeIcon
+  }
+  return name
+}
 </script>
 
 <template>
   <Transition name="main-sidebar">
-    <div
-      v-if="['side', 'only-side'].includes(settingsStore.settings.menu.menuMode) || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.menuMode !== 'single')"
-      class="main-sidebar-container"
-    >
+    <div v-if="['side', 'only-side'].includes(settingsStore.settings.menu.menuMode) || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.menuMode !== 'single')" class="main-sidebar-container">
       <Logo :show-title="false" class="sidebar-logo" />
+      <!-- 侧边栏模式（含主导航） -->
       <div
-        v-if="settingsStore.settings.menu.menuMode === 'side' || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.menuMode !== 'single')"
-        :class="{
+        v-if="settingsStore.settings.menu.menuMode === 'side' || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.menuMode !== 'single')" class="menu flex flex-col of-hidden transition-all" :class="{
           [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
-        }" class="menu flex flex-col of-hidden transition-all"
+        }"
       >
-        <template v-for="(item, index) in menuStore.allMenus">
+        <template v-for="(item, index) in menuStore.allMenus" :key="index">
           <div
-            v-if="item.children && item.children.length !== 0" :key="index" :class="{
+            class="menu-item relative transition-all" :class="{
               'active': index === menuStore.actived,
               'px-2 py-1': settingsStore.settings.menu.isRounded,
             }"
-            class="menu-item relative transition-all"
           >
             <div
-              :class="{
+              v-if="item.children && item.children.length !== 0" class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 py-4 text-[var(--g-main-sidebar-menu-color)] transition-all hover:(bg-[var(--g-main-sidebar-menu-hover-bg)] text-[var(--g-main-sidebar-menu-hover-color)]) px-2!" :class="{
                 'text-[var(--g-main-sidebar-menu-active-color)]! bg-[var(--g-main-sidebar-menu-active-bg)]!': index === menuStore.actived,
                 'rounded-2': settingsStore.settings.menu.isRounded,
-              }"
-              :title="i18nTitle(item.meta?.title)"
-              class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 py-4 text-[var(--g-main-sidebar-menu-color)] transition-all hover:bg-[var(--g-main-sidebar-menu-hover-bg)] px-2! hover:text-[var(--g-main-sidebar-menu-hover-color)]"
-              @click="switchTo(index)"
+              }" :title="generateI18nTitle(item.meta?.title)" @click="switchTo(index)"
             >
               <div class="w-full inline-flex flex-1 flex-col items-center justify-center gap-1">
-                <SvgIcon
-                  v-if="item.meta?.icon" :name="item.meta.icon" :size="20"
-                  async class="menu-item-container-icon transition-transform group-hover:scale-120"
-                />
-                <span
-                  class="w-full flex-1 truncate text-center text-sm transition-height transition-opacity transition-width"
-                >{{
-                  i18nTitle(item.meta?.title)
-                }}</span>
+                <SvgIcon v-if="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)" :name="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)!" :size="20" class="menu-item-container-icon transition-transform group-hover:scale-120" async />
+                <span class="w-full flex-1 truncate text-center text-sm transition-height transition-opacity transition-width">
+                  {{ generateI18nTitle(item.meta?.title) }}
+                </span>
               </div>
             </div>
           </div>
         </template>
       </div>
       <!-- 侧边栏精简模式 -->
-      <MainMenu
-        v-else-if="settingsStore.settings.menu.menuMode === 'only-side'"
-        :class="{
+      <Menu
+        v-else-if="settingsStore.settings.menu.menuMode === 'only-side'" :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" show-collapse-name collapse :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu" :class="{
           [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
         }"
-        :menu="menuStore.allMenus"
-        :rounded="settingsStore.settings.menu.isRounded"
-        :value="route.meta.activeMenu || route.path"
-        class="menu"
-        show-collapse-name collapse
       />
     </div>
   </Transition>
@@ -98,13 +94,12 @@ const { switchTo } = useMenu()
     &-arrow {
       .item-container::before,
       :deep(.menu-item::before) {
-        right: -5px;
+        inset-inline-end: -5px;
         width: 0;
         height: 0;
         content: "";
-        border-top: 5px solid transparent;
-        border-right: 5px solid var(--g-sub-sidebar-bg);
-        border-bottom: 5px solid transparent;
+        border-block: 5px solid transparent;
+        border-inline-end: 5px solid var(--g-main-sidebar-bg);
         opacity: 0;
         transition: all 0.3s;
 
@@ -113,7 +108,7 @@ const { switchTo } = useMenu()
 
       .item-container.active::before,
       :deep(.menu-item.active::before) {
-        right: 8px;
+        inset-inline-end: 8px;
         opacity: 1;
       }
     }
@@ -121,7 +116,7 @@ const { switchTo } = useMenu()
     &-line {
       .item-container::before,
       :deep(.menu-item::before) {
-        left: 6px;
+        inset-inline-start: 6px;
         width: 4px;
         height: 0;
         content: "";
@@ -144,7 +139,7 @@ const { switchTo } = useMenu()
     &-dot {
       .item-container::before,
       :deep(.menu-item::before) {
-        left: 0;
+        inset-inline-start: 0;
         width: 10px;
         height: 10px;
         content: "";
@@ -159,7 +154,7 @@ const { switchTo } = useMenu()
 
       .item-container.active::before,
       :deep(.menu-item.active::before) {
-        left: 4px;
+        inset-inline-start: 4px;
         opacity: 1;
       }
     }
@@ -170,6 +165,7 @@ const { switchTo } = useMenu()
     width: initial;
     overflow: hidden auto;
     overscroll-behavior: contain;
+
     // firefox隐藏滚动条
     scrollbar-width: none;
 
@@ -209,6 +205,10 @@ const { switchTo } = useMenu()
 
 .main-sidebar-enter-from,
 .main-sidebar-leave-to {
-  transform: translate(calc(var(--g-main-sidebar-width) * -1));
+  transform: translateX(calc(var(--g-main-sidebar-width) * -1));
+
+  [dir="rtl"] & {
+    transform: translateX(var(--g-main-sidebar-width));
+  }
 }
 </style>

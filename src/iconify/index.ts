@@ -1,5 +1,4 @@
 import { addCollection } from '@iconify/vue'
-
 import data from './data.json'
 
 export async function downloadAndInstall(name: string) {

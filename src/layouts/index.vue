@@ -1,35 +1,60 @@
 <script setup lang="ts">
 import hotkeys from 'hotkeys-js'
 import { useTimeoutFn } from '@vueuse/core'
-import AppSetting from './components/AppSetting/index.vue'
-import Headers from './components/Header/index.vue'
-import HotkeysIntro from './components/HotkeysIntro/index.vue'
-import Copyright from './components/Copyright/index.vue'
-import IframeView from './components/IframeView/index.vue'
+import Header from './components/Header/index.vue'
 import MainSidebar from './components/MainSidebar/index.vue'
-import Search from './components/Search/index.vue'
 import SubSidebar from './components/SubSidebar/index.vue'
 import Topbar from './components/Topbar/index.vue'
+import Search from './components/Search/index.vue'
+// import Preferences from './components/Preferences/index.vue'
+import HotkeysIntro from './components/HotkeysIntro/index.vue'
+import AppSetting from './components/AppSetting/index.vue'
+import IframeView from './components/views/iframe.vue'
 import LinkView from './components/views/link.vue'
-import eventBus from '@/util/eventBus'
-import useMenu from '@/util/composables/useMenu'
-import useMainPage from '@/util/composables/useMainPage'
+import Copyright from './components/Copyright/index.vue'
+import BackTop from './components/BackTop/index.vue'
 import useSettingsStore from '@/store/modules/settings'
-import useMenuStore from '@/store/modules/menu'
 import useKeepAliveStore from '@/store/modules/keepAlive'
-import BackTop from '@/layouts/components/BackTop/index.vue'
+import useMenuStore from '@/store/modules/menu'
+import useWatermarkStore from '@/store/modules/watermark'
+import eventBus from '@/util/eventBus'
 
 defineOptions({
   name: 'Layout',
 })
-const route = useRoute()
-const mainPage = useMainPage()
-const menu = useMenu()
+
+const routeInfo = useRoute()
+
 const settingsStore = useSettingsStore()
 const keepAliveStore = useKeepAliveStore()
 const menuStore = useMenuStore()
-const isIframe = computed(() => !!route.meta.iframe)
-const isLink = computed(() => !!route.meta.link)
+useWatermarkStore()
+
+const mainPage = useMainPage()
+const menu = useMenu()
+
+const isIframe = computed(() => !!routeInfo.meta.iframe)
+const isLink = computed(() => !!routeInfo.meta.link)
+
+watch(() => settingsStore.settings.menu.subMenuCollapse, (val) => {
+  if (settingsStore.mode === 'mobile') {
+    if (!val) {
+      document.body.classList.add('overflow-hidden')
+    }
+    else {
+      document.body.classList.remove('overflow-hidden')
+    }
+  }
+})
+
+watch(() => routeInfo.path, () => {
+  if (settingsStore.mode === 'mobile') {
+    settingsStore.$patch((state) => {
+      state.settings.menu.subMenuCollapse = true
+    })
+  }
+})
+
 onMounted(() => {
   hotkeys('f5', (e) => {
     if (settingsStore.settings.toolbar.pageReload) {
@@ -43,17 +68,15 @@ onMounted(() => {
       menu.switchTo(menuStore.actived + 1 < menuStore.allMenus.length ? menuStore.actived + 1 : 0)
     }
   })
-  hotkeys('alt+up,alt+down', (e, hotkeysEvent) => {
-    if (settingsStore.settings.menu.enableHotkeys) {
-      e.preventDefault()
-      switch (hotkeysEvent.key) {
-        case 'alt+up':
-          mainPage.maximize(true)
-          break
-        case 'alt+down':
-          mainPage.maximize(false)
-          break
-      }
+  hotkeys('alt+up,alt+down', (e, handle) => {
+    e.preventDefault()
+    switch (handle.key) {
+      case 'alt+up':
+        mainPage.maximize(true)
+        break
+      case 'alt+down':
+        mainPage.maximize(false)
+        break
     }
   })
 })
@@ -62,21 +85,17 @@ onUnmounted(() => {
   hotkeys.unbind('alt+`')
   hotkeys.unbind('alt+up,alt+down')
 })
-let stops: Fn | null
 
-function mouseenter() {
-  stops && stops()
+let timeout: (() => void) | undefined
+function handleMouseenter() {
+  timeout?.()
   settingsStore.setHoverSidebar(true)
 }
-
-function mouseleave() {
-  stops == null || stops()
-
-  const { stop } = useTimeoutFn(() => {
-    settingsStore.setHoverSidebar(!1)
-  }
-  , 300)
-  stops = stop
+function handleMouseleave() {
+  timeout?.()
+  ;({ stop: timeout } = useTimeoutFn(() => {
+    settingsStore.setHoverSidebar(false)
+  }, 300))
 }
 
 const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
@@ -85,42 +104,24 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
 <template>
   <div class="layout">
     <div id="app-main" :class="{ 'main-page-maximize': settingsStore.mainPageMaximizeStatus }">
-      <Headers />
+      <Header />
       <div class="wrapper">
-        <div
-          class="sidebar-container"
-          :class="{ show: settingsStore.mode === 'mobile' && !settingsStore.settings.menu.subMenuCollapse }"
-          @mouseenter="mouseenter"
-          @mouseleave="mouseleave"
-        >
+        <div class="sidebar-container" :class="{ show: settingsStore.mode === 'mobile' && !settingsStore.settings.menu.subMenuCollapse }" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave">
           <MainSidebar />
           <SubSidebar />
         </div>
-        <!-- 手机模式,打开菜单栏屏障 -->
-        <div
-          class="sidebar-mask"
-          :class="{ show: settingsStore.mode === 'mobile' && !settingsStore.settings.menu.subMenuCollapse }"
-          @click="settingsStore.toggleSidebarCollapse()"
-        />
-        <div class="main-container" :style="{ paddingBottom: route.meta.paddingBottom }">
+        <div class="sidebar-mask" :class="{ show: settingsStore.mode === 'mobile' && !settingsStore.settings.menu.subMenuCollapse }" @click="settingsStore.toggleSidebarCollapse()" />
+        <div class="main-container" :style="{ 'padding-bottom': routeInfo.meta.paddingBottom }">
           <Topbar />
           <div class="main">
-            <div
-              v-show="settingsStore.mainPageMaximizeStatus" class="exit-main-page-maximize"
-              @click="settingsStore.setMainPageMaximize()"
-            >
+            <div v-show="settingsStore.mainPageMaximizeStatus" class="exit-main-page-maximize" @click="settingsStore.setMainPageMaximize()">
               <SvgIcon name="i-ri:logout-box-line" />
             </div>
-            <RouterView v-slot="{ Component }">
-              <!--              <transition name="main" mode="out-in" appear> -->
-              <Transition
-                :name="settingsStore.settings.mainPage.enableTransition ? settingsStore.settings.mainPage.transitionMode : ''"
-                mode="out-in" appear
-              >
+            <RouterView v-slot="{ Component, route }">
+              <Transition :name="settingsStore.settings.mainPage.enableTransition ? settingsStore.settings.mainPage.transitionMode : ''" mode="out-in" appear>
                 <KeepAlive :include="keepAliveStore.list">
-                  <component :is="Component" :key="route.fullPath" />
+                  <component :is="Component" v-show="!(isIframe || isLink)" :key="route.fullPath" />
                 </KeepAlive>
-                <!--                <component :is="Component" :key="route.fullPath" /> -->
               </Transition>
             </RouterView>
             <IframeView v-show="isIframe && !isLink" />
@@ -131,6 +132,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
       </div>
     </div>
     <Search />
+<!--    <Preferences v-if="settingsStore.settings.userPreferences.enable" />-->
     <HotkeysIntro />
     <template v-if="enableAppSetting">
       <div class="app-setting" @click="eventBus.emit('global-app-setting-toggle')">
@@ -149,8 +151,10 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
   }
 }
 
-[data-app-width-mode="adaption-min-width"] #app-main {
-  width: max(var(--g-app-width), 100%);
+[data-app-width-mode="adaption-min-width"] {
+  #app-main {
+    width: max(var(--g-app-width), 100%);
+  }
 }
 
 [data-app-width-mode="center"] {
@@ -171,23 +175,31 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
   }
 
   .sidebar-container {
-    transform: translate(calc((var(--g-main-sidebar-width) + var(--g-sub-sidebar-width)) * -1));
+    transform: translateX(calc((var(--g-main-sidebar-width) + var(--g-sub-sidebar-width)) * -1));
+
+    [dir="rtl"] & {
+      transform: translateX(calc(var(--g-main-sidebar-width) + var(--g-sub-sidebar-width)));
+    }
 
     &.show {
-      transform: translate(0);
+      transform: translateX(0);
     }
   }
 
   .main-container {
-    margin-left: 0 !important;
+    margin-inline-start: 0 !important;
   }
 
-  &[data-men-mode="signle"] {
+  &[data-menu-mode="single"] {
     .sidebar-container {
-      transform: translate(calc(var(--g-sub-sidebar-width) * -1));
+      transform: translateX(calc(var(--g-sub-sidebar-width) * -1));
+
+      [dir="rtl"] & {
+        transform: translateX(var(--g-sub-sidebar-width));
+      }
 
       &.show {
-        transform: translate(0);
+        transform: translateX(0);
       }
     }
   }
@@ -201,6 +213,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
   height: 100%;
   margin: 0 auto;
 
+  // 当前标签页全屏
   &.main-page-maximize {
     header,
     .sidebar-container {
@@ -211,7 +224,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
       padding-top: 0;
 
       .main-container {
-        margin-left: 0;
+        margin-inline-start: 0;
 
         .topbar-container {
           display: none;
@@ -245,6 +258,11 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
     width: calc(var(--g-main-sidebar-actual-width) + var(--g-sub-sidebar-actual-width));
     box-shadow: -1px 0 0 0 var(--g-border-color), 1px 0 0 0 var(--g-border-color);
     transition: width 0.3s, transform 0.3s, box-shadow 0.3s, top 0.3s;
+
+    &:has(> .main-sidebar-container.main-sidebar-enter-active),
+    &:has(> .main-sidebar-container.main-sidebar-leave-active) {
+      overflow: hidden;
+    }
   }
 
   .sidebar-mask {
@@ -268,17 +286,17 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
   }
 
   .main-sidebar-container:not(.main-sidebar-leave-active) + .sub-sidebar-container {
-    left: var(--g-main-sidebar-width);
+    inset-inline-start: var(--g-main-sidebar-width);
   }
 
   .main-container {
     display: flex;
     flex-direction: column;
     min-height: 100%;
-    margin-left: calc(var(--g-main-sidebar-actual-width) + var(--g-sub-sidebar-actual-width));
+    margin-inline-start: calc(var(--g-main-sidebar-actual-width) + var(--g-sub-sidebar-actual-width));
     background-color: var(--g-bg);
     box-shadow: -1px 0 0 0 var(--g-border-color), 1px 0 0 0 var(--g-border-color);
-    transition: margin-left 0.3s, background-color 0.3s, box-shadow 0.3s;
+    transition: margin-inline-start 0.3s, background-color 0.3s, box-shadow 0.3s;
 
     .main {
       position: relative;
@@ -288,10 +306,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
       transition: 0.3s;
 
       .exit-main-page-maximize {
-        --at-apply:
-          bg-stone-7 color-stone-3
-          dark: bg-stone-3
-          dark: color-stone-7;
+        --at-apply: bg-stone-7 dark-bg-stone-3 text-stone-3 dark-text-stone-7 op-50 hover-op-100 transition-opacity;
 
         position: fixed;
         top: -40px;
@@ -301,14 +316,6 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
         height: 80px;
         cursor: pointer;
         border-radius: 50%;
-        opacity: 0.5;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        transition-duration: 0.15s;
-        transition-property: opacity;
-
-        &:hover {
-          opacity: 1;
-        }
 
         i {
           position: absolute;
@@ -318,18 +325,16 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
       }
     }
 
-    .topbar-container {
-      &.has-tabbar + .main {
-        margin: var(--g-tabbar-height) 0 0;
-      }
+    .topbar-container.has-tabbar + .main {
+      margin: var(--g-tabbar-height) 0 0;
+    }
 
-      &.has-toolbar + .main {
-        margin: var(--g-toolbar-height) 0 0;
-      }
+    .topbar-container.has-toolbar + .main {
+      margin: var(--g-toolbar-height) 0 0;
+    }
 
-      &.has-toolbar.has-tabbar + .main {
-        margin: calc(var(--g-toolbar-height) + var(--g-tabbar-height)) 0 0;
-      }
+    .topbar-container.has-tabbar.has-toolbar + .main {
+      margin: calc(var(--g-tabbar-height) + var(--g-toolbar-height)) 0 0;
     }
   }
 }
@@ -340,7 +345,7 @@ header:not(.header-leave-active) + .wrapper {
   .sidebar-container {
     top: var(--g-header-height);
 
-    :deep(.sidebar-logo) {
+    :deep(.sub-sidebar-container) .sidebar-logo {
       display: none;
     }
   }
@@ -348,20 +353,16 @@ header:not(.header-leave-active) + .wrapper {
   .main-container {
     .topbar-container {
       top: var(--g-header-height);
-
-      :deep(.tools) {
-        display: none;
-      }
     }
   }
 }
 
 .app-setting {
-  @apply bg-ui-primary color-white dark-color-dark ;
+  --at-apply: text-white dark-text-dark bg-ui-primary;
 
   position: fixed;
+  inset-inline-end: 0;
   top: calc(50% + 250px);
-  right: 0;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -370,24 +371,28 @@ header:not(.header-leave-active) + .wrapper {
   height: 50px;
   font-size: 24px;
   cursor: pointer;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  border-radius: 5px 0 0 5px;
+
+  [dir="rtl"] & {
+    border-radius: 0 5px 5px 0;
+  }
 
   .icon {
     animation: rotate 5s linear infinite;
   }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
-@keyframes rotate {
-  0% {
-    transform: rotate(0);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
+// 主内容区动画
 .fade-enter-active,
 .slide-left-enter-active,
 .slide-right-enter-active,
@@ -404,7 +409,10 @@ header:not(.header-leave-active) + .wrapper {
   transition: 0.15s;
 }
 
-.fade-enter-from,
+.fade-enter-from {
+  opacity: 0;
+}
+
 .fade-leave-to {
   opacity: 0;
 }
@@ -414,7 +422,11 @@ header:not(.header-leave-active) + .wrapper {
   opacity: 0;
 }
 
-.slide-left-leave-to,
+.slide-left-leave-to {
+  margin-left: -20px;
+  opacity: 0;
+}
+
 .slide-right-enter-from {
   margin-left: -20px;
   opacity: 0;
@@ -430,7 +442,11 @@ header:not(.header-leave-active) + .wrapper {
   opacity: 0;
 }
 
-.slide-top-leave-to,
+.slide-top-leave-to {
+  margin-top: -20px;
+  opacity: 0;
+}
+
 .slide-bottom-enter-from {
   margin-top: -20px;
   opacity: 0;

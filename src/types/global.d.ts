@@ -4,10 +4,10 @@ import type { ComponentRenderProxy, VNode } from 'vue'
 import type { ActionEnum } from '@/enums/commonEnum'
 import type { LocaleType } from '#/config'
 
-declare type RecursiveRequired<T> = {
+type RecursiveRequired<T> = {
   [P in keyof T]-?: RecursiveRequired<T[P]>
 }
-declare type RecursivePartial<T> = {
+type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>
 }
 
@@ -20,25 +20,17 @@ declare type Nullable<T> = T | null
 declare namespace Settings {
   interface app {
     /**
-     * 主题
-     * @默认值 `'light'` 默认主题
-     * @可选值 `'classic'` 绿色主题
-     * @可选值 `'naive'` 橙色主题
-     * @可选值 `'barbie'` 粉色主题
-     * @可选值 `'winter'` 灰色主题
-     * @可选值 `'cyberpunk'` 黄色主题
+     * 亮色主题
+     * @默认值 `'light'`
+     * @可选值 可选择 `/themes/index.ts` 里所有 `color-scheme: light` 的主题
      */
-    lightTheme?: 'light' | 'classic' | 'naive' | 'barbie' | 'winter' | 'cyberpunk'
+    lightTheme?: string
     /**
-     * 主题
-     * @默认值 `'dark'` 默认主题
-     * @可选值 `'dracula'` 绿色主题
-     * @可选值 `'night'` 橙色主题
-     * @可选值 `'luxury'` 粉色主题
-     * @可选值 `'synthwave'` 灰色主题
-     * @可选值 `'stone'` 黄色主题
+     * 暗色主题
+     * @默认值 `'dark'`
+     * @可选值 可选择 `/themes/index.ts` 里所有 `color-scheme: dark` 的主题
      */
-    darkTheme?: 'dark' | 'dracula' | 'night' | 'luxury' | 'synthwave' | 'stone'
+    darkTheme?: string
     /**
      * 颜色方案
      * @默认值 `''` 跟随系统
@@ -47,16 +39,9 @@ declare namespace Settings {
      */
     colorScheme?: '' | 'light' | 'dark'
     /**
-     * Element Plus 组件默认尺寸
-     * @默认值 `'default'` 默认
-     * @可选值 `'large'` 大号
-     * @可选值 `'small'` 小号
-     */
-    elementSize?: 'default' | 'large' | 'small'
-    /**
      * 默认语言
      * @默认值 `''` 跟随浏览器语言设置
-     * @可选值 [查看 Element Plus 支持语言列表](https://github.com/element-plus/element-plus/tree/dev/packages/locale/lang)
+     * @可选值 参考 `/src/locales/index.ts` 里的语言列表
      */
     defaultLang?: LocaleType
     /**
@@ -80,15 +65,15 @@ declare namespace Settings {
      */
     storagePrefix?: string
     /**
-     * 是否在非开发环境开启错误日志功能，具体业务代码在 ./utils/error.log.ts
-     * @默认值 `false`
-     */
-    enableErrorLog?: boolean
-    /**
      * 是否开启页面水印
      * @默认值 `false`
      */
     enableWatermark?: boolean
+    /**
+     * 是否在非开发环境开启错误日志功能，具体业务代码在 `/src/utils/error.log.ts`
+     * @默认值 `false`
+     */
+    enableErrorLog?: boolean
     /**
      * 路由数据来源
      * @默认值 `'frontend'` 前端
@@ -96,20 +81,26 @@ declare namespace Settings {
      * @可选值 `'filesystem'` 文件系统
      */
     routeBaseOn?: 'frontend' | 'backend' | 'filesystem'
-
-    // /**
-    //  * 是否开启应用配置，强烈建议在生产环境中关闭
-    //  * @默认值 `false`
-    //  */
-    // enableAppSetting?: boolean
     /**
-     * 是否开启用户偏好设置，强烈建议在生产环境中关闭
+     * 文字方向
+     * @默认值 `'ltr'` 从左到右
+     * @可选值 `'rtl'` 从右到左
+     */
+    direction?: 'ltr' | 'rtl'
+  }
+  interface userPreferences {
+    /**
+     * 是否开启用户偏好设置
      * @默认值 `false`
      */
-    enableUserPreferences?: boolean
-
+    enable?: boolean
+    /**
+     * 存储位置
+     * @默认值 `'local'` 本地存储
+     * @可选值 `'server'` 服务器存储
+     */
+    storageTo?: 'local' | 'server'
   }
-
   interface home {
     /**
      * 是否开启主页
@@ -127,10 +118,9 @@ declare namespace Settings {
      */
     fullPath?: string
   }
-
   interface layout {
     /**
-     * 页宽模式，当设置为非 `'adaption'` 时，可以去 ./src/assets/styles/layout.scss 里设置 `--g-app-width` 宽度变量
+     * 页宽模式，当设置为非 `'adaption'` 时，可以去 /src/assets/styles/resources/variables.scss 里设置 `$g-app-width` 宽度变量
      * @默认值 `'adaption'` 自适应
      * @可选值 `'adaption-min-width'` 自适应（有最小宽度）
      * @可选值 `'center'` 定宽居中
@@ -143,7 +133,6 @@ declare namespace Settings {
      */
     enableMobileAdaptation?: boolean
   }
-
   interface menu {
     /**
      * 导航栏数据来源，当 `app.routeBaseOn: 'filesystem'` 时生效
@@ -161,7 +150,7 @@ declare namespace Settings {
      */
     menuMode?: 'side' | 'head' | 'single' | 'only-side' | 'only-head'
     /**
-     * 是否圆角
+     * 导航栏是否圆角
      * @默认值 `false`
      */
     isRounded?: boolean
@@ -173,7 +162,6 @@ declare namespace Settings {
      * @可选值 `'dot'` 圆点
      */
     menuActiveStyle?: '' | 'arrow' | 'line' | 'dot'
-
     /**
      * 切换主导航是否跳转页面
      * @默认值 `false`
@@ -195,7 +183,7 @@ declare namespace Settings {
      */
     subMenuCollapse?: boolean
     /**
-     * 次导航是否收起
+     * 次导航是否自动收起
      * @默认值 `false`
      */
     subMenuAutoCollapse?: boolean
@@ -210,37 +198,37 @@ declare namespace Settings {
      */
     enableHotkeys?: boolean
   }
-
   interface topbar {
     /**
      * 模式
-     * @默认值 `'fixed'` 固定
-     * @可选值 `'static'` 静态
-     * @可选值 `'sticky'` 粘性
+     * @默认值 `'static'` 静止，跟随页面滚动
+     * @可选值 `'fixed'` 固定，不跟随页面滚动，始终固定在顶部
+     * @可选值 `'sticky'` 粘性，页面往下滚动时隐藏，往上滚动时显示
      */
     mode?: 'static' | 'fixed' | 'sticky'
     /**
-     * 是否切换显示标签栏和工具栏的显示位置，设置为 false 标签栏在工具栏上面，设置为 true 工具栏在标签栏上面
-     * @默认值 `false`
+     * 是否切换显示标签栏和工具栏的显示位置
+     * @默认值 `false` 标签栏在工具栏上面
+     * @可选值 `true` 工具栏在标签栏上面
      */
     switchTabbarAndToolbar?: boolean
   }
-
   interface tabbar {
     /**
-     * 是否开启
+     * 是否开启标签栏
      * @默认值 `false`
      */
     enable?: boolean
     /**
      * 标签栏风格
-     * @默认值 `'fashion'` 时尚
+     * @默认值 `''` 默认
+     * @可选值 `'fashion'` 时尚
      * @可选值 `'card'` 卡片
      * @可选值 `'square'` 方块
      */
-    style?: 'fashion' | 'card' | 'square'
+    style?: '' | 'fashion' | 'card' | 'square'
     /**
-     * 是否开启图标
+     * 是否开启标签栏图标显示
      * @默认值 `false`
      */
     enableIcon?: boolean
@@ -252,7 +240,7 @@ declare namespace Settings {
      */
     mergeTabsBy?: '' | 'routeName' | 'activeMenu'
     /**
-     * 是否启用记忆功能
+     * 是否开启标签栏记忆功能
      * @默认值 `false`
      */
     enableMemory?: boolean
@@ -262,21 +250,21 @@ declare namespace Settings {
      */
     enableHotkeys?: boolean
     /**
-     *  @默认值 `'local'` 本地
-     *  @可选值 `'server'` 服务器
+     * 固定标签页存储位置
+     * @默认值 `'local'` 本地存储
+     * @可选值 `'server'` 服务器存储
      */
     storageTo?: 'local' | 'server'
   }
-
   interface toolbar {
     /**
      * 是否开启收藏夹
-     * @默认值 `true`
+     * @默认值 `false`
      */
     favorites?: boolean
     /**
      * 是否开启面包屑导航
-     * @默认值 `false`
+     * @默认值 `true`
      */
     breadcrumb?: boolean
     /**
@@ -309,14 +297,25 @@ declare namespace Settings {
      * @默认值 `false`
      */
     colorScheme?: boolean
-    layout?: ['favorites', 'breadcrumb', '->', 'navSearch', 'notification', 'i18n', 'fullscreen', 'pageReload', 'colorScheme']
+    /**
+     * 布局设置，可自定义摆放位置和顺序，其中 `->` 为分隔符，用于分隔左右两侧的工具栏。修改时请确保默认值里的所有值都存在，不可删减。
+     * @默认值 `['favorites', 'breadcrumb', '->', 'navSearch', 'notification', 'i18n', 'fullscreen', 'pageReload', 'colorScheme']`
+     */
+    layout?: (Exclude<keyof toolbar, 'layout'> | '->')[]
   }
-
+  interface favorites {
+    /**
+     * 存储位置
+     * @默认值 `'local'` 本地存储
+     * @可选值 `'server'` 服务器存储
+     */
+    storageTo?: 'local' | 'server'
+  }
   interface breadcrumb {
     /**
      * 面包屑导航风格
      * @默认值 `''` 默认
-     * @默认值 `'modern'` 现代
+     * @可选值 `'modern'` 现代
      */
     style?: '' | 'modern'
     /**
@@ -325,15 +324,6 @@ declare namespace Settings {
      */
     enableMainMenu?: boolean
   }
-
-  interface favorites {
-    /**
-     * @默认值 `'local'` 本地
-     * @可选值 `'server'` 服务器
-     */
-    storageTo?: 'local' | 'server'
-  }
-
   interface mainPage {
     /**
      * 是否开启页面快捷键
@@ -341,26 +331,25 @@ declare namespace Settings {
      */
     enableHotkeys?: boolean
     /**
+     * iframe 页面最大缓存数量
+     * @默认值 `3`
+     */
+    iframeCacheMax?: number
+    /**
      * 是否开启页面切换动画
      * @默认值 `true`
      */
     enableTransition?: boolean
     /**
      * 页面切换动画
-     * @默认值 `'fade'` 淡入淡出`
-     * @可选值 `'slide-left'` 从左侧滑入
-     * @可选值 `'slide-right'` 从右侧滑入
-     * @可选值 `'slide-top'` 从顶部滑入
-     * @可选值 `'slide-bottom'` 从底部滑入
+     * @默认值 `'fade'` 淡入淡出
+     * @可选值 `'slide-left'` 向左滑动
+     * @可选值 `'slide-right'` 向右滑动
+     * @可选值 `'slide-top'` 向上滑动
+     * @可选值 `'slide-bottom'` 向下滑动
      */
     transitionMode?: 'fade' | 'slide-left' | 'slide-right' | 'slide-top' | 'slide-bottom'
-    /**
-     * iframe 页面最大缓存数量
-     * @默认值 `3`
-     */
-    iframeCacheMax?: number
   }
-
   interface navSearch {
     /**
      * 是否开启导航搜索快捷键
@@ -368,26 +357,25 @@ declare namespace Settings {
      */
     enableHotkeys?: boolean
   }
-
   interface copyright {
     /**
      * 是否开启底部版权，同时在路由 meta 对象里可以单独设置某个路由是否显示底部版权信息
-     * @默认值 `true`
+     * @默认值 `false`
      */
     enable?: boolean
     /**
      * 网站运行日期
-     * @默认值 `'2020-2022'`
+     * @默认值 `''`
      */
     dates?: string
     /**
      * 公司名称
-     * @默认值 `'admin'`
+     * @默认值 `''`
      */
     company?: string
     /**
      * 网站地址
-     * @默认值 `'https://lmx.gitee.io/admin/'`
+     * @默认值 `''`
      */
     website?: string
     /**
@@ -396,10 +384,11 @@ declare namespace Settings {
      */
     beian?: string
   }
-
   interface all {
     /** 应用设置 */
     app?: app
+    /** 用户偏好设置 */
+    userPreferences?: userPreferences
     /** 主页设置 */
     home?: home
     /** 布局设置 */
@@ -412,18 +401,19 @@ declare namespace Settings {
     tabbar?: tabbar
     /** 工具栏设置 */
     toolbar?: toolbar
+    /** 收藏夹设置 */
+    favorites?: favorites
     /** 面包屑导航设置 */
     breadcrumb?: breadcrumb
     /** 页面设置 */
     mainPage?: mainPage
     /** 导航搜索设置 */
     navSearch?: navSearch
-    /** 收藏夹设置 */
-    favorites?: favorites
     /** 底部版权设置 */
     copyright?: copyright
   }
 }
+
 declare module 'vue-router' {
   interface RouteMeta {
     title?: string | (() => string)
@@ -434,43 +424,25 @@ declare module 'vue-router' {
     alwaysOpened?: boolean
     permanent?: boolean
     auth?: string | string[]
+    auths?: {
+      name: string
+      value: string
+    }[]
     sidebar?: boolean
     menu?: boolean
-    breadcrumb?: boolean
-    singleMenu?: boolean
     activeMenu?: string
+    singleMenu?: boolean
+    breadcrumb?: boolean
     cache?: boolean | string | string[]
     noCache?: string | string[]
-    badge?: boolean | string | number | Function
+    badge?: boolean | string | number | (() => boolean | string | number)
+    newWindow?: boolean
     iframe?: string
     link?: string
-    newWindow?: boolean
     copyright?: boolean
     paddingBottom?: string
     whiteList?: boolean
     breadcrumbNeste?: Route.breadcrumb[]
-  }
-}
-interface CustomTitleList {
-  fullPath: string
-  title?: string
-}
-
-declare global {
-  namespace JSX {
-    // tslint:disable no-empty-interface
-    type Element = VNode
-    // tslint:disable no-empty-interface
-    type ElementClass = ComponentRenderProxy
-    interface ElementAttributesProperty {
-      $props: any
-    }
-    interface IntrinsicElements {
-      [elem: string]: any
-    }
-    interface IntrinsicAttributes {
-      [elem: string]: any
-    }
   }
 }
 
@@ -482,12 +454,13 @@ declare namespace Route {
       icon?: string
       activeIcon?: string
       auth?: string | string[]
-      customTitleList?: CustomTitleList[]
-
+      auths?: {
+        name: string
+        value: string
+      }[]
     }
     children: RouteRecordRaw[]
   }
-
   interface breadcrumb {
     path: string
     title?: string | (() => string)
@@ -501,25 +474,22 @@ declare namespace Route {
 declare namespace Menu {
   /** 原始 */
   interface recordRaw {
-    id?: string
-    parentId?: string
     path?: string
     meta?: {
       title?: string | (() => string)
+      i18n?: string
       icon?: string
       activeIcon?: string
-      i18n?: string
       defaultOpened?: boolean
       alwaysOpened?: boolean
-      newWindow?: boolean
       auth?: string | string[]
       menu?: boolean
-      badge?: boolean | number | string | Function
+      badge?: boolean | string | number | (() => boolean | string | number)
+      newWindow?: boolean
       link?: string
     }
     children?: recordRaw[]
   }
-
   /** 主导航 */
   interface recordMainRaw {
     meta?: {
@@ -528,53 +498,11 @@ declare namespace Menu {
       icon?: string
       activeIcon?: string
       auth?: string | string[]
-      sidebar?: boolean
     }
     children: recordRaw[]
   }
-
-  /** 列表 */
-  interface raw {
-    id: string
-    parentId: string
-    sortValue: number
-    pid: string
-    name: string
-    path: string
-    redirect: string
-    component: string
-    resourceType: string
-    auths: auths[]
-
-    title?: string
-    icon?: string
-    activeIcon?: string
-    meta: {
-      i18n?: string
-      defaultOpened?: boolean
-      permanent?: boolean
-      auth: string[]
-      sidebar?: boolean
-      breadcrumb?: boolean
-      copyright?: boolean
-      cache: boolean | string[]
-      noCache: string[]
-      badge: number | string
-      link?: string
-      iframe?: string
-      paddingBottom?: string
-      activeMenu?: string
-    }
-    children?: raw[]
-  }
-
-  interface auths {
-    id: string | undefined
-    name: string
-    code: string
-    sortValue: number
-  }
 }
+
 declare namespace Tabbar {
   interface recordRaw {
     tabId: string
@@ -587,9 +515,21 @@ declare namespace Tabbar {
     icon?: string
     activeIcon?: string
     name: string[]
-    customTitleList: CustomTitleList[]
+    customTitleList: {
+      fullPath: string
+      title: string
+    }[]
     isPin: boolean
     isPermanent: boolean
+  }
+}
+
+declare namespace Favorites {
+  interface recordRaw {
+    fullPath: string
+    title?: string | (() => string)
+    i18n?: string
+    icon?: string
   }
 }
 
@@ -602,11 +542,9 @@ declare namespace Iframe {
   }
 }
 
-declare namespace App {
-
-  // interface I18nTitle {
-  //   (key: string | undefined | (() => string) | Function): string
-  // }
+interface CustomTitleList {
+  fullPath: string
+  title?: string
 }
 
 declare global {
@@ -656,5 +594,23 @@ declare type TreeConfig<T = any> = Recordable & {
   }
   batch: {
     selectionDataList: []
+  }
+}
+
+declare global {
+  namespace JSX {
+    // tslint:disable no-empty-interface
+    type Element = VNode
+    // tslint:disable no-empty-interface
+    type ElementClass = ComponentRenderProxy
+    interface ElementAttributesProperty {
+      $props: any
+    }
+    interface IntrinsicElements {
+      [elem: string]: any
+    }
+    interface IntrinsicAttributes {
+      [elem: string]: any
+    }
   }
 }

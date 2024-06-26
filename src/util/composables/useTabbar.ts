@@ -1,16 +1,17 @@
 import type { RouteLocationRaw } from 'vue-router'
 import Message from 'vue-m-message'
+import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar'
-import useSettingsStore from '@/store/modules/settings.ts'
 
 export default function useTabbar() {
   const route = useRoute()
   const router = useRouter()
+
   const settingsStore = useSettingsStore()
   const tabbarStore = useTabbarStore()
 
   function getId() {
-    return settingsStore.settings.tabbar.mergeTabsBy === 'activeMenu' ? route.meta.activeMenu ?? route.fullPath : route.fullPath
+    return settingsStore.settings.tabbar.mergeTabsBy === 'activeMenu' ? (route.meta.activeMenu ?? route.fullPath) : route.fullPath
   }
 
   function open(to: RouteLocationRaw) {
@@ -115,7 +116,7 @@ export default function useTabbar() {
    */
   function checkCloseOtherSide(tabId = getId()) {
     return tabbarStore.list.some((item) => {
-      return item.tabId !== tabId
+      return !item.isPermanent && !item.isPin && item.tabId !== tabId
     })
   }
 
@@ -130,7 +131,7 @@ export default function useTabbar() {
     else {
       const index = tabbarStore.list.findIndex(item => item.tabId === tabId)
       flag = tabbarStore.list.some((item, i) => {
-        return i < index && item.tabId !== tabId
+        return i < index && !item.isPermanent && !item.isPin && item.tabId !== tabId
       })
     }
     return flag
@@ -147,7 +148,7 @@ export default function useTabbar() {
     else {
       const index = tabbarStore.list.findIndex(item => item.tabId === tabId)
       flag = tabbarStore.list.some((item, i) => {
-        return i >= index && item.tabId !== tabId
+        return i >= index && !item.isPermanent && !item.isPin && item.tabId !== tabId
       })
     }
     return flag

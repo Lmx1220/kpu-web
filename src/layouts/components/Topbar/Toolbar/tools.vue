@@ -1,115 +1,43 @@
-<script lang="ts" setup>
-import useSettingsStore from '@/store/modules/settings.ts'
+<script setup lang="ts">
+import { pascalCase } from 'scule'
+import type { Settings } from '#/global'
+import useSettingsStore from '@/store/modules/settings'
 
 defineOptions({
   name: 'ToolbarTools',
 })
+
 const props = defineProps<{
-  model?: string
+  mode: 'left-side' | 'right-side'
 }>()
-const modules = import.meta.glob('./*/index.vue', {
-  eager: true,
-  import: 'default',
-})
+
+const modules = import.meta.glob('./*/index.vue', { import: 'default', eager: true })
+
 const settingsStore = useSettingsStore()
-const components = computed(() => {
+
+const tools = computed(() => {
   const index = settingsStore.settings.toolbar.layout.findIndex(item => item === '->')
-  const components: string[] = []
-  if (props.model === 'left-side') {
+  const tools: Exclude<keyof Settings.toolbar, 'layout'>[] = []
+  if (props.mode === 'left-side') {
     settingsStore.settings.toolbar.layout.forEach((item, i) => {
-      i < index && item !== '->' && components.push(item)
+      if (i < index && item !== '->') {
+        tools.push(item)
+      }
     })
   }
   else {
     settingsStore.settings.toolbar.layout.forEach((item, i) => {
-      i > index && item !== '->' && components.push(item)
-    },
-    )
+      if (i > index && item !== '->') {
+        tools.push(item)
+      }
+    })
   }
-  return components
+  return tools
 })
-
-const specialChars: string[] = ['-', '_', '/', '.']
-
-function isUpperCase(char: string): boolean {
-  return char === char.toUpperCase() && char !== char.toLowerCase()
-}
-
-function splitStringBySpecialChars(input: string, specialCharsArray?: string[]): string[] {
-  const specialCharsToUse = specialCharsArray ?? specialChars
-  const result: string[] = []
-
-  if (!input || typeof input !== 'string') {
-    return result
-  }
-
-  let temp: string = ''
-  let prevIsSpecialChar: boolean | undefined
-  let currentIsSpecialChar: boolean
-
-  for (const char of input) {
-    currentIsSpecialChar = specialCharsToUse.includes(char)
-
-    if (currentIsSpecialChar) {
-      if (temp.length > 0) {
-        result.push(temp)
-        temp = ''
-      }
-      prevIsSpecialChar = true
-      continue
-    }
-
-    const isUpper = isUpperCase(char)
-
-    if (prevIsSpecialChar === false && isUpper) {
-      if (temp.length > 0) {
-        result.push(temp)
-        temp = char
-      }
-      prevIsSpecialChar = isUpper
-      continue
-    }
-
-    if (prevIsSpecialChar === true && !isUpper && temp.length > 1) {
-      const lastChar = temp.charAt(temp.length - 1)
-      result.push(temp.slice(0, Math.max(0, temp.length - 1)))
-      temp = lastChar + char
-      prevIsSpecialChar = isUpper
-      continue
-    }
-
-    temp += char
-    prevIsSpecialChar = isUpper
-  }
-
-  if (temp.length > 0) {
-    result.push(temp)
-  }
-
-  return result
-}
-
-function capitalizeFirstLetter(string: string): string {
-  return string ? string[0].toUpperCase() + string.slice(1) : ''
-}
-
-interface TransformStringOptions {
-  normalize?: boolean
-}
-
-// console.log(modules['./NavSearch/index.vue'])
-function transformString(input: string | string[], options?: TransformStringOptions): string {
-  return input ? (Array.isArray(input) ? input : splitStringBySpecialChars(input)).map(item => capitalizeFirstLetter(options != null && options.normalize ? item.toLowerCase() : item)).join('') : ''
-}
 </script>
 
 <template>
-  <Component :is="modules[`./${transformString(item)}/index.vue`]" v-for="item in components" :key="item" />
-<!--  <NavSearch /> -->
+  <template v-for="item in tools" :key="item">
+    <Component :is="modules[`./${pascalCase(item)}/index.vue`]" v-if="settingsStore.settings.toolbar[item]" />
+  </template>
 </template>
-
-<style lang="scss" scoped>
-  .item {
-    --at-apply: flex px-2 py-1 cursor-pointer;
-  }
-</style>

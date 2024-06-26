@@ -68,9 +68,13 @@ router.beforeEach(async (to, from, next) => {
       }
     }
     else {
+      // 获取用户权限
       settingsStore.settings.app.enablePermission && await userStore.getPermissions()
-      settingsStore.settings.app.enableUserPreferences && await userStore.getPreferences()
+      // 获取用户偏好设置
+      settingsStore.settings.userPreferences.enable && await userStore.getPreferences()
+      // 复原固定标签页
       settingsStore.settings.tabbar.enable && await tabbarStore.recoveryStorage()
+      // 复原收藏夹
       settingsStore.settings.toolbar.favorites && await favoritesStore.recoveryStorage()
       switch (settingsStore.settings.app.routeBaseOn) {
         case 'frontend':
@@ -93,7 +97,7 @@ router.beforeEach(async (to, from, next) => {
           break
       }
       // 重置路由
-      const removeRoutes: Function[] = []
+      const removeRoutes: (() => void)[] = []
       // 生成路由
       routeStore.flatRoutes.forEach((route) => {
         if (!/^(?:https?:|mailto:|tel:)/.test(route.path)) {
@@ -133,14 +137,17 @@ router.afterEach((to, from) => {
   const keepAliveStore = useKeepAliveStore()
   const iframeStore = useIframeStore()
   settingsStore.settings.app.enableProgress && (isLoading.value = false)
-
+  // 设置页面 title
   if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
-    settingsStore.setTitle(to.meta.breadcrumbNeste?.at(-1)?.title ?? to.meta.title, false)
+    settingsStore.setTitle(to.meta.breadcrumbNeste?.at(-1)?.title ?? to.meta.title)
   }
   else {
-    settingsStore.setTitle(to.meta.title, false)
+    settingsStore.setTitle(to.meta.title)
   }
   if (to.fullPath !== from.fullPath) {
+    /**
+     * 处理普通页面的缓存
+     */
     // 判断当前页面是否开启缓存，如果开启，则将当前页面的 name 信息存入 keep-alive 全局状态
     if (to.meta.cache && !to.meta.iframe) {
       const componentName = to.matched.at(-1)?.components?.default.name
@@ -148,7 +155,8 @@ router.afterEach((to, from) => {
         keepAliveStore.add(componentName)
       }
       else {
-        console.warn('该页面组件未设置组件名，会导致缓存失效，请检查')
+        // turbo-console-disable-next-line
+        console.warn('[Fantastic-admin] 该页面组件未设置组件名，会导致缓存失效，请检查')
       }
     }
     // 判断离开页面是否开启缓存，如果开启，则根据缓存规则判断是否需要清空 keep-alive 全局状态里离开页面的 name 信息
@@ -189,37 +197,45 @@ router.afterEach((to, from) => {
         }
       }
     }
+    /**
+     * 处理 iframe 页面的缓存
+     */
     if (to.meta.iframe) {
       iframeStore.open(to.fullPath)
-      if (from.meta.iframe) {
-        if (from.meta.cache) {
-          switch (typeof from.meta.cache) {
+    }
+    if (from.meta.iframe) {
+      if (from.meta.cache) {
+        switch (typeof from.meta.cache) {
+          case 'string':
+            if (from.meta.cache !== to.name) {
+              iframeStore.close(from.fullPath)
+            }
+            break
+          case 'object':
+            if (!from.meta.cache.includes(to.name as string)) {
+              iframeStore.close(from.fullPath)
+            }
+            break
+        }
+        if (from.meta.noCache) {
+          switch (typeof from.meta.noCache) {
             case 'string':
-              if (from.meta.cache !== to.name) {
+              if (from.meta.noCache === to.name) {
                 iframeStore.close(from.fullPath)
               }
               break
             case 'object':
-              from.meta.cache.includes(to.name as string) || iframeStore.close(from.fullPath)
+              if (from.meta.noCache.includes(to.name as string)) {
+                iframeStore.close(from.fullPath)
+              }
               break
           }
-          if (from.meta.noCache) {
-            switch (typeof from.meta.noCache) {
-              case 'string':
-                if (from.meta.noCache === to.name) {
-                  iframeStore.close(from.fullPath)
-                }
-                break
-              case 'object':
-                from.meta.noCache.includes(to.name as string) && iframeStore.close(from.fullPath)
-                break
-            }
-          }
-          // 如果进入的是 reload 页面，则也将离开页面的缓存清空
-          if (to.name === 'reload') {
-            iframeStore.close(from.fullPath)
-          }
         }
+        if (to.name === 'reload') {
+          iframeStore.close(from.fullPath)
+        }
+      }
+      else {
         iframeStore.close(from.fullPath)
       }
     }

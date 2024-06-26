@@ -1,18 +1,12 @@
-import type { RouteLocationNormalizedLoaded, RouteRecordRedirectOption } from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 import useSettingsStore from './settings'
 import useUserStore from './user'
+import useMenuStore from './menu'
+import { favorites, favoritesEdit } from '@/api/modules/user'
 import { resolveRoutePath } from '@/util'
 import storage from '@/util/storage'
-import api from '@/api'
-import useMenuStore from '@/store/modules/menu.ts'
-import type { Menu } from '#/global'
+import type { Favorites, Menu } from '#/global'
 
-interface Favorite {
-  fullPath: string
-  title?: string | Function
-  i18n?: string
-  icon?: string
-}
 const useFavoritesStore = defineStore(
   // 唯一ID
   'favorites',
@@ -20,101 +14,96 @@ const useFavoritesStore = defineStore(
     const settingsStore = useSettingsStore()
     const userStore = useUserStore()
     const menuStore = useMenuStore()
-    // const menuStore = useMenuStore()
-    const list = ref<Favorite[]>([])
-    function hasChildren(route: Menu.recordRaw) {
+
+    const list = ref<Favorites.recordRaw[]>([])
+
+    function hasChildren(item: Menu.recordRaw) {
       let flag = true
-      if (route.children) {
-        if (route.children.every(item => item.meta?.menu === false)) {
-          flag = false
-        }
-      }
-      else {
+      if (item.children?.every(i => i.meta?.menu === false)) {
         flag = false
       }
       return flag
     }
-    function generateRoutePaths(route: Menu.recordRaw[], currentPath?: string) {
-      const routePaths: RouteRecordRedirectOption[] = []
-      route.forEach((route) => {
-        if (route.meta?.menu !== false) {
-          if (route.children && hasChildren(route)) {
-            routePaths.push(...generateRoutePaths(route.children, resolveRoutePath(currentPath, route.path)))
+    function getSourceListByMenus(arr: Menu.recordRaw[], basePath?: string) {
+      const list: string[] = []
+      arr.forEach((item) => {
+        if (item.meta?.menu !== false) {
+          if (item.children && hasChildren(item)) {
+            list.push(...getSourceListByMenus(item.children, resolveRoutePath(basePath, item.path)))
           }
           else {
-            routePaths.push(route.path ?? resolveRoutePath(currentPath, route.path))
+            list.push(item.path as string ?? resolveRoutePath(basePath, item.path))
           }
         }
       })
-      return routePaths
+      return list
     }
 
-    const routeList = computed(() => {
-      const routes: RouteRecordRedirectOption[] = []
-
-      menuStore.allMenus.forEach((route) => {
-        routes.push(...generateRoutePaths(route.children))
+    const flatSidebarMenu = computed(() => {
+      const list: string[] = []
+      menuStore.allMenus.forEach((item) => {
+        list.push(...getSourceListByMenus(item.children))
       })
-
-      return routes
+      return list
     })
-    function canAdd(path: string) {
-      return routeList.value.includes(path)
-    }
 
-    function isAdd(path: string) {
-      return list.value.some(item => item.fullPath === path)
+    // 判断路由是否可添加进收藏夹
+    function canAdd(fullPath: Favorites.recordRaw['fullPath']) {
+      return flatSidebarMenu.value.includes(fullPath)
     }
-    function add(route: RouteLocationNormalizedLoaded) {
+    // 判断路由是否已经添加进收藏夹
+    function isAdd(fullPath: Favorites.recordRaw['fullPath']) {
+      return list.value.some(item => item.fullPath === fullPath)
+    }
+    // 新增收藏
+    function add(route: RouteLocationNormalized) {
       const meta = route.matched.at(-1)?.meta
-      list.value.find(item => item.fullPath === route.fullPath) || list.value.push({
-        fullPath: route.fullPath,
-        title: meta?.title,
-        i18n: meta?.i18n,
-        icon: meta?.icon || meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon,
+      if (!list.value.find(item => item.fullPath === route.fullPath)) {
+        list.value.push({
+          fullPath: route.fullPath,
+          title: meta?.title,
+          i18n: meta?.i18n,
+          icon: meta?.icon ?? meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon,
+        })
+      }
+      updateStorage()
+    }
+    // 删除收藏
+    function remove(fullPath: Favorites.recordRaw['fullPath']) {
+      list.value = list.value.filter((item) => {
+        return item.fullPath !== fullPath
       })
       updateStorage()
     }
-    function remove(path: string) {
-      list.value = list.value.filter(item => item.fullPath !== path)
-      updateStorage()
-    }
+    // 拖拽排序
     function sort(newIndex: number, oldIndex: number) {
       list.value.splice(newIndex, 0, list.value.splice(oldIndex, 1)[0])
       updateStorage()
     }
-
-    // 修改固定标签页
+    // 更新 storage 数据
     async function updateStorage() {
-      if (settingsStore.settings.tabbar.storageTo === 'local') {
-        const favoritesData = storage.local.has('favoritesData') ? JSON.parse(`${storage.local.get('favoritesData')}`) : {}
+      if (settingsStore.settings.favorites.storageTo === 'local') {
+        const favoritesData = storage.local.has('favoritesData') ? JSON.parse(storage.local.get('favoritesData') as string) : {}
         favoritesData[userStore.account] = list.value
         storage.local.set('favoritesData', JSON.stringify(favoritesData))
       }
-      else {
-        settingsStore.settings.tabbar.storageTo === 'server' && await api.post({
-          url: '/member/favorites/edit',
-          data: {
-            tabbar: JSON.stringify(list.value),
-          },
-        })
+      else if (settingsStore.settings.favorites.storageTo === 'server') {
+        await favoritesEdit(JSON.stringify(list.value))
       }
     }
-    // 根据 localstorage 数据复原当前帐号的固定标签页
+    // 根据 storage 数据复原当前帐号的标签页
     async function recoveryStorage() {
       if (settingsStore.settings.favorites.storageTo === 'local') {
-        storage.local.has('favoritesData') && list.value.push(...JSON.parse(`${storage.local.get('favoritesData')}`)[userStore.account] || [])
+        if (storage.local.has('favoritesData')) {
+          list.value = JSON.parse(storage.local.get('favoritesData') as string)[userStore.account] || []
+        }
       }
       else if (settingsStore.settings.favorites.storageTo === 'server') {
-        const res = await api.get<any>({
-          url: '/member/favorites/edit',
-          data: {
-            tabbar: JSON.stringify(list.value),
-          },
-        })
-        list.value.push(...JSON.parse(res.favorites || '[]'))
+        const res = await favorites()
+        list.value = JSON.parse(res.data.favorites || '[]')
       }
     }
+
     return {
       list,
       canAdd,
@@ -126,4 +115,5 @@ const useFavoritesStore = defineStore(
     }
   },
 )
+
 export default useFavoritesStore

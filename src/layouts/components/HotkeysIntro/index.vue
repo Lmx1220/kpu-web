@@ -5,6 +5,7 @@ import useSettingsStore from '@/store/modules/settings'
 defineOptions({
   name: 'HotkeysIntro',
 })
+
 const isShow = ref(false)
 
 const settingsStore = useSettingsStore()
@@ -19,34 +20,29 @@ onMounted(() => {
 <template>
   <HDialog v-model="isShow" title="快捷键介绍">
     <div class="px-4">
-      <div class="grid gap-2 md:grid-cols-2">
+      <div class="grid gap-2 sm:grid-cols-2">
         <div>
           <h2 class="m-0 text-lg font-bold">
             全局
           </h2>
-          <ul class="list-none pl-4 text-sm">
+          <ul class="list-none ps-4 text-sm">
             <li class="py-1">
               <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
               <HKbd>I</HKbd>
               查看系统信息
             </li>
-            <li
-              v-if="settingsStore.settings.toolbar.navSearch && settingsStore.settings.navSearch.enableHotkeys"
-              class="py-1"
-            >
+            <li v-if="settingsStore.settings.toolbar.navSearch && settingsStore.settings.navSearch.enableHotkeys" class="py-1">
               <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
               <HKbd>S</HKbd>
               唤起导航搜索
             </li>
           </ul>
         </div>
-        <div
-          v-if="settingsStore.settings.menu.enableHotkeys && ['side', 'head'].includes(settingsStore.settings.menu.menuMode)"
-        >
+        <div v-if="settingsStore.settings.menu.enableHotkeys && ['side', 'head'].includes(settingsStore.settings.menu.menuMode)">
           <h2 class="m-0 text-lg font-bold">
             主导航
           </h2>
-          <ul class="list-none pl-4 text-sm">
+          <ul class="list-none ps-4 text-sm">
             <li class="py-1">
               <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
               <HKbd>`</HKbd>
@@ -54,19 +50,19 @@ onMounted(() => {
             </li>
           </ul>
         </div>
-        <div v-if="settingsStore.settings.tabbar.enableHotkeys">
+        <div v-if="settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.enableHotkeys">
           <h2 class="m-0 text-lg font-bold">
-            主导航
+            标签栏
           </h2>
-          <ul class="list-none pl-4 text-sm">
+          <ul class="list-none ps-4 text-sm">
             <li class="py-1">
               <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>Q</HKbd>
+              <HKbd>←</HKbd>
               切换到上一个标签页
             </li>
             <li class="py-1">
               <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>E</HKbd>
+              <HKbd>→</HKbd>
               切换到下一个标签页
             </li>
             <li class="py-1">
@@ -76,7 +72,7 @@ onMounted(() => {
             </li>
             <li class="py-1">
               <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>1-9</HKbd>
+              <HKbd>1~9</HKbd>
               切换到第 n 个标签页
             </li>
             <li class="py-1">
@@ -86,11 +82,11 @@ onMounted(() => {
             </li>
           </ul>
         </div>
-        <div v-if="settingsStore.settings.tabbar.enableHotkeys">
+        <div v-if="settingsStore.settings.mainPage.enableHotkeys">
           <h2 class="m-0 text-lg font-bold">
             页面
           </h2>
-          <ul class="list-none pl-4 text-sm">
+          <ul class="list-none ps-4 text-sm">
             <li class="py-1">
               <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
               <HKbd>↑</HKbd>
@@ -107,7 +103,3 @@ onMounted(() => {
     </div>
   </HDialog>
 </template>
-
-<style lang="scss" scoped>
-// scss
-</style>

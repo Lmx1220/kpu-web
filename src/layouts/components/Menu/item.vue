@@ -1,6 +1,7 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import type { SubMenuItemProps } from './types'
-import { i18nTitleInjectionKey, rootMenuInjectionKey } from './types'
+import { rootMenuInjectionKey } from './types'
+import { i18nTitleInjectionKey } from '@/util/injectionKeys'
 
 const props = withDefaults(
   defineProps<SubMenuItemProps>(),
@@ -11,15 +12,16 @@ const props = withDefaults(
     alwaysExpand: false,
   },
 )
-const i18nTitle = inject(i18nTitleInjectionKey)!
+
 const rootMenu = inject(rootMenuInjectionKey)!
+const generateI18nTitle = inject(i18nTitleInjectionKey, Function, true)
 
 const itemRef = ref<HTMLElement>()
 
 const isActived = computed(() => {
   return props.subMenu
-    ? rootMenu.subMenus[props.uniqueKey[props.uniqueKey.length - 1]]?.active
-    : rootMenu.activeIndex === props.uniqueKey[props.uniqueKey.length - 1]
+    ? rootMenu.subMenus[props.uniqueKey.at(-1)!].active
+    : rootMenu.activeIndex === props.uniqueKey.at(-1)!
 })
 
 const isItemActive = computed(() => {
@@ -27,16 +29,22 @@ const isItemActive = computed(() => {
 })
 
 const icon = computed(() => {
-  let icon = props.item.meta?.icon
-  if (isActived.value && props.item.meta?.activeIcon) {
-    icon = props.item.meta?.activeIcon
+  let icon
+  if (props.item.meta?.icon) {
+    icon = props.item.meta.icon
+  }
+  if (isActived.value) {
+    if (props.item.meta?.activeIcon) {
+      icon = props.item.meta.activeIcon
+    }
   }
   return icon
 })
+
 // 缩进样式
 const indentStyle = computed(() => {
   return !rootMenu.isMenuPopup
-    ? `padding-left: ${20 * (props.level ?? 0)}px`
+    ? `padding-inline-start: ${20 * (props.level ?? 0)}px`
     : ''
 })
 
@@ -47,94 +55,85 @@ defineExpose({
 
 <template>
   <div
-    ref="itemRef" :class="{
+    ref="itemRef" class="menu-item relative transition-all" :class="{
       'active': isItemActive,
       'px-2 py-1': rootMenu.props.rounded,
-      'px-1! py-2!': rootMenu.props.rounded && rootMenu.isMenuPopup && props.level === 0 && rootMenu.props.mode === 'horizontal',
-    }" class="menu-item relative transition-all"
+      'px-1! py-2!': rootMenu.props.rounded && rootMenu.isMenuPopup && level === 0 && rootMenu.props.mode === 'horizontal',
+    }"
   >
-    <RouterLink v-slot="{ href, navigate }" custom :to="uniqueKey.at(-1) ?? ''">
-      <HTooltip
-        :enable="rootMenu.isMenuPopup && level === 0 && !subMenu"
-        :text="i18nTitle(item.meta?.title)"
-        placement="right" class="h-full w-full"
-      >
+    <router-link v-slot="{ href, navigate }" custom :to="uniqueKey.at(-1) ?? ''">
+      <HTooltip :enable="rootMenu.isMenuPopup && level === 0 && !subMenu" :text="generateI18nTitle(item.meta?.title)" placement="right" class="h-full w-full">
         <component
           :is="subMenu ? 'div' : 'a'" v-bind="{
             ...(!subMenu && {
               href: item.meta?.link ? item.meta.link : href,
-              target: item.meta?.link ? '_blank' : '_self',
+              target: item.meta?.newWindow || item.meta?.link ? '_blank' : '_self',
               class: 'no-underline',
             }),
-          }" class="group menu-item-container h-full w-full flex items-center justify-between gap-1 px-5 py-4"
-          :class="{
-            ...rootMenu.isMenuPopup || !props.alwaysExpand ? {
-              'cursor-pointer text-[var(--g-sub-sidebar-menu-color)] transition-all hover-bg-[var(--g-sub-sidebar-menu-hover-bg)] hover-text-[var(--g-sub-sidebar-menu-hover-color)]': true,
-              'text-[var(--g-sub-sidebar-menu-active-color)]! bg-[var(--g-sub-sidebar-menu-active-bg)]!': isItemActive,
-              'rounded-2': rootMenu.props.rounded,
-              'px-2!': rootMenu.isMenuPopup && level === 0,
-              'py-3!': rootMenu.props.rounded && rootMenu.isMenuPopup && level !== 0 }
+          }" class="group menu-item-container h-full w-full flex items-center justify-between gap-1 px-5 py-4" :class="{
+            ...(rootMenu.isMenuPopup || !alwaysExpand
+              ? {
+                'cursor-pointer text-[var(--g-sub-sidebar-menu-color)] transition-all hover:(bg-[var(--g-sub-sidebar-menu-hover-bg)] text-[var(--g-sub-sidebar-menu-hover-color)])': true,
+                'text-[var(--g-sub-sidebar-menu-active-color)]! bg-[var(--g-sub-sidebar-menu-active-bg)]!': isItemActive,
+                'rounded-2': rootMenu.props.rounded,
+                'px-3!': rootMenu.isMenuPopup && level === 0,
+                'py-3!': rootMenu.props.rounded && rootMenu.isMenuPopup && level !== 0,
+              }
               : {
                 'py-2! opacity-30': true,
-              },
-          }" :title="i18nTitle(item.meta?.title)" v-on="{
+              }
+            ),
+          }" :title="generateI18nTitle(item.meta?.title)" v-on="{
             ...(!subMenu && {
               click: navigate,
             }),
           }"
         >
           <div
-            :class="{
+            class="inline-flex flex-1 items-center justify-center gap-[12px]" :class="{
               'flex-col': rootMenu.isMenuPopup && level === 0 && rootMenu.props.mode === 'vertical',
               'gap-1!': rootMenu.isMenuPopup && level === 0 && rootMenu.props.showCollapseName,
               'w-full': rootMenu.isMenuPopup && level === 0 && rootMenu.props.showCollapseName && rootMenu.props.mode === 'vertical',
-            }" :style="indentStyle" class="inline-flex flex-1 items-center justify-center gap-[12px]"
+            }" :style="indentStyle"
           >
             <SvgIcon
-              v-if="icon" :name="icon" :size="20"
-              async class="menu-item-container-icon"
-              :class="{
-                'transition-transform group-hover-scale-120': rootMenu.isMenuPopup || !props.alwaysExpand,
+              v-if="icon" :name="icon" :size="20" class="menu-item-container-icon" :class="{
+                'transition-transform group-hover:scale-120': rootMenu.isMenuPopup || !alwaysExpand,
               }"
             />
             <span
-              v-if="!(rootMenu.isMenuPopup && level === 0 && !rootMenu.props.showCollapseName)"
+              v-if="!(rootMenu.isMenuPopup && level === 0 && !rootMenu.props.showCollapseName)" class="w-0 flex-1 truncate text-sm transition-height transition-opacity transition-width"
               :class="{
                 'opacity-0 w-0 h-0': rootMenu.isMenuPopup && level === 0 && !rootMenu.props.showCollapseName,
                 'w-full text-center': rootMenu.isMenuPopup && level === 0 && rootMenu.props.showCollapseName,
               }"
-              class="w-0 flex-1 truncate text-sm transition-height transition-opacity transition-width"
             >
-              {{ i18nTitle(item.meta?.title) }}
+              {{ generateI18nTitle(item.meta?.title) }}
             </span>
-            <HBadge
-              v-if="props.item.meta?.badge"
-              :class="{
-                'opacity-0': rootMenu.isMenuPopup && level === 0,
-              }"
-              :value="typeof props.item.meta?.badge == 'function' ? props.item.meta?.badge() : props.item.meta?.badge"
-              class="badge"
-            />
+            <HBadge v-if="item.meta?.badge && !(rootMenu.isMenuPopup && level === 0)" :value="typeof item.meta.badge === 'function' ? item.meta.badge() : item.meta.badge" class="badge" />
           </div>
           <i
-            v-if="subMenu && (!rootMenu.isMenuPopup || level !== 0) && (rootMenu.isMenuPopup || !props.alwaysExpand)"
-            :class="[
+            v-if="
+              subMenu
+                && (!rootMenu.isMenuPopup || level !== 0) // 非收起模式，非一级的子菜单
+                && (rootMenu.isMenuPopup || !alwaysExpand) // 收起模式，非始终展开的子菜单
+            " class="relative ms-1 w-[10px] after:(absolute h-[1.5px] w-[6px] bg-current transition-transform-200 content-empty -translate-y-[1px]) before:(absolute h-[1.5px] w-[6px] bg-current transition-transform-200 content-empty -translate-y-[1px])" :class="[
               expand ? 'before:(-rotate-45 -translate-x-[2px]) after:(rotate-45 translate-x-[2px])' : 'before:(rotate-45 -translate-x-[2px]) after:(-rotate-45 translate-x-[2px])',
               rootMenu.isMenuPopup && level === 0 && 'opacity-0',
               rootMenu.isMenuPopup && level !== 0 && '-rotate-90 -top-[1.5px]',
             ]"
-            class="relative ml-1 w-[10px] after:(absolute h-[1.5px] w-[6px] bg-current transition-transform-200 content-empty -translate-y-[1px]) before:(absolute h-[1.5px] w-[6px] bg-current transition-transform-200 content-empty -translate-y-[1px])"
           />
         </component>
       </HTooltip>
-    </RouterLink>
+    </router-link>
   </div>
 </template>
 
 <style lang="scss" scoped>
-:deep(.badge) {
-  & > span {
-    --at-apply: important-left-initial right-0;
+.badge {
+  :deep(> span) {
+    inset-inline-start: initial !important;
+    inset-inline-end: 0;
   }
 }
 </style>

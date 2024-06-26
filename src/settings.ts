@@ -1,4 +1,6 @@
-import type { Settings } from '#/global'
+import { defaultsDeep } from 'lodash-es'
+import type { RecursiveRequired, Settings } from '#/global'
+import settingsDefault from '@/settings.default'
 
 const globalSettings: Settings.all = {
   app: {
@@ -9,13 +11,12 @@ const globalSettings: Settings.all = {
     lightTheme: 'light',
     darkTheme: 'dark',
     colorScheme: 'light',
-    elementSize: 'default',
     defaultLang: undefined,
     enableProgress: true,
     storagePrefix: 'fa_',
     enableWatermark: false,
     // routeBaseOn: 'backend',
-    enableUserPreferences: false,
+    // enableUserPreferences: false,
   },
   layout: {
     enableMobileAdaptation: true,
@@ -81,4 +82,4 @@ const globalSettings: Settings.all = {
     beian: '',
   },
 }
-export default globalSettings
+export default defaultsDeep(globalSettings, settingsDefault) as RecursiveRequired<Settings.all>

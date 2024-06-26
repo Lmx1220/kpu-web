@@ -5,14 +5,14 @@ defineOptions({
   name: 'Copyright',
 })
 
-const settingsStore = useSettingsStore()
 const route = useRoute()
+const settingsStore = useSettingsStore()
 </script>
 
 <template>
   <footer v-if="route.meta.copyright ?? settingsStore.settings.copyright.enable" class="copyright">
     <span>Copyright</span>
-    <SvgIcon name="ri:copyright-line" :size="18" />
+    <SvgIcon name="i-ri:copyright-line" :size="18" />
     <span v-if="settingsStore.settings.copyright.dates">{{ settingsStore.settings.copyright.dates }}</span>
     <template v-if="settingsStore.settings.copyright.company">
       <a v-if="settingsStore.settings.copyright.website" :href="settingsStore.settings.copyright.website" target="_blank" rel="noopener">{{ settingsStore.settings.copyright.company }}</a>
@@ -32,7 +32,7 @@ const route = useRoute()
   }
 
   a {
-    --at-apply: text-center no-underline text-stone-5 hover:text-dark dark-hover:text-light transition;
+    --at-apply: text-center no-underline text-stone-5 hover-text-dark dark-hover-text-light transition;
   }
 }
 </style>

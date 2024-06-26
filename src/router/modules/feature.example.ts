@@ -52,7 +52,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'timeago',
     name: 'featureExampleTimeago',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/timeago.vue'),
     meta: {
       title: 'route.feature.timeago',
       icon: 'i-ic:outline-access-time',
@@ -61,7 +61,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'watermark',
     name: 'featureExampleWatermark',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/watermark.vue'),
     meta: {
       title: 'route.feature.watermark',
       icon: 'i-icon-park-outline:mosaic',
@@ -70,7 +70,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'bug',
     name: 'featureExampleBug',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/bug.vue'),
     meta: {
       title: 'route.feature.bug',
       icon: 'i-ri:bug-line',
@@ -79,7 +79,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'title',
     name: 'featureExampleTitle',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/title.vue'),
     meta: {
       title: 'route.feature.title',
       icon: 'i-mdi:format-title',
@@ -88,7 +88,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'maximize',
     name: 'featureExampleMaximize',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/maximize.vue'),
     meta: {
       title: 'route.feature.maximize',
       icon: 'i-ri:picture-in-picture-exit-line',
@@ -97,7 +97,7 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'newWindow',
     name: 'featureExampleNewWindow',
-    component: () => import('@/views/icon_example/svg.vue'),
+    component: () => import('@/views/feature_example/newWindow.vue'),
     meta: {
       title: 'route.feature.newwindow',
       icon: 'i-ooui:new-window-ltr',

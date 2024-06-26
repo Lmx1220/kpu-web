@@ -1,3 +1,5 @@
+// 该文件为系统默认配置，请勿修改！！！
+
 import type { RecursiveRequired, Settings } from '#/global'
 
 const globalSettingsDefault: RecursiveRequired<Settings.all> = {
@@ -5,17 +7,22 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     lightTheme: 'light',
     darkTheme: 'dark',
     colorScheme: 'light',
-    elementSize: 'default',
     defaultLang: 'zh-cn',
     enableProgress: false,
-    enableErrorLog: false,
+    enableErrorLog: true,
     enablePermission: false,
     routeBaseOn: 'frontend',
     enableDynamicTitle: false,
     storagePrefix: 'fa_',
+
     enableWatermark: false,
     // enableAppSetting: true,
-    enableUserPreferences: false,
+    // enableUserPreferences: false,
+    direction: 'ltr',
+  },
+  userPreferences: {
+    enable: false,
+    storageTo: 'local',
   },
   home: {
     enable: true,

@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
 
 const props = withDefaults(
@@ -22,15 +22,15 @@ function onClick() {
 </script>
 
 <template>
-  <div class="breadcrumb-item flex items-center text-dark dark-text-white">
+  <div class="breadcrumb-item flex items-center text-dark dark:text-white">
     <span class="separator mx-2">
       {{ separator }}
     </span>
     <span
+      class="text flex items-center opacity-60"
       :class="{
         'is-link cursor-pointer transition-opacity hover:opacity-100': !!props.to,
-      }"
-      class="text flex items-center opacity-60" @click="onClick"
+      }" @click="onClick"
     >
       <slot />
     </span>

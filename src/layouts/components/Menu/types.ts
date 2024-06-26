@@ -16,7 +16,8 @@ export interface MenuProps {
   mode?: 'horizontal' | 'vertical'
   collapse?: boolean
   showCollapseName?: boolean
-  rounded: boolean
+  rounded?: boolean
+  direction?: 'ltr' | 'rtl'
 }
 
 export interface MenuInjection {
@@ -30,15 +31,11 @@ export interface MenuInjection {
   isMenuPopup: boolean
   openMenu: (index: string, indexPath: string[]) => void
   closeMenu: (index: string | string[]) => void
-  handleMenuItemClick: (index: string, meta?: Menu.recordRaw['meta']) => void
+  handleMenuItemClick: (index: string) => void
   handleSubMenuClick: (index: string, indexPath: string[]) => void
 }
 
 export const rootMenuInjectionKey = createInjectionKey<MenuInjection>('rootMenu')
-export interface I18nTitle {
-  (key: string | undefined | (() => string) | Function): string
-}
-export const i18nTitleInjectionKey = createInjectionKey<I18nTitle>('i18nTitle')
 
 export interface SubMenuProps {
   uniqueKey: string[]
