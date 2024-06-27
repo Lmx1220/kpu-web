@@ -11,9 +11,6 @@ defineOptions({
 const props = withDefaults(
   defineProps<MenuProps>(),
   {
-    accordion: true,
-    defaultOpeneds: () => [],
-    alwaysOpeneds: () => [],
     mode: 'vertical',
     collapse: false,
     showCollapseName: false,
@@ -26,12 +23,8 @@ const activeIndex = ref<MenuInjection['activeIndex']>(props.value)
 const items = ref<MenuInjection['items']>({})
 const subMenus = ref<MenuInjection['subMenus']>({})
 // 合并 alwaysOpeneds 和 defaultOpeneds 并去重
-const openedMenus = ref<MenuInjection['openedMenus']>(Array.from(new Set([...props.alwaysOpeneds.slice(0), ...props.defaultOpeneds.slice(0)])))
-const alwaysOpenedsMenus = ref<MenuInjection['alwaysOpenedsMenus']>(props.alwaysOpeneds.slice(0))
+const openedMenus = ref<MenuInjection['openedMenus']>([])
 const mouseInMenu = ref<MenuInjection['mouseInMenu']>([])
-const isMenuPopup = computed<MenuInjection['isMenuPopup']>(() => {
-  return props.mode === 'horizontal' || (props.mode === 'vertical' && props.collapse)
-})
 
 // 解析传入的 menu 数据，并保存到 items 和 subMenus 对象中
 function initItems(menu: MenuProps['menu'], parentPaths: string[] = []) {
@@ -55,12 +48,9 @@ function initItems(menu: MenuProps['menu'], parentPaths: string[] = []) {
   })
 }
 
-const openMenu: MenuInjection['openMenu'] = (index, indexPath) => {
+const openMenu: MenuInjection['openMenu'] = (index) => {
   if (openedMenus.value.includes(index)) {
     return
-  }
-  if (props.accordion) {
-    openedMenus.value = openedMenus.value.filter(key => indexPath.includes(key) || alwaysOpenedsMenus.value.includes(key))
   }
   openedMenus.value.push(index)
 }
@@ -147,9 +137,6 @@ watch(() => props.collapse, (value) => {
   if (value) {
     openedMenus.value = []
   }
-  else {
-    openedMenus.value = props.alwaysOpeneds.slice(0)
-  }
   initMenu()
 })
 
@@ -159,9 +146,7 @@ provide(rootMenuInjectionKey, reactive({
   subMenus,
   activeIndex,
   openedMenus,
-  alwaysOpenedsMenus,
   mouseInMenu,
-  isMenuPopup,
   openMenu,
   closeMenu,
   handleMenuItemClick,
@@ -172,7 +157,7 @@ provide(rootMenuInjectionKey, reactive({
 <template>
   <div
     class="h-full w-full flex flex-col of-hidden transition-all" :class="{
-      'flex-row! w-auto!': isMenuPopup && props.mode === 'horizontal',
+      'flex-row! w-auto': props.mode === 'horizontal',
     }"
   >
     <template v-for="item in menu" :key="item.path ?? JSON.stringify(item)">

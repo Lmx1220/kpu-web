@@ -12,6 +12,7 @@ const routes: RouteRecordRaw = {
   meta: {
     title: '插件',
     icon: 'i-clarity:plugin-outline-alerted',
+    badge: '演示',
   },
   children: [
     {

@@ -139,6 +139,25 @@ function scrollTo(offsetLeft: number) {
     behavior: 'smooth',
   })
 }
+function onTabbarDblclick(routeItem: Tabbar.recordRaw) {
+  switch (settingsStore.settings.tabbar.dblclickAction) {
+    case 'reload':
+      mainPage.reload()
+      break
+    case 'close':
+      tabbar.closeById(routeItem.tabId)
+      break
+    case 'pin':
+      routeItem.isPin ? tabbarStore.unPin(routeItem.tabId) : tabbarStore.pin(routeItem.tabId)
+      break
+    case 'maximize':
+      settingsStore.setMainPageMaximize()
+      break
+    case 'window':
+      window.open(router.resolve(routeItem.fullPath).href, '_blank')
+      break
+  }
+}
 function onTabbarContextmenu(event: MouseEvent, routeItem: Tabbar.recordRaw) {
   event.preventDefault()
   ContextMenu.showContextMenu({
@@ -146,7 +165,7 @@ function onTabbarContextmenu(event: MouseEvent, routeItem: Tabbar.recordRaw) {
     y: event.y,
     zIndex: 1050,
     iconFontClass: '',
-    customClass: 'contextmenu-custom',
+    customClass: 'tabbar-contextmenu',
     items: [
       {
         label: t('app.tabbar.reload'),
@@ -280,7 +299,7 @@ onMounted(() => {
   })
 })
 onUnmounted(() => {
-  hotkeys.unbind('alt+q,alt+e,alt+w,alt+1,alt+2,alt+3,alt+4,alt+5,alt+6,alt+7,alt+8,alt+9,alt+0')
+  hotkeys.unbind('alt+left,alt+righ,alt+w,alt+1,alt+2,alt+3,alt+4,alt+5,alt+6,alt+7,alt+8,alt+9,alt+0')
 })
 </script>
 
@@ -299,7 +318,11 @@ onUnmounted(() => {
             'tab-ontop': settingsStore.settings.topbar.switchTabbarAndToolbar,
             'actived': element.tabId === activedTabId,
             'no-drag': element.isPermanent || element.isPin,
-          }" :title="element.customTitleList.find(item => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title)" @click="router.push(element.fullPath)" @dblclick="settingsStore.setMainPageMaximize()" @contextmenu="onTabbarContextmenu($event, element)"
+          }"
+          :title="element.customTitleList.find(item => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title)"
+          @click="router.push(element.fullPath)"
+          @dblclick="onTabbarDblclick(element)"
+          @contextmenu="onTabbarContextmenu($event, element)"
         >
           <div class="tab-dividers" />
           <div class="tab-background" />
@@ -311,8 +334,8 @@ onUnmounted(() => {
             <div v-if="!element.isPermanent && element.isPin" class="action-icon">
               <SvgIcon name="i-ri:pushpin-2-fill" @click.stop="tabbarStore.unPin(element.tabId)" @dblclick.stop />
             </div>
-            <div v-else-if="!element.isPermanent && tabbarStore.list.length > 1" class="action-icon">
-              <SvgIcon name="i-ri:close-fill" @click.stop="tabbar.closeById(element.tabId)" @dblclick.stop />
+            <div v-else-if="!element.isPermanent && tabbarStore.list.length > 1" class="action-icon" @click.stop="tabbar.closeById(element.tabId)" @dblclick.stop>
+              <SvgIcon name="i-ri:close-fill" />
             </div>
             <div v-show="keys.alt && index < 9" class="hotkey-number">
               {{ index + 1 }}
@@ -327,7 +350,7 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss">
-.mx-menu-ghost-host {
+.tabbar-contextmenu {
   .mx-context-menu {
     --at-apply: fixed ring-1 ring-stone-2 dark-ring-stone-7 shadow-2xl;
 

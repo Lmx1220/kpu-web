@@ -45,10 +45,10 @@ const enabledRightSide = computed(() => {
     </div>
     <div class="main">
       <div v-if="enabledLeftSide && !hideLeftSideToggle" class="left-side-icon absolute top-1/2 z-1 h-6 w-6 flex-center cursor-pointer rounded-1/2 bg-[var(--g-container-bg)] -left-3">
-        <SvgIcon :name="leftSideVisiable ? 'i-ep:caret-left' : 'i-ep:caret-right'" class="op-30 transition-opacity hover:op-100" @click="leftSideVisiable = !leftSideVisiable" />
+        <SvgIcon :name="leftSideVisiable ? 'i-ep:caret-left' : 'i-ep:caret-right'" class="op-30 transition-opacity hover-op-100" @click="leftSideVisiable = !leftSideVisiable" />
       </div>
       <div v-if="enabledRightSide && !hideRightSideToggle" class="right-side-icon absolute top-1/2 z-1 h-6 w-6 flex-center cursor-pointer rounded-1/2 bg-[var(--g-container-bg)] -right-3">
-        <SvgIcon :name="rightSideVisiable ? 'i-ep:caret-right' : 'i-ep:caret-left'" class="op-30 transition-opacity hover:op-100" @click="rightSideVisiable = !rightSideVisiable" />
+        <SvgIcon :name="rightSideVisiable ? 'i-ep:caret-right' : 'i-ep:caret-left'" class="op-30 transition-opacity hover-op-100" @click="rightSideVisiable = !rightSideVisiable" />
       </div>
       <div class="main-container">
         <slot name="default" />

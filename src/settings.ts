@@ -4,57 +4,42 @@ import settingsDefault from '@/settings.default'
 
 const globalSettings: Settings.all = {
   app: {
-    // enablePermission: true,
+    enablePermission: true,
     enableDynamicTitle: true,
-    // enableErrorLog: true,
-    // enableAppSetting: true,
-    lightTheme: 'light',
-    darkTheme: 'dark',
-    colorScheme: 'light',
-    defaultLang: undefined,
-    enableProgress: true,
-    storagePrefix: 'fa_',
-    enableWatermark: false,
-    // routeBaseOn: 'backend',
-    // enableUserPreferences: false,
+    enableErrorLog: true,
+  },
+  home: {
+    fullPath: '/',
+  },
+  userPreferences: {
+    enable: true,
   },
   layout: {
     enableMobileAdaptation: true,
-    widthMode: 'adaption',
   },
   menu: {
+    style: 'dot',
     isRounded: true,
-    menuActiveStyle: 'dot',
     enableSubMenuCollapseButton: true,
     enableHotkeys: true,
-    // mode: 'head',
-    switchMainMenuAndPageJump: false,
-    subMenuUniqueOpened: true,
-    subMenuOnlyOneHide: false,
-    subMenuCollapse: false,
   },
   topbar: {
     mode: 'fixed',
-    switchTabbarAndToolbar: false,
   },
   tabbar: {
     enable: true,
+    style: 'fashion',
     enableIcon: true,
     enableMemory: true,
     enableHotkeys: true,
-    style: 'fashion',
-    mergeTabsBy: 'activeMenu',
-    storageTo: 'local',
   },
   toolbar: {
+    favorites: true,
     notification: true,
     i18n: true,
     fullscreen: true,
     pageReload: true,
     colorScheme: true,
-  },
-  favorites: {
-    storageTo: 'local',
   },
   breadcrumb: {
     style: 'modern',
@@ -62,17 +47,8 @@ const globalSettings: Settings.all = {
   },
   mainPage: {
     enableHotkeys: true,
+    iframeCacheMax: 9,
     transitionMode: 'slide-right',
-  //   iframeCacheMax: 9,
-  //   transitionMode: 'slide-right',
-  //   enableTransition: true,
-  },
-  home: {
-    enable: true,
-    title: '主页',
-  },
-  navSearch: {
-    enableHotkeys: true,
   },
   copyright: {
     enable: true,

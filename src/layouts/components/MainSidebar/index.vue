@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Logo from '../Logo/index.vue'
 import Menu from '../Menu/index.vue'
+import PanelMenu from '../PanelMenu/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
 import { i18nTitleInjectionKey } from '@/util/injectionKeys'
@@ -32,12 +33,13 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
 
 <template>
   <Transition name="main-sidebar">
-    <div v-if="['side', 'only-side'].includes(settingsStore.settings.menu.mode) || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')" class="main-sidebar-container">
+    <div v-if="['side', 'only-side', 'side-panel'].includes(settingsStore.settings.menu.mode) || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')" class="main-sidebar-container">
       <Logo :show-title="false" class="sidebar-logo" />
       <!-- 侧边栏模式（含主导航） -->
       <div
-        v-if="settingsStore.settings.menu.mode === 'side' || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')" class="menu flex flex-col of-hidden transition-all" :class="{
-          [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
+        v-if="settingsStore.settings.menu.mode === 'side' || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')"
+        class="menu w-full flex flex-col of-hidden transition-all" :class="{
+          [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
         }"
       >
         <template v-for="(item, index) in menuStore.allMenus" :key="index">
@@ -48,7 +50,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
             }"
           >
             <div
-              v-if="item.children && item.children.length !== 0" class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 py-4 text-[var(--g-main-sidebar-menu-color)] transition-all hover-(bg-[var(--g-main-sidebar-menu-hover-bg)] text-[var(--g-main-sidebar-menu-hover-color)]) px-2!" :class="{
+              v-if="item.children && item.children.length !== 0" class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 py-4 text-[var(--g-main-sidebar-menu-color)] transition-all hover-bg-[var(--g-main-sidebar-menu-hover-bg)] px-2! hover-text-[var(--g-main-sidebar-menu-hover-color)]" :class="{
                 'text-[var(--g-main-sidebar-menu-active-color)]! bg-[var(--g-main-sidebar-menu-active-bg)]!': index === menuStore.actived,
                 'rounded-2': settingsStore.settings.menu.isRounded,
               }" :title="generateI18nTitle(item.meta?.title)" @click="switchTo(index)"
@@ -65,8 +67,21 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
       </div>
       <!-- 侧边栏精简模式 -->
       <Menu
-        v-else-if="settingsStore.settings.menu.mode === 'only-side'" :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" show-collapse-name collapse :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu" :class="{
-          [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
+        v-else-if="settingsStore.settings.menu.mode === 'only-side'"
+        :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" show-collapse-name collapse
+        :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu"
+        :class="{
+          [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
+        }"
+      />
+      <PanelMenu
+        v-else-if="settingsStore.settings.menu.mode === 'side-panel'"
+        :menu="menuStore.allMenus"
+        :value="route.meta.activeMenu || route.path"
+        show-collapse-name collapse
+        :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu"
+        :class="{
+          [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
         }"
       />
     </div>

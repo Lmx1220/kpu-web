@@ -92,7 +92,7 @@ export default defineFakeRoute([
                 meta: {
                   title: '权限验证',
                   i18n: 'route.permission',
-                  sidebar: false,
+                  menu: false,
                   breadcrumb: false,
                   activeMenu: '/permission_example',
                 },
@@ -103,7 +103,7 @@ export default defineFakeRoute([
                 meta: {
                   title: '测试页面',
                   auth: ['permission.browse'],
-                  sidebar: false,
+                  menu: false,
                   breadcrumb: false,
                   activeMenu: '/permission_example',
                 },
@@ -138,7 +138,7 @@ export default defineFakeRoute([
                 component: 'pages_example/manager/list.vue',
                 meta: {
                   title: '管理员列表',
-                  sidebar: false,
+                  menu: false,
                   breadcrumb: false,
                 },
               }, {
@@ -147,7 +147,7 @@ export default defineFakeRoute([
                 component: 'pages_example/manager/detail.vue',
                 meta: {
                   title: '新增管理员',
-                  sidebar: false,
+                  menu: false,
                   activeMenu: '/pages_example/general/manager',
                 },
               }, {
@@ -156,7 +156,7 @@ export default defineFakeRoute([
                 component: 'pages_example/manager/detail.vue',
                 meta: {
                   title: '编辑管理员',
-                  sidebar: false,
+                  menu: false,
                   activeMenu: '/pages_example/general/manager',
                 },
               }],

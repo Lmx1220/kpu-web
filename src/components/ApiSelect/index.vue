@@ -78,6 +78,7 @@ async function getDicts() {
     emitChange()
   }
   catch (error) {
+    // turbo-console-disable-next-line
     console.warn(error)
   }
   finally {

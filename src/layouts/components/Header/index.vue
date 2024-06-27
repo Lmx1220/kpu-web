@@ -2,6 +2,7 @@
 import Logo from '../Logo/index.vue'
 import ToolbarRightSide from '../Topbar/Toolbar/rightSide.vue'
 import Menu from '../Menu/index.vue'
+import PanelMenu from '../PanelMenu/index.vue'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
 import { i18nTitleInjectionKey } from '@/util/injectionKeys'
@@ -44,14 +45,14 @@ function handlerMouserScroll(event: WheelEvent) {
 
 <template>
   <Transition name="header">
-    <header v-if="settingsStore.mode === 'pc' && ['head', 'only-head'].includes(settingsStore.settings.menu.mode)">
+    <header v-if="settingsStore.mode === 'pc' && ['head', 'only-head', 'head-panel'].includes(settingsStore.settings.menu.mode)">
       <div class="header-container">
         <Logo class="title" />
         <div ref="menuRef" class="menu-container" @wheel.prevent="handlerMouserScroll">
           <!-- 顶部模式 -->
           <div
-            v-if="settingsStore.settings.menu.mode === 'head'" class="menu flex of-hidden transition-all" :class="{
-              [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
+            v-if="settingsStore.settings.menu.mode === 'head'" class="menu h-full flex of-hidden transition-all" :class="{
+              [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
             }"
           >
             <template v-for="(item, index) in menuStore.allMenus" :key="index">
@@ -79,8 +80,26 @@ function handlerMouserScroll(event: WheelEvent) {
           </div>
           <!-- 顶部精简模式 -->
           <Menu
-            v-else-if="settingsStore.settings.menu.mode === 'only-head'" :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" mode="horizontal" show-collapse-name :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu" :class="{
-              [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
+            v-else-if="settingsStore.settings.menu.mode === 'only-head'"
+            :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" mode="horizontal" show-collapse-name
+            :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction"
+            class="menu"
+            :class="{
+              [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
+            }"
+          />
+          <PanelMenu
+            v-else-if="settingsStore.settings.menu.mode === 'head-panel'"
+            :menu="menuStore.allMenus"
+            :value="route.meta.activeMenu || route.path"
+            mode="horizontal"
+            show-collapse-name
+            :rounded="settingsStore.settings.menu.isRounded"
+            panel
+            :direction="settingsStore.settings.app.direction"
+            class="menu"
+            :class="{
+              [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
             }"
           />
         </div>
@@ -242,6 +261,10 @@ header {
             &:hover {
               color: var(--g-header-menu-hover-color);
               background-color: var(--g-header-menu-hover-bg);
+            }
+
+            .menu-item-container-icon {
+              font-size: 24px !important;
             }
           }
 

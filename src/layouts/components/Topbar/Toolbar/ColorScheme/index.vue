@@ -42,7 +42,7 @@ function toggleColorScheme(event: MouseEvent) {
       :name="{
         'light': 'i-ri:sun-line',
         'dark': 'i-ri:moon-line',
-        '': 'i-ri:computer-line',
+        '': 'i-codicon:color-mode',
       }[settingsStore.settings.app.colorScheme]" @click="toggleColorScheme"
     />
     <template #dropdown>
@@ -51,7 +51,7 @@ function toggleColorScheme(event: MouseEvent) {
         :options="[
           { icon: 'i-ri:sun-line', label: '', value: 'light' },
           { icon: 'i-ri:moon-line', label: '', value: 'dark' },
-          { icon: 'i-ri:computer-line', label: '', value: '' },
+          { icon: 'i-codicon:color-mode', label: '', value: '' },
         ]"
         class="m-3"
       />

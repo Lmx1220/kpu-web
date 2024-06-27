@@ -48,7 +48,7 @@ function unCollaspe() {
       class="collaspe absolute bottom-0 w-full cursor-pointer from-transparent to-[var(--g-container-bg)] bg-gradient-to-b pb-2 pt-10 text-center"
       @click="unCollaspe"
     >
-      <SvgIcon name="i-ep:arrow-down" class="text-xl op-30 transition-opacity hover:op-100" />
+      <SvgIcon name="i-ep:arrow-down" class="text-xl op-30 transition-opacity hover-op-100" />
     </div>
   </div>
 </template>

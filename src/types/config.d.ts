@@ -1,1 +1,1 @@
-export type LocaleType = 'zh-cn' | 'en' | 'ru' | 'ja' | 'ko'
+export type LocaleType = 'zh-cn' | 'en' | 'ru' | 'ja' | 'ko' | ''

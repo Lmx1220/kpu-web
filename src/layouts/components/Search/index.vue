@@ -32,11 +32,11 @@ const overlayTransitionClass = ref({
 const transitionClass = computed(() => {
   return {
     enter: 'ease-out duration-300',
-    enterFrom: 'opacity-0 translate-y-4 lg:translate-y-0 lg:scale-95',
-    enterTo: 'opacity-100 translate-y-0 lg:scale-100',
+    enterFrom: 'opacity-0 translate-y-4 lg-translate-y-0 lg-scale-95',
+    enterTo: 'opacity-100 translate-y-0 lg-scale-100',
     leave: 'ease-in duration-200',
-    leaveFrom: 'opacity-100 translate-y-0 lg:scale-100',
-    leaveTo: 'opacity-0 translate-y-4 lg:translate-y-0 lg:scale-95',
+    leaveFrom: 'opacity-100 translate-y-0 lg-scale-100',
+    leaveTo: 'opacity-0 translate-y-4 lg-translate-y-0 lg-scale-95',
   }
 })
 
@@ -81,15 +81,17 @@ const resultList = computed(() => {
     if (item.path.includes(searchInput.value)) {
       flag = true
     }
+    const title = match(generateI18nTitle(item.title).toString(), searchInput.value, { continuous: true })
     if (
       generateI18nTitle(item.title).toString().includes(searchInput.value)
-      || match(generateI18nTitle(item.title).toString(), searchInput.value, { continuous: true })!.length > 0
+      || (title && title.length > 0)
     ) {
       flag = true
     }
     if (item.breadcrumb.some((b) => {
+      const title1 = match(generateI18nTitle(b.title).toString(), searchInput.value, { continuous: true })
       return generateI18nTitle(b.title).toString().includes(searchInput.value)
-        || match(generateI18nTitle(b.title).toString(), searchInput.value, { continuous: true })!.length > 0
+        || (title1 && title1?.length > 0)
     })) {
       flag = true
     }
@@ -272,9 +274,9 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
         <div class="fixed inset-0 bg-stone-200/75 backdrop-blur-sm transition-opacity dark-bg-stone-8/75" />
       </TransitionChild>
       <div class="fixed inset-0">
-        <div class="h-full flex items-end justify-center p-4 text-center lg:items-center">
+        <div class="h-full flex items-end justify-center p-4 text-center lg-items-center">
           <TransitionChild as="template" v-bind="transitionClass">
-            <DialogPanel class="relative h-full max-h-4/5 w-full flex flex-col text-left lg:max-w-2xl">
+            <DialogPanel class="relative h-full max-h-4/5 w-full flex flex-col text-left lg-max-w-2xl">
               <HTabList
                 v-if="settingsStore.settings.tabbar.enable"
                 v-model="searchType" :options="[

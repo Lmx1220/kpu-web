@@ -161,7 +161,7 @@ declare namespace Settings {
      * @可选值 `'line'` 线条
      * @可选值 `'dot'` 圆点
      */
-    menuActiveStyle?: '' | 'arrow' | 'line' | 'dot'
+    style?: '' | 'arrow' | 'line' | 'dot'
     /**
      * 切换主导航是否跳转页面
      * @默认值 `false`
@@ -232,6 +232,15 @@ declare namespace Settings {
      * @默认值 `false`
      */
     enableIcon?: boolean
+    /**
+     * 标签页双击触发
+     * @默认值 `'reload'` 刷新
+     * @可选值 `'close'` 关闭
+     * @可选值 `'pin'` 固定/取消固定
+     * @可选值 `'maximize'` 最大化
+     * @可选值 `'window'` 新窗口打开
+     */
+    dblclickAction?: 'reload' | 'close' | 'pin' | 'maximize' | 'window'
     /**
      * 标签页合并规则
      * @默认值 `''` 不合并

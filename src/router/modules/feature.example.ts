@@ -102,7 +102,7 @@ const routes: RouteRecordRaw = {
       title: 'route.feature.newwindow',
       icon: 'i-ooui:new-window-ltr',
       badge: 'PRO',
-      newWindow: !0,
+      newWindow: true,
     },
   }, {
     path: 'vueuse',
@@ -135,7 +135,7 @@ const routes: RouteRecordRaw = {
     meta: {
       title: 'route.feature.reload',
       icon: 'i-iconoir:refresh-double',
-      cache: !0,
+      cache: true,
     },
   }, {
     path: 'menuswitch',
@@ -160,7 +160,7 @@ const routes: RouteRecordRaw = {
     meta: {
       title: 'route.feature.scroll',
       icon: 'i-carbon:auto-scroll',
-      cache: !0,
+      cache: true,
     },
   }],
 }

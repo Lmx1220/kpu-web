@@ -11,7 +11,7 @@ export default defineFakeRoute([
         data: {
           username: option.body.username,
           token: '@string',
-          expiration: `${Math.ceil(new Date().getTime()) + (24 * 60 * 60)}`,
+          expiration: `${Math.ceil(new Date().getTime()) + (24 * 60 * 60 * 1000)}`,
         },
       }
     },

@@ -24,6 +24,7 @@ import StandardModuleExample from './modules/standard.module.example.ts'
 import FeatureExample from './modules/feature.example.ts'
 import type { Route } from '@/types/global'
 import useSettingsStore from '@/store/modules/settings.ts'
+import pinia from '@/store'
 // 固定路由
 const constantRoutes: RouteRecordRaw[] = [
   {
@@ -57,7 +58,7 @@ const systemRoutes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('@/layouts/index.vue'),
     meta: {
-      title: () => useSettingsStore().settings.home.title,
+      title: useSettingsStore(pinia).settings.home.title,
       breadcrumb: false,
     },
     children: [
@@ -65,7 +66,7 @@ const systemRoutes: RouteRecordRaw[] = [
         path: '',
         component: () => import('@/views/index.vue'),
         meta: {
-          title: () => useSettingsStore().settings.home.title,
+          title: useSettingsStore(pinia).settings.home.title,
           icon: 'i-ant-design:home-twotone',
           breadcrumb: false,
         },
@@ -84,7 +85,7 @@ const systemRoutes: RouteRecordRaw[] = [
         name: 'personalSetting',
         component: () => import('@/views/personal/setting.vue'),
         meta: {
-          title: '个人设置',
+          title: 'route.personal.setting',
           cache: 'personalEditPassword',
         },
       },
@@ -93,7 +94,15 @@ const systemRoutes: RouteRecordRaw[] = [
         name: 'personalEditPassword',
         component: () => import('@/views/personal/edit.password.vue'),
         meta: {
-          title: '修改密码',
+          title: 'route.personal.editpassword',
+        },
+      },
+      {
+        path: 'personal/notification',
+        name: 'personalNotification',
+        component: () => import('@/views/personal/notification.vue'),
+        meta: {
+          title: 'route.personal.notification',
         },
       },
     ],

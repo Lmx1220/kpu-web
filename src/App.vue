@@ -16,7 +16,7 @@ const { auth } = useAuth()
 // 侧边栏主导航当前实际宽度
 const mainSidebarActualWidth = computed(() => {
   let actualWidth = Number.parseInt(getComputedStyle(document.documentElement).getPropertyValue('--g-main-sidebar-width'))
-  if (settingsStore.settings.menu.mode === 'single' || (['head', 'only-head'].includes(settingsStore.settings.menu.mode) && settingsStore.mode !== 'mobile')) {
+  if (settingsStore.settings.menu.mode === 'single' || (['head', 'only-head', 'head-panel'].includes(settingsStore.settings.menu.mode) && settingsStore.mode !== 'mobile')) {
     actualWidth = 0
   }
   return `${actualWidth}px`
@@ -27,7 +27,7 @@ const subSidebarActualWidth = computed(() => {
   if (settingsStore.settings.menu.subMenuCollapse && settingsStore.mode !== 'mobile') {
     actualWidth = Number.parseInt(getComputedStyle(document.documentElement).getPropertyValue('--g-sub-sidebar-collapse-width'))
   }
-  if (['only-side', 'only-head'].includes(settingsStore.settings.menu.mode) && settingsStore.mode !== 'mobile') {
+  if (['only-side', 'only-head', 'side-panel', 'head-panel'].includes(settingsStore.settings.menu.mode) && settingsStore.mode !== 'mobile') {
     actualWidth = 0
   }
   if (
@@ -57,21 +57,20 @@ watch([
   () => settingsStore.customTitleList,
   () => settingsStore.settings.app.defaultLang,
 ], () => {
-  const breadcrumbNeste = route.meta.breadcrumbNeste
-  const customTitle = settingsStore.customTitleList?.find(On => On.fullPath === route.fullPath)
-  const lastBreadcrumb = breadcrumbNeste?.at(-1)
-  const secondLastBreadcrumb = breadcrumbNeste?.at(-2)
-  const hasDynamicTitle = settingsStore.settings.app.enableDynamicTitle && settingsStore.title
+  nextTick(() => {
+    if (settingsStore.settings.app.enableDynamicTitle && settingsStore.title) {
+      const title = settingsStore.customTitleList.find(item => item.fullPath === route.fullPath)?.title
+        || generateI18nTitle(settingsStore.title)
 
-  let title = hasDynamicTitle && (customTitle?.title || generateI18nTitle(route.meta.title))
-
-  if (hasDynamicTitle && !title && settingsStore.settings.app.routeBaseOn !== 'filesystem' && lastBreadcrumb?.i18n && secondLastBreadcrumb?.i18n) {
-    title = generateI18nTitle(secondLastBreadcrumb.title)
-  }
-
-  pageTitle.value = title ? `${title} - ${import.meta.env.VITE_APP_TITLE}` : import.meta.env.VITE_APP_TITLE
+      pageTitle.value = `${title} - ${import.meta.env.VITE_APP_TITLE}`
+    }
+    else {
+      pageTitle.value = import.meta.env.VITE_APP_TITLE
+    }
+  })
 }, {
   immediate: true,
+  deep: true,
 })
 onMounted(() => {
   settingsStore.setMode(document.documentElement.clientWidth)

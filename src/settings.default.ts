@@ -7,17 +7,14 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     lightTheme: 'light',
     darkTheme: 'dark',
     colorScheme: 'light',
-    defaultLang: 'zh-cn',
-    enableProgress: false,
-    enableErrorLog: true,
+    defaultLang: '',
     enablePermission: false,
-    routeBaseOn: 'frontend',
+    enableProgress: true,
     enableDynamicTitle: false,
     storagePrefix: 'fa_',
-
     enableWatermark: false,
-    // enableAppSetting: true,
-    // enableUserPreferences: false,
+    enableErrorLog: false,
+    routeBaseOn: 'frontend',
     direction: 'ltr',
   },
   userPreferences: {
@@ -29,9 +26,6 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     title: 'route.home',
     fullPath: '/',
   },
-  navSearch: {
-    enableHotkeys: true,
-  },
   layout: {
     widthMode: 'adaption',
     enableMobileAdaptation: false,
@@ -39,8 +33,8 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
   menu: {
     baseOn: 'frontend',
     mode: 'side',
+    style: '',
     isRounded: false,
-    menuActiveStyle: '',
     switchMainMenuAndPageJump: false,
     subMenuUniqueOpened: true,
     subMenuOnlyOneHide: false,
@@ -55,45 +49,47 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
   },
   tabbar: {
     enable: false,
-    style: 'fashion',
+    style: '',
     enableIcon: false,
+    dblclickAction: 'close',
     mergeTabsBy: '',
     enableMemory: false,
     enableHotkeys: false,
     storageTo: 'local',
   },
   toolbar: {
-    favorites: true,
+    favorites: false,
     breadcrumb: true,
-    notification: true,
     navSearch: true,
-    i18n: true,
-    fullscreen: true,
-    pageReload: true,
-    colorScheme: true,
+    notification: false,
+    i18n: false,
+    fullscreen: false,
+    pageReload: false,
+    colorScheme: false,
     layout: ['favorites', 'breadcrumb', '->', 'navSearch', 'notification', 'i18n', 'fullscreen', 'pageReload', 'colorScheme'],
-  },
-  breadcrumb: {
-    enableMainMenu: true,
-    style: 'modern',
-  },
-  mainPage: {
-    enableHotkeys: false,
-    enableTransition: true,
-    transitionMode: 'fade',
-    iframeCacheMax: 3,
   },
   favorites: {
     storageTo: 'local',
   },
+  breadcrumb: {
+    style: '',
+    enableMainMenu: false,
+  },
+  mainPage: {
+    enableHotkeys: true,
+    iframeCacheMax: 3,
+    enableTransition: true,
+    transitionMode: 'fade',
+  },
+  navSearch: {
+    enableHotkeys: true,
+  },
   copyright: {
-    enable: true,
-    dates: '2020-2023',
-    company: 'admin',
-    website: 'https://admin/',
+    enable: false,
+    dates: '',
+    company: '',
+    website: '',
     beian: '',
   },
-
 }
-
 export default globalSettingsDefault

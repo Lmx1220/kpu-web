@@ -98,7 +98,7 @@ function handleCopy() {
           :options="[
             { icon: 'i-ri:sun-line', label: '明亮', value: 'light' },
             { icon: 'i-ri:moon-line', label: '暗黑', value: 'dark' },
-            { icon: 'i-ri:computer-line', label: '系统', value: '' },
+            { icon: 'i-codicon:color-mode', label: '系统', value: '' },
           ]"
           class="w-60"
         />
@@ -269,7 +269,7 @@ function handleCopy() {
           激活风格
         </div>
         <HCheckList
-          v-model="settingsStore.settings.menu.menuActiveStyle" :options="[
+          v-model="settingsStore.settings.menu.style" :options="[
             { icon: 'i-jam:stop-sign', value: '' },
             { icon: ['head', 'only-head'].includes(settingsStore.settings.menu.mode) ? 'i-ep:caret-top' : 'i-ep:caret-left', value: 'arrow' },
             { icon: ['side', 'only-side'].includes(settingsStore.settings.menu.mode) ? 'i-tabler:minus-vertical' : 'i-tabler:minus', value: 'line' },
@@ -338,6 +338,30 @@ function handleCopy() {
           是否显示图标
         </div>
         <HToggle v-model="settingsStore.settings.tabbar.enableIcon" :disabled="!settingsStore.settings.tabbar.enable" />
+      </div>
+      <div class="setting-item">
+        <div class="label">
+          标签页双击执行动作
+        </div>
+        <HSelect
+          v-model="settingsStore.settings.tabbar.dblclickAction" :options="[{
+            label: '刷新',
+            value: 'reload',
+          }, {
+            label: '关闭',
+            value: 'close',
+          }, {
+            label: '固定/取消固定',
+            value: 'pin',
+          }, {
+            label: '最大化',
+            value: 'maximize',
+          }, {
+            label: '新窗口打开',
+            value: 'window',
+          }]"
+          :disabled="!settingsStore.settings.tabbar.enable"
+        />
       </div>
       <div class="setting-item">
         <div class="label">

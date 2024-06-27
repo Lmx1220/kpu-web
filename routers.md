@@ -19,7 +19,7 @@ const name = [{
         {
           title: '列表',
           i18n: 'route.standardModule.list',
-          sidebar: false,
+          menu: false,
           breadcrumb: false,
           cache: [
             'standardModuleExampleCreate',
@@ -34,7 +34,7 @@ const name = [{
         {
           title: '新增',
           i18n: 'route.standardModule.create',
-          sidebar: false,
+          menu: false,
           activeMenu: '/standard_module_example',
           cache: true,
           noCache: 'standardModuleExampleList',
@@ -47,7 +47,7 @@ const name = [{
         {
           title: '编辑',
           i18n: 'route.standardModule.edit',
-          sidebar: false,
+          menu: false,
           activeMenu: '/standard_module_example',
           cache: true,
           noCache: 'standardModuleExampleList',
@@ -69,7 +69,7 @@ const name = [{
     meta: {
       title: '管理员列表',
       i18n: 'route.general.manager.list',
-      sidebar: false,
+      menu: false,
       breadcrumb: false,
       cache: ['pagesExampleGeneralManagerCreate', 'pagesExampleGeneralManagerEdit']
     }
@@ -79,7 +79,7 @@ const name = [{
     meta: {
       title: '新增管理员',
       i18n: 'route.general.manager.create',
-      sidebar: false,
+      menu: false,
       activeMenu: '/pages_example/general/manager',
       cache: true,
       noCache: 'pagesExampleGeneralManagerList'
@@ -90,7 +90,7 @@ const name = [{
     meta: {
       title: '编辑管理员',
       i18n: 'route.general.manager.edit',
-      sidebar: false,
+      menu: false,
       activeMenu: '/pages_example/general/manager',
       cache: true,
       noCache: 'pagesExampleGeneralManagerList'
@@ -112,7 +112,7 @@ const name = [{
     meta: {
       title: '导航列表',
       i18n: 'route.general.menu.list',
-      sidebar: false,
+      menu: false,
       cache: ['pagesExampleGeneralMenuCreate', 'pagesExampleGeneralMenuEdit']
     }
   }, {
@@ -121,7 +121,7 @@ const name = [{
     meta: {
       title: '新增导航',
       i18n: 'route.general.menu.create',
-      sidebar: false,
+      menu: false,
       activeMenu: '/pages_example/general/menu',
       cache: true,
       noCache: 'pagesExampleGeneralMenuList',
@@ -134,7 +134,7 @@ const name = [{
     meta: {
       title: '编辑导航',
       i18n: 'route.general.menu.edit',
-      sidebar: false,
+      menu: false,
       activeMenu: '/pages_example/general/menu',
       cache: true,
       noCache: 'pagesExampleGeneralMenuList',
