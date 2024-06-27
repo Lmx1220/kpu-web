@@ -83,13 +83,13 @@ const resultList = computed(() => {
     }
     if (
       generateI18nTitle(item.title).toString().includes(searchInput.value)
-      || match(generateI18nTitle(item.title).toString(), searchInput.value, { continuous: true })?.length > 0
+      || match(generateI18nTitle(item.title).toString(), searchInput.value, { continuous: true })!.length > 0
     ) {
       flag = true
     }
     if (item.breadcrumb.some((b) => {
       return generateI18nTitle(b.title).toString().includes(searchInput.value)
-        || match(generateI18nTitle(b.title).toString(), searchInput.value, { continuous: true })?.length > 0
+        || match(generateI18nTitle(b.title).toString(), searchInput.value, { continuous: true })!.length > 0
     })) {
       flag = true
     }

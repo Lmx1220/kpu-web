@@ -132,7 +132,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
       </div>
     </div>
     <Search />
-<!--    <Preferences v-if="settingsStore.settings.userPreferences.enable" />-->
+    <!--    <Preferences v-if="settingsStore.settings.userPreferences.enable" /> -->
     <HotkeysIntro />
     <template v-if="enableAppSetting">
       <div class="app-setting" @click="eventBus.emit('global-app-setting-toggle')">

@@ -52,7 +52,7 @@ function toWave(url: string) {
       </div>
       <div w-50>
         <ElInput v-wave>
-          <template  #append>
+          <template #append>
             <SvgIcon
 
               name="ep:search"

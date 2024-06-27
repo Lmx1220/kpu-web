@@ -25,8 +25,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/fonts/digital-7/stylesheet.css';
-@import '@/assets/fonts/digital-7_mono/stylesheet.css';
+@import "@/assets/fonts/digital-7/stylesheet.css";
+@import "@/assets/fonts/digital-7_mono/stylesheet.css";
 
 .digital-7,
 .digital-7_mono {

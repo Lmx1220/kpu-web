@@ -15,6 +15,8 @@ import App from './App.vue'
 
 import errorLog from './util/error.log'
 import ui from './ui-provider'
+
+// 加载 iconify 图标
 import { downloadAndInstall } from '@/iconify'
 import icons from '@/iconify/index.json'
 
@@ -37,11 +39,6 @@ import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 // 全局样式
 import '@/assets/styles/globals.scss'
 
-if (icons.isOfflineUse) {
-  for (const info of icons.collections) {
-    // downloadAndInstall(info)
-  }
-}
 VXETable.setup({
   // 对组件内置的提示语进行国际化翻译
   size: 'medium',
@@ -141,6 +138,12 @@ async function bootstrap() {
   })
   app.use(ui)
   app.use(VXETable)
+
+  if (icons.isOfflineUse) {
+    for (const info of icons.collections) {
+      downloadAndInstall(info)
+    }
+  }
 
   app.mount('#app')
 }

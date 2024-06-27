@@ -44,7 +44,7 @@ router.beforeEach(async (to, from, next) => {
         iframeStore.generateList(iframes)
       }
       // 导航栏如果不是 single 模式，则需要根据 path 定位主导航的选中状态
-      settingsStore.settings.menu.menuMode !== 'single' && menuStore.setActived(to.path)
+      settingsStore.settings.menu.mode !== 'single' && menuStore.setActived(to.path)
       // 如果已登录状态下，进入登录页会强制跳转到主页
       if (to.name === 'login') {
         next({ path: settingsStore.settings.home.fullPath, replace: true })

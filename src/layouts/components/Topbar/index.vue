@@ -20,7 +20,7 @@ const enableToolbar = computed(() => {
     }
     return false
   })
-  return !['head', 'only-head'].includes(settingsStore.settings.menu.menuMode) || enableToolbarLeftSide
+  return !['head', 'only-head'].includes(settingsStore.settings.menu.mode) || enableToolbarLeftSide
 })
 
 const scrollTop = ref(0)

@@ -44,13 +44,13 @@ function handlerMouserScroll(event: WheelEvent) {
 
 <template>
   <Transition name="header">
-    <header v-if="settingsStore.mode === 'pc' && ['head', 'only-head'].includes(settingsStore.settings.menu.menuMode)">
+    <header v-if="settingsStore.mode === 'pc' && ['head', 'only-head'].includes(settingsStore.settings.menu.mode)">
       <div class="header-container">
         <Logo class="title" />
         <div ref="menuRef" class="menu-container" @wheel.prevent="handlerMouserScroll">
           <!-- 顶部模式 -->
           <div
-            v-if="settingsStore.settings.menu.menuMode === 'head'" class="menu flex of-hidden transition-all" :class="{
+            v-if="settingsStore.settings.menu.mode === 'head'" class="menu flex of-hidden transition-all" :class="{
               [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
             }"
           >
@@ -79,7 +79,7 @@ function handlerMouserScroll(event: WheelEvent) {
           </div>
           <!-- 顶部精简模式 -->
           <Menu
-            v-else-if="settingsStore.settings.menu.menuMode === 'only-head'" :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" mode="horizontal" show-collapse-name :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu" :class="{
+            v-else-if="settingsStore.settings.menu.mode === 'only-head'" :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" mode="horizontal" show-collapse-name :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu" :class="{
               [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
             }"
           />

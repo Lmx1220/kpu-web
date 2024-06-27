@@ -32,11 +32,11 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
 
 <template>
   <Transition name="main-sidebar">
-    <div v-if="['side', 'only-side'].includes(settingsStore.settings.menu.menuMode) || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.menuMode !== 'single')" class="main-sidebar-container">
+    <div v-if="['side', 'only-side'].includes(settingsStore.settings.menu.mode) || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')" class="main-sidebar-container">
       <Logo :show-title="false" class="sidebar-logo" />
       <!-- 侧边栏模式（含主导航） -->
       <div
-        v-if="settingsStore.settings.menu.menuMode === 'side' || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.menuMode !== 'single')" class="menu flex flex-col of-hidden transition-all" :class="{
+        v-if="settingsStore.settings.menu.mode === 'side' || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')" class="menu flex flex-col of-hidden transition-all" :class="{
           [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
         }"
       >
@@ -65,7 +65,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
       </div>
       <!-- 侧边栏精简模式 -->
       <Menu
-        v-else-if="settingsStore.settings.menu.menuMode === 'only-side'" :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" show-collapse-name collapse :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu" :class="{
+        v-else-if="settingsStore.settings.menu.mode === 'only-side'" :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" show-collapse-name collapse :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu" :class="{
           [`menu-active-${settingsStore.settings.menu.menuActiveStyle}`]: settingsStore.settings.menu.menuActiveStyle !== '',
         }"
       />

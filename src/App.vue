@@ -16,7 +16,7 @@ const { auth } = useAuth()
 // 侧边栏主导航当前实际宽度
 const mainSidebarActualWidth = computed(() => {
   let actualWidth = Number.parseInt(getComputedStyle(document.documentElement).getPropertyValue('--g-main-sidebar-width'))
-  if (settingsStore.settings.menu.menuMode === 'single' || (['head', 'only-head'].includes(settingsStore.settings.menu.menuMode) && settingsStore.mode !== 'mobile')) {
+  if (settingsStore.settings.menu.mode === 'single' || (['head', 'only-head'].includes(settingsStore.settings.menu.mode) && settingsStore.mode !== 'mobile')) {
     actualWidth = 0
   }
   return `${actualWidth}px`
@@ -27,7 +27,7 @@ const subSidebarActualWidth = computed(() => {
   if (settingsStore.settings.menu.subMenuCollapse && settingsStore.mode !== 'mobile') {
     actualWidth = Number.parseInt(getComputedStyle(document.documentElement).getPropertyValue('--g-sub-sidebar-collapse-width'))
   }
-  if (['only-side', 'only-head'].includes(settingsStore.settings.menu.menuMode) && settingsStore.mode !== 'mobile') {
+  if (['only-side', 'only-head'].includes(settingsStore.settings.menu.mode) && settingsStore.mode !== 'mobile') {
     actualWidth = 0
   }
   if (

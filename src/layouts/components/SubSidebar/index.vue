@@ -27,7 +27,7 @@ function onSidebarScroll() {
 
 const enableSidebar = computed(() => {
   return settingsStore.mode === 'mobile' || (
-    ['side', 'head', 'single'].includes(settingsStore.settings.menu.menuMode)
+    ['side', 'head', 'single'].includes(settingsStore.settings.menu.mode)
     && menuStore.sidebarMenus.length !== 0
     && !(
       settingsStore.settings.menu.subMenuOnlyOneHide
@@ -86,8 +86,8 @@ const isCollapse = computed(() => {
     }"
   >
     <Logo
-      :show-logo="settingsStore.settings.menu.menuMode === 'single'" class="sidebar-logo" :class="{
-        'sidebar-logo-bg': settingsStore.settings.menu.menuMode === 'single',
+      :show-logo="settingsStore.settings.menu.mode === 'single'" class="sidebar-logo" :class="{
+        'sidebar-logo-bg': settingsStore.settings.menu.mode === 'single',
       }"
     />
     <div

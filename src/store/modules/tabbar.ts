@@ -339,7 +339,10 @@ const useTabbarStore = defineStore(
         }
       })
     }
-    function setCustomTitle({ tabId, title }: { tabId: string, title?: string }) {
+    function setCustomTitle({ tabId, title }: {
+      tabId: Tabbar.recordRaw['tabId']
+      title: string
+    }) {
       list.value.forEach((item) => {
         if (item.tabId === tabId) {
           const customTitle = item.customTitleList.find(title => title.fullPath === item.fullPath)

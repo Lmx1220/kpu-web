@@ -15,7 +15,7 @@ const settingsStore = useSettingsStore()
     <div class="left-side h-full flex items-center of-hidden pe-16 ps-2">
       <LeftSide />
     </div>
-    <div v-show="['side', 'single', 'only-side'].includes(settingsStore.settings.menu.menuMode)" class="h-full flex items-center justify-end px-2">
+    <div v-show="['side', 'single', 'only-side'].includes(settingsStore.settings.menu.mode)" class="h-full flex items-center justify-end px-2">
       <RightSide />
     </div>
   </div>

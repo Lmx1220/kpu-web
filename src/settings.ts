@@ -27,7 +27,7 @@ const globalSettings: Settings.all = {
     menuActiveStyle: 'dot',
     enableSubMenuCollapseButton: true,
     enableHotkeys: true,
-    // menuMode: 'head',
+    // mode: 'head',
     switchMainMenuAndPageJump: false,
     subMenuUniqueOpened: true,
     subMenuOnlyOneHide: false,

@@ -2,7 +2,6 @@
 import imgLogo from '@/assets/images/logo.png'
 
 const dialog = ref(false)
-
 </script>
 
 <template>

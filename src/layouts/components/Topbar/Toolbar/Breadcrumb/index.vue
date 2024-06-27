@@ -25,7 +25,7 @@ const breadcrumbList = computed(() => {
       title: generateI18nTitle(settingsStore.settings.home.title),
     })
   }
-  if (route.fullPath !== settingsStore.settings.home.fullPath && settingsStore.settings.breadcrumb.enableMainMenu && !['single'].includes(settingsStore.settings.menu.menuMode)) {
+  if (route.fullPath !== settingsStore.settings.home.fullPath && settingsStore.settings.breadcrumb.enableMainMenu && !['single'].includes(settingsStore.settings.menu.mode)) {
     const index = menuStore.allMenus.findIndex(item => item.children.some(r => route.fullPath.indexOf(`${r.path}/`) === 0 || route.fullPath === r.path))
     menuStore.allMenus[index]?.meta && breadcrumbList.push({
       path: '',

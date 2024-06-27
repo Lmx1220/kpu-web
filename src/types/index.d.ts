@@ -14,6 +14,9 @@ declare type LabelValueOptions = {
   [key: string]: string | number | boolean
 }[]
 
+declare type TimeoutHandle = ReturnType<typeof setTimeout>
+declare type IntervalHandle = ReturnType<typeof setInterval>
+
 declare type EmitType = (event: string, ...args: any[]) => void
 
 declare type TargetContext = '_self' | '_blank'
@@ -25,6 +28,7 @@ declare interface ComponentElRef<T extends HTMLElement = HTMLDivElement> {
 declare type ComponentRef<T extends HTMLElement = HTMLDivElement> = ComponentElRef<T> | null
 
 declare type ElRef<T extends HTMLElement = HTMLDivElement> = Nullable<T>
+
 declare module 'element-plus/dist/locale/zh-cn.mjs';
 declare module 'element-plus/dist/locale/zh-tw.mjs';
 
