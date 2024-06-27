@@ -42,6 +42,7 @@
     "codemirror": "^6.0.1",
     "dayjs": "^1.11.11",
     "defu": "^6.1.4",
+    "disable-devtool": "^0.3.7",
     "echarts": "^5.5.0",
     "element-plus": "^2.7.5",
     "eruda": "^3.0.1",
