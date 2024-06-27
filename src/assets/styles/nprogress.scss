@@ -5,7 +5,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1031;
+    z-index: 2000;
     width: 100%;
     height: 2px;
     background: rgb(var(--ui-primary));
@@ -19,14 +19,14 @@
     height: 100%;
     box-shadow: 0 0 10px rgb(var(--ui-primary)), 0 0 5px rgb(var(--ui-primary));
     opacity: 1;
-    transform: rotate(3deg) translateY(-4px);
+    transform: rotate(3deg) translate(0, -4px);
   }
 
   .spinner {
     position: fixed;
     top: 11px;
     right: 14px;
-    z-index: 1031;
+    z-index: 2000;
     display: block;
 
     .spinner-icon {
@@ -37,7 +37,7 @@
       border-top-color: rgb(var(--ui-primary));
       border-left-color: rgb(var(--ui-primary));
       border-radius: 50%;
-      animation: nprogress-spinner 0.4s linear infinite;
+      animation: nprogress-spinner 400ms linear infinite;
     }
   }
 }
@@ -46,20 +46,18 @@
   position: relative;
   overflow: hidden;
 
-  #nprogress {
-    .spinner,
-    .bar {
-      position: absolute;
-    }
+  #nprogress .spinner,
+  #nprogress .bar {
+    position: absolute;
   }
 }
 
 @keyframes nprogress-spinner {
-  0% {
-    transform: rotate(0);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
-  100% {
-    transform: rotate(360deg);
-  }
+@keyframes nprogress-spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

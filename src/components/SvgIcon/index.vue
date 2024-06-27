@@ -1,21 +1,18 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 
 defineOptions({
   name: 'SvgIcon',
 })
-const props = withDefaults(
-  defineProps<{
-    name: string
-    async?: boolean
-    flip?: 'horizontal' | 'vertical' | 'both'
-    rotate?: number
-    color?: string
-    size?: string | number
-  }>(),
-  {
-    async: false,
-  })
+
+const props = defineProps<{
+  name: string
+  flip?: 'horizontal' | 'vertical' | 'both'
+  rotate?: number
+  color?: string
+  size?: string | number
+}>()
+
 const outputType = computed(() => {
   if (/^https?:\/\//.test(props.name)) {
     return 'img'
@@ -30,19 +27,6 @@ const outputType = computed(() => {
     return 'svg'
   }
 })
-
-// const outputName = computed(() => {
-//   if (props.name.indexOf('i-') === 0) {
-//     let conversionName = props.name
-//     if (props.async || useType === 'offline') {
-//       conversionName = conversionName.replace('i-', '')
-//     }
-//     return conversionName
-//   }
-//   else {
-//     return props.name
-//   }
-// })
 
 const style = computed(() => {
   const transform = []
@@ -65,7 +49,7 @@ const style = computed(() => {
   }
   return {
     ...(props.color && { color: props.color }),
-    ...(props.size && { 'font-size': typeof props.size === 'number' ? `${props.size}px` : props.size }),
+    ...(props.size && { fontSize: typeof props.size === 'number' ? `${props.size}px` : props.size }),
     ...(transform.length && { transform: transform.join(' ') }),
   }
 })
@@ -80,7 +64,3 @@ const style = computed(() => {
     <img v-else-if="outputType === 'img'" :src="name" class="h-[1em] w-[1em]">
   </i>
 </template>
-
-<style lang="scss" scoped>
-// scss
-</style>

@@ -1,35 +1,22 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { icons } from '@/iconify'
 
 defineOptions({
   name: 'IconPicker',
-  inheritAttrs: false,
 })
-const props = withDefaults(
-  defineProps<{
-    modelValue: string
-    size?: string
-  }>(),
-  {
-    modelValue: '',
-    size: 'default',
-  },
-)
-const emits = defineEmits<{
-  'update:modelValue': [
-    value: string,
-  ]
-}>()
-const attrs = useAttrs()
-const myValue = ref('')
-watch(() => props.modelValue, (value) => {
-  myValue.value = value
-}, {
-  immediate: true,
+
+withDefaults(defineProps<{
+  size?: 'large' | 'default' | 'small'
+}>(), {
+  size: 'default',
+})
+
+const value = defineModel<string>({
+  default: '',
 })
 
 const dialogVisible = ref(false)
-const activeName = ref(myValue.value.split(':')[0] || icons[0].prefix)
+const activeName = ref(icons.some(item => item.prefix === value.value.split(':')[0]) ? value.value.split(':')[0] : icons[0].prefix)
 const search = ref('')
 const pagination = ref({
   page: 1,
@@ -39,10 +26,7 @@ const pagination = ref({
 const iconList = computed(() => {
   let iconsFilter = icons.filter((item) => {
     return item.prefix === activeName.value
-  })[0]?.icons
-  if (!iconsFilter) {
-    iconsFilter = []
-  }
+  })[0].icons
   if (search.value) {
     iconsFilter = iconsFilter.filter((item) => {
       return item.includes(search.value)
@@ -79,69 +63,80 @@ function hidePreviewIcon() {
 }
 
 function chooseIcon(val: string) {
-  myValue.value = val
-  emits('update:modelValue', val)
+  value.value = val
   dialogVisible.value = false
 }
 function removeIcon() {
-  myValue.value = ''
-  emits('update:modelValue', '')
+  value.value = ''
   dialogVisible.value = false
 }
 </script>
 
 <template>
-  <div :class="{ 'empty': myValue === '', [`icon-picker--${size}`]: true, 'is-disabled': attrs.disabled === true }" class="icon-picker" @click="dialogVisible = true">
-    <SvgIcon
-      :name="myValue !== '' ? myValue : 'i-ep:plus'"
-    />
-    <ElDialog v-model="dialogVisible" :show-close="true" append-to-body width="600px">
-      <div class="icon-picker-dialog-body">
-        <ElTabs v-model="activeName" class="demo-tabs" tab-position="left" @tab-change="handleTabChange">
-          <ElTabPane v-for="item in icons" :key="item.prefix" :name="item.prefix">
-            <template #label>
-              <div class="icon-label">
-                <div class="name">
-                  {{ item.info.name }}
-                </div>
-                <div class="total">
-                  {{ item.info.total }} 个
-                </div>
-              </div>
-            </template>
-          </ElTabPane>
-        </ElTabs>
-        <div class="main-container">
-          <div class="search-bar">
-            <ElInput v-model="search" clearable placeholder="搜索..." size="large">
-              <template #prefix>
-                <SvgIcon name="i-ep:search" />
-              </template>
-            </ElInput>
-          </div>
-          <div class="list-icon">
-            <SvgIcon class="empty list-icon-item" name="i-ep:delete" @click="removeIcon" />
-            <SvgIcon
-              v-for="(icon, index) in currentIconList" :key="index" :name="`${activeName}:${icon}`"
-              class="list-icon-item" @click="chooseIcon(`${activeName}:${icon}`)"
-              @mouseout="hidePreviewIcon" @mouseover="showPreviewIcon(`${activeName}:${icon}`, index + 1)"
-            />
-            <SvgIcon :class="previewIcon && previewIconPosition" :name="previewIcon" class="list-icon-preview-item" />
-          </div>
-          <ElPagination
-            v-model:current-page="pagination.page" :page-size="pagination.pageSize" :pager-count="5"
-            :total="iconList.length" background layout="prev, pager, next"
-          />
-        </div>
-      </div>
-    </ElDialog>
+  <div
+    class="icon-picker" :class="{
+      empty: value === '',
+      [`icon-picker--${size}`]: true,
+    }" @click="dialogVisible = true"
+  >
+    <SvgIcon :name="value !== '' ? value : 'i-ep:plus'" />
   </div>
+  <!-- TODO 重构弹窗，不使用 element-plus 组件 -->
+  <ElDialog v-model="dialogVisible" width="600px" :show-close="true" append-to-body>
+    <div class="icon-picker-dialog-body">
+      <ElTabs v-model="activeName" tab-position="left" class="demo-tabs" @tab-change="handleTabChange">
+        <ElTabPane v-for="item in icons" :key="item.prefix" :name="item.prefix">
+          <template #label>
+            <div class="icon-label">
+              <div class="name">
+                {{ item.info.name }}
+              </div>
+              <div class="total">
+                {{ item.info.total }} 个
+              </div>
+            </div>
+          </template>
+        </ElTabPane>
+      </ElTabs>
+      <div class="main-container">
+        <div class="search-bar">
+          <ElInput v-model="search" size="large" placeholder="搜索..." clearable>
+            <template #prefix>
+              <SvgIcon name="i-ep:search" />
+            </template>
+          </ElInput>
+        </div>
+        <div class="list-icon">
+          <span class="empty list-icon-item" @click="removeIcon">
+            <SvgIcon name="i-ep:delete" :size="28" />
+          </span>
+          <span v-for="(icon, index) in currentIconList" :key="index" class="list-icon-item" @click="chooseIcon(`${activeName}:${icon}`)" @mouseover="showPreviewIcon(`${activeName}:${icon}`, index + 1)" @mouseout="hidePreviewIcon">
+            <SvgIcon :name="`${activeName}:${icon}`" :size="28" />
+          </span>
+          <div class="list-icon-preview-item" :class="previewIcon && previewIconPosition">
+            <SvgIcon :name="previewIcon" :size="108" />
+          </div>
+        </div>
+        <ElPagination v-model:current-page="pagination.page" layout="prev, pager, next" :page-size="pagination.pageSize" :total="iconList.length" :pager-count="5" background />
+      </div>
+    </div>
+  </ElDialog>
 </template>
 
 <style lang="scss" scoped>
 .icon-picker {
   --icon-picker-size: var(--el-component-size);
   --icon-picker-font-size: var(--el-font-size-large);
+
+  &--small {
+    --icon-picker-size: var(--el-component-size-small);
+    --icon-picker-font-size: var(--el-font-size-medium);
+  }
+
+  &--large {
+    --icon-picker-size: var(--el-component-size-large);
+    --icon-picker-font-size: var(--el-font-size-extra-large);
+  }
 
   display: inline-flex;
   align-items: center;
@@ -155,23 +150,6 @@ function removeIcon() {
   border: var(--el-border);
   border-radius: var(--el-border-radius-base);
   transition: 0.3s;
-
-  &--small {
-    --icon-picker-size: var(--el-component-size-small);
-    --icon-picker-font-size: var(--el-font-size-medium);
-  }
-
-  &--large {
-    --icon-picker-size: var(--el-component-size-large);
-    --icon-picker-font-size: var(--el-font-size-extra-large);
-  }
-
-  &.is-disabled {
-    color: var(--el-text-color-disabled);
-    pointer-events: none;
-    cursor: not-allowed;
-    border-color: var(--el-border-color-light);
-  }
 
   &:hover {
     border: 1px solid var(--el-border-color-darker);
@@ -193,9 +171,6 @@ function removeIcon() {
   height: 500px;
   margin: calc((var(--el-dialog-padding-primary) + 16px) * -1) calc((var(--el-dialog-padding-primary)) * -1) calc((var(--el-dialog-padding-primary)) * -1);
 
-  /* margin: calc((var(--el-dialog-padding-primary) + 10px + 30px) * -1) calc(var(--el-dialog-padding-primary) * -1) calc((var(--el-dialog-padding-primary) + 10px) * -1) calc(var(--el-dialog-padding-primary) * -1);
-*/
-
   .el-tabs {
     :deep(.el-tabs__nav-prev),
     :deep(.el-tabs__nav-next) {
@@ -212,8 +187,12 @@ function removeIcon() {
         width: 100%;
         background-color: unset;
         background-image: linear-gradient(to right, transparent, var(--el-fill-color));
-        border-right: 2px solid var(--el-color-primary);
+        border-inline-end: 2px solid var(--el-color-primary);
         transition: 0.3s;
+
+        [dir="rtl"] & {
+          background-image: linear-gradient(to left, transparent, var(--el-fill-color));
+        }
       }
 
       .el-tabs__item {
@@ -230,6 +209,10 @@ function removeIcon() {
           height: 2px;
           content: "";
           background-image: linear-gradient(to right, transparent, var(--el-fill-color));
+
+          [dir="rtl"] & {
+            background-image: linear-gradient(to left, transparent, var(--el-fill-color));
+          }
         }
 
         .icon-label {
@@ -256,10 +239,8 @@ function removeIcon() {
   }
 
   .main-container {
-    display: flex;
     flex: 1;
-    flex-direction: column;
-    margin-right: 11px;
+    margin-inline-end: 10px;
 
     .search-bar {
       margin: 0 75px;
@@ -273,20 +254,15 @@ function removeIcon() {
       position: relative;
       min-height: 160px;
       margin: 15px 0;
-      overflow-y: auto;
 
       .list-icon-item {
         box-sizing: content-box;
+        display: inline-flex;
         padding: 15px;
         margin: 5px;
-        font-size: 28px;
         cursor: pointer;
         border: 1px solid var(--el-border-color);
         transition: var(--el-transition-border);
-
-        &:nth-child(6n + 6) {
-          margin-right: 0;
-        }
 
         &:not(.empty):hover {
           color: var(--el-color-primary);
@@ -311,33 +287,32 @@ function removeIcon() {
         box-sizing: content-box;
         display: none;
         padding: 10px;
-        font-size: 108px;
         color: var(--el-color-primary);
         background: var(--el-fill-color);
         border: 1px solid var(--el-border-color-darker);
 
         &.top-left {
+          inset-inline-start: 5px;
           top: 5px;
-          left: 5px;
-          display: block;
+          display: inline-flex;
         }
 
         &.top-right {
+          inset-inline-end: 6px;
           top: 5px;
-          right: 5px;
-          display: block;
+          display: inline-flex;
         }
 
         &.bottom-left {
+          inset-inline-start: 5px;
           bottom: 5px;
-          left: 5px;
-          display: block;
+          display: inline-flex;
         }
 
         &.bottom-right {
-          right: 5px;
+          inset-inline-end: 6px;
           bottom: 5px;
-          display: block;
+          display: inline-flex;
         }
       }
     }

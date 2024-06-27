@@ -1,7 +1,8 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 defineOptions({
   name: 'ListLayout',
 })
+
 const props = withDefaults(
   defineProps<{
     enableLeftSide?: boolean
@@ -10,16 +11,17 @@ const props = withDefaults(
     rightSideWidth?: number | string
     hideLeftSideToggle?: boolean
     hideRightSideToggle?: boolean
-  }>(), {
+  }>(),
+  {
     enableLeftSide: true,
     enableRightSide: true,
     leftSideWidth: 300,
     rightSideWidth: 300,
     hideLeftSideToggle: false,
     hideRightSideToggle: false,
-
   },
 )
+
 // 侧边栏是否折叠
 const leftSideVisiable = ref(true)
 const rightSideVisiable = ref(true)
@@ -42,25 +44,11 @@ const enabledRightSide = computed(() => {
       <slot name="leftSide" />
     </div>
     <div class="main">
-      <div
-        v-if="enabledLeftSide && !hideLeftSideToggle"
-        class="left-side-icon absolute top-1/2 z-1 h-6 w-6 flex-center cursor-pointer rounded-1/2 bg-[var(--g-container-bg)] -left-3"
-      >
-        <SvgIcon
-          :name="leftSideVisiable ? 'i-ep:caret-left' : 'i-ep:caret-right'"
-          class="op-30 transition-opacity hover:op-100"
-          @click="leftSideVisiable = !leftSideVisiable"
-        />
+      <div v-if="enabledLeftSide && !hideLeftSideToggle" class="left-side-icon absolute top-1/2 z-1 h-6 w-6 flex-center cursor-pointer rounded-1/2 bg-[var(--g-container-bg)] -left-3">
+        <SvgIcon :name="leftSideVisiable ? 'i-ep:caret-left' : 'i-ep:caret-right'" class="op-30 transition-opacity hover:op-100" @click="leftSideVisiable = !leftSideVisiable" />
       </div>
-      <div
-        v-if="enabledRightSide && !hideRightSideToggle"
-        class="right-side-icon absolute top-1/2 z-1 h-6 w-6 flex-center cursor-pointer rounded-1/2 bg-[var(--g-container-bg)] -right-3"
-      >
-        <SvgIcon
-          :name="rightSideVisiable ? 'i-ep:caret-right' : 'i-ep:caret-left'"
-          class="op-30 transition-opacity hover:op-100"
-          @click="rightSideVisiable = !rightSideVisiable"
-        />
+      <div v-if="enabledRightSide && !hideRightSideToggle" class="right-side-icon absolute top-1/2 z-1 h-6 w-6 flex-center cursor-pointer rounded-1/2 bg-[var(--g-container-bg)] -right-3">
+        <SvgIcon :name="rightSideVisiable ? 'i-ep:caret-right' : 'i-ep:caret-left'" class="op-30 transition-opacity hover:op-100" @click="rightSideVisiable = !rightSideVisiable" />
       </div>
       <div class="main-container">
         <slot name="default" />
@@ -97,13 +85,13 @@ const enabledRightSide = computed(() => {
 
   .left-side {
     flex: none;
-    margin-right: 20px;
+    margin-inline-end: 20px;
     overflow: auto;
   }
 
   .right-side {
     flex: none;
-    margin-left: 20px;
+    margin-inline-start: 20px;
     overflow: auto;
   }
 

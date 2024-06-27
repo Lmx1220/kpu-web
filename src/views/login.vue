@@ -58,6 +58,7 @@ function handleLogin() {
         })
       }
       catch (e) {
+        // turbo-console-disable-next-line
         console.error(e)
       }
     }

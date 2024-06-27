@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { close, loading } from '@/util/spinkit.ts'
+import { loadingHide, loadingShow } from '@/components/SpinkitLoading/index.ts'
 
 defineOptions({
   name: 'ComponentExampleLoading',
@@ -9,14 +9,14 @@ const size = ref(50)
 const color = ref('#ffffff')
 const text = ref('加载中...')
 function opens() {
-  loading({
+  loadingShow({
     type: type.value,
     size: size.value,
     color: color.value,
     text: text.value,
   })
   setTimeout(() => {
-    close()
+    loadingHide()
   }
   , 2000)
 }

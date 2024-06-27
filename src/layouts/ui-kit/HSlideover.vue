@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Dialog, DialogDescription, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+import useSettingsStore from '@/store/modules/settings'
 
 const props = withDefaults(
   defineProps<{
@@ -27,6 +28,8 @@ const isOpen = defineModel<boolean>({
 })
 
 const slots = useSlots()
+
+const settingsStore = useSettingsStore()
 
 const overlayTransitionClass = ref({
   enter: 'ease-in-out duration-500',
@@ -56,12 +59,16 @@ function close() {
 
 <template>
   <TransitionRoot as="template" :appear="appear" :show="isOpen">
-    <Dialog class="fixed inset-0 z-2000 flex" :class="{ 'justify-end': side === 'right' }" @close="!preventClose && close()">
+    <Dialog
+      class="fixed inset-0 z-2000 flex" :class="{
+        'justify-end': (settingsStore.settings.app.direction === 'ltr' && side === 'right') || (settingsStore.settings.app.direction === 'rtl' && side === 'left'),
+      }" @close="!preventClose && close()"
+    >
       <TransitionChild as="template" :appear="appear" v-bind="overlayTransitionClass">
         <div class="fixed inset-0 bg-stone-2/75 transition-opacity dark-bg-stone-8/75" :class="{ 'backdrop-blur-sm': overlay }" />
       </TransitionChild>
-      <TransitionChild as="template" :appear="appear" v-bind="transitionClass">
-        <DialogPanel relative max-w-md w-full w-screen flex flex-1 flex-col bg-white dark-bg-stone-8 focus:outline-none>
+      <TransitionChild v-bind="transitionClass" :key="JSON.stringify(transitionClass)" as="template" :appear="appear">
+        <DialogPanel relative max-w-md w-full w-screen flex flex-1 flex-col bg-white dark-bg-stone-8 focus-outline-none>
           <div flex="~ items-center justify-between" p-4 border-b="~ solid stone/15" text-6>
             <DialogTitle m-0 text-lg text-dark dark-text-white>
               {{ title }}

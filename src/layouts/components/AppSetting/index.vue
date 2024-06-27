@@ -129,6 +129,8 @@ function handleCopy() {
             <div class="mode-container" />
           </div>
         </HTooltip>
+      </div>
+      <div class="menu-mode">
         <HTooltip text="侧边栏精简模式" placement="bottom" :delay="500">
           <div class="mode mode-only-side" :class="{ active: settingsStore.settings.menu.mode === 'only-side' }" @click="settingsStore.settings.menu.mode = 'only-side'">
             <div class="mode-container" />
@@ -136,6 +138,16 @@ function handleCopy() {
         </HTooltip>
         <HTooltip text="顶部精简模式" placement="bottom" :delay="500">
           <div class="mode mode-only-head" :class="{ active: settingsStore.settings.menu.mode === 'only-head' }" @click="settingsStore.settings.menu.mode = 'only-head'">
+            <div class="mode-container" />
+          </div>
+        </HTooltip>
+        <HTooltip text="侧边栏面板模式" placement="bottom" :delay="500">
+          <div class="mode mode-side-panel" :class="{ active: settingsStore.settings.menu.menuMode === 'side-panel' }" @click="settingsStore.settings.menu.menuMode = 'side-panel'">
+            <div class="mode-container" />
+          </div>
+        </HTooltip>
+        <HTooltip text="顶部面板模式" placement="bottom" :delay="500">
+          <div class="mode mode-head-panel" :class="{ active: settingsStore.settings.menu.menuMode === 'head-panel' }" @click="settingsStore.settings.menu.menuMode = 'head-panel'">
             <div class="mode-container" />
           </div>
         </HTooltip>
@@ -724,6 +736,28 @@ function handleCopy() {
         --at-apply: top-2 start-2 end-2 h-2 rounded-ss-1 rounded-se-1;
       }
 
+      .mode-container {
+        --at-apply: inset-t-4.5 inset-e-2 inset-b-2 inset-s-2 rounded-es-1 rounded-ee-1;
+      }
+    }
+    &-side-panel {
+      &::before {
+        --at-apply: start-2 top-2 inset-b-2 w-2 rounded-ss-1 rounded-es-1;
+      }
+      &::after {
+        --at-apply: top-4 start-5.5 bottom-4 w-5;
+      }
+      .mode-container {
+        --at-apply: inset-t-2 inset-e-2 inset-b-2 inset-s-4.5 rounded-se-1 rounded-ee-1;
+      }
+    }
+    &-head-panel {
+      &::before {
+        --at-apply: top-2 start-2 end-2 h-2 rounded-ss-1 rounded-se-1;
+      }
+      &::after {
+        --at-apply: top-5.5 start-5 bottom-3.5 w-6;
+      }
       .mode-container {
         --at-apply: inset-t-4.5 inset-e-2 inset-b-2 inset-s-2 rounded-es-1 rounded-ee-1;
       }

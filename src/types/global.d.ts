@@ -148,7 +148,7 @@ declare namespace Settings {
      * @可选值 `'only-side'` 侧边栏精简模式
      * @可选值 `'only-head'` 顶部精简模式
      */
-    mode?: 'side' | 'head' | 'single' | 'only-side' | 'only-head'
+    mode?: 'side' | 'head' | 'single' | 'only-side' | 'only-head' | 'side-panel' | 'head-panel'
     /**
      * 导航栏是否圆角
      * @默认值 `false`
