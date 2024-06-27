@@ -45,7 +45,7 @@ export default function createVitePlugins(viteEnv, isBuild = false) {
   vitePlugins.push(createArchiver(viteEnv))
   vitePlugins.push(createConsole())
   vitePlugins.push(createBanner())
-  process.env.REPORT === 'true' && vitePlugins.push(createVisualizer() as any)
+  process.env.REPORT === 'true' && vitePlugins.push(createVisualizer())
   viteEnv.VITE_BUILD_PWA === 'true' && vitePlugins.push(createPwa())
   return vitePlugins
 }
