@@ -39,6 +39,16 @@ declare namespace Settings {
      */
     colorScheme?: '' | 'light' | 'dark'
     /**
+     * 是否开启哀悼模式
+     * @默认值 `false`
+     */
+    enableMournMode?: boolean
+    /**
+     * 是否开启色弱模式
+     * @默认值 `false`
+     */
+    enableColorAmblyopiaMode?: boolean
+    /**
      * 默认语言
      * @默认值 `''` 跟随浏览器语言设置
      * @可选值 参考 `/src/locales/index.ts` 里的语言列表

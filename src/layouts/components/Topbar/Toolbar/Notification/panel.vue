@@ -84,7 +84,7 @@ const activeName = ref('message')
         </div>
       </OverlayScrollbarsComponent>
       <RouterLink v-slot="{ navigate }" :to="{ name: 'personalNotification' }" custom>
-        <div class="cursor-pointer py-4 text-center text-sm text-stone-5" @click="() => navigate()">
+        <div class="cursor-pointer py-4 text-center text-sm text-stone-5" @click="navigate">
           进入消息列表
         </div>
       </RouterLink>
@@ -99,7 +99,7 @@ const activeName = ref('message')
         </div>
       </OverlayScrollbarsComponent>
       <RouterLink v-slot="{ navigate }" :to="{ name: 'personalNotification' }" custom>
-        <div class="cursor-pointer py-4 text-center text-sm text-stone-5" @click="() => navigate()">
+        <div class="cursor-pointer py-4 text-center text-sm text-stone-5" @click="navigate">
           进入待办列表
         </div>
       </RouterLink>
@@ -112,7 +112,7 @@ const activeName = ref('message')
   --at-apply: border-block-width-1 border-block-solid border-block-stone-2 dark-border-block-stone-7;
 
   .item {
-    --at-apply: flex items-start gap-3 px-3 py-4 cursor-pointer border-b-width-1 last-border-b-width-0 border-b-solid border-b-stone-2 dark-border-b-stone-7 hover-bg-stone-1 dark-hover-bg-dark/50;
+    --at-apply: flex items-start gap-3 px-3 py-4 cursor-pointer border-b-width-1 last-border-b-width-0 border-b-solid border-b-stone-2 dark-border-b-stone-7 hover:bg-stone-1 dark-hover-bg-dark/50;
 
     i {
       --at-apply: w-6 h-6 text-xs rounded-full text-white bg-blue;

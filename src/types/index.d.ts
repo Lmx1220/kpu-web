@@ -28,9 +28,3 @@ declare interface ComponentElRef<T extends HTMLElement = HTMLDivElement> {
 declare type ComponentRef<T extends HTMLElement = HTMLDivElement> = ComponentElRef<T> | null
 
 declare type ElRef<T extends HTMLElement = HTMLDivElement> = Nullable<T>
-
-declare module 'element-plus/dist/locale/zh-cn.mjs';
-declare module 'element-plus/dist/locale/zh-tw.mjs';
-
-declare module 'element-plus/dist/locale/en.mjs';
-declare module 'element-plus/dist/locale/ja.mjs';

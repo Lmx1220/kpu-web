@@ -9,8 +9,7 @@
     "Lokalise.i18n-ally",
     "antfu.unocss",
     "esbenp.prettier-vscode",
-    "mrmlnc.vscode-less",
-    "heybourn.headwind"
+    "mrmlnc.vscode-scss"
   ]
 
 }

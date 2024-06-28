@@ -20,7 +20,11 @@
     "lint": "npm-run-all -s lint:tsc lint:eslint lint:stylelint",
     "lint:tsc": "vue-tsc",
     "lint:eslint": "eslint . --cache --fix",
-    "lint:stylelint": "stylelint \"src/**/*.{css,scss,vue}\" --cache --fix"
+    "lint:stylelint": "stylelint \"src/**/*.{css,scss,vue}\" --cache --fix",
+    "postfinstall": "simple-git-hooks",
+    "preinstall": "npx only-allow pnpm",
+    "commit": "git cz",
+    "release": "bumpp"
   },
   "dependencies": {
     "@antv/g2plot": "^2.4.31",
@@ -122,6 +126,7 @@
     "rollup": "^3.29.4",
     "rollup-plugin-visualizer": "^5.12.0",
     "sass": "^1.77.5",
+    "simple-git-hooks": "^2.11.1",
     "stylelint": "^16.6.1",
     "stylelint-config-recess-order": "^5.0.1",
     "stylelint-config-standard-scss": "^13.1.0",
@@ -144,5 +149,14 @@
     "vite-plugin-vue-devtools": "^7.2.1",
     "vite-plugin-vue-meta-layouts": "^0.4.3",
     "vue-tsc": "^2.0.21"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged",
+    "preserveUnused": true
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git"
+    }
   }
 }

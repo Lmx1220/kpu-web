@@ -7,6 +7,8 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     lightTheme: 'light',
     darkTheme: 'dark',
     colorScheme: 'light',
+    enableMournMode: false,
+    enableColorAmblyopiaMode: false,
     defaultLang: '',
     enablePermission: false,
     enableProgress: true,

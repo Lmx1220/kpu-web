@@ -48,6 +48,24 @@ const useSettingsStore = defineStore(
       }
     }
 
+    watch([
+      () => settings.value.app.enableMournMode,
+      () => settings.value.app.enableColorAmblyopiaMode,
+    ], (val) => {
+      document.documentElement.style.removeProperty('filter')
+      if (val[0] && val[1]) {
+        document.documentElement.style.setProperty('filter', 'grayscale(100%) invert(80%)')
+      }
+      else if (val[0]) {
+        document.documentElement.style.setProperty('filter', 'grayscale(100%)')
+      }
+      else if (val[1]) {
+        document.documentElement.style.setProperty('filter', 'invert(80%)')
+      }
+    }, {
+      immediate: true,
+    })
+
     watch(() => settings.value.layout.widthMode, (val) => {
       document.body.setAttribute('data-app-width-mode', val)
     }, {
