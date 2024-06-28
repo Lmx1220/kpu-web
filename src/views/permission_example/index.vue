@@ -58,7 +58,7 @@ function permissionCheck2(permissions: string[]) {
       <div v-else>
         <h3>切换帐号</h3>
         <ElRadioGroup v-model="userStore.account" @change="accountChange">
-          <ElRadioButton value="admin">
+          <ElRadioButton value="kpu">
             admin
           </ElRadioButton>
           <ElRadioButton value="test">

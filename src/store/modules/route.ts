@@ -210,6 +210,7 @@ const useRouteStore = defineStore(
     function formatBackRoutes(routes: any, views = import.meta.glob('../../views/**/*.vue')): Route.recordMainRaw[] {
       return routes.map((route: any) => {
         switch (route.component) {
+          case 'LAYOUT':
           case 'Layout':
             route.component = () => import('@/layouts/index.vue')
             break
@@ -232,6 +233,7 @@ const useRouteStore = defineStore(
       try {
         const res = await api.get<any>({
           url: '/anyone/visible/allRouter',
+          baseURL: '/mock/',
         // noLoading: true,
         })
         // 设置 routes 数据

@@ -7,6 +7,7 @@ const globalSettings: Settings.all = {
     enablePermission: true,
     enableDynamicTitle: true,
     enableErrorLog: true,
+    routeBaseOn: 'backend',
   },
   home: {
     fullPath: '/',
