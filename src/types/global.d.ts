@@ -526,7 +526,7 @@ declare namespace Tabbar {
   interface recordRaw {
     tabId: string
     fullPath: string
-    routeName?: RouteRecordRaw.name
+    routeName?: RouteRecordName | null
     activeMenu?: string
     title?: string | (() => string)
     i18n?: string

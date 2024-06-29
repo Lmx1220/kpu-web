@@ -28,16 +28,15 @@ const useRouteStore = defineStore(
           icon: route.meta?.icon,
           activeIcon: route.meta?.activeIcon,
           hide: !route.meta?.breadcrumb && route.meta?.breadcrumb === false,
-        }], route.path, route.meta?.auth)
+        }], route.path)
       }
       return route
     }
-    function flatAsyncRoutesRecursive(routes: RouteRecordRaw[], breadcrumb: Route.breadcrumb[] = [], baseUrl = '', baseAuth: RouteMeta['auth']): RouteRecordRaw[] {
+    function flatAsyncRoutesRecursive(routes: RouteRecordRaw[], breadcrumb: Route.breadcrumb[] = [], baseUrl = ''): RouteRecordRaw[] {
       const res: RouteRecordRaw[] = []
       routes.forEach((route) => {
         if (route.children) {
           const childrenBaseUrl = resolveRoutePath(baseUrl, route.path)
-          const childrenBaseAuth = !baseAuth || baseAuth === '' || baseAuth?.length === 0 ? route.meta?.auth : baseAuth
           const tmpBreadcrumb = cloneDeep(breadcrumb)
           tmpBreadcrumb.push({
             path: childrenBaseUrl,
@@ -52,11 +51,10 @@ const useRouteStore = defineStore(
           if (!tmpRoute.meta) {
             tmpRoute.meta = {}
           }
-          tmpRoute.meta.auth = childrenBaseAuth
           tmpRoute.meta.breadcrumbNeste = tmpBreadcrumb
           delete tmpRoute.children
           res.push(tmpRoute)
-          const childrenRoutes = flatAsyncRoutesRecursive(route.children, tmpBreadcrumb, childrenBaseUrl, childrenBaseAuth)
+          const childrenRoutes = flatAsyncRoutesRecursive(route.children, tmpBreadcrumb, childrenBaseUrl)
           childrenRoutes.forEach((item) => {
             // 如果 path 一样则覆盖，因为子路由的 path 可能设置为空，导致和父路由一样，直接注册会提示路由重复
             if (res.some(v => v.path === item.path)) {
@@ -87,7 +85,6 @@ const useRouteStore = defineStore(
           if (!tmpRoute.meta) {
             tmpRoute.meta = {}
           }
-          tmpRoute.meta.auth = !baseAuth || baseAuth === '' || baseAuth?.length === 0 ? tmpRoute.meta?.auth : baseAuth
           tmpRoute.meta.breadcrumbNeste = tmpBreadcrumb
           res.push(tmpRoute)
         }

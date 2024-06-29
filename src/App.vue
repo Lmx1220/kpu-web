@@ -14,6 +14,13 @@ const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 const { auth } = useAuth()
+
+const isAuth = computed(() => {
+  return route.matched.every((item) => {
+    return auth(item.meta.auth ?? '')
+  })
+})
+
 // 侧边栏主导航当前实际宽度
 const mainSidebarActualWidth = computed(() => {
   let actualWidth = Number.parseInt(getComputedStyle(document.documentElement).getPropertyValue('--g-main-sidebar-width'))
@@ -97,7 +104,7 @@ import.meta.env.VITE_APP_DISABLE_DEVTOOL === 'true' && DisableDevtool()
         '--g-sub-sidebar-actual-width': subSidebarActualWidth,
       }"
     >
-      <component :is="Component" v-if="auth(route.meta.auth ?? '')" />
+      <component :is="Component" v-if="isAuth" />
       <NotAllowed v-else />
     </RouterView>
     <SystemInfo />
