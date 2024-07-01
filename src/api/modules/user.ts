@@ -1,4 +1,5 @@
 import defHttp from '@/api'
+import type { DefUserInfoResultVO } from '@/types/store'
 
 export function login(data: {
   account: string
@@ -8,6 +9,14 @@ export function login(data: {
     url: '/login',
     data,
     baseURL: '/mock/',
+  })
+}
+
+export function getUserInfoById(userId?: string) {
+  return defHttp.get<DefUserInfoResultVO>({
+    url: '/anyone/getUserInfoById',
+    timeout: 2 * 60 * 1000,
+    params: { userId },
   })
 }
 

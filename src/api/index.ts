@@ -2,6 +2,7 @@ import axios from 'axios'
 import type { AxiosInstance, AxiosResponse } from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { clone } from 'lodash-es'
+import { Base64 } from 'js-base64'
 import HttpRequest from './request'
 import useUserStore from '@/store/modules/user'
 import { AxiosRetry } from '@/api/helper/axiosRetry'
@@ -157,10 +158,17 @@ const transform: AxiosTransform = {
     const token = userStore.token
     if (userStore.isLogin && token && (config as Recordable)?.requestOptions?.withToken !== false) {
       // jwt token
-      (config as Recordable).headers.token = options.authenticationScheme
+      (config as Recordable).headers.Token = options.authenticationScheme
         ? `${options.authenticationScheme} ${token}`
         : token
     }
+    // 添加客户端信息
+    const clientId = 'kpu_web_pro'
+    const clientSecret = 'kpu_web_pro_secret';
+
+    (config as Recordable).headers.Authorization = `${Base64.encode(
+      `${clientId}:${clientSecret}`,
+    )}`
     return config
   },
 
@@ -229,12 +237,12 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
       // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
       // authentication schemes，e.g: Bearer
       authenticationScheme: '',
-      // authenticationScheme: '1',
+      // authenticationScheme: '',
       timeout: 10 * 1000 * 60, // 10 * 1000 * 60 = 10分钟
       headers: {
         'Content-Type': ContentTypeEnum.JSON,
-        'Authorization': 'a3B1X3dlYjprcHVfd2ViX3NlY3JldA',
-        'ApplicationId': '1',
+        // 'Authorization': 'a3B1X3dlYjprcHVfd2ViX3NlY3JldA',
+        // 'ApplicationId': '1',
       },
       transform: clone(transform),
       // 配置项，下面的选项都可以在独立的接口请求中覆盖

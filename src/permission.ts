@@ -68,6 +68,8 @@ router.beforeEach(async (to, from, next) => {
       }
     }
     else {
+      // 去获取用户信息
+      userStore.lastUpdateTime === 0 && await userStore.getUserInfoAction()
       // 获取用户权限
       settingsStore.settings.app.enablePermission && await userStore.getPermissions()
       // 获取用户偏好设置

@@ -229,12 +229,11 @@ const useRouteStore = defineStore(
     async function generateRoutesAtBack() {
       try {
         const res = await api.get<any>({
-          url: '/anyone/visible/allRouter',
-          baseURL: '/mock/',
+          url: '/anyone/visible/resource',
         // noLoading: true,
         })
         // 设置 routes 数据
-        routesRaw.value = converDeprecatedAttribute(convertSingleRoutes(formatBackRoutes(res.data) as any))
+        routesRaw.value = converDeprecatedAttribute(convertSingleRoutes(formatBackRoutes(res.routerList) as any))
         isGenerate.value = true
         // 初始化常驻标签页
         if (settingsStore.settings.tabbar.enable) {

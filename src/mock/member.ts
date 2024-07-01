@@ -17,7 +17,7 @@ export default defineFakeRoute([
     },
   },
   {
-    url: '/mock/anyone/visible/resource',
+    url: '/mock/anyone/findVisibleResource',
     method: 'get',
     response: (option: any) => {
       let permissions: string[] = []
@@ -37,10 +37,7 @@ export default defineFakeRoute([
       return {
         msg: '',
         code: 0,
-        data: {
-          resourceList: permissions,
-          roleList: [],
-        },
+        data: permissions,
       }
     },
   },
