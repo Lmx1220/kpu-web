@@ -14,6 +14,7 @@
     "preview": "vite preview",
     "serve:test": "http-server ./dist-test -o",
     "serve": "http-server ./dist -o",
+    "rimraf": "rimraf node_modules",
     "svgo": "svgo -f src/assets/icons",
     "new": "plop",
     "generate:icons": "esno scripts/generate.icons.ts",
