@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash-es'
-import type { RouteMeta, RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import useSettingsStore from './settings'
 import useTabbarStore from './tabbar'
 import { resolveRoutePath } from '@/util'
