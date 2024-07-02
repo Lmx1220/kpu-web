@@ -213,7 +213,12 @@ const useRouteStore = defineStore(
             break
           default:
             if (route.component) {
-              route.component = views[`../../views/${route.component}`]
+              if (route.component.includes('.vue')) {
+                route.component = views[`../../views/${route.component}`]
+              }
+              else {
+                route.component = views[`../../views${route.component}.vue`]
+              }
             }
             else {
               delete route.component
@@ -230,6 +235,7 @@ const useRouteStore = defineStore(
       try {
         const res = await api.get<any>({
           url: '/anyone/visible/resource',
+          params: { type: 'KPU_WEB_PRO_FANTASTIC' },
         // noLoading: true,
         })
         // 设置 routes 数据

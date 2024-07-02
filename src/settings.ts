@@ -20,6 +20,7 @@ const globalSettings: Settings.all = {
   },
   menu: {
     style: 'dot',
+    mode: 'head',
     isRounded: true,
     enableSubMenuCollapseButton: true,
     enableHotkeys: true,
