@@ -8,7 +8,6 @@ import useIframeStore from './iframe'
 import storage from '@/util/storage'
 import type { Tabbar } from '@/types/global'
 import api from '@/api'
-import { deepClone } from '@/util'
 
 const useTabbarStore = defineStore(
   // 唯一ID
@@ -393,7 +392,7 @@ const useTabbarStore = defineStore(
       }
       if (settingsStore.settings.tabbar.enableMemory) {
         const tabbarTempData = storage.session.has('tabbarTempData') ? JSON.parse(`${storage.session.get('tabbarTempData')}`) : {}
-        tabbarTempData[userStore.account] = deepClone(list.value.filter(item => !item.isPin && !item.isPermanent)).map((item) => {
+        tabbarTempData[userStore.account] = cloneDeep(list.value.filter(item => !item.isPin && !item.isPermanent)).map((item) => {
           item.customTitleList = []
           return item
         })

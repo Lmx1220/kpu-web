@@ -1,4 +1,4 @@
-import type { UnwrapRef } from 'vue'
+import type { InjectionKey, UnwrapRef } from 'vue'
 import { readonly as defineReadonly } from 'vue'
 
 export interface CreateContextOptions {

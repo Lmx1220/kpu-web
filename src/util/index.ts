@@ -1,50 +1,6 @@
-import type { AxiosResponse } from 'axios'
-import { ElMessage } from 'element-plus'
 import { intersectionWith, isEqual, mergeWith, unionWith } from 'lodash-es'
 import path from 'path-browserify'
 import { isArray, isObject } from '@/util/is'
-
-// 深拷贝
-export function deepClone<T>(target: T): T {
-  // 定义一个变量
-  let result: any
-  // 如果当前需要深拷贝的是一个对象的话
-  if (typeof target === 'object') {
-  // 如果是一个数组的话
-    if (Array.isArray(target)) {
-      result = [] // 将result赋值为一个数组，并且执行遍历
-      for (const i in target) {
-        // 递归克隆数组中的每一项
-        result.push(deepClone(target[i]))
-      }
-      // 判断如果当前的值是null的话；直接赋值为null
-    }
-    else if (target === null) {
-      result = null
-      // 判断如果当前的值是一个RegExp对象的话，直接赋值
-    }
-    else if (target.constructor === RegExp) {
-      result = target
-    }
-    else {
-      // 否则是普通对象，直接for in循环，递归赋值对象的所有值
-      result = {}
-      for (const i in target) {
-        result[i] = deepClone(target[i])
-      }
-    }
-  // 如果不是对象的话，就是基本数据类型，那么直接赋值
-  }
-  else {
-    result = target
-  }
-  // 返回最终结果
-  return result as T
-}
-
-export function isExternalLink(path: string) {
-  return /^(?:https?:|mailto:|tel:)/.test(path)
-}
 
 export function resolveRoutePath(basePath?: string, routePath?: string) {
   return basePath ? path.resolve(basePath, routePath ?? '') : routePath ?? ''
@@ -131,51 +87,6 @@ export function openWindow(
   noreferrer && feature.push('noreferrer=yes')
 
   window.open(url, target, feature.join(','))
-}
-
-export function downloadFile(response: AxiosResponse<Blob>) {
-  const res = response.data
-  const type = res.type
-  if (type.includes('application/json')) {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      if (e?.target?.readyState === 2) {
-        const data = JSON.parse(e?.target?.result as string)
-        ElMessage.warning(data.msg)
-      }
-    }
-    reader.readAsText(res)
-  }
-  else {
-    const disposition = response.headers['content-disposition']
-    let fileName = '下载文件.zip'
-    if (disposition) {
-      const respcds = disposition.split(';')
-      for (let i = 0; i < respcds.length; i++) {
-        const header = respcds[i]
-        if (header !== null && header !== '') {
-          const headerValue = header.split('=')
-          if (headerValue !== null && headerValue.length > 0) {
-            if (headerValue[0].trim().toLowerCase() === 'filename') {
-              fileName = decodeURI(headerValue[1])
-              break
-            }
-          }
-        }
-      }
-    }
-    // 处理引号
-    if ((fileName.startsWith('\'') || fileName.startsWith('"')) && (fileName.endsWith('\'') || fileName.endsWith('"'))) {
-      fileName = fileName.substring(1, fileName.length - 1)
-    }
-
-    const blob = new Blob([res])
-    const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(blob)
-    link.download = fileName
-    link.click()
-    window.URL.revokeObjectURL(link.href)
-  }
 }
 
 // 比较两个对象，并提取出不同的部分

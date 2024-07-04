@@ -3,8 +3,8 @@ import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 import { downloadIds } from '@/api/modules/system/upload'
 import { useDialogInner } from '@/components/Dialog/hooks/useDialog'
 import type { DialogMethods } from '@/components/Dialog/typing'
-import { downloadFile } from '@/util'
 import { isArray } from '@/util/is'
+import { downloadFile } from '@/util/kpu/common.ts'
 
 interface Props {
   value?: FileResultVO[]

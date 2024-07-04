@@ -2,11 +2,14 @@ import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar.ts'
 
 export default function useMainPage() {
+  const route = useRoute()
+  const router = useRouter()
+
   const settingsStore = useSettingsStore()
   const tabbarStore = useTabbarStore()
+
   const tabbar = useTabbar()
-  const router = useRouter()
-  const route = useRoute()
+
   function reload() {
     router.push(
       { name: 'reload' },
