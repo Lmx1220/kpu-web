@@ -466,7 +466,7 @@ defineExpose({
         </ElCol>
         <ElCol v-if="[ResourceTypeEnum.MENU, ResourceTypeEnum.VIEW].includes(data.form.resourceType as ResourceTypeEnum)" :xl="12" :lg="24">
           <ElFormItem prop="activeIcon" :label="t('system.resource.activeIcon')">
-            <IconPicker v-model="data.form.activeIcon" :disabled="type === ActionEnum.VIEW" />
+            <IconPicker v-model="data.form.meta.activeIcon" :disabled="type === ActionEnum.VIEW" />
           </ElFormItem>
         </ElCol>
         <ElCol v-if="data.form.parentId && [ResourceTypeEnum.MENU, ResourceTypeEnum.VIEW].includes(data.form.resourceType as ResourceTypeEnum)" :xl="12" :lg="24">
@@ -485,7 +485,7 @@ defineExpose({
         </ElCol>
         <ElCol v-if="data.form.parentId && [ResourceTypeEnum.MENU, ResourceTypeEnum.VIEW].includes(data.form.resourceType as ResourceTypeEnum)" :xl="12" :lg="24">
           <ElFormItem prop="sidebar" :label="t('system.resource.meta.sidebar')">
-            <ElSwitch v-model="data.form.isHidden" :disabled="type === ActionEnum.VIEW" active-text="显示" inactive-text="隐藏" inline-prompt />
+            <ElSwitch v-model="data.form.meta.menu" :disabled="type === ActionEnum.VIEW" active-text="显示" inactive-text="隐藏" inline-prompt />
           </ElFormItem>
         </ElCol>
         <ElCol v-if="data.form.parentId && [ResourceTypeEnum.MENU, ResourceTypeEnum.VIEW].includes(data.form.resourceType as ResourceTypeEnum)" :xl="12" :lg="24">

@@ -157,7 +157,7 @@ function onMove(row: Recordable) {
 }
 const form = ref<InstanceType<typeof DetailForm>>()
 const title = computed(() => {
-  const name = data.value.formModeProps.data?.name
+  const name = data.value.formModeProps.data?.title
   switch (data.value.formModeProps.type) {
     case 'add':
       return `新增【${data.value.formModeProps.data?.applicationName}】中【${data.value.formModeProps.parent?.name}】的子资源`

@@ -42,6 +42,7 @@ export interface DefResourceSaveVO {
 export interface DefResourceUpdateVO {
   id: string
   applicationId: string
+
   code: string
   name: string
   resourceType: string
@@ -62,7 +63,10 @@ export interface DefResourceUpdateVO {
 }
 
 export interface DefResourceResultVO {
+  parentName?: string
   applicationId?: string
+  title?: string
+  dataScope?: string
   code?: string
   resourceType?: string
   describe?: string
@@ -75,7 +79,10 @@ export interface DefResourceResultVO {
   subGroup?: string
   fieldIsSecret?: boolean
   fieldIsEdit?: boolean
+  isDef?: boolean
+  customClass?: string
   metaJson?: string
+  meta: Recordable
   id?: string
   name?: string
   parentId?: string
@@ -84,6 +91,7 @@ export interface DefResourceResultVO {
   createdTime?: string
   updatedBy?: string
   updatedTime?: string
+  resourceApiList?: DefResourceApiVO[]
   echoMap?: any
 }
 
