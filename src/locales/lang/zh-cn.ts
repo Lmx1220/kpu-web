@@ -6,7 +6,7 @@ const modules = import.meta.glob('./zh-cn/**/*.json', { eager: true })
 export default {
   message: {
     ...genMessage(modules as Recordable<Recordable>, 'zh-cn'),
-    zhCN,
+    elementLocale: { ...zhCN },
     ...vxeZhCN,
   },
   labelName: '中文(简体)',

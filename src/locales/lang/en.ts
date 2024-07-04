@@ -6,7 +6,7 @@ const modules = import.meta.glob('./en/**/*.json', { eager: true })
 export default {
   message: {
     ...genMessage(modules as Recordable<Recordable>, 'en'),
-    en,
+    elementLocale: { ...en },
     ...vxeEnUS,
   },
 
