@@ -10,11 +10,10 @@ withDefaults(defineProps<{
 }>(), {
   size: 'default',
 })
-
 const value = defineModel<string>({
   default: '',
 })
-
+const attrs = useAttrs()
 const dialogVisible = ref(false)
 const activeName = ref(icons.some(item => item.prefix === value.value.split(':')[0]) ? value.value.split(':')[0] : icons[0].prefix)
 const search = ref('')
@@ -75,11 +74,12 @@ function removeIcon() {
 <template>
   <div
     class="icon-picker" :class="{
-      empty: value === '',
+      'empty': value === '',
       [`icon-picker--${size}`]: true,
+      'is-disabled': attrs.disabled === true,
     }" @click="dialogVisible = true"
   >
-    <SvgIcon :name="value !== '' ? value : 'i-ep:plus'" />
+    <SvgIcon :name="value !== '' && value != null ? value : 'i-ep:plus'" />
   </div>
   <!-- TODO 重构弹窗，不使用 element-plus 组件 -->
   <ElDialog v-model="dialogVisible" width="600px" :show-close="true" append-to-body>
@@ -150,6 +150,13 @@ function removeIcon() {
   border: var(--el-border);
   border-radius: var(--el-border-radius-base);
   transition: 0.3s;
+
+  &.is-disabled {
+    color: var(--el-text-color-disabled);
+    pointer-events: none;
+    cursor: not-allowed;
+    border-color: var(--el-border-color-light);
+  }
 
   &:hover {
     border: 1px solid var(--el-border-color-darker);

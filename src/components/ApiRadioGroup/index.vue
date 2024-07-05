@@ -45,7 +45,7 @@ const slots = useSlots()
     <template v-if="slots.default">
       <slot :dicts="dicts" />
     </template>
-    <ElRadio v-for="(item, index) in dicts" v-else :key="index" :label="item[valueField]">
+    <ElRadio v-for="(item, index) in dicts" v-else :key="index" :value="item[valueField]">
       {{ item[labelField] }}
     </ElRadio>
   </ElRadioGroup>

@@ -387,12 +387,12 @@ defineExpose({
               class="custom-tree-node"
             >
               <slot name="title" :data="data">
-                <span>
+                <span class="h-6 flex flex-items-center lh-6">
                   <SvgIcon v-if="data.icon" :name="data.icon" class="mr-1" />
                   <span>{{ getFieldNames.label ? data[getFieldNames.label] : node.label }}</span>
                 </span>
               </slot>
-              <span v-if="$slots.action" class="tree__actions">
+              <span v-if="$slots.action" class="tree__actions h-6 lh-6">
                 <slot name="action" :data="data" />
               </span>
             </div>
