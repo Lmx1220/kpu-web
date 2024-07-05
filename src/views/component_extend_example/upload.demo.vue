@@ -99,7 +99,7 @@ const tableData = [
       </template>
     </PageHeader>
     <PageMain title="单图上传">
-      <ImageUpload v-model="image" action="https://console-mock.apipost.cn/app/mock/project/1f50f1da-5189-4282-d3c7-c133a514c5a8/upload/image" name="image" :width="250" :height="150" @on-success="handleSuccess1" />
+      <ImageUpload v-model:url="image" action="https://console-mock.apipost.cn/app/mock/project/1f50f1da-5189-4282-d3c7-c133a514c5a8/upload/image" name="image" :width="250" :height="150" @on-success="handleSuccess1" />
     </PageMain>
     <PageMain title="多图上传（默认最多3张）">
       <ImagesUpload v-model="images" action="https://console-mock.apipost.cn/app/mock/project/1f50f1da-5189-4282-d3c7-c133a514c5a8/upload/image" name="image" @on-success="handleSuccess2" />

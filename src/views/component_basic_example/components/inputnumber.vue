@@ -11,7 +11,7 @@ const num5 = ref(1)
     <ElDivider content-position="left">
       基础用法
     </ElDivider>
-    <ElInputNumber v-model="num" :min="1" :max="10" label="描述文字" />
+    <ElInputNumber v-model="num" :min="1" :max="10" aria-label="描述文字" />
     <ElDivider content-position="left">
       禁用状态
     </ElDivider>
