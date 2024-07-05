@@ -4,7 +4,7 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import type { FormInstance } from 'element-plus'
 import { useDialogInner } from '@/components/Dialog/hooks/useDialog.ts'
 import { findSystemApi } from '@/api/modules/common/general.ts'
-// import { findOnlineService } from '@/api/modules/common/gateway.ts'
+import { findOnlineService } from '@/api/modules/common/gateway.ts'
 import type { DefResourceApiVO } from '@/api/modules/devOperation/application/model/defResourceModel.ts'
 import type { RecursivePartial } from '#/global'
 import { HTTP_TAG_MAP } from '@/enums/httpEnum.ts'
@@ -312,6 +312,10 @@ function handleUriDeselect(value: string) {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    a{
+      text-decoration: inherit;
+    }
   }
 
   .card-meta-title {

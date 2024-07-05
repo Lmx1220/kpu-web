@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 import { useDialogInner } from '@/components/Dialog/hooks/useDialog.ts'
-// import { findOnlineService } from '@/api/modules/common/gateway.ts'
+import { findOnlineService } from '@/api/modules/common/gateway.ts'
 import type { DefResourceApiVO } from '@/api/modules/devOperation/application/model/defResourceModel.ts'
 import { enumComponentProps } from '@/util/common.ts'
 import { EnumEnum } from '@/enums/commonEnum.ts'

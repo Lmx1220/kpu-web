@@ -160,7 +160,7 @@ const title = computed(() => {
   const name = data.value.formModeProps.data?.title
   switch (data.value.formModeProps.type) {
     case 'add':
-      return `新增【${data.value.formModeProps.data?.applicationName}】中【${data.value.formModeProps.parent?.name}】的子资源`
+      return `新增【${data.value.formModeProps.data?.applicationName}】中【${data.value.formModeProps.parent?.title}】的子资源`
     case 'edit':
       return `编辑【${data.value.formModeProps.data?.applicationName}】中的【${name}】`
     case 'view':

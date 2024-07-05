@@ -72,7 +72,7 @@ async function getTreeList() {
 function handleTreeSelect(keys: KeyType[]) {
   if (keys[0]) {
     const node = findNodeByKey(keys[0], dataTree.value.tree)
-    const parent = findNodeByKey(node?.parentId, dataTree.value.tree)
+    const parent = findNodeByKey(node?.parentId, dataTree.value.tree, { name: 'title' })
     if (node) {
       node.applicationId = dataTree.value.search.applicationId
       node.applicationName = dataTree.value.search.applicationName
@@ -82,10 +82,11 @@ function handleTreeSelect(keys: KeyType[]) {
   }
 }
 function onMove(data?: any) {
+  // eslint-disable-next-line no-console
   console.log(data)
 }
 function onAdd(key?: string) {
-  const parent = findNodeByKey(key || '0', dataTree.value.tree)
+  const parent = findNodeByKey(key || '0', dataTree.value.tree, { name: 'title' })
   let sort: number
   if (key) {
     sort = parent.children.length + 1
@@ -101,7 +102,7 @@ function onAdd(key?: string) {
 }
 function onEdit(node: any) {
   const current = findNodeByKey(node?.id, dataTree.value.tree)
-  const parent = findNodeByKey(node?.parentId, dataTree.value.tree)
+  const parent = findNodeByKey(node?.parentId, dataTree.value.tree, { name: 'title' })
   current.applicationName = dataTree.value.search.applicationName
   emits('edit', parent, current)
 }
@@ -153,7 +154,7 @@ defineExpose({ getTreeList })
 
     <BasicTree :tree-data="dataTree.tree" title="资源列表" checkable toolbar search @select="handleTreeSelect">
       <template #title="{ data }">
-        <span>
+        <span class="h-6 flex flex-items-center lh-6">
           <SvgIcon v-if="data.icon" :name="data.icon" :size="16" class="ml-1 mr-1" />
           <ElTag :type="getResourceTagColor(data.resourceType, data.isHidden)" class="mr-1">
             {{ data?.echoMap?.resourceType }}

@@ -106,7 +106,6 @@ router.beforeEach(async (to, from, next) => {
           removeRoutes.push(router.addRoute(route as RouteRecordRaw))
         }
       })
-      console.log(routeStore.flatRoutes)
       if (settingsStore.settings.app.routeBaseOn !== 'filesystem') {
         routeStore.flatSystemRoutes.forEach((route) => {
           removeRoutes.push(router.addRoute(route as RouteRecordRaw))
