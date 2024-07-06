@@ -91,3 +91,11 @@ export function update(params: DefApplicationUpdateVO) {
 }
 
 export const remove = (params: string[]) => defHttp.request<boolean>({ ...Api.Delete, params })
+
+export default {
+  page,
+  save,
+  update,
+  remove,
+  query,
+}

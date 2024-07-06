@@ -1,0 +1,21 @@
+{
+  "object": "DefApplication",
+  "table": { "title": "DefApplication list" },
+  "id": "Id",
+  "appKey": "AppKey",
+  "appSecret": "AppSecret",
+  "name": "Name",
+  "version": "Version",
+  "type": "Type",
+  "redirect": "Redirect",
+  "introduce": "Introduce",
+  "remark": "Remark",
+  "url": "Url",
+  "isGeneral": "IsGeneral",
+  "isVisible": "IsVisible",
+  "sortValue": "SortValue",
+  "createdBy": "CreatedBy",
+  "createdTime": "CreatedTime",
+  "updatedBy": "UpdatedBy",
+  "updatedTime": "UpdatedTime"
+}
