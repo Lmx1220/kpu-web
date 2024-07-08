@@ -249,7 +249,7 @@ function handleUriDeselect(value: string) {
               </ElSelect>
             </ElFormItem>
             <ElFormItem prop="uri" :label="t('system.resourceApi.uri')">
-              <ElSelect v-model="formData.uri" multiple clearable filterable @change="handleUriChange">
+              <ElSelect v-model="formData.uri" clearable filterable multiple @change="handleUriChange">
                 <ElOption v-for="item in uriOptions" :key="item.key" :value="item.value" :label="item.label" />
               </ElSelect>
             </ElFormItem>
@@ -313,7 +313,8 @@ function handleUriDeselect(value: string) {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    a{
+
+    a {
       text-decoration: inherit;
     }
   }

@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { ElMessage } from 'element-plus'
-
 import Move from './components/move.vue'
 import DetailForm from './components/DetailForm/index.vue'
 import LeftTree from './leftTree.vue'
-import crudResource, { moveDown, moveUp } from '@/api/modules/devOperation/application/defResource.ts'
 import type { DefResourceResultVO } from '@/api/modules/devOperation/application/model/defResourceModel.ts'
 import type { DataConfig } from '@/types/global'
 import eventBus from '@/util/eventBus.ts'
@@ -16,7 +13,7 @@ defineOptions({
   name: 'SystemResourceList',
 })
 
-const { t } = useI18n()
+// const { t } = useI18n()
 
 const data: Ref<DataConfig<any, DefResourceResultVO>> = ref(
   {
@@ -112,37 +109,37 @@ function onEdit(parent: any, row: Recordable) {
   data.value.formModeProps.parent = parent
 }
 
-function onDel(row: Recordable) {
-  if (row.id) {
-    crudResource.remove([row.id]).then(() => {
-      getDataList()
-      ElMessage.success({
-        message: t('common.tips.deleteSuccess'),
-        center: true,
-      })
-    })
-  }
-}
+// function onDel(row: Recordable) {
+//   if (row.id) {
+//     crudResource.remove([row.id]).then(() => {
+//       getDataList()
+//       ElMessage.success({
+//         message: t('common.tips.deleteSuccess'),
+//         center: true,
+//       })
+//     })
+//   }
+// }
 
-function onMoveUp(row: Recordable) {
-  moveUp(row.id).then(() => {
-    getDataList()
-    ElMessage.success({
-      message: t('sys.api.operationSuccess'),
-      center: true,
-    })
-  })
-}
+// function onMoveUp(row: Recordable) {
+//   moveUp(row.id).then(() => {
+//     getDataList()
+//     ElMessage.success({
+//       message: t('sys.api.operationSuccess'),
+//       center: true,
+//     })
+//   })
+// }
 
-function onMoveDown(row: Recordable) {
-  moveDown(row.id).then(() => {
-    getDataList()
-    ElMessage.success({
-      message: t('sys.api.operationSuccess'),
-      center: true,
-    })
-  })
-}
+// function onMoveDown(row: Recordable) {
+//   moveDown(row.id).then(() => {
+//     getDataList()
+//     ElMessage.success({
+//       message: t('sys.api.operationSuccess'),
+//       center: true,
+//     })
+//   })
+// }
 
 const moveDialog = ref<{ id?: string, visible: boolean, data: object }>({
   id: undefined,
@@ -150,11 +147,11 @@ const moveDialog = ref<{ id?: string, visible: boolean, data: object }>({
   data: {},
 })
 
-function onMove(row: Recordable) {
-  moveDialog.value.id = row.id
-  moveDialog.value.visible = true
-  moveDialog.value.data = row
-}
+// function onMove(row: Recordable) {
+//   moveDialog.value.id = row.id
+//   moveDialog.value.visible = true
+//   moveDialog.value.data = row
+// }
 const form = ref<InstanceType<typeof DetailForm>>()
 const title = computed(() => {
   const name = data.value.formModeProps.data?.title

@@ -47,7 +47,6 @@ const form = ref<DefResourceResultVO>({
   resourceType: '10',
   title: '',
   icon: '',
-  activeIcon: '',
   meta: {
     defaultOpened: false,
     permanent: false,
@@ -55,6 +54,7 @@ const form = ref<DefResourceResultVO>({
     sidebar: true,
     breadcrumb: true,
     activeMenu: '',
+    activeIcon: '',
     cache: [],
     noCache: [],
     badge: '',
@@ -315,7 +315,7 @@ function TableSortable() {
             <ElTable ref="authsTableRef" :key="authsTableKey" :data="form.auths" stripe highlight-current-row border>
               <ElTableColumn align="center" fixed :label="t('system.resource.sortValue')" prop="sortValue" width="60">
                 <template #header>
-                  <ElButton type="primary" size="small" circle plain @click="handleAddAuths">
+                  <ElButton type="primary" size="small" plain circle @click="handleAddAuths">
                     <SvgIcon name="i-ep:plus" />
                   </ElButton>
                 </template>
@@ -431,8 +431,8 @@ function TableSortable() {
               </ElFormItem>
             </ElCol>
             <ElCol :xl="12" :lg="24">
-              <ElFormItem prop="activeIcon" :label="t('system.resource.sortValue')">
-                <IconPicker v-model="form.activeIcon" />
+              <ElFormItem prop="activeIcon" :label="t('system.resource.activeIcon')">
+                <IconPicker v-model="form.meta.activeIcon" />
               </ElFormItem>
             </ElCol>
             <ElCol v-if="form.parentId" :xl="12" :lg="24">
@@ -478,8 +478,8 @@ function TableSortable() {
 
                 <ElSpace v-show="typeof form.meta.cache === 'object'">
                   <ElTag
-                    v-for="cache in form.meta.cache" :key="cache" class="mx-1" size="large"
-                    :disable-transitions="false" closable @close="handleRemoveCache(cache as string)"
+                    v-for="item in form.meta.cache" :key="item" class="mx-1" size="large"
+                    :disable-transitions="false" closable @close="handleRemoveCache(item as string)"
                   >
                     {{ cache }}
                   </ElTag>
@@ -507,8 +507,8 @@ function TableSortable() {
                 </template>
                 <ElSpace>
                   <ElTag
-                    v-for="noCache in form.meta.noCache" :key="noCache" class="mx-1" size="large"
-                    :disable-transitions="false" closable @close="handleRemoveNoCache(noCache)"
+                    v-for="item in form.meta.noCache" :key="item" class="mx-1" size="large"
+                    :disable-transitions="false" closable @close="handleRemoveNoCache(item)"
                   >
                     {{ noCache }}
                   </ElTag>

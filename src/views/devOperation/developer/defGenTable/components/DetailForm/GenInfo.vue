@@ -6,7 +6,7 @@ import yesOrNoEnum from '@/enums/common/yesOrNoEnum'
 import type { FormConfig } from '#/global'
 import type { DefGenTableUpdateVO } from '@/api/modules/devOperation/developer/model/defGenTableModel.ts'
 import { query as getListDatasourceConfigQuery } from '@/api/modules/devOperation/tenant/datasourceConfig'
-import {resourceAuthTree, tree} from '@/api/modules/devOperation/application/defResource.ts'
+import { tree } from '@/api/modules/devOperation/application/defResource.ts'
 import crudGenerator from '@/api/modules/devOperation/developer/defGenTable'
 import { findEnumListByType } from '@/api/modules/common/general.ts'
 
@@ -779,10 +779,10 @@ defineExpose({
 
               show-checkbox highlight-current
             >
-              <template #default="{ data }">
-                <SvgIcon v-if="data.icon" :name="data.icon" class="ml-1 mr-1" size="16" />
-                <ElTag :type="getResourceTagColor(data.resourceType)" class="mr-1">
-                  {{ data?.echoMap?.resourceType }}
+              <template #default="{ item }">
+                <SvgIcon v-if="item.icon" :name="item.icon" class="ml-1 mr-1" size="16" />
+                <ElTag :type="getResourceTagColor(item.resourceType)" class="mr-1">
+                  {{ item?.echoMap?.resourceType }}
                 </ElTag>
                 {{ data.title }}
               </template>

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import DetailForm from './components/DetailForm/index.vue'
 import useSettingsStore from '@/store/modules/settings'
-import type { ActionEnum } from '@/enums/commonEnum.ts'
 
 defineOptions({
   name: 'ToolsGeneratorDetail',

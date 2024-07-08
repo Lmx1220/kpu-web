@@ -13,6 +13,8 @@
   "isDef": "是否默认",
   "isGeneral": "公共资源",
   "subGroup": "分组",
+  "fieldIsSecret": "是否脱敏",
+  "fieldIsEdit": "是否可以编辑",
   "meta": {
     "activeMenu": "高亮导航",
     "badge": "徽标",

@@ -7,6 +7,8 @@
   "customClass": "CustomClass",
   "dataScope": "DataScope",
   "group": "Group",
+  "fieldIsSecret": "fieldIsSecret",
+  "fieldIsEdit": "fieldIsEdit",
   "icon": "Icon",
   "id": "Id",
   "isDef": "IsDef",

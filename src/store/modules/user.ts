@@ -28,7 +28,7 @@ const useUserStore = defineStore(
     const token = ref(storage.local.get('token') ?? '')
     const failure_time = ref(storage.local.get('failure_time') ?? '')
     const permissions = ref<string[]>([])
-    const roles = ref<string[]>([])
+    // const roles = ref<string[]>([])
     const isLogin = computed(() => {
       let retn = false
       if (token.value) {

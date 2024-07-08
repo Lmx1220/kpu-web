@@ -83,6 +83,8 @@ export interface DefResourceResultVO {
   customClass?: string
   metaJson?: string
   meta: Recordable
+  auths: Record<string, any>[]
+  children?: Record<string, any>[]
   id?: string
   name?: string
   parentId?: string

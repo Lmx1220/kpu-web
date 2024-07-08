@@ -13,7 +13,7 @@ import type { PageParams, PageResult } from '@/api/model/baseModel'
 const MODULAR = 'defApplication'
 const ServicePrefix = ''
 
-export const Api = {
+export const Api: Record<string, any> = {
   Page: {
     url: `${ServicePrefix}/${MODULAR}/page`,
     method: RequestEnum.POST,
@@ -34,6 +34,12 @@ export const Api = {
     url: `${ServicePrefix}/${MODULAR}/query`,
     method: RequestEnum.POST,
   } as AxiosRequestConfig,
+  Detail: (id: string) => {
+    return {
+      url: `${ServicePrefix}/${MODULAR}/${id}`,
+      method: RequestEnum.GET,
+    } as AxiosRequestConfig
+  },
   FindApplicationResourceList: {
     url: `${ServicePrefix}/${MODULAR}/findApplicationResourceList`,
     method: RequestEnum.GET,
@@ -82,6 +88,10 @@ export function query(params?: DefApplicationPageQuery) {
   return defHttp.request<DefApplicationResultVO[]>({ ...Api.Query, params })
 }
 
+export function detail(id: string) {
+  return defHttp.request<DefApplicationResultVO>({ ...Api.Detail(id) })
+}
+
 export function save(params: DefApplicationSaveVO) {
   return defHttp.request<DefApplicationResultVO>({ ...Api.Save, params })
 }
@@ -98,4 +108,5 @@ export default {
   update,
   remove,
   query,
+  detail,
 }

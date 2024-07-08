@@ -87,7 +87,7 @@ export function page(params: PageParams<DefGenTablePageQuery>) {
 }
 
 export function selectTableList(params: PageParams<DefGenTablePageQuery>) {
-  return defHttp.request<DefGenTableResultVO>({ ...Api.SelectTableList, params })
+  return defHttp.request<DefGenTableResultVO[]>({ ...Api.SelectTableList, params })
 }
 
 export function query(params: DefGenTablePageQuery) {

@@ -16,6 +16,8 @@ const title = import.meta.env.VITE_APP_TITLE
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
+// 登录方式，default 账号密码登录，qrcode 扫码登录
+const loginType = ref('PASSWORD')
 // 表单类型，login 登录，register 注册，reset 重置密码
 const formType = ref('login')
 const loading = ref(false)
@@ -40,7 +42,7 @@ function handleLogin() {
   loginFormRef.value && loginFormRef.value.validate((valid) => {
     if (valid) {
       loading.value = true
-      userStore.login({ username: loginForm.value.account, password: loginForm.value.password }).then(() => {
+      userStore.login({ username: loginForm.value.account, password: loginForm.value.password, grantType: loginType.value }).then(() => {
         loading.value = false
         if (loginForm.value.remember) {
           storage.local.set('login_account', loginForm.value.account ?? '')

@@ -5,7 +5,7 @@ const router = useRouter()
 const settingsStore = useSettingsStore()
 
 const data = ref<{
-  inter: NodeJS.Timeout | number
+  inter: IntervalHandle | number
   countdown: number
 }>({
   inter: Number.NaN,

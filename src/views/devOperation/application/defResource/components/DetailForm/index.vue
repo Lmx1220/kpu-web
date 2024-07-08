@@ -8,6 +8,7 @@ import crudResource from '@/api/modules/devOperation/application/defResource.ts'
 import type { DefResourceResultVO } from '@/api/modules/devOperation/application/model/defResourceModel.ts'
 import type { FormConfig } from '#/global'
 import { dictComponentProps } from '@/util/common.ts'
+import { isArray, isBoolean } from '@/util/is.ts'
 import { DataScopeEnum, ResourceTypeEnum } from '@/enums/common/tenant.ts'
 
 export interface Props {
@@ -501,21 +502,22 @@ defineExpose({
                 <SvgIcon name="i-ri:question-line" />
               </ElTooltip>
               <span v-if="type !== ActionEnum.VIEW" class="label-tip">切换为
-                <ElLink v-show="typeof data.form.meta.cache === 'object'" type="primary" @click="data.form.meta.cache = true">
+                <ElLink v-show="isArray(data.form.meta.cache)" type="primary" @click="data.form.meta.cache = true">
                   始终缓存
                 </ElLink>
-                <ElLink v-show="typeof data.form.meta.cache === 'boolean'" type="primary" @click="data.form.meta.cache = []">
+                <ElLink v-show="isBoolean(data.form.meta.cache)" type="primary" @click="data.form.meta.cache = []">
                   规则模式
                 </ElLink>
               </span>
             </template>
 
-            <ElSpace v-show="typeof data.form.meta.cache === 'object'">
+            <ElSpace v-show="isArray(data.form.meta.cache)">
               <ElTag
-                v-for="cache in data.form.meta.cache" :key="cache" class="mx-1" size="large"
-                :disable-transitions="false" :closable="type !== ActionEnum.VIEW" @close="handleRemoveCache(cache as string)"
+                v-for="(item, index) in data.form.meta.cache"
+                :key="index"
+                :disable-transitions="false" :closable="type !== ActionEnum.VIEW" @close="handleRemoveCache(item as string)"
               >
-                {{ cache }}
+                {{ item }}
               </ElTag>
               <ElInput
                 v-if="cacheShow" ref="InputCacheRef" v-model="cache" style=" width: 200px;"
@@ -526,7 +528,7 @@ defineExpose({
                 {{ t('common.title.add') }}
               </ElButton>
             </ElSpace>
-            <div v-show="type !== ActionEnum.VIEW && typeof data.form.meta.cache === 'boolean' ">
+            <div v-show="type !== ActionEnum.VIEW && isBoolean(data.form.meta.cache) ">
               始终缓存
             </div>
           </ElFormItem>
@@ -542,10 +544,10 @@ defineExpose({
             </template>
             <ElSpace>
               <ElTag
-                v-for="noCache in data.form.meta.noCache" :key="noCache" class="mx-1" size="large"
-                :disable-transitions="false" :closable="type !== ActionEnum.VIEW" @close="handleRemoveNoCache(noCache)"
+                v-for="item in data.form.meta.noCache" :key="item" class="mx-1" size="large"
+                :disable-transitions="false" :closable="type !== ActionEnum.VIEW" @close="handleRemoveNoCache(item)"
               >
-                {{ noCache }}
+                {{ item }}
               </ElTag>
               <ElInput
                 v-if="noCacheShow" ref="InputNoCacheRef" v-model="noCache" style=" width: 200px;"

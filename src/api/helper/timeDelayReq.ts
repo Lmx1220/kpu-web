@@ -27,7 +27,7 @@ export interface InitOption {
 }
 // 延时请求工具类
 export class TimeDelayReq {
-  timeoutId: NodeJS.Timeout | number | null = null // 倒计时id
+  timeoutId: TimeoutHandle | number | null = null // 倒计时id
   tempParam: Array<any> = [] // 零时参数存放
   resMap: Map<string, DelayResult> = new Map<string, DelayResult>() // 结果集缓存
   cacheTime = 60 * 1000 * 30 // 默认缓存30分钟

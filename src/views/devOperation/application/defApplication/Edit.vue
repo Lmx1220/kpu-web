@@ -19,8 +19,9 @@ const type = computed(() => {
   return route.params.type as ActionEnum
 })
 const tiltel = computed(() => {
-  return `${t(`common.title.${type}`)}应用`
+  return `${t(`common.title.${type.value}`)}应用`
 })
+
 function onSubmit() {
   form.value?.submit(() => {
     eventBus.emit('get-data-list')

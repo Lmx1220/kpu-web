@@ -211,11 +211,11 @@ function handleCancel() {
         ref="treeRef" :data="three" :expand-on-click-node="false" :filter-node-method="filterNode" :props="defaultProps"
         class="filter-tree" node-key="key"
       >
-        <template #default="{ node, data }">
+        <template #default="{ node, item }">
           <div
             :class="{ 'is-disabled': node.disabled, 'is-current': node.key === currentNode?.key }"
             class="custom-tree-node"
-            @click="() => !node.disabled && onNodeClick(data)"
+            @click="() => !node.disabled && onNodeClick(item)"
           >
             <SvgIcon :name="data.icon" :size="16" class="ml-1 mr-1" />
             <ElTag :type="getResourceTagColor(data.resourceType)" class="mr-1">

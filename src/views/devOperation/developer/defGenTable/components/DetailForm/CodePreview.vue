@@ -151,15 +151,15 @@ function highlightedCode(code: string, key: any) {
       {{ t('common.redo') }}
     </ElButton>
     <ElTabs v-model="code" class="demo-tabs min-h-[400px]">
-      <ElTabPane v-for="(code, key) in data.templateObj[data.template] || {}" :key="key" :label="getKey(key)">
+      <ElTabPane v-for="(codes, key) in data.templateObj[data.template] || {}" :key="key" :label="getKey(key)">
         <pre>
-          <ElButton v-if="isSupported" class="float-left" text @click="onCopy(code)">
+          <ElButton v-if="isSupported" class="float-left" text @click="onCopy(codes)">
             <template #icon>
               <SvgIcon name="ep:document-copy" />
             </template>
             {{ t('common.title.copy') }}
             </ElButton>
-          <code class="hljs" v-html="highlightedCode(code, key)" />
+          <code class="hljs" v-html="highlightedCode(codes, key)" />
         </pre>
       </ElTabPane>
     </ElTabs>

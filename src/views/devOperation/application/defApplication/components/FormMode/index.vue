@@ -8,6 +8,10 @@ export interface Props extends DetailFormProps {
   mode?: 'dialog' | 'drawer' | string
 }
 
+defineOptions({
+  name: 'FormMode',
+})
+
 const props = withDefaults(defineProps<Props>(),
   {
     id: '',
@@ -19,12 +23,8 @@ const emits = defineEmits<{
   'update:modelValue': [
     value: boolean,
   ]
-  success: []
+  'success': []
 }>()
-
-defineOptions({
-  name: 'FormMode',
-})
 
 const myVisible = computed({
   get() {
