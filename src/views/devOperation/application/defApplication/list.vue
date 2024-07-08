@@ -5,7 +5,6 @@ import { get } from 'lodash-es'
 import { useI18n } from 'vue-i18n'
 import FormMode from './components/FormMode/index.vue'
 import { ActionEnum } from '@/enums/commonEnum'
-import yesOrNoEnum from '@/enums/common/yesOrNoEnum'
 import { dictComponentProps } from '@/util/common'
 import type { DefApplicationPageQuery, DefApplicationResultVO } from '@/api/modules/devOperation/application/model/defApplicationModel'
 import crudDefApplication from '@/api/modules/devOperation/application/defApplication'
@@ -28,9 +27,9 @@ const {
 const router = useRouter()
 const { t } = useI18n()
 // const route = useRoute()
-const defaultQuery = {
-  daterange: [],
-}
+// const defaultQuery = {
+//   daterange: [],
+// }
 const data: Ref<DataConfig<DefApplicationPageQuery, DefApplicationResultVO>> = ref({
   loading: false,
   tableAutoHeight: true,
@@ -40,7 +39,7 @@ const data: Ref<DataConfig<DefApplicationPageQuery, DefApplicationResultVO>> = r
    * dialog 对话框
    * drawer 抽屉
    */
-  formMode: 'dialog',
+  formMode: 'drawer',
   // 详情
   formModeProps: {
     visible: false,
@@ -280,7 +279,7 @@ function onDel(row?: any) {
         stripe highlight-current-row border @sort-change="sortChange" @selection-change="data.batch.selectionDataList = $event"
       >
         <el-table-column v-if="data.batch.enable" type="selection" align="center" fixed />
-        <el-table-column align="center" :label="t('component.table.index')" width="100">
+        <el-table-column :label="t('component.table.index')" align="center" width="100">
           <template #default="{ $index }">
             {{ (pagination.size * (pagination.page - 1)) + $index + 1 }}
           </template>
@@ -289,22 +288,31 @@ function onDel(row?: any) {
         <el-table-column key="name" :label="t('devOperation.application.defApplication.name')" prop="name" align="center" />
         <el-table-column key="version" :label="t('devOperation.application.defApplication.version')" prop="version" align="center" />
         <el-table-column key="type" :label="t('devOperation.application.defApplication.type')" prop="echoMap.type" align="center" />
-        <el-table-column key="introduce" :label="t('devOperation.application.defApplication.introduce')" prop="introduce" align="center" />
-        <el-table-column key="remark" :label="t('devOperation.application.defApplication.remark')" prop="remark" align="center" />
-        <el-table-column key="url" :label="t('devOperation.application.defApplication.url')" prop="url" align="center" />
         <el-table-column key="isGeneral" :label="t('devOperation.application.defApplication.isGeneral')" prop="isGeneral" align="center" />
         <el-table-column key="isVisible" :label="t('devOperation.application.defApplication.isVisible')" prop="isVisible" align="center" />
         <el-table-column key="sortValue" :label="t('devOperation.application.defApplication.sortValue')" prop="sortValue" align="center" />
         <el-table-column :label="t('kpu.common.createdTime')" prop="createdTime" width="180" sortable="custom" align="center" />
         <el-table-column :label="t('common.column.action')" width="250" align="center" fixed="right">
           <template #default="scope">
-            <el-button type="primary" size="small" plain @click="onView(scope.row)">
+            <el-button
+              type="primary"
+              size="small"
+              plain
+              @click="onView(scope.row)"
+            >
               {{ t('common.title.view') }}
             </el-button>
-            <el-button type="primary" size="small" plain @click="onEdit(scope.row)">
+            <el-button
+              type="primary"
+              size="small"
+              plain
+              @click="onEdit(scope.row)"
+            >
               {{ t('common.title.edit') }}
             </el-button>
-            <el-button type="danger" size="small" plain @click="onDel(scope.row)">
+            <el-button
+              type="danger" size="small" plain @click="onDel(scope.row)"
+            >
               {{ t('common.title.delete') }}
             </el-button>
           </template>
@@ -320,24 +328,29 @@ function onDel(row?: any) {
   .el-pagination {
     margin-top: 20px;
   }
+
   .absolute-container {
     position: absolute;
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    height: 100%;
+
     .page-header {
       margin-bottom: 0;
     }
+
     .page-main {
       flex: 1;
       overflow: auto;
-      :deep(.main-container){
-        flex: 1;
-        overflow: auto;
+
+      :deep(.main-container) {
         display: flex;
+        flex: 1;
         flex-direction: column;
+        overflow: auto;
       }
+
       .search-container {
         margin-bottom: 0;
       }
@@ -349,19 +362,23 @@ function onDel(row?: any) {
       display: flex;
       flex-wrap: wrap;
       margin-bottom: -18px;
+
       :deep(.el-col) {
         flex: 1 1 300px;
+
         &:last-child {
           margin-left: auto;
+
           .el-form-item__content {
             justify-content: flex-end;
           }
         }
       }
-
     }
+
     .el-divider {
-      margin-inline:-20px;width: calc(100% + 40px);
+      width: calc(100% + 40px);
+      margin-inline: -20px;
     }
   }
 </style>
