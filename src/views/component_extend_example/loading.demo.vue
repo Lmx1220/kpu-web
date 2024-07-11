@@ -17,8 +17,7 @@ function opens() {
   })
   setTimeout(() => {
     loadingHide()
-  }
-  , 2000)
+  }, 2000)
 }
 </script>
 

@@ -187,9 +187,7 @@ export function formatFileSize(value: any) {
   return '文件太大'
 }
 
-export function enumAllComponentProps(type: DictEnum | string,
-  extendFirst = true,
-  excludes?: string | string[]) {
+export function enumAllComponentProps(type: DictEnum | string, extendFirst = true, excludes?: string | string[]) {
   return enumComponentProps(
     type,
     extendFirst,
@@ -198,10 +196,7 @@ export function enumAllComponentProps(type: DictEnum | string,
   )
 }
 
-export function enumComponentProps(type: EnumEnum | string,
-  extendFirst = true,
-  extend?: any,
-  excludes?: string | string[]) {
+export function enumComponentProps(type: EnumEnum | string, extendFirst = true, extend?: any, excludes?: string | string[]) {
   if (excludes && isString(excludes)) {
     excludes = [excludes]
   }
@@ -216,9 +211,7 @@ export function enumComponentProps(type: EnumEnum | string,
   }
 }
 
-export function dictAllComponentProps(type: DictEnum | string,
-  extendFirst = true,
-  excludes?: string | string[]) {
+export function dictAllComponentProps(type: DictEnum | string, extendFirst = true, excludes?: string | string[]) {
   return dictComponentProps(
     type,
     extendFirst,
@@ -227,10 +220,7 @@ export function dictAllComponentProps(type: DictEnum | string,
   )
 }
 
-export function dictComponentProps(type: DictEnum | string,
-  extendFirst = true,
-  extend?: any,
-  excludes?: string | string[]) {
+export function dictComponentProps(type: DictEnum | string, extendFirst = true, extend?: any, excludes?: string | string[]) {
   if (excludes && isString(excludes)) {
     excludes = [excludes]
   }

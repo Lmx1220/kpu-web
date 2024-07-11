@@ -75,7 +75,8 @@ export default defineFakeRoute([
                   }],
                 }],
               }],
-            }, {
+            },
+            {
               path: '/permission_example',
               component: 'LAYOUT',
               redirect: '/permission_example/index',
@@ -108,9 +109,9 @@ export default defineFakeRoute([
                   activeMenu: '/permission_example',
                 },
               }],
-            }],
-        },
-        {
+            },
+          ],
+        }, {
           meta: {
             title: '页面',
             icon: 'ri:pages-line',

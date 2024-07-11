@@ -629,7 +629,8 @@ export default defineFakeRoute([
         isSuccess: true,
       },
     }),
-  }, {
+  },
+  {
     url: '/mock/menu/edit',
     method: 'post',
     response: () => ({
@@ -639,7 +640,8 @@ export default defineFakeRoute([
         isSuccess: true,
       },
     }),
-  }, {
+  },
+  {
     url: '/mock/menu/delete',
     method: 'post',
     response: () => ({
