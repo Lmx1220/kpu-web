@@ -4,7 +4,6 @@ import Tools from './tools.vue'
 import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
 import useUserStore from '@/store/modules/user'
-import { i18nTitleInjectionKey } from '@/util/injectionKeys'
 
 defineOptions({
   name: 'ToolbarRightSide',
@@ -17,7 +16,7 @@ const userStore = useUserStore()
 
 const { t } = useI18n()
 
-const generateI18nTitle = inject(i18nTitleInjectionKey, Function, true)
+const generateI18nTitle = inject('i18nTitle', Function, true)
 
 const avatarError = ref(false)
 watch(() => userStore.avatar, () => {

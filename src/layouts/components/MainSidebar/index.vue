@@ -4,7 +4,6 @@ import Menu from '../Menu/index.vue'
 import PanelMenu from '../PanelMenu/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
-import { i18nTitleInjectionKey } from '@/util/injectionKeys'
 
 defineOptions({
   name: 'MainSidebar',
@@ -17,7 +16,7 @@ const menuStore = useMenuStore()
 
 const { switchTo } = useMenu()
 
-const generateI18nTitle = inject(i18nTitleInjectionKey, Function, true)
+const generateI18nTitle = inject('i18nTitle', Function, true)
 
 function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
   let name

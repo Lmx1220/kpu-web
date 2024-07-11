@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { SubMenuItemProps } from './types'
 import { rootMenuInjectionKey } from './types'
-import { i18nTitleInjectionKey } from '@/util/injectionKeys'
 
 const props = withDefaults(
   defineProps<SubMenuItemProps>(),
@@ -12,7 +11,7 @@ const props = withDefaults(
 )
 
 const rootMenu = inject(rootMenuInjectionKey)!
-const generateI18nTitle = inject(i18nTitleInjectionKey, Function, true)
+const generateI18nTitle = inject('i18nTitle', Function, true)
 
 const itemRef = ref<HTMLElement>()
 

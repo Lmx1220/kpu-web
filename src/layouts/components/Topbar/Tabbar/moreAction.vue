@@ -5,7 +5,6 @@ import { useI18n } from 'vue-i18n'
 import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar'
 import eventBus from '@/util/eventBus'
-import { i18nTitleInjectionKey } from '@/util/injectionKeys'
 import type { Tabbar } from '#/global'
 
 defineOptions({
@@ -21,7 +20,7 @@ const tabbar = useTabbar()
 
 const { t } = useI18n()
 
-const generateI18nTitle = inject(i18nTitleInjectionKey, Function, true)
+const generateI18nTitle = inject('i18nTitle', Function, true)
 
 const activedTabId = computed(() => tabbar.getId())
 

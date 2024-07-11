@@ -19,6 +19,8 @@ import createConsole from './console'
 import createArchiver from './archiver'
 import appInfo from './app-info'
 import createDevtools from './devtools'
+import createDebugTool from './debug-tool'
+import createDisableDevtool from './disable-devtool'
 
 export default function createVitePlugins(viteEnv, isBuild = false) {
   const vitePlugins: (PluginOption | PluginOption[])[] = [
@@ -47,5 +49,7 @@ export default function createVitePlugins(viteEnv, isBuild = false) {
   vitePlugins.push(createBanner())
   process.env.REPORT === 'true' && vitePlugins.push(createVisualizer())
   viteEnv.VITE_BUILD_PWA === 'true' && vitePlugins.push(createPwa())
+  vitePlugins.push(createDebugTool(viteEnv))
+  vitePlugins.push(createDisableDevtool(viteEnv))
   return vitePlugins
 }

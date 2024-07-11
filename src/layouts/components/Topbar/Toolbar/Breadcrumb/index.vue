@@ -4,7 +4,6 @@ import Breadcrumb from '../../../Breadcrumb/index.vue'
 import BreadcrumbItem from '../../../Breadcrumb/item.vue'
 import useSettingsStore from '@/store/modules/settings'
 import useMenuStore from '@/store/modules/menu'
-import { i18nTitleInjectionKey } from '@/util/injectionKeys'
 
 defineOptions({
   name: 'Breadcrumb',
@@ -15,7 +14,7 @@ const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 
-const generateI18nTitle = inject(i18nTitleInjectionKey, Function, true)
+const generateI18nTitle = inject('i18nTitle', Function, true)
 
 const breadcrumbList = computed(() => {
   const breadcrumbList = []
