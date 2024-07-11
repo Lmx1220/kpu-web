@@ -10,7 +10,6 @@ import MoreAction from './moreAction.vue'
 import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar'
 import storage from '@/util/storage'
-import { i18nTitleInjectionKey } from '@/util/injectionKeys'
 import type { Tabbar } from '#/global'
 
 defineOptions({
@@ -30,7 +29,7 @@ const keys = useMagicKeys({ reactive: true })
 
 const { t } = useI18n()
 
-const generateI18nTitle = inject(i18nTitleInjectionKey, Function, true)
+const generateI18nTitle = inject('i18nTitle', Function, true)
 
 const activedTabId = computed(() => tabbar.getId())
 const isShowMoreAction = computed(() => tabbarStore.list.length > 1 && (tabbar.checkCloseOtherSide() || tabbar.checkCloseLeftSide() || tabbar.checkCloseRightSide()))

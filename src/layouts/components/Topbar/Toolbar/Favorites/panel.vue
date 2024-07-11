@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Sortable from 'sortablejs'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
-import { i18nTitleInjectionKey } from '@/util/injectionKeys'
 import useFavoritesStore from '@/store/modules/favorites'
 
 defineOptions({
@@ -12,7 +11,7 @@ const route = useRoute()
 const router = useRouter()
 const favoritesStore = useFavoritesStore()
 
-const generateI18nTitle = inject(i18nTitleInjectionKey, Function, true)
+const generateI18nTitle = inject('i18nTitle', Function, true)
 
 const favoritesContainerRef = ref()
 
