@@ -76,8 +76,7 @@ data.value.dicts?.set('driverClassName', [{
   label: 'mysql5',
   value: 'com.mysql.jdbc.Driver',
   key: 'mysql5',
-},
-{
+}, {
   label: 'oracle',
   value: 'oracle.jdbc.driver.OracleDriver',
   key: 'oracle',
@@ -108,10 +107,10 @@ defineExpose({
       if (valid) {
         if (props.type !== ActionEnum.VIEW) {
           if (props.type === ActionEnum.EDIT) {
-            await crudDatasourceConfig.save(data.value.form)
+            await crudDatasourceConfig.update(data.value.form)
           }
           else {
-            await crudDatasourceConfig.update(data.value.form)
+            await crudDatasourceConfig.save(data.value.form)
           }
           ElMessage.success({
             message: t(`common.tips.${props.type}Success`),

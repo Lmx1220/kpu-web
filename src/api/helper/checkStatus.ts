@@ -9,8 +9,7 @@ import type { ErrorMessageMode } from '#/axios'
  * @param {string} errorMessageMode
  * @return void
  */
-export function checkStatus(status: number, msg: string,
-  errorMessageMode: ErrorMessageMode = 'message') {
+export function checkStatus(status: number, msg: string, errorMessageMode: ErrorMessageMode = 'message') {
   let errMessage = ''
   const userStore = useUserStore()
   switch (status) {

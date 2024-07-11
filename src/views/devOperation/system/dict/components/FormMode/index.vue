@@ -7,13 +7,12 @@ export interface Props extends DetailFormProps {
   mode?: 'dialog' | 'drawer' | string
 }
 
-const props = withDefaults(defineProps<Props>(),
-  {
-    id: '',
-    parentId: '',
-    modelValue: false,
-    mode: 'dialog',
-  })
+const props = withDefaults(defineProps<Props>(), {
+  id: '',
+  parentId: '',
+  modelValue: false,
+  mode: 'dialog',
+})
 
 const emits = defineEmits<{
   'update:modelValue': [

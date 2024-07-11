@@ -86,8 +86,7 @@ async function getDataList(current?: number) {
   data.value.loading = true
   const params = getParams<DefGenTablePageQuery>({
     ...data.value.search,
-  },
-  {
+  }, {
     type: 'daterange',
     name: 'daterange',
     prop: 'createdTime',

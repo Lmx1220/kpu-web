@@ -359,8 +359,7 @@ const ruleObjMap = new Map()
  * @param Api url和method
  * @param customRules 自定义规则
  */
-export async function getValidateRules(Api: AxiosRequestConfig,
-  customRules?: Partial<FormSchemaExt>[]): Promise<unknown> {
+export async function getValidateRules(Api: AxiosRequestConfig, customRules?: Partial<FormSchemaExt>[]): Promise<unknown> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, _reject) => {
     const formValidateApi = { url: '', method: Api.method }
@@ -403,8 +402,7 @@ export async function getValidateRules(Api: AxiosRequestConfig,
   })
 }
 
-export async function getValidateRuleObj(Api: AxiosRequestConfig,
-  customRules?: Partial<FormSchemaExt>[]): Promise<VxeTablePropTypes.EditRules> {
+export async function getValidateRuleObj(Api: AxiosRequestConfig, customRules?: Partial<FormSchemaExt>[]): Promise<VxeTablePropTypes.EditRules> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, _reject) => {
     const formValidateApi = { url: '', method: Api.method }

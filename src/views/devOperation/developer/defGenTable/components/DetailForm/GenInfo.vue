@@ -777,7 +777,7 @@ defineExpose({
 
               node-key="id"
 
-              show-checkbox highlight-current
+              highlight-current show-checkbox
             >
               <template #default="{ item }">
                 <SvgIcon v-if="item.icon" :name="item.icon" class="ml-1 mr-1" size="16" />

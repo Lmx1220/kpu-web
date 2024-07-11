@@ -81,13 +81,11 @@ async function getDataList(current?: number) {
   data.value.loading = true
   const params = getParams<DefApplicationPageQuery>({
     ...data.value.search,
-  },
-  {
+  }, {
     type: 'daterange',
     name: 'daterange',
     prop: 'createdTime',
-  },
-  )
+  })
   const res = await crudDefApplication.page(params)
   data.value.dataList = get(res, 'records', [])
   pagination.value.total = Number(res.total)

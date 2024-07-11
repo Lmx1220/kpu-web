@@ -54,8 +54,7 @@ const name = [{
         },
     },
   ],
-},
-{
+}, {
   path: 'manager',
   name: 'pagesExampleGeneralManager',
   redirect: '/pages_example/general/manager',
@@ -96,8 +95,7 @@ const name = [{
       noCache: 'pagesExampleGeneralManagerList'
     }
   }]
-},
-{
+}, {
   path: 'menu',
   name: 'pagesExampleGeneralMenu',
   redirect: '/pages_example/general/menu',
@@ -142,6 +140,5 @@ const name = [{
       paddingBottom: '80px'
     }
   }]
-}
-]
+}]
 ```

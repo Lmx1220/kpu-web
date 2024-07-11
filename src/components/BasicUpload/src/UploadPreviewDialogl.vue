@@ -29,7 +29,8 @@ watch(
     isArray(value) || (value = [])
     fileListRef.value = value.filter(item => !!item)
   },
-  { immediate: true })
+  { immediate: true },
+)
 
 function handleRemove(record: FileResultVO) {
   const index = fileListRef.value.findIndex(item => item.id === record.id)

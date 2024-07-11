@@ -29,9 +29,7 @@ watch(() => activeStatus.value.active, (val) => {
   if (!activeList.value.includes(val)) {
     activeList.value.push(val)
   }
-},
-{ immediate: true },
-)
+}, { immediate: true })
 
 const genInfo = ref<InstanceType<typeof GenInfo>>()
 

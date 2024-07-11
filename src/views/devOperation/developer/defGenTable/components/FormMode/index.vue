@@ -6,12 +6,11 @@ defineOptions({
   name: 'FormMode',
 })
 
-const props = withDefaults(defineProps<Props>(),
-  {
-    id: '',
-    modelValue: false,
-    mode: 'dialog',
-  })
+const props = withDefaults(defineProps<Props>(), {
+  id: '',
+  modelValue: false,
+  mode: 'dialog',
+})
 
 const emits = defineEmits<{
   'update:modelValue': [
