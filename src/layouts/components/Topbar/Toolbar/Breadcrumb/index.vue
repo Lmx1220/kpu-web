@@ -14,7 +14,7 @@ const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 
-const generateI18nTitle = inject('i18nTitle', Function, true)
+const { generateI18nTitle } = useMenu()
 
 const breadcrumbList = computed(() => {
   const breadcrumbList = []

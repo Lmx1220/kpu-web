@@ -11,6 +11,7 @@ const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 const { auth } = useAuth()
+const { generateI18nTitle } = useMenu()
 
 const isAuth = computed(() => {
   return route.matched.every((item) => {
@@ -47,13 +48,6 @@ const subSidebarActualWidth = computed(() => {
   }
   return `${actualWidth}px`
 })
-
-const { t, te } = useI18n()
-provide('i18nTitle', generateI18nTitle)
-
-function generateI18nTitle(key: string | Function = t('route.undefined')) {
-  return typeof key == 'function' ? key() : te(key) ? t(key) : key
-}
 
 const pageTitle = usePageTitle()
 watch([

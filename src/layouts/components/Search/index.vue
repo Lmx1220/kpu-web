@@ -59,7 +59,7 @@ interface listTypes {
   }[]
 }
 
-const generateI18nTitle = inject('i18nTitle', Function, true)
+const { generateI18nTitle } = useMenu()
 const isShow = ref(false)
 const searchType = ref<searchTypes>()
 const searchInput = ref('')

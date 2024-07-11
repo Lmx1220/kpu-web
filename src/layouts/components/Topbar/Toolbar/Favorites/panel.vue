@@ -11,7 +11,7 @@ const route = useRoute()
 const router = useRouter()
 const favoritesStore = useFavoritesStore()
 
-const generateI18nTitle = inject('i18nTitle', Function, true)
+const { generateI18nTitle } = useMenu()
 
 const favoritesContainerRef = ref()
 
