@@ -29,7 +29,7 @@ const keys = useMagicKeys({ reactive: true })
 
 const { t } = useI18n()
 
-const generateI18nTitle = inject('i18nTitle', Function, true)
+const { generateI18nTitle } = useMenu()
 
 const activedTabId = computed(() => tabbar.getId())
 const isShowMoreAction = computed(() => tabbarStore.list.length > 1 && (tabbar.checkCloseOtherSide() || tabbar.checkCloseLeftSide() || tabbar.checkCloseRightSide()))

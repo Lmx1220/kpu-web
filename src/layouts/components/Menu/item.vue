@@ -13,7 +13,7 @@ const props = withDefaults(
 )
 
 const rootMenu = inject(rootMenuInjectionKey)!
-const generateI18nTitle = inject('i18nTitle', Function, true)
+const { generateI18nTitle } = useMenu()
 
 const itemRef = ref<HTMLElement>()
 

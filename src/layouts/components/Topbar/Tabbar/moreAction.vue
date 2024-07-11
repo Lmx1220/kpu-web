@@ -20,7 +20,7 @@ const tabbar = useTabbar()
 
 const { t } = useI18n()
 
-const generateI18nTitle = inject('i18nTitle', Function, true)
+const { generateI18nTitle } = useMenu()
 
 const activedTabId = computed(() => tabbar.getId())
 

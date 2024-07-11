@@ -16,7 +16,7 @@ const menuStore = useMenuStore()
 
 const { switchTo } = useMenu()
 
-const generateI18nTitle = inject('i18nTitle', Function, true)
+const { generateI18nTitle } = useMenu()
 
 function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
   let name
