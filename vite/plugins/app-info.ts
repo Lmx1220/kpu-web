@@ -11,7 +11,7 @@ export default function appInfo(): Plugin {
       // eslint-disable-next-line no-console
       console.log(
         boxen(
-          `${bold(green(`由 ${bgGreen('-vue3-ts')} 驱动`))}\n\n${underline('https://lmx.gitee.io')}\n\n当前使用：${cyan('pro')}`,
+          `${bold(green(`由 ${bgGreen('kpu-web')} 驱动`))}\n\n${underline('https://lmx.gitee.io')}\n\n当前使用：${cyan('pro')}`,
           {
             padding: 1,
             margin: 1,
