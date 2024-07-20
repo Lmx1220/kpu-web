@@ -774,17 +774,17 @@ defineExpose({
               :data="data.dicts?.get('menuList') || []"
               :render-after-expand="false"
               :default-expanded-keys="['10']"
-
+              :props="{ label: 'title' }"
               node-key="id"
 
               highlight-current show-checkbox
             >
-              <template #default="{ item }">
+              <template #default="{ data: item }">
                 <SvgIcon v-if="item.icon" :name="item.icon" class="ml-1 mr-1" size="16" />
                 <ElTag :type="getResourceTagColor(item.resourceType)" class="mr-1">
                   {{ item?.echoMap?.resourceType }}
                 </ElTag>
-                {{ data.title }}
+                {{ item.title }}
               </template>
             </ElTreeSelect>
           </ElFormItem>

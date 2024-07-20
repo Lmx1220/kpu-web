@@ -130,9 +130,9 @@ defineExpose({
         </el-col>
         <el-col>
           <el-form-item prop="type" :label="t('devOperation.application.defApplication.type')">
-            <ApiRadioGroup
+            <ApiSelect
               v-model="data.form.type"
-              v-bind="dictComponentProps('APPLICATION_TYPE')"
+              v-bind="dictComponentProps('TENANT_APPLICATION_TYPE')"
               :placeholder="t('common.chooseText')"
               :disabled="props.type === 'view'"
             />

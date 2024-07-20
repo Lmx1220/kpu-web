@@ -37,4 +37,4 @@ export default {
   true: '是',
   yes: false,
   no: true,
-}
+} as Record<string, any>

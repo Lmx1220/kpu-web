@@ -5,6 +5,7 @@ import { get } from 'lodash-es'
 import { useI18n } from 'vue-i18n'
 import FormMode from './components/FormMode/index.vue'
 import { ActionEnum } from '@/enums/commonEnum'
+import yesOrNoEnum from '@/enums/common/yesOrNoEnum'
 import { dictComponentProps } from '@/util/common'
 import type { DefApplicationPageQuery, DefApplicationResultVO } from '@/api/modules/devOperation/application/model/defApplicationModel'
 import crudDefApplication from '@/api/modules/devOperation/application/defApplication'
@@ -211,9 +212,9 @@ function onDel(row?: any) {
               </el-col>
               <el-col :span="6">
                 <el-form-item class="el-row" :label="t('devOperation.application.defApplication.type')">
-                  <ApiRadioGroup
+                  <ApiSelect
                     v-model="data.search.type"
-                    v-bind="dictComponentProps('APPLICATION_TYPE')"
+                    v-bind="dictComponentProps('TENANT_APPLICATION_TYPE')"
                     :placeholder="t('common.chooseText')"
                   />
                 </el-form-item>
@@ -286,8 +287,20 @@ function onDel(row?: any) {
         <el-table-column key="name" :label="t('devOperation.application.defApplication.name')" prop="name" align="center" />
         <el-table-column key="version" :label="t('devOperation.application.defApplication.version')" prop="version" align="center" />
         <el-table-column key="type" :label="t('devOperation.application.defApplication.type')" prop="echoMap.type" align="center" />
-        <el-table-column key="isGeneral" :label="t('devOperation.application.defApplication.isGeneral')" prop="isGeneral" align="center" />
-        <el-table-column key="isVisible" :label="t('devOperation.application.defApplication.isVisible')" prop="isVisible" align="center" />
+        <el-table-column key="isGeneral" :label="t('devOperation.application.defApplication.isGeneral')" prop="isGeneral" align="center">
+          <template #default="{ row }">
+            <ElTag :type="row.isGeneral ? 'primary' : 'danger'">
+              {{ yesOrNoEnum[row.isGeneral] }}
+            </ElTag>
+          </template>
+        </el-table-column>
+        <el-table-column key="isVisible" :label="t('devOperation.application.defApplication.isVisible')" prop="isVisible" align="center">
+          <template #default="{ row }">
+            <ElTag :type="row.isVisible ? 'primary' : 'danger'">
+              {{ yesOrNoEnum[row.isVisible] }}
+            </ElTag>
+          </template>
+        </el-table-column>
         <el-table-column key="sortValue" :label="t('devOperation.application.defApplication.sortValue')" prop="sortValue" align="center" />
         <el-table-column :label="t('kpu.common.createdTime')" prop="createdTime" width="180" sortable="custom" align="center" />
         <el-table-column :label="t('common.column.action')" width="250" align="center" fixed="right">
