@@ -302,7 +302,7 @@ for (const key in dev.devDependencies) {
   }
 }
 
-console.log('// 找出 dev 有 main 没有的包') // eslint-disable-line no-console
+console.log('// 1找出 dev 有 main 没有的包') // eslint-disable-line no-console
 
 console.log(JSON.stringify(diff3, null, 2)) // eslint-disable-line no-console
 
