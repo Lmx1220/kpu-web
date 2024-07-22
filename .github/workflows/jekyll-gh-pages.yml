@@ -4,7 +4,7 @@ name: Deploy Jekyll with GitHub Pages dependencies preinstalled
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["example"]
+    branches: [example]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -18,7 +18,7 @@ permissions:
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18.20.0' # 可以根据需要选择Node.js的版本
+          node-version: 18.20.0 # 可以根据需要选择Node.js的版本
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -47,5 +47,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist  # 根据您的 Vue 项目配置，这里可能需要修改
+          publish_dir: ./dist # 根据您的 Vue 项目配置，这里可能需要修改
           publish_branch: gh-pages
