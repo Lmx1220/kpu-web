@@ -12,6 +12,11 @@ export default antfu(
     rules: {
       'eslint-comments/no-unlimited-disable': 'off',
       'curly': ['error', 'all'],
+      'ts/no-unused-expressions': ['error', {
+        allowShortCircuit: true,
+        allowTernary: true,
+      }],
+      'ts/no-unsafe-function-type': 'off',
     },
   },
   {
