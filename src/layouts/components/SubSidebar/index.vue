@@ -17,6 +17,7 @@ const menuStore = useMenuStore()
 const subSidebarRef = ref()
 const showShadowTop = ref(false)
 const showShadowBottom = ref(false)
+
 function onSidebarScroll() {
   const scrollTop = subSidebarRef.value.scrollTop
   showShadowTop.value = scrollTop > 0
@@ -100,7 +101,18 @@ const isCollapse = computed(() => {
         <TransitionGroup name="sub-sidebar">
           <template v-for="(mainItem, mainIndex) in menuStore.allMenus" :key="mainIndex">
             <div v-show="mainIndex === menuStore.actived">
-              <Menu :menu="mainItem.children" :value="route.meta.activeMenu || route.path" :default-openeds="menuStore.defaultOpenedPaths" :always-openeds="menuStore.alwaysOpenedPaths" :accordion="settingsStore.settings.menu.subMenuUniqueOpened" :collapse="isCollapse" :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu" />
+              <Menu
+                :menu="mainItem.children" :value="route.meta.activeMenu || route.path"
+                :default-openeds="menuStore.defaultOpenedPaths"
+                :always-openeds="menuStore.alwaysOpenedPaths"
+                :accordion="settingsStore.settings.menu.subMenuUniqueOpened"
+                :collapse="isCollapse" :rounded="settingsStore.settings.menu.isRounded"
+                :direction="settingsStore.settings.app.direction"
+                class="menu"
+                :class="{
+                  '-mt-2': !(isCollapse || ['head', 'single'].includes(settingsStore.settings.menu.mode)),
+                }"
+              />
             </div>
           </template>
         </TransitionGroup>
@@ -110,13 +122,21 @@ const isCollapse = computed(() => {
       v-if="settingsStore.mode === 'pc'" class="relative flex items-center px-4 py-3" :class="{
         'justify-center': isCollapse,
         'justify-between': !isCollapse && settingsStore.settings.menu.enableSubMenuCollapseButton,
-        'justify-end': !isCollapse && !settingsStore.settings.menu.enableSubMenuCollapseButton,
       }"
     >
-      <span v-show="!isCollapse || (isCollapse && !settingsStore.settings.menu.enableSubMenuCollapseButton)" class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark-bg-stone-9 hover-bg-stone-2 dark-hover-bg-stone-8" @click="settingsStore.toggleSidebarAutoCollapse()">
+      <span
+        v-show="!isCollapse || (isCollapse && !settingsStore.settings.menu.enableSubMenuCollapseButton)"
+        class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark-bg-stone-9 hover-bg-stone-2 dark-hover-bg-stone-8"
+        @click="settingsStore.toggleSidebarAutoCollapse()"
+      >
         <SvgIcon :name="settingsStore.settings.menu.subMenuAutoCollapse ? 'i-lucide:pin-off' : 'i-lucide:pin'" />
       </span>
-      <span v-show="settingsStore.settings.menu.enableSubMenuCollapseButton" class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark-bg-stone-9 hover-bg-stone-2 dark-hover-bg-stone-8" :class="{ '-rotate-z-180': settingsStore.settings.menu.subMenuCollapse }" @click="settingsStore.toggleSidebarCollapse()">
+      <span
+        v-show="settingsStore.settings.menu.enableSubMenuCollapseButton"
+        class="flex-center cursor-pointer rounded bg-stone-1 p-2 transition dark-bg-stone-9 hover-bg-stone-2 dark-hover-bg-stone-8"
+        :class="{ '-rotate-z-180': settingsStore.settings.menu.subMenuCollapse }"
+        @click="settingsStore.toggleSidebarCollapse()"
+      >
         <SvgIcon name="toolbar-collapse" />
       </span>
     </div>

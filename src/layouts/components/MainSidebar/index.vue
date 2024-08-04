@@ -32,57 +32,71 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
 
 <template>
   <Transition name="main-sidebar">
-    <div v-if="['side', 'only-side', 'side-panel'].includes(settingsStore.settings.menu.mode) || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')" class="main-sidebar-container">
+    <div
+      v-if="['side', 'only-side', 'side-panel'].includes(settingsStore.settings.menu.mode) || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')"
+      class="main-sidebar-container"
+    >
       <Logo :show-title="false" class="sidebar-logo" />
       <!-- 侧边栏模式（含主导航） -->
-      <div
-        v-if="settingsStore.settings.menu.mode === 'side' || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')"
-        class="menu w-full flex flex-col of-hidden transition-all" :class="{
-          [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
-        }"
-      >
-        <template v-for="(item, index) in menuStore.allMenus" :key="index">
-          <div
-            class="menu-item relative transition-all" :class="{
-              'active': index === menuStore.actived,
-              'px-2 py-1': settingsStore.settings.menu.isRounded,
-            }"
-          >
+      <div class="menu">
+        <div
+          v-if="settingsStore.settings.menu.mode === 'side' || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')"
+          class="w-full flex flex-col of-hidden transition-all" :class="{
+            [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
+          }"
+        >
+          <template v-for="(item, index) in menuStore.allMenus" :key="index">
             <div
-              v-if="item.children && item.children.length !== 0" class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 py-4 text-[var(--g-main-sidebar-menu-color)] transition-all hover-bg-[var(--g-main-sidebar-menu-hover-bg)] px-2! hover-text-[var(--g-main-sidebar-menu-hover-color)]" :class="{
-                'text-[var(--g-main-sidebar-menu-active-color)]! bg-[var(--g-main-sidebar-menu-active-bg)]!': index === menuStore.actived,
-                'rounded-2': settingsStore.settings.menu.isRounded,
-              }" :title="generateI18nTitle(item.meta?.title)" @click="switchTo(index)"
+              class="menu-item relative px-2 py-1 transition-all" :class="{
+                active: index === menuStore.actived,
+              }"
             >
-              <div class="w-full inline-flex flex-1 flex-col items-center justify-center gap-1">
-                <SvgIcon v-if="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)" :name="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)!" :size="20" class="menu-item-container-icon transition-transform group-hover-scale-120" async />
-                <span class="w-full flex-1 truncate text-center text-sm transition-height transition-opacity transition-width">
-                  {{ generateI18nTitle(item.meta?.title) }}
-                </span>
+              <div
+                v-if="item.children && item.children.length !== 0"
+                class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 py-4 text-[var(--g-main-sidebar-menu-color)] transition-all hover-(bg-[var(--g-main-sidebar-menu-hover-bg)] text-[var(--g-main-sidebar-menu-hover-color)]) px-2!"
+                :class="{
+                  'text-[var(--g-main-sidebar-menu-active-color)]! bg-[var(--g-main-sidebar-menu-active-bg)]!': index === menuStore.actived,
+                  'rounded-lg': settingsStore.settings.menu.isRounded,
+                }" :title="generateI18nTitle(item.meta?.title)" @click="switchTo(index)"
+              >
+                <div class="w-full inline-flex flex-1 flex-col items-center justify-center gap-1">
+                  <SvgIcon
+                    v-if="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)"
+                    :name="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)!"
+                    class="menu-item-container-icon transition-transform group-hover-scale-120"
+                  />
+                  <span
+                    class="w-full flex-1 truncate text-center text-sm transition-height transition-opacity transition-width"
+                  >
+                    {{ generateI18nTitle(item.meta?.title) }}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        </template>
+          </template>
+        </div>
+        <!-- 侧边栏精简模式 -->
+        <Menu
+          v-else-if="settingsStore.settings.menu.mode === 'only-side'"
+          :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" show-collapse-name collapse
+          :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction"
+          class="-mt-2"
+          :class="{
+            [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
+          }"
+        />
+        <PanelMenu
+          v-else-if="settingsStore.settings.menu.mode === 'side-panel'"
+          :menu="menuStore.allMenus"
+          :value="route.meta.activeMenu || route.path"
+          show-collapse-name collapse
+          :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction"
+          class="-mt-2"
+          :class="{
+            [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
+          }"
+        />
       </div>
-      <!-- 侧边栏精简模式 -->
-      <Menu
-        v-else-if="settingsStore.settings.menu.mode === 'only-side'"
-        :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" show-collapse-name collapse
-        :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu"
-        :class="{
-          [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
-        }"
-      />
-      <PanelMenu
-        v-else-if="settingsStore.settings.menu.mode === 'side-panel'"
-        :menu="menuStore.allMenus"
-        :value="route.meta.activeMenu || route.path"
-        show-collapse-name collapse
-        :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction" class="menu"
-        :class="{
-          [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
-        }"
-      />
     </div>
   </Transition>
 </template>
@@ -199,7 +213,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
         }
 
         .menu-item-container-icon {
-          font-size: 24px !important;
+          font-size: 20px !important;
         }
       }
 

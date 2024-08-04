@@ -147,10 +147,10 @@ function handleMouseenters() {
     <template v-if="level === 0">
       <Transition v-bind="transitionClass" v-on="transitionEvent">
         <OverlayScrollbarsComponent
-          v-if="opened" ref="subMenuRef" :options="{ scrollbars: { visibility: 'hidden' } }" defer class="sub-menu" :class="{
-            'bg-[var(--g-sub-sidebar-bg)]': level === 0,
-            'ring-1 ring-stone-2 dark-ring-stone-8 shadow-xl fixed z-3000': level === 0,
-            'rounded-2 py-1': rootMenu.props.rounded && level === 0,
+          v-if="opened" ref="subMenuRef" :options="{ scrollbars: { visibility: 'hidden' } }" defer
+          class="sub-menu fixed z-3000 bg-[var(--g-sub-sidebar-bg)] px-1 shadow-xl ring-1 ring-stone-2 dark-ring-stone-8"
+          :class="{
+            'rounded-lg': rootMenu.props.rounded,
           }"
           @mouseenter="handleMouseenters"
           @mouseleave="handleMouseleave"
