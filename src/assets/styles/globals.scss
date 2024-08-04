@@ -29,7 +29,8 @@
 /* stylelint-disable-next-line no-duplicate-selectors */
 :root {
   color-scheme: light;
-  --g-box-shadow-color: rgb(0 0 0 / 12%)
+
+  --g-box-shadow-color: rgb(0 0 0 / 12%);
 
   &::view-transition-old(root),
   &::view-transition-new(root) {
@@ -47,6 +48,7 @@
 
   &.dark {
     color-scheme: dark;
+
     --g-box-shadow-color: rgb(0 0 0 / 72%);
 
     &::view-transition-old(root) {
@@ -56,7 +58,6 @@
     &::view-transition-new(root) {
       z-index: 1;
     }
-
   }
 }
 

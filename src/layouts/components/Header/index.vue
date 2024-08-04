@@ -15,15 +15,16 @@ const route = useRoute()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
 
-const {switchTo} = useMenu()
+const { switchTo } = useMenu()
 
-const {generateI18nTitle} = useMenu()
+const { generateI18nTitle } = useMenu()
 
 function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
   let name
   if ((!isActive && icon) || (isActive && !activeIcon)) {
     name = icon
-  } else if (isActive && activeIcon) {
+  }
+  else if (isActive && activeIcon) {
     name = activeIcon
   }
   return name
@@ -44,9 +45,10 @@ function handlerMouserScroll(event: WheelEvent) {
 <template>
   <Transition name="header">
     <header
-      v-if="settingsStore.mode === 'pc' && ['head', 'only-head', 'head-panel'].includes(settingsStore.settings.menu.mode)">
+      v-if="settingsStore.mode === 'pc' && ['head', 'only-head', 'head-panel'].includes(settingsStore.settings.menu.mode)"
+    >
       <div class="header-container">
-        <Logo class="title"/>
+        <Logo class="title" />
         <div ref="menuRef" class="menu-container" @wheel.prevent="handlerMouserScroll">
           <!-- 顶部模式 -->
           <div
@@ -70,9 +72,10 @@ function handlerMouserScroll(event: WheelEvent) {
                   }" :title="generateI18nTitle(item.meta?.title)" @click="switchTo(index)"
                 >
                   <div class="inline-flex flex-1 items-center justify-center gap-1">
-                    <SvgIcon v-if="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)"
-                             :name="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)!"
-                             class="menu-item-container-icon transition-transform group-hover-scale-120"
+                    <SvgIcon
+                      v-if="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)"
+                      :name="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)!"
+                      class="menu-item-container-icon transition-transform group-hover-scale-120"
                     />
                     <span class="w-full flex-1 truncate text-sm transition-height transition-opacity transition-width">
                       {{ generateI18nTitle(item.meta?.title) }}
@@ -107,7 +110,7 @@ function handlerMouserScroll(event: WheelEvent) {
             }"
           />
         </div>
-        <ToolbarRightSide/>
+        <ToolbarRightSide />
       </div>
     </header>
   </Transition>

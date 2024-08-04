@@ -85,7 +85,9 @@ export class TimeDelayReq {
             return
           }
         }
-        catch (error) {}
+        catch (e) {
+          console.error(e)
+        }
       }
       this._loadFromApi(param, resolve, reject)
     })

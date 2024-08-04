@@ -500,7 +500,7 @@ onUnmounted(() => {
 
         .tab-dividers {
           position: absolute;
-          inset-inline: -1px -1px;
+          inset-inline: -1px;
           top: 50%;
           z-index: 0;
           height: 14px;

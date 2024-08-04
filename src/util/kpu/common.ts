@@ -72,7 +72,7 @@ export function blobToObj(data: any) {
           const parseObj = JSON.parse(e.target?.result as string)
           resolve(parseObj)
         }
-        catch (error) {
+        catch {
           resolve({
             code: -1,
             msg: '获取失败',

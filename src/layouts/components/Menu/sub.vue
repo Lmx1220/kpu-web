@@ -180,7 +180,6 @@ function handleMouseleave() {
     }
     else {
       if (hasChildren.value) {
-        // eslint-disable-next-line ts/no-unused-expressions
         !rootMenu.mouseInMenu.includes(props.uniqueKey.at(-1)!) && rootMenu.closeMenu(props.uniqueKey.at(-1)!)
       }
     }
@@ -208,10 +207,10 @@ function handleMouseleave() {
         }"
       >
         <template v-for="item in menu.children" :key="item.path ?? JSON.stringify(item)">
-            <SubMenu
-              v-if="item.meta?.menu !== false" :unique-key="[...uniqueKey, item.path ?? JSON.stringify(item)]"
-              :menu="item" :level="level + 1"
-            />
+          <SubMenu
+            v-if="item.meta?.menu !== false" :unique-key="[...uniqueKey, item.path ?? JSON.stringify(item)]"
+            :menu="item" :level="level + 1"
+          />
         </template>
       </OverlayScrollbarsComponent>
     </Transition>
