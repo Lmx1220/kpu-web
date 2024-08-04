@@ -397,7 +397,7 @@ export async function getValidateRules(Api: AxiosRequestConfig, customRules?: Pa
         return resolve(newRules)
       }
     }
-    catch (error) {}
+    catch {}
     return resolve([])
   })
 }
@@ -441,7 +441,7 @@ export async function getValidateRuleObj(Api: AxiosRequestConfig, customRules?: 
         return resolve(newRules)
       }
     }
-    catch (error) {}
+    catch {}
     return resolve({})
   })
 }

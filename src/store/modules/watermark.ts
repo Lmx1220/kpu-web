@@ -67,7 +67,7 @@ const useWatermarkStore = defineStore(
       try {
         remove()
       }
-      catch (err) {
+      catch {
         // 忽略报错
       }
     }
