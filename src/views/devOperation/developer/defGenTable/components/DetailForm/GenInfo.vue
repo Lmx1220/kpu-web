@@ -454,7 +454,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="page-main gen-info">
+  <div class="gen-info page-main">
     <ElForm ref="form" :model="data.form" :rules="data.rules" label-suffix="：" label-width="138" scroll-to-error>
       <PageHeader title="基础信息" />
       <ElRow :gutter="30" style="padding: 20px;">
@@ -777,7 +777,7 @@ defineExpose({
               :props="{ label: 'title' }"
               node-key="id"
 
-              highlight-current show-checkbox
+              show-checkbox highlight-current
             >
               <template #default="{ data: item }">
                 <SvgIcon v-if="item.icon" :name="item.icon" class="ml-1 mr-1" size="16" />
