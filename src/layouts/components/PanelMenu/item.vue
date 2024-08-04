@@ -48,12 +48,16 @@ defineExpose({
   <div
     ref="itemRef" class="menu-item relative transition-all" :class="{
       'active': isActived,
+      'py-1': level !== 0,
       'px-2 py-1': rootMenu.props.rounded,
       'px-1! py-2!': rootMenu.props.rounded && level === 0 && rootMenu.props.mode === 'horizontal',
     }"
   >
     <router-link v-slot="{ href, navigate }" custom :to="uniqueKey.at(-1) ?? ''">
-      <HTooltip :enable="level === 0 && !subMenu" :text="generateI18nTitle(item.meta?.title)" placement="right" class="h-full w-full">
+      <HTooltip
+        :enable="level === 0 && !subMenu" :text="generateI18nTitle(item.meta?.title)" placement="right"
+        class="h-full w-full"
+      >
         <component
           :is="subMenu ? 'div' : 'a'" v-bind="{
             ...(!subMenu && {
@@ -94,7 +98,8 @@ defineExpose({
               v-if="icon" :name="icon" :size="16" class="menu-item-container-icon"
             />
             <span
-              v-if="!(level === 0 && !rootMenu.props.showCollapseName)" class="w-0 flex-1 truncate text-sm transition-height transition-opacity transition-width"
+              v-if="!(level === 0 && !rootMenu.props.showCollapseName)"
+              class="w-0 flex-1 truncate text-sm transition-height transition-opacity transition-width"
               :class="{
                 'text-xs!': level > 1,
                 'opacity-0 w-0 h-0': level === 0 && !rootMenu.props.showCollapseName,
@@ -103,7 +108,11 @@ defineExpose({
             >
               {{ generateI18nTitle(item.meta?.title) }}
             </span>
-            <HBadge v-if="item.meta?.badge && level !== 0" :value="typeof item.meta.badge === 'function' ? item.meta.badge() : item.meta.badge" class="badge transform-scale-80" />
+            <HBadge
+              v-if="item.meta?.badge && level !== 0"
+              :value="typeof item.meta.badge === 'function' ? item.meta.badge() : item.meta.badge"
+              class="badge transform-scale-80"
+            />
           </div>
         </component>
       </HTooltip>

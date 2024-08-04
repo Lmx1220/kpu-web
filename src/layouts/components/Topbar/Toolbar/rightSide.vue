@@ -39,7 +39,7 @@ watch(() => userStore.avatar, () => {
           { label: t('app.hotkeys'), handle: () => eventBus.emit('global-hotkeys-intro-toggle'), hide: settingsStore.mode !== 'pc' },
         ],
         [
-          { label: t('app.logout'), handle: () => userStore.logout() },
+          { label: t('app.logout'), handle: () => userStore.logout(settingsStore.settings.home.fullPath) },
         ],
       ]" class="flex-center cursor-pointer px-2"
     >

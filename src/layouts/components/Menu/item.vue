@@ -56,8 +56,8 @@ defineExpose({
   <div
     ref="itemRef" class="menu-item relative transition-all" :class="{
       'active': isItemActive,
-      'px-2 py-1': rootMenu.props.rounded,
-      'px-1! py-2!': rootMenu.props.rounded && rootMenu.isMenuPopup && level === 0 && rootMenu.props.mode === 'horizontal',
+      'py-1 px-2': (rootMenu.isMenuPopup && rootMenu.props.mode === 'vertical') || (rootMenu.isMenuPopup && level !== 0 && rootMenu.props.mode === 'horizontal') || !rootMenu.isMenuPopup,
+      'px-1 py-2': rootMenu.isMenuPopup && level === 0 && rootMenu.props.mode === 'horizontal',
     }"
   >
     <router-link v-slot="{ href, navigate }" custom :to="uniqueKey.at(-1) ?? ''">
@@ -69,7 +69,7 @@ defineExpose({
               target: item.meta?.newWindow || item.meta?.link ? '_blank' : '_self',
               class: 'no-underline',
             }),
-          }" class="group menu-item-container h-full w-full flex items-center justify-between gap-1 px-5 py-4" :class="{
+          }" class="group menu-item-container h-full w-full flex items-center justify-between gap-1 px-4 py-3" :class="{
             ...(rootMenu.isMenuPopup || !alwaysExpand
               ? {
                 'cursor-pointer text-[var(--g-sub-sidebar-menu-color)] transition-all hover-(bg-[var(--g-sub-sidebar-menu-hover-bg)] text-[var(--g-sub-sidebar-menu-hover-color)])': true,
@@ -96,12 +96,13 @@ defineExpose({
             }" :style="indentStyle"
           >
             <SvgIcon
-              v-if="icon" :name="icon" :size="20" class="menu-item-container-icon" :class="{
+              v-if="icon" :name="icon" :size="18" class="menu-item-container-icon" :class="{
                 'transition-transform group-hover-scale-120': rootMenu.isMenuPopup || !alwaysExpand,
               }"
             />
             <span
-              v-if="!(rootMenu.isMenuPopup && level === 0 && !rootMenu.props.showCollapseName)" class="w-0 flex-1 truncate text-sm transition-height transition-opacity transition-width"
+              v-if="!(rootMenu.isMenuPopup && level === 0 && !rootMenu.props.showCollapseName)"
+              class="w-0 flex-1 truncate text-sm transition-height transition-opacity transition-width"
               :class="{
                 'opacity-0 w-0 h-0': rootMenu.isMenuPopup && level === 0 && !rootMenu.props.showCollapseName,
                 'w-full text-center': rootMenu.isMenuPopup && level === 0 && rootMenu.props.showCollapseName,
@@ -116,7 +117,9 @@ defineExpose({
               subMenu
                 && (!rootMenu.isMenuPopup || level !== 0) // 非收起模式，非一级的子菜单
                 && (rootMenu.isMenuPopup || !alwaysExpand) // 收起模式，非始终展开的子菜单
-            " class="relative ms-1 w-[10px] after-(absolute h-[1.5px] w-[6px] bg-current transition-transform-200 content-empty -translate-y-[1px]) before-(absolute h-[1.5px] w-[6px] bg-current transition-transform-200 content-empty -translate-y-[1px])" :class="[
+            "
+            class="relative ms-1 w-[10px] after:absolute before:absolute after:h-[1.5px] after:w-[6px] before:h-[1.5px] before:w-[6px] after:bg-current before:bg-current after:transition-transform-200 before:transition-transform-200 after:content-empty before:content-empty after:-translate-y-[1px] before:-translate-y-[1px]"
+            :class="[
               expand ? 'before-(-rotate-45 -translate-x-[2px]) after-(rotate-45 translate-x-[2px])' : 'before-(rotate-45 -translate-x-[2px]) after-(-rotate-45 translate-x-[2px])',
               rootMenu.isMenuPopup && level === 0 && 'opacity-0',
               rootMenu.isMenuPopup && level !== 0 && '-rotate-90 -top-[1.5px]',
