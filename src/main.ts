@@ -6,9 +6,13 @@ import 'floating-vue/dist/style.css'
 
 import VWave from 'v-wave'
 
-import VXETable from 'vxe-table'
-import VXETablePluginElement from 'vxe-table-plugin-element'
-import 'vxe-table-plugin-element/dist/style.css'
+import VxeTable from 'vxe-table'
+import VxeUI from 'vxe-pc-ui'
+import VxeUIPluginRenderElement from '@vxe-ui/plugin-render-element'
+
+import 'vxe-table/lib/style.css'
+import 'vxe-pc-ui/lib/style.css'
+import '@vxe-ui/plugin-render-element/dist/style.css'
 import 'overlayscrollbars/overlayscrollbars.css'
 
 import App from './App.vue'
@@ -39,7 +43,7 @@ import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 // 全局样式
 import '@/assets/styles/globals.scss'
 
-VXETable.setup({
+VxeTable.setConfig({
   // 对组件内置的提示语进行国际化翻译
   size: 'medium',
   table: {
@@ -119,12 +123,13 @@ VXETable.setup({
   },
   // eslint-disable-next-line ts/ban-ts-comment
   // @ts-expect-error
-  i18n: (key: any, ...args: any) => i18n.global.t(key, args),
+  translate: (key: any, ...args: any) => i18n.global.t(key, args),
 })
 async function bootstrap() {
   const app = createApp(App)
-  VXETable.use(VXETablePluginElement)
-
+  VxeUI.use(VxeUIPluginRenderElement)
+  app.use(VxeUI)
+  app.use(VxeTable)
   app.use(VWave, {})
 
   app.use(pinia)
@@ -137,7 +142,6 @@ async function bootstrap() {
     distance: 12,
   })
   app.use(ui)
-  app.use(VXETable)
 
   if (icons.isOfflineUse) {
     for (const info of icons.collections) {
@@ -147,4 +151,5 @@ async function bootstrap() {
 
   app.mount('#app')
 }
+
 bootstrap()

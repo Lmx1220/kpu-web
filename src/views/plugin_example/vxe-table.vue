@@ -4,7 +4,9 @@ meta:
 </route>
 
 <script setup lang="ts">
+import type { VxeTableInstance } from 'vxe-table'
 import VxeUITable from 'vxe-table'
+import { ElMessageBox } from 'element-plus'
 import Alert from './components/alert.vue'
 import useSettingsStore from '@/store/modules/settings'
 
@@ -18,18 +20,39 @@ watch(() => settingsStore.currentColorScheme, () => {
 interface RowVO {
   id: number
   name: string
-  role: string
-  sex: string
-  age: number
-  address: string
+  nickname: string
 }
 
+const tableRef = ref<VxeTableInstance<RowVO>>()
+
 const tableData = ref<RowVO[]>([
-  { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
-  { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
-  { id: 10003, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
-  { id: 10004, name: 'Test4', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+  { id: 10001, name: 'Test1', nickname: 'Nickname11' },
+  { id: 10002, name: 'Test2', nickname: '' },
 ])
+
+async function insertEvent() {
+  const $table = tableRef.value
+  if ($table) {
+    const record = {
+      flag: false,
+    }
+    const { row: newRow } = await $table.insert(record)
+    $table.setEditRow(newRow)
+  }
+}
+
+function saveEvent() {
+  const $table = tableRef.value
+  if ($table) {
+    const { insertRecords, removeRecords, updateRecords } = $table.getRecordset()
+    if (insertRecords.length || removeRecords.length || updateRecords.length) {
+      ElMessageBox.alert(`insertRecords=${insertRecords.length}; removeRecords=${removeRecords.length}; updateRecords=${updateRecords.length}`)
+    }
+    else {
+      ElMessageBox.alert('数据未改动！')
+    }
+  }
+}
 
 function open(url: string) {
   window.open(url, '_blank')
@@ -54,11 +77,24 @@ function open(url: string) {
       </ElButton>
     </PageHeader>
     <PageMain>
-      <vxe-table :data="tableData">
-        <vxe-column type="seq" width="60" />
-        <vxe-column field="name" title="Name" />
-        <vxe-column field="sex" title="Sex" />
-        <vxe-column field="age" title="Age" />
+      <vxe-button @click="insertEvent">
+        新增
+      </vxe-button>
+      <vxe-button @click="saveEvent">
+        保存
+      </vxe-button>
+
+      <vxe-table
+
+        ref="tableRef" show-overflow keep-source
+        border
+        :edit-config="{ trigger: 'click', mode: 'row' }"
+        :data="tableData"
+      >
+        <vxe-column type="checkbox" width="60" />
+        <vxe-column type="seq" title="Number" width="80" />
+        <vxe-column title="component.upload.fileName" field="name" min-width="140" :edit-render="{ name: 'ElInput' }" />
+        <vxe-column title="输入框" field="nickname" width="200" :edit-render="{ name: 'ElInput' }" />
       </vxe-table>
     </PageMain>
   </div>
