@@ -40,6 +40,7 @@
     "@visactor/vchart": "^1.11.10",
     "@vueuse/core": "^10.11.0",
     "@vueuse/integrations": "^10.11.0",
+    "@vxe-ui/plugin-render-element": "^4.0.5",
     "add": "^2.0.6",
     "animate.css": "^4.1.1",
     "axios": "^1.7.3",
@@ -89,8 +90,7 @@
     "vue-router": "^4.4.2",
     "vue3-blocks-tree": "^0.6.1",
     "vue3-count-to": "^1.1.2",
-    "vxe-table": "^4.7.16",
-    "vxe-table-plugin-element": "^4.0.0",
+    "vxe-table": "^4.7.61",
     "xe-utils": "^3.5.28"
   },
   "devDependencies": {
