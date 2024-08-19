@@ -102,6 +102,7 @@ const useTabbarStore = defineStore(
         const meta = route.matched.at(-1)?.meta
         const tabId = settingsStore.settings.tabbar.mergeTabsBy === 'activeMenu' ? (meta?.activeMenu || route.fullPath) : route.fullPath
         if (route.name !== 'reload') {
+          // 记录查找到的标签页
           const tabbar = list.value.find(item => item.tabId === tabId)
           if (tabbar) {
             tabbar.tabId = tabId
