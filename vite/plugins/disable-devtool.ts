@@ -9,7 +9,7 @@ export default function createDisableDevtool(env): Plugin {
         if (VITE_APP_DISABLE_DEVTOOL === 'true') {
           code = code.concat(`
             import DisableDevtool from 'disable-devtool'
-            DisableDevtool()
+            DisableDevtool({md5: '1a79a4d60de6718e8e5b326e338ae533', tkName: 'dd'})
           `)
         }
         return {
