@@ -1,27 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 import generatedRoutes from 'virtual:generated-pages'
 import { setupLayouts } from 'virtual:meta-layouts'
-import KeepAliveExample from './modules/keep.alive.example'
-// import LinkExample from './modules/link.example'
-// import SystemExample from './modules/system.example'
 import MultilevelMenuExample from './modules/multilevel.menu.example.ts'
-import BreadcrumbExample from './modules/breadcrumb.example.ts'
-import AlwaysOpenedExample from './modules/always.opened.example.ts'
-import MenuIconExample from './modules/menu.icon.example.ts'
-import MenuBadgeExample from './modules/menu.badge.example.ts'
-
-import TabExample from './modules/tab.example.ts'
-import ComponentExample from './modules/component.example.ts'
-import IconExample from './modules/icon.example.ts'
-import PluginExample from './modules/plugin.example.ts'
-import LayoutContainerExample from './modules/layout.container.example.ts'
-import PermissionExample from './modules/permission.example.ts'
-
-import MockExample from './modules/mock.example.ts'
-import JsxExample from './modules/jsx.example.ts'
-import ExternalLinkExample from './modules/external.link.example.ts'
-import StandardModuleExample from './modules/standard.module.example.ts'
-import FeatureExample from './modules/feature.example.ts'
 import type { Route } from '@/types/global'
 import useSettingsStore from '@/store/modules/settings.ts'
 import pinia from '@/store'
@@ -81,23 +61,6 @@ const systemRoutes: RouteRecordRaw[] = [
         },
       },
       {
-        path: 'personal/setting',
-        name: 'personalSetting',
-        component: () => import('@/views/personal/setting.vue'),
-        meta: {
-          title: 'route.personal.setting',
-          cache: 'personalEditPassword',
-        },
-      },
-      {
-        path: 'personal/edit/password',
-        name: 'personalEditPassword',
-        component: () => import('@/views/personal/edit.password.vue'),
-        meta: {
-          title: 'route.personal.editpassword',
-        },
-      },
-      {
         path: 'personal/notification',
         name: 'personalNotification',
         component: () => import('@/views/personal/notification.vue'),
@@ -117,22 +80,6 @@ const asyncRoutes: Route.recordMainRaw[] = [
     },
     children: [
       MultilevelMenuExample,
-      BreadcrumbExample,
-      KeepAliveExample,
-      AlwaysOpenedExample,
-      MenuIconExample,
-      MenuBadgeExample,
-      TabExample,
-      ComponentExample,
-      IconExample,
-      FeatureExample,
-      LayoutContainerExample,
-      PluginExample,
-      PermissionExample,
-      MockExample,
-      JsxExample,
-      ExternalLinkExample,
-      StandardModuleExample,
     ],
   },
   {

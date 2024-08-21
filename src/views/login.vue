@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { FormInstance, FormRules } from 'element-plus'
 import Message from 'vue-m-message'
+import type { Rule } from 'ant-design-vue/es/form'
 import storage from '@/util/storage'
 import useUserStore from '@/store/modules/user'
 import Copyright from '@/layouts/components/Copyright/index.vue'
@@ -23,13 +23,13 @@ const loading = ref(false)
 const redirect = ref(route.query.redirect?.toString() ?? settingsStore.settings.home.fullPath)
 
 // 登录
-const loginFormRef = ref<FormInstance>()
+const loginFormRef = ref()
 const loginForm = ref({
   account: storage.local.get('login_account') ?? '',
   password: '',
   remember: storage.local.has('login_account'),
 })
-const loginRules = ref<FormRules>({
+const loginRules = ref<Record<string, Rule[]>>({
   account: [
     { required: true, trigger: 'blur', message: '请输入用户名' },
   ],
@@ -40,38 +40,36 @@ const loginRules = ref<FormRules>({
 })
 
 function handleLogin() {
-  loginFormRef.value && loginFormRef.value.validate((valid) => {
-    if (valid) {
-      loading.value = true
-      try {
-        userStore.login({ username: loginForm.value.account, password: loginForm.value.password }).then(() => {
-          loading.value = false
-          if (loginForm.value.remember) {
-            storage.local.set('login_account', loginForm.value.account ?? '')
-          }
-          else {
-            storage.local.remove('login_account')
-          }
-          router.push(redirect.value)
-        }).catch(() => {
-          loading.value = false
-        })
-      }
-      catch (e) {
-        console.error(e)
-      }
+  loginFormRef.value && loginFormRef.value.validate().then(() => {
+    loading.value = true
+    try {
+      userStore.login({ username: loginForm.value.account, password: loginForm.value.password }).then(() => {
+        loading.value = false
+        if (loginForm.value.remember) {
+          storage.local.set('login_account', loginForm.value.account ?? '')
+        }
+        else {
+          storage.local.remove('login_account')
+        }
+        router.push(redirect.value)
+      }).catch(() => {
+        loading.value = false
+      })
+    }
+    catch (e) {
+      console.error(e)
     }
   })
 }
 // 注册
-const registerFormRef = ref<FormInstance>()
+const registerFormRef = ref()
 const registerForm = ref({
   account: '',
   captcha: '',
   password: '',
   checkPassword: '',
 })
-const registerRules = ref<FormRules>({
+const registerRules = ref<Record<string, Rule[]>>({
   account: [
     { required: true, trigger: 'blur', message: '请输入用户名' },
   ],
@@ -85,12 +83,12 @@ const registerRules = ref<FormRules>({
   checkPassword: [
     { required: true, trigger: 'blur', message: '请再次输入密码' },
     {
-      validator: (rule, value, callback) => {
+      validator: (_rule: Rule, value: string) => {
         if (value !== registerForm.value.password) {
-          callback(new Error('两次输入的密码不一致'))
+          return Promise.reject(new Error('两次输入的密码不一致'))
         }
         else {
-          callback()
+          return Promise.resolve()
         }
       },
     },
@@ -98,22 +96,25 @@ const registerRules = ref<FormRules>({
 })
 
 function handleRegister() {
-  Message.warning('注册模块仅提供界面演示，无实际功能，需开发者自行扩展')
-  registerFormRef.value && registerFormRef.value.validate((valid) => {
-    if (valid) {
-      // 这里编写业务代码
-    }
+  Message({
+    message: '注册模块仅提供界面演示，无实际功能，需开发者自行扩展',
+    type: 'warning',
+  })
+  registerFormRef.value && registerFormRef.value.validate().then(() => {
+    // 这里编写业务代码
+  }).catch(() => {
+    // 这里编写业务代码
   })
 }
 
 // 重置密码
-const resetFormRef = ref<FormInstance>()
+const resetFormRef = ref()
 const resetForm = ref({
   account: storage.local.get('login_account') ?? '',
   captcha: '',
   newPassword: '',
 })
-const resetRules = ref<FormRules>({
+const resetRules = ref<Record<string, Rule[]>>({
   account: [
     { required: true, trigger: 'blur', message: '请输入用户名' },
   ],
@@ -127,11 +128,11 @@ const resetRules = ref<FormRules>({
 })
 
 function handleReset() {
-  Message.warning('重置密码模块仅提供界面演示，无实际功能，需开发者自行扩展')
-  resetFormRef.value && resetFormRef.value.validate((valid) => {
-    if (valid) {
-      // 这里编写业务代码
-    }
+  Message.info('重置密码模块仅提供界面演示，无实际功能，需开发者自行扩展')
+  resetFormRef.value && resetFormRef.value.validate().then(() => {
+    // 这里编写业务代码
+  }).catch(() => {
+    // 这里编写业务代码
   })
 }
 
@@ -153,7 +154,7 @@ function testAccount(account: string) {
         <img :src="logo" class="logo">
         <img :src="banner" class="banner">
       </div>
-      <ElForm
+      <AForm
         v-show="formType === 'login'" ref="loginFormRef" :model="loginForm" :rules="loginRules" class="login-form"
         autocapitalize="on"
       >
@@ -163,52 +164,52 @@ function testAccount(account: string) {
           </h3>
         </div>
         <div>
-          <ElFormItem prop="account">
-            <ElInput v-model="loginForm.account" :placeholder="t('app.account')" autocomplete="on" tabindex="1" text>
+          <AFormItem prop="account">
+            <AInput v-model:value="loginForm.account" :placeholder="t('app.account')" autocomplete="on" tabindex="1" text>
               <template #prefix>
                 <SvgIcon name="i-ri:user-3-fill" />
               </template>
-            </ElInput>
-          </ElFormItem>
-          <ElFormItem prop="password">
-            <ElInput
-              v-model="loginForm.password" type="password" :placeholder="t('app.password')" tabindex="2"
+            </AInput>
+          </AFormItem>
+          <AFormItem prop="password">
+            <AInputPassword
+              v-model:value="loginForm.password" type="password" :placeholder="t('app.password')" tabindex="2"
               autocomplete="on" show-password @keyup.enter="handleLogin"
             >
               <template #prefix>
                 <SvgIcon name="i-ri:lock-2-fill" />
               </template>
-            </ElInput>
-          </ElFormItem>
+            </AInputPassword>
+          </AFormItem>
         </div>
         <div class="flex-bar">
-          <ElCheckbox v-model="loginForm.remember">
+          <ACheckbox v-model:checked="loginForm.remember">
             记住我
-          </ElCheckbox>
-          <ElLink :underline="false" type="primary" @click="formType = 'reset'">
+          </ACheckbox>
+          <AButton type="link" @click="formType = 'reset'">
             忘记密码了?
-          </ElLink>
+          </AButton>
         </div>
-        <ElButton :loading="loading" size="large" style="width: 100%;" type="primary" @click.prevent="handleLogin">
+        <AButton :loading="loading" size="large" style="width: 100%;" type="primary" @click.prevent="handleLogin">
           {{ t('app.login') }}
-        </ElButton>
+        </AButton>
         <div class="sub-link">
           <span class="text">还没有帐号?</span>
-          <ElLink :underline="false" type="primary" @click="formType = 'register'">
+          <AButton type="link" @click="formType = 'register'">
             创建新帐号
-          </ElLink>
+          </AButton>
         </div>
         <div style="margin-top: 20px; margin-bottom: -20px; text-align: center;">
-          <ElDivider>演示账号一键登录</ElDivider>
-          <ElButton plain size="small" type="primary" @click="testAccount('kpu')">
+          <ADivider>演示账号一键登录</ADivider>
+          <AButton plain size="small" type="primary" @click="testAccount('kpu')">
             kpu
-          </ElButton>
-          <ElButton plain size="small" @click="testAccount('test')">
+          </AButton>
+          <AButton plain size="small" @click="testAccount('test')">
             test
-          </ElButton>
+          </AButton>
         </div>
-      </ElForm>
-      <ElForm
+      </AForm>
+      <AForm
         v-show="formType === 'register'" ref="registerFormRef" :model="registerForm" :rules="registerRules"
         class="login-form" auto-complete="on"
       >
@@ -218,58 +219,58 @@ function testAccount(account: string) {
           </h3>
         </div>
         <div>
-          <ElFormItem prop="account">
-            <ElInput v-model="registerForm.account" autocomplete="on" placeholder="用户名" tabindex="1">
+          <AFormItem prop="account">
+            <AInput v-model:value="registerForm.account" autocomplete="on" placeholder="用户名" tabindex="1">
               <template #prefix>
                 <SvgIcon name="ep:user" />
               </template>
-            </ElInput>
-          </ElFormItem>
-          <ElFormItem prop="captcha">
-            <ElInput v-model="registerForm.captcha" autocomplete="on" placeholder="验证码" tabindex="2">
+            </AInput>
+          </AFormItem>
+          <AFormItem prop="captcha">
+            <AInput v-model:value="registerForm.captcha" autocomplete="on" placeholder="验证码" tabindex="2">
               <template #prefix>
                 <SvgIcon name="ep:key" />
               </template>
               <template #append>
-                <ElButton>发送验证码</ElButton>
+                <AButton>发送验证码</AButton>
               </template>
-            </ElInput>
-          </ElFormItem>
-          <ElFormItem prop="password">
-            <ElInput
-              v-model="registerForm.password" type="password" placeholder="密码" tabindex="3" autocomplete="on"
+            </AInput>
+          </AFormItem>
+          <AFormItem prop="password">
+            <AInputPassword
+              v-model:value="registerForm.password" placeholder="密码" tabindex="3" autocomplete="on"
               show-password
             >
               <template #prefix>
                 <SvgIcon name="ep:lock" />
               </template>
-            </ElInput>
-          </ElFormItem>
-          <ElFormItem prop="checkPassword">
-            <ElInput
-              v-model="registerForm.checkPassword" type="password" placeholder="确认密码" tabindex="4"
+            </AInputPassword>
+          </AFormItem>
+          <AFormItem prop="checkPassword">
+            <AInputPassword
+              v-model:value="registerForm.checkPassword" placeholder="确认密码" tabindex="4"
               autocomplete="on" show-password
             >
               <template #prefix>
                 <SvgIcon name="ep:lock" />
               </template>
-            </ElInput>
-          </ElFormItem>
+            </AInputPassword>
+          </AFormItem>
         </div>
-        <ElButton
+        <AButton
           :loading="loading" type="primary" size="large" style="width: 100%; margin-top: 20px;"
           @click.prevent="handleRegister"
         >
           注册
-        </ElButton>
+        </AButton>
         <div class="sub-link">
           <span class="text">已经有帐号?</span>
-          <ElLink :underline="false" type="primary" @click="formType = 'login'">
+          <AButton type="link" @click="formType = 'login'">
             去登录
-          </ElLink>
+          </AButton>
         </div>
-      </ElForm>
-      <ElForm
+      </AForm>
+      <AForm
         v-show="formType === 'reset'" ref="resetFormRef" :model="resetForm" :rules="resetRules" class="login-form"
         auto-complete="on"
       >
@@ -279,46 +280,46 @@ function testAccount(account: string) {
           </h3>
         </div>
         <div>
-          <ElFormItem prop="account">
-            <ElInput v-model="resetForm.account" autocomplete="on" placeholder="用户名" tabindex="1">
+          <AFormItem prop="account">
+            <AInput v-model:value="resetForm.account" autocomplete="on" placeholder="用户名" tabindex="1">
               <template #prefix>
                 <SvgIcon name="ep:user" />
               </template>
-            </ElInput>
-          </ElFormItem>
-          <ElFormItem prop="captcha">
-            <ElInput v-model="resetForm.captcha" autocomplete="on" placeholder="验证码" tabindex="2">
+            </AInput>
+          </AFormItem>
+          <AFormItem prop="captcha">
+            <AInput v-model:value="resetForm.captcha" autocomplete="on" placeholder="验证码" tabindex="2">
               <template #prefix>
                 <SvgIcon name="ep:key" />
               </template>
               <template #append>
-                <ElButton>发送验证码</ElButton>
+                <AButton>发送验证码</AButton>
               </template>
-            </ElInput>
-          </ElFormItem>
-          <ElFormItem prop="newPassword">
-            <ElInput
-              v-model="resetForm.newPassword" type="password" placeholder="新密码" tabindex="3" autocomplete="on"
+            </AInput>
+          </AFormItem>
+          <AFormItem prop="newPassword">
+            <AInput
+              v-model:value="resetForm.newPassword" type="password" placeholder="新密码" tabindex="3" autocomplete="on"
               show-password
             >
               <template #prefix>
                 <SvgIcon name="ep:lock" />
               </template>
-            </ElInput>
-          </ElFormItem>
+            </AInput>
+          </AFormItem>
         </div>
-        <ElButton
+        <AButton
           :loading="loading" type="primary" size="large" style="width: 100%; margin-top: 20px;"
           @click.prevent="handleReset"
         >
           确认
-        </ElButton>
+        </AButton>
         <div class="sub-link">
-          <ElLink :underline="false" type="primary" @click="formType = 'login'">
+          <AButton type="link" @click="formType = 'login'">
             返回登录
-          </ElLink>
+          </AButton>
         </div>
-      </ElForm>
+      </AForm>
     </div>
     <Copyright />
     <LoginSwitcher class="login-switcher" />
@@ -398,7 +399,6 @@ function testAccount(account: string) {
   overflow: hidden;
   background-color: var(--g-container-bg);
   border-radius: 10px;
-  box-shadow: var(--el-box-shadow);
   transform: translate(-50%) translateY(-50%);
 
   .login-banner {
@@ -418,7 +418,6 @@ function testAccount(account: string) {
       left: 20px;
       height: 30px;
       border-radius: 4px;
-      box-shadow: var(--el-box-shadow-light);
     }
   }
 

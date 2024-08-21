@@ -1,4 +1,4 @@
-import en from 'element-plus/es/locale/lang/en.mjs'
+import en from 'ant-design-vue/es/locale/en_US'
 import vxeEnUS from 'vxe-table/lib/locale/lang/en-US'
 import { genMessage } from '../helper'
 

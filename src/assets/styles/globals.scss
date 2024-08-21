@@ -201,36 +201,3 @@ textarea {
   padding: 0;
   margin: 0;
 }
-
-.el-card {
-  box-shadow: 0 0 12px rgb(0 0 0 / 7%) !important;
-}
-
-.el-card__header {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 70px;
-
-  p.fx-b {
-    flex-shrink: 0;
-    width: 100%;
-  }
-}
-
-.el-card__header::after {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 3px;
-  height: 20px;
-  content: "";
-  background: linear-gradient(to bottom, #0081ff, #22cce2);
-  border-radius: 0 3px 3px 0;
-  transform: translateY(-50%);
-}
-
-.el-overlay-dialog {
-  margin: 0 16px;
-}

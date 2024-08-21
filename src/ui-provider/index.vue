@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import { theme } from 'ant-design-vue'
 import { useLocale } from '@/locales/useLocale.ts'
 
+import useSettingsStore from '@/store/modules/settings'
+
+const settingsStore = useSettingsStore()
 const locale = useLocale()
 </script>
 
 <template>
-  <ElConfigProvider :locale="locale.getElementLocale.value" :button="{ autoInsertSpace: true }">
+  <AConfigProvider :locale="locale.getElementLocale.value" :theme="settingsStore.currentColorScheme === 'dark' ? { algorithm: [theme.darkAlgorithm] } : {}">
     <slot />
-  </ElConfigProvider>
+  </AConfigProvider>
 </template>

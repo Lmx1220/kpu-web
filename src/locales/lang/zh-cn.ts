@@ -1,4 +1,4 @@
-import zhCN from 'element-plus/es/locale/lang/zh-cn.mjs'
+import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import vxeZhCN from 'vxe-table/lib/locale/lang/zh-CN'
 import { genMessage } from '../helper'
 
