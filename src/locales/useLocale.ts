@@ -2,7 +2,6 @@
  * Multi-language related operations
  */
 import { computed, unref } from 'vue'
-import type { TranslatePair } from 'element-plus/es/locale'
 import { i18n } from './index.ts'
 import { loadLocalePool, setHtmlPageLang } from './helper'
 import type { LocaleType } from '#/config'
