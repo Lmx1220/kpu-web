@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus'
-import { ElMessage } from 'element-plus'
+import Message from 'vue-m-message'
 import storage from '@/util/storage'
 import useUserStore from '@/store/modules/user'
 import Copyright from '@/layouts/components/Copyright/index.vue'
@@ -92,10 +92,7 @@ const registerRules = ref<FormRules>({
 })
 
 function handleRegister() {
-  ElMessage({
-    message: '注册模块仅提供界面演示，无实际功能，需开发者自行扩展',
-    type: 'warning',
-  })
+  Message.warning('注册模块仅提供界面演示，无实际功能，需开发者自行扩展')
   registerFormRef.value && registerFormRef.value.validate((valid) => {
     if (valid) {
       // 这里编写业务代码
@@ -124,10 +121,7 @@ const resetRules = ref<FormRules>({
 })
 
 function handleReset() {
-  ElMessage({
-    message: '重置密码模块仅提供界面演示，无实际功能，需开发者自行扩展',
-    type: 'warning',
-  })
+  Message.warning('重置密码模块仅提供界面演示，无实际功能，需开发者自行扩展')
   resetFormRef.value && resetFormRef.value.validate((valid) => {
     if (valid) {
       // 这里编写业务代码

@@ -34,8 +34,8 @@ export function useLocale() {
   const getLocale = computed(() => settingsStore.settings.app.defaultLang)
   // const getShowLocalePicker = computed(() => localeStore.getShowPicker)
   const getElementLocale = computed((): any => {
-    const localeMessage = i18n.global.getLocaleMessage<{ elementLocale: { name: string, el: TranslatePair } }>(unref(getLocale))
-    return localeMessage?.elementLocale ?? {}
+    const localeMessage = i18n.global.getLocaleMessage<{ uiLocale: any }>(unref(getLocale))
+    return localeMessage?.uiLocale ?? {}
   })
 
   // Switching the language will change the locale of useI18n
