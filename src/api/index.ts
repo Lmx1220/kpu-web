@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { AxiosInstance, AxiosResponse } from 'axios'
-import { ElMessage, ElMessageBox } from 'element-plus'
 import { clone } from 'lodash-es'
+import Message from 'vue-m-message'
 import HttpRequest from './request'
 import useUserStore from '@/store/modules/user'
 import { AxiosRetry } from '@/api/helper/axiosRetry'
@@ -54,11 +54,13 @@ const transform: AxiosTransform = {
 
       if (options.successMessageMode === 'modal') {
         // createSuccessModal({ title: t('sys.api.successTip'), content: successMsg })
-        ElMessageBox({ title: t('sys.api.successTip'), message: successMsg, type: 'success' })
+        // ElMessageBox({ title: t('sys.api.successTip'), message: successMsg, type: 'success' })
+        // #TODO 单窗口提示 现在不是
+        Message({ title: t('sys.api.errorTip'), message: successMsg })
       }
       else if (options.successMessageMode === 'message') {
         // createMessage.success(successMsg)
-        ElMessage.success(successMsg)
+        Message.success(successMsg)
       }
       return result
     }
@@ -83,11 +85,14 @@ const transform: AxiosTransform = {
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
     if (options.errorMessageMode === 'modal') {
       // createErrorModal({ title: t('sys.api.errorTip'), content: timeoutMsg })
-      ElMessageBox({ title: t('sys.api.errorTip'), message: timeoutMsg, type: 'error' })
+
+      // ElMessageBox({ title: t('sys.api.errorTip'), message: timeoutMsg, type: 'error' })
+      // #TODO 单窗口提示 现在不是
+      Message({ title: t('sys.api.errorTip'), message: timeoutMsg })
     }
     else if (options.errorMessageMode === 'message') {
       // createMessage.error(timeoutMsg)
-      ElMessage.error(timeoutMsg)
+      Message.error(timeoutMsg)
     }
 
     throw new Error(timeoutMsg || t('sys.api.apiRequestFailed'))
@@ -199,10 +204,12 @@ const transform: AxiosTransform = {
       if (errMessage) {
         if (errorMessageMode === 'modal') {
           // createErrorModal({ title: t('sys.api.errorTip'), content: errMessage })
-          ElMessageBox({ title: t('sys.api.errorTip'), message: errMessage, type: 'error' })
+          // ElMessageBox({ title: t('sys.api.errorTip'), message: errMessage, type: 'error' })
+          // #TODO 单窗口提示 现在不是
+          Message({ title: t('sys.api.errorTip'), message: errMessage })
         }
         else if (errorMessageMode === 'message') {
-          ElMessage.error(errMessage)
+          Message.error(errMessage)
         }
         return Promise.reject(error)
       }
