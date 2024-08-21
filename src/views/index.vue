@@ -1,13 +1,15 @@
 <route lang="yaml">
 name: home
 meta:
-  title: 主页
-  icon: ant-design:home-twotone
+title: 主页
+icon: ant-design:home-twotone
 </route>
 
 <script lang="ts" setup>
 import type { SelectProps } from 'ant-design-vue'
+import { message } from 'ant-design-vue'
 import type { Dayjs } from 'dayjs'
+import { RequestClient, authenticateResponseInterceptor, errorMessageResponseInterceptor } from '@/util/request-client'
 
 const inputValue = ref<string>('')
 const inputValue1 = ref<string>('')
@@ -55,6 +57,43 @@ const data = [
   { key: '2', name: 'Jim Green', age: 42, address: 'London No. 1 Lake Park', tags: ['loser'] },
   { key: '3', name: 'Joe Black', age: 32, address: 'Sidney No. 1 Lake Park', tags: ['cool', 'teacher'] },
 ]
+const requestClient = new RequestClient({ baseURL: '/mock' })
+requestClient.addResponseInterceptor({
+  fulfilled: (response) => {
+    const { data: responseData, status } = response
+
+    const { code, data, message: msg } = responseData
+    if (status >= 200 && status < 400 && code === 0) {
+      return data
+    }
+    throw new Error(`Error ${status}: ${msg}`)
+  },
+})
+requestClient.addResponseInterceptor(
+  authenticateResponseInterceptor({
+    client: requestClient,
+    doReAuthenticate: () => Promise.resolve(),
+    doRefreshToken: () => Promise.resolve(''),
+    enableRefreshToken: false,
+    formatToken: token => token,
+  }),
+)
+
+// 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
+requestClient.addResponseInterceptor(
+  errorMessageResponseInterceptor((msg: string) => message.error(msg)),
+)
+onMounted(() => {
+  console.log('onMounted')
+  requestClient.get<{ total: number, records: any[] }>('/system/role/list').then((res) => {
+    console.log(res.total)
+    console.log(res.records)
+  })
+  requestClient.get<{ total: number, records: any[] }>('/system/role/list1').then((res) => {
+    console.log(res.total)
+    console.log(res.records)
+  })
+})
 </script>
 
 <template>
