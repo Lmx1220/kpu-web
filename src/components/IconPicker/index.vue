@@ -125,18 +125,6 @@ function removeIcon() {
 
 <style lang="scss" scoped>
 .icon-picker {
-  --icon-picker-size: var(--el-component-size);
-  --icon-picker-font-size: var(--el-font-size-large);
-
-  &--small {
-    --icon-picker-size: var(--el-component-size-small);
-    --icon-picker-font-size: var(--el-font-size-medium);
-  }
-
-  &--large {
-    --icon-picker-size: var(--el-component-size-large);
-    --icon-picker-font-size: var(--el-font-size-extra-large);
-  }
 
   display: inline-flex;
   align-items: center;
@@ -150,6 +138,21 @@ function removeIcon() {
   border: var(--el-border);
   border-radius: var(--el-border-radius-base);
   transition: 0.3s;
+
+  --icon-picker-size: var(--el-component-size);
+  --icon-picker-font-size: var(--el-font-size-large);
+
+  &--small {
+    --icon-picker-size: var(--el-component-size-small);
+    --icon-picker-font-size: var(--el-font-size-medium);
+  }
+
+  &--large {
+    --icon-picker-size: var(--el-component-size-large);
+    --icon-picker-font-size: var(--el-font-size-extra-large);
+  }
+
+
 
   &.is-disabled {
     color: var(--el-text-color-disabled);
