@@ -23,7 +23,7 @@ const items = computed(() => {
     >
       <HButton outline>
         切换登录页风格
-        <SvgIcon class="el-icon--right" name="i-ep:arrow-down" />
+        <SvgIcon name="i-ep:arrow-down" />
       </HButton>
     </HDropdownMenu>
   </div>
