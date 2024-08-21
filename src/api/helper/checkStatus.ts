@@ -1,4 +1,4 @@
-import { ElMessage, ElMessageBox } from 'element-plus'
+import Message from 'vue-m-message'
 import useUserStore from '@/store/modules/user'
 import type { ErrorMessageMode } from '#/axios'
 
@@ -17,49 +17,52 @@ export function checkStatus(status: number, msg: string, errorMessageMode: Error
       errMessage = `${msg}`
       break
     case 401:
-      ElMessage.error('登录失效！请您重新登录')
+      Message.error('登录失效！请您重新登录')
       userStore.logout()
       break
     case 403:
-      ElMessage.error('当前账号无权限访问！')
+      Message.error('当前账号无权限访问！')
       break
     case 404:
-      ElMessage.error('你所访问的资源不存在！')
+      Message.error('你所访问的资源不存在！')
       break
     case 405:
-      ElMessage.error('请求方式错误！请您稍后重试')
+      Message.error('请求方式错误！请您稍后重试')
       break
     case 408:
-      ElMessage.error('请求超时！请您稍后重试')
+      Message.error('请求超时！请您稍后重试')
       break
     case 500:
-      ElMessage.error('服务异常！')
+      Message.error('服务异常！')
       break
     case 502:
-      ElMessage.error('网关错误！')
+      Message.error('网关错误！')
       break
     case 503:
-      ElMessage.error('服务不可用！')
+      Message.error('服务不可用！')
       break
     case 504:
-      ElMessage.error('网关超时！')
+      Message.error('网关超时！')
       break
     default:
-      ElMessage.error('请求失败！')
+      Message.error('请求失败！')
   }
   if (errMessage) {
     if (errorMessageMode === 'modal') {
-      ElMessageBox({
-        title: t('sys.api.errorTip'),
-        message: errMessage,
-        type: 'error',
-      })
+      // ElMessageBox({
+      //   title: t('sys.api.errorTip'),
+      //   message: errMessage,
+      //   type: 'error',
+      // })
+      // #TODO 单窗口提示 现在不是
+      Message({ title: t('sys.api.errorTip'), type: 'error', message: errMessage })
     }
     else if (errorMessageMode === 'message') {
-      ElMessage.error({
+      Message({
         message: errMessage,
-        key: `global_error_message_status_${status}`,
-        grouping: true,
+        type: 'error',
+        // key: `global_error_message_status_${status}`,
+        // grouping: true,
       })
     }
   }

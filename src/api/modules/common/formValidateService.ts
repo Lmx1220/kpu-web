@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig } from 'axios'
-import type { VxeTableDefines, VxeTablePropTypes } from 'vxe-table'
-import { ElMessage } from 'element-plus'
+// import type { VxeTableDefines, VxeTablePropTypes } from 'vxe-table'
+import Message from 'vue-m-message'
 import type { ConstraintInfo, FieldValidatorDesc } from './model/formValidateModel'
 import defHttp from '@/api'
 import dateUtil from '@/util/dayjs'
@@ -374,7 +374,7 @@ export async function getValidateRules(Api: AxiosRequestConfig, customRules?: Pa
     formValidateApi.url = `/form/validator${formValidateApi.url}`
     try {
       if (!formValidateApi.url) {
-        ElMessage.error('ServicePrefixEnum枚举类未正确配置！')
+        Message.error('ServicePrefixEnum枚举类未正确配置！')
         return resolve([])
       }
 
@@ -402,7 +402,7 @@ export async function getValidateRules(Api: AxiosRequestConfig, customRules?: Pa
   })
 }
 
-export async function getValidateRuleObj(Api: AxiosRequestConfig, customRules?: Partial<FormSchemaExt>[]): Promise<VxeTablePropTypes.EditRules> {
+export async function getValidateRuleObj(Api: AxiosRequestConfig, customRules?: Partial<FormSchemaExt>[]): Promise<any> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, _reject) => {
     const formValidateApi = { url: '', method: Api.method }
@@ -418,7 +418,7 @@ export async function getValidateRuleObj(Api: AxiosRequestConfig, customRules?: 
     formValidateApi.url = `/form/validator${Api.url}`
     try {
       if (!formValidateApi.url) {
-        ElMessage.error('ServicePrefixEnum枚举类未正确配置！')
+        Message.error('ServicePrefixEnum枚举类未正确配置！')
         return resolve({})
       }
 
@@ -432,9 +432,9 @@ export async function getValidateRuleObj(Api: AxiosRequestConfig, customRules?: 
         const formSchemaRules = transformationRules(res)
         const map = enhanceCustomRules(formSchemaRules, customRules)
 
-        const newRules: VxeTablePropTypes.EditRules = {}
+        const newRules: any = {}
         for (const [field, rules] of map) {
-          newRules[field] = rules as VxeTableDefines.ValidatorRule[]
+          newRules[field] = rules as any[]
         }
 
         ruleObjMap.set(key, newRules)
