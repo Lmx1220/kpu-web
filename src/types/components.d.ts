@@ -9,7 +9,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     Auth: typeof import('./../components/Auth/index.vue')['default']
     AuthAll: typeof import('./../components/AuthAll/index.vue')['default']
-    BlocksTree: typeof import('./../components/BlocksTree/index.vue')['default']
     Chip: typeof import('./../components/Chip/index.vue')['default']
     CodeEdite: typeof import('./../components/CodeEdite/index.vue')['default']
     ColorfulCard: typeof import('./../components/ColorfulCard/index.vue')['default']
@@ -43,6 +42,5 @@ declare module 'vue' {
     SvgIcon: typeof import('./../components/SvgIcon/index.vue')['default']
     SystemInfo: typeof import('./../components/SystemInfo/index.vue')['default']
     Trend: typeof import('./../components/Trend/index.vue')['default']
-    Vue3Cron: typeof import('./../components/vue3Cron/index.vue')['default']
   }
 }

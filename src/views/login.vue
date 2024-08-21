@@ -61,6 +61,7 @@ function handleLogin() {
     }
   })
 }
+
 // 注册
 const registerFormRef = ref()
 const registerForm = ref({
@@ -165,7 +166,10 @@ function testAccount(account: string) {
         </div>
         <div>
           <AFormItem prop="account">
-            <AInput v-model:value="loginForm.account" :placeholder="t('app.account')" autocomplete="on" tabindex="1" text>
+            <AInput
+              v-model:value="loginForm.account" size="large" :placeholder="t('app.account')" autocomplete="on" tabindex="1"
+              text
+            >
               <template #prefix>
                 <SvgIcon name="i-ri:user-3-fill" />
               </template>
@@ -173,7 +177,7 @@ function testAccount(account: string) {
           </AFormItem>
           <AFormItem prop="password">
             <AInputPassword
-              v-model:value="loginForm.password" type="password" :placeholder="t('app.password')" tabindex="2"
+              v-model:value="loginForm.password" size="large" type="password" :placeholder="t('app.password')" tabindex="2"
               autocomplete="on" show-password @keyup.enter="handleLogin"
             >
               <template #prefix>
@@ -201,12 +205,14 @@ function testAccount(account: string) {
         </div>
         <div style="margin-top: 20px; margin-bottom: -20px; text-align: center;">
           <ADivider>演示账号一键登录</ADivider>
-          <AButton plain size="small" type="primary" @click="testAccount('kpu')">
-            kpu
-          </AButton>
-          <AButton plain size="small" @click="testAccount('test')">
-            test
-          </AButton>
+          <ASpace>
+            <AButton plain size="small" type="primary" @click="testAccount('kpu')">
+              kpu
+            </AButton>
+            <AButton plain size="small" @click="testAccount('test')">
+              test
+            </AButton>
+          </ASpace>
         </div>
       </AForm>
       <AForm
@@ -220,14 +226,14 @@ function testAccount(account: string) {
         </div>
         <div>
           <AFormItem prop="account">
-            <AInput v-model:value="registerForm.account" autocomplete="on" placeholder="用户名" tabindex="1">
+            <AInput v-model:value="registerForm.account" size="large" autocomplete="on" placeholder="用户名" tabindex="1">
               <template #prefix>
                 <SvgIcon name="ep:user" />
               </template>
             </AInput>
           </AFormItem>
           <AFormItem prop="captcha">
-            <AInput v-model:value="registerForm.captcha" autocomplete="on" placeholder="验证码" tabindex="2">
+            <AInput v-model:value="registerForm.captcha" size="large" autocomplete="on" placeholder="验证码" tabindex="2">
               <template #prefix>
                 <SvgIcon name="ep:key" />
               </template>
@@ -238,7 +244,7 @@ function testAccount(account: string) {
           </AFormItem>
           <AFormItem prop="password">
             <AInputPassword
-              v-model:value="registerForm.password" placeholder="密码" tabindex="3" autocomplete="on"
+              v-model:value="registerForm.password" size="large" placeholder="密码" tabindex="3" autocomplete="on"
               show-password
             >
               <template #prefix>
@@ -248,7 +254,7 @@ function testAccount(account: string) {
           </AFormItem>
           <AFormItem prop="checkPassword">
             <AInputPassword
-              v-model:value="registerForm.checkPassword" placeholder="确认密码" tabindex="4"
+              v-model:value="registerForm.checkPassword" size="large" placeholder="确认密码" tabindex="4"
               autocomplete="on" show-password
             >
               <template #prefix>
@@ -281,14 +287,14 @@ function testAccount(account: string) {
         </div>
         <div>
           <AFormItem prop="account">
-            <AInput v-model:value="resetForm.account" autocomplete="on" placeholder="用户名" tabindex="1">
+            <AInput v-model:value="resetForm.account" size="large" autocomplete="on" placeholder="用户名" tabindex="1">
               <template #prefix>
                 <SvgIcon name="ep:user" />
               </template>
             </AInput>
           </AFormItem>
           <AFormItem prop="captcha">
-            <AInput v-model:value="resetForm.captcha" autocomplete="on" placeholder="验证码" tabindex="2">
+            <AInput v-model:value="resetForm.captcha" size="large" autocomplete="on" placeholder="验证码" tabindex="2">
               <template #prefix>
                 <SvgIcon name="ep:key" />
               </template>
@@ -299,7 +305,7 @@ function testAccount(account: string) {
           </AFormItem>
           <AFormItem prop="newPassword">
             <AInput
-              v-model:value="resetForm.newPassword" type="password" placeholder="新密码" tabindex="3" autocomplete="on"
+              v-model:value="resetForm.newPassword" size="large" type="password" placeholder="新密码" tabindex="3" autocomplete="on"
               show-password
             >
               <template #prefix>
