@@ -17,6 +17,20 @@ export default defineFakeRoute([
     },
   },
   {
+    url: '/mock/auth/refresh',
+    method: 'post',
+    response: (option: any) => {
+      return {
+        msg: '',
+        code: 0,
+        data: {
+          withCredentials: option.body.withCredentials,
+          token: '@string',
+        },
+      }
+    },
+  },
+  {
     url: '/mock/anyone/findVisibleResource',
     method: 'get',
     response: (option: any) => {

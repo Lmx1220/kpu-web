@@ -1,5 +1,4 @@
 import defHttp from '@/api'
-import type { DefUserInfoResultVO } from '@/types/store'
 
 export function login(data: {
   account: string
@@ -25,6 +24,17 @@ export function favorites() {
   return defHttp.get({
     url: '/user/favorites',
     baseURL: '/mock/',
+  })
+}
+/**
+ * 刷新accessToken
+ */
+export async function refreshTokenApi() {
+  return baseRequestClient.post<{
+    data: string
+    status: number
+  }>('/mock/auth/refresh', {
+    withCredentials: true,
   })
 }
 
