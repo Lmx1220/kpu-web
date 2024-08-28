@@ -9,15 +9,7 @@ const constantRoutes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/login.vue'),
-    meta: {
-      title: '登录',
-    },
-  },
-  {
-    path: '/login2',
-    name: 'login2',
-    component: () => import('@/views/login2.vue'),
+    component: () => import('@/views/login/index.vue'),
     meta: {
       title: '登录',
     },
@@ -125,9 +117,9 @@ const asyncRoutes: Route.recordMainRaw[] = [
   },
 ]
 
-// const constantRoutesByFilesystem = generatedRoutes.filter((item) => {
-//   return item.meta?.enabled !== false && item.meta?.constant === true
-// })
+const constantRoutesByFilesystem = generatedRoutes.filter((item) => {
+  return item.meta?.enabled !== false && item.meta?.constant === true
+})
 
 const asyncRoutesByFilesystem = setupLayouts(generatedRoutes.filter((item) => {
   return item.meta?.enabled !== false && item.meta?.constant !== true && item.meta?.layout !== false
@@ -136,6 +128,6 @@ export {
   constantRoutes,
   systemRoutes,
   asyncRoutes,
-  // constantRoutesByFilesystem,
+  constantRoutesByFilesystem,
   asyncRoutesByFilesystem,
 }

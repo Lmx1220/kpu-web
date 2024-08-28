@@ -1,0 +1,21 @@
+{
+  "intro": "探索从这里开始! 🚀",
+  "hasAccount": "已经有帐号?",
+  "login": "去登录",
+  "form": {
+    "account": "用户名",
+    "captcha": "验证码",
+    "sendCaptcha": "发送验证码",
+    "password": "密码",
+    "checkPassword": "确认密码",
+    "register": "注册"
+  },
+  "rules": {
+    "account": "请输入用户名",
+    "captcha": "请输入验证码",
+    "password": "请输入密码",
+    "passwordLength": "密码长度为6到18位",
+    "checkPassword": "请再次输入密码",
+    "checkPasswordError": "两次输入的密码不一致"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "accountLogin": "Account Login",
+  "qrcodeLogin": "Scan Login",
+  "intro": "Welcome to {title} ! 👋🏻",
+  "remember": "Remember Me",
+  "forget": "Forget Password?",
+  "noAccount": "No Account?",
+  "register": "Register New Account",
+  "wechatQrcode": "Please use WeChat scan login",
+  "testLogin": "Demo Account One-click Login",
+  "form": {
+    "account": "Account",
+    "password": "Password",
+    "login": "Login"
+  },
+  "rules": {
+    "account": "Please enter the account",
+    "password": "Please enter the password",
+    "passwordLength": "Password length is 6 to 18 bits"
+  }
+}
