@@ -10,8 +10,6 @@ import ResetPasswordForm from '@/views/login/components/ResetPasswordForm/index.
 defineOptions({
   name: 'Login',
 })
-const logo = new URL('../assets/images/logo.png', import.meta.url).href
-const banner = new URL('../assets/images/login-banner.png', import.meta.url).href
 const route = useRoute()
 const router = useRouter()
 const settingsStore = useSettingsStore()
@@ -67,8 +65,8 @@ const formRef = ref()
 
   <div class="login-box" :class="layout">
     <div class="login-banner">
-      <img :src="logo" class="absolute left-4 top-4 h-30px rounded ring ring-stone-2 dark-ring-stone-8">
-      <img :src="banner" class="banner">
+      <img src="@/assets/images/logo.png" class="absolute left-4 top-4 h-30px rounded ring ring-stone-2 dark-ring-stone-8">
+      <img src="@/assets/images/login-banner.png" class="banner">
       <Copyright v-if="settingsStore.mode === 'pc' && ['left', 'right'].includes(layout)" />
     </div>
     <div class="login-form flex-col-center">
