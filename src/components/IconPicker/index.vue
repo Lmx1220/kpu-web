@@ -123,7 +123,7 @@ function removeIcon() {
   </ElDialog>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .icon-picker {
   display: inline-flex;
   align-items: center;

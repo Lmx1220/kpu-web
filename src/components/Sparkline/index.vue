@@ -62,7 +62,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .sparkline {
   position: relative;
 

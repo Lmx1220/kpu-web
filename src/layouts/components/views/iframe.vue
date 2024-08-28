@@ -45,8 +45,8 @@ watch(() => route.fullPath, (val) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-// iframe区动画
+<style scoped>
+/* iframe区动画 */
 .fade-enter-active,
 .slide-left-enter-active,
 .slide-right-enter-active,

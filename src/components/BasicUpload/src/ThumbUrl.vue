@@ -88,7 +88,3 @@ function onView(url: string, e: Event) {
     </a>
   </span>
 </template>
-
-<style scoped lang="scss">
-// scss
-</style>

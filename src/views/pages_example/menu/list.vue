@@ -276,7 +276,7 @@ function onDel(row: any) {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .absolute-container {
   position: absolute;
   display: flex;

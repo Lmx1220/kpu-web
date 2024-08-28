@@ -60,7 +60,7 @@ watch(scrollTop, (val, oldVal) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .topbar-container {
   position: absolute;
   top: 0;

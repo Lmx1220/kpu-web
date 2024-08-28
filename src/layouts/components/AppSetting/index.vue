@@ -660,243 +660,243 @@ function handleCopy() {
   </HSlideover>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .divider {
-  --at-apply: flex items-center justify-between gap-4 my-4 whitespace-nowrap text-sm font-500;
+  --uno: flex items-center justify-between gap-4 my-4 whitespace-nowrap text-sm font-500;
 
   &::before,
   &::after {
-    --at-apply: content-empty w-full h-1px bg-stone-2 dark-bg-stone-6;
+    --uno: content-empty w-full h-1px bg-stone-2 dark-bg-stone-6;
   }
 }
 
 .themes {
-  --at-apply: flex flex-wrap items-center justify-center gap-4 pb-4;
+  --uno: flex flex-wrap items-center justify-center gap-4 pb-4;
 
   .theme {
-    --at-apply: flex items-center justify-center w-12 h-12 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer transition;
+    --uno: flex items-center justify-center w-12 h-12 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer transition;
 
     &.active {
-      --at-apply: ring-ui-primary ring-2;
+      --uno: ring-ui-primary ring-2;
 
       .content {
-        --at-apply: rotate-0;
+        --uno: rotate-0;
       }
     }
 
     .content {
-      --at-apply: w-6 h-4 rounded-50% -rotate-45 transition;
+      --uno: w-6 h-4 rounded-50% -rotate-45 transition;
     }
   }
 }
 
 .menu-mode {
-  --at-apply: flex items-center justify-center gap-4 pb-4;
+  --uno: flex items-center justify-center gap-4 pb-4;
 
   .mode {
-    --at-apply: relative w-16 h-12 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer transition;
+    --uno: relative w-16 h-12 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer transition;
 
     &.active {
-      --at-apply: ring-ui-primary ring-2;
+      --uno: ring-ui-primary ring-2;
     }
 
     &::before,
     &::after,
     .mode-container {
-      --at-apply: absolute pointer-events-none;
+      --uno: absolute pointer-events-none;
     }
 
     &::before {
-      --at-apply: content-empty bg-ui-primary;
+      --uno: content-empty bg-ui-primary;
     }
 
     &::after {
-      --at-apply: content-empty bg-ui-primary/60;
+      --uno: content-empty bg-ui-primary/60;
     }
 
     .mode-container {
-      --at-apply: bg-ui-primary/20 border-width-1.5 border-dashed border-ui-primary;
+      --uno: bg-ui-primary/20 border-width-1.5 border-dashed border-ui-primary;
 
       &::before {
-        --at-apply: content-empty absolute w-full h-full;
+        --uno: content-empty absolute w-full h-full;
       }
     }
 
     &-side {
       &::before {
-        --at-apply: top-2 bottom-2 start-2 w-2 rounded-ss-1 rounded-es-1;
+        --uno: top-2 bottom-2 start-2 w-2 rounded-ss-1 rounded-es-1;
       }
 
       &::after {
-        --at-apply: top-2 bottom-2 start-4.5 w-3;
+        --uno: top-2 bottom-2 start-4.5 w-3;
       }
 
       .mode-container {
-        --at-apply: inset-t-2 inset-e-2 inset-b-2 inset-s-8 rounded-se-1 rounded-ee-1;
+        --uno: inset-t-2 inset-e-2 inset-b-2 inset-s-8 rounded-se-1 rounded-ee-1;
       }
     }
 
     &-head {
       &::before {
-        --at-apply: top-2 start-2 end-2 h-2 rounded-ss-1 rounded-se-1;
+        --uno: top-2 start-2 end-2 h-2 rounded-ss-1 rounded-se-1;
       }
 
       &::after {
-        --at-apply: top-4.5 start-2 bottom-2 w-3 rounded-es-1;
+        --uno: top-4.5 start-2 bottom-2 w-3 rounded-es-1;
       }
 
       .mode-container {
-        --at-apply: inset-t-4.5 inset-e-2 inset-b-2 inset-s-5.5 rounded-ee-1;
+        --uno: inset-t-4.5 inset-e-2 inset-b-2 inset-s-5.5 rounded-ee-1;
       }
     }
 
     &-single {
       &::after {
-        --at-apply: top-2 start-2 bottom-2 w-3 rounded-ss-1 rounded-es-1;
+        --uno: top-2 start-2 bottom-2 w-3 rounded-ss-1 rounded-es-1;
       }
 
       .mode-container {
-        --at-apply: inset-t-2 inset-e-2 inset-b-2 inset-s-5.5 rounded-se-1 rounded-ee-1;
+        --uno: inset-t-2 inset-e-2 inset-b-2 inset-s-5.5 rounded-se-1 rounded-ee-1;
       }
     }
 
     &-only-side {
       &::before {
-        --at-apply: top-2 bottom-2 start-2 w-2 rounded-ss-1 rounded-es-1;
+        --uno: top-2 bottom-2 start-2 w-2 rounded-ss-1 rounded-es-1;
       }
 
       .mode-container {
-        --at-apply: inset-t-2 inset-e-2 inset-b-2 inset-s-4.5 rounded-se-1 rounded-ee-1;
+        --uno: inset-t-2 inset-e-2 inset-b-2 inset-s-4.5 rounded-se-1 rounded-ee-1;
       }
     }
 
     &-only-head {
       &::before {
-        --at-apply: top-2 start-2 end-2 h-2 rounded-ss-1 rounded-se-1;
+        --uno: top-2 start-2 end-2 h-2 rounded-ss-1 rounded-se-1;
       }
 
       .mode-container {
-        --at-apply: inset-t-4.5 inset-e-2 inset-b-2 inset-s-2 rounded-es-1 rounded-ee-1;
+        --uno: inset-t-4.5 inset-e-2 inset-b-2 inset-s-2 rounded-es-1 rounded-ee-1;
       }
     }
 
     &-side-panel {
       &::before {
-        --at-apply: start-2 top-2 inset-b-2 w-2 rounded-ss-1 rounded-es-1;
+        --uno: start-2 top-2 inset-b-2 w-2 rounded-ss-1 rounded-es-1;
       }
 
       &::after {
-        --at-apply: top-4 start-5.5 bottom-4 w-5;
+        --uno: top-4 start-5.5 bottom-4 w-5;
       }
 
       .mode-container {
-        --at-apply: inset-t-2 inset-e-2 inset-b-2 inset-s-4.5 rounded-se-1 rounded-ee-1;
+        --uno: inset-t-2 inset-e-2 inset-b-2 inset-s-4.5 rounded-se-1 rounded-ee-1;
       }
     }
 
     &-head-panel {
       &::before {
-        --at-apply: top-2 start-2 end-2 h-2 rounded-ss-1 rounded-se-1;
+        --uno: top-2 start-2 end-2 h-2 rounded-ss-1 rounded-se-1;
       }
 
       &::after {
-        --at-apply: top-5.5 start-5 bottom-3.5 w-6;
+        --uno: top-5.5 start-5 bottom-3.5 w-6;
       }
 
       .mode-container {
-        --at-apply: inset-t-4.5 inset-e-2 inset-b-2 inset-s-2 rounded-es-1 rounded-ee-1;
+        --uno: inset-t-4.5 inset-e-2 inset-b-2 inset-s-2 rounded-es-1 rounded-ee-1;
       }
     }
   }
 }
 
 .app-width-mode {
-  --at-apply: flex items-center justify-center gap-4 pb-4;
+  --uno: flex items-center justify-center gap-4 pb-4;
 
   .mode {
-    --at-apply: relative w-16 h-12 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer transition of-hidden;
+    --uno: relative w-16 h-12 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer transition of-hidden;
 
     &.active {
-      --at-apply: ring-ui-primary ring-2;
+      --uno: ring-ui-primary ring-2;
     }
 
     &-adaption {
       &::before {
-        --at-apply: content-empty absolute w-full h-full bg-stone-1 dark-bg-stone-9;
+        --uno: content-empty absolute w-full h-full bg-stone-1 dark-bg-stone-9;
       }
 
       .left,
       .right {
-        --at-apply: absolute top-1/2 -translate-y-1/2;
+        --uno: absolute top-1/2 -translate-y-1/2;
       }
 
       .left {
-        --at-apply: left-1;
+        --uno: left-1;
       }
 
       .right {
-        --at-apply: right-1;
+        --uno: right-1;
       }
     }
 
     &-adaption-min-width {
       &::before {
-        --at-apply: content-empty absolute w-1/2 h-full left-1/2 -translate-x-1/2 bg-stone-1 dark-bg-stone-9;
+        --uno: content-empty absolute w-1/2 h-full left-1/2 -translate-x-1/2 bg-stone-1 dark-bg-stone-9;
       }
 
       .left,
       .right {
-        --at-apply: absolute top-1/2 -translate-y-1/2;
+        --uno: absolute top-1/2 -translate-y-1/2;
       }
 
       .left {
-        --at-apply: left-0.5;
+        --uno: left-0.5;
       }
 
       .right {
-        --at-apply: right-0.5;
+        --uno: right-0.5;
       }
     }
 
     &-center {
       &::before {
-        --at-apply: content-empty absolute w-3/5 h-full left-1/2 -translate-x-1/2 bg-stone-1 dark-bg-stone-9;
+        --uno: content-empty absolute w-3/5 h-full left-1/2 -translate-x-1/2 bg-stone-1 dark-bg-stone-9;
       }
     }
 
     &-center-max-width {
       &::before {
-        --at-apply: content-empty absolute w-3/5 h-full left-1/2 -translate-x-1/2 bg-stone-1 dark-bg-stone-9;
+        --uno: content-empty absolute w-3/5 h-full left-1/2 -translate-x-1/2 bg-stone-1 dark-bg-stone-9;
       }
 
       .left,
       .right {
-        --at-apply: absolute top-1/2 -translate-y-1/2;
+        --uno: absolute top-1/2 -translate-y-1/2;
       }
 
       .left {
-        --at-apply: left-2.5;
+        --uno: left-2.5;
       }
 
       .right {
-        --at-apply: right-2.5;
+        --uno: right-2.5;
       }
     }
   }
 }
 
 .transition-mode {
-  --at-apply: flex items-center justify-center gap-4 pb-4;
+  --uno: flex items-center justify-center gap-4 pb-4;
 
   .mode {
-    --at-apply: relative flex items-center justify-center w-14 h-10 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer;
+    --uno: relative flex items-center justify-center w-14 h-10 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer;
 
     &.active {
-      --at-apply: ring-ui-primary ring-2;
+      --uno: ring-ui-primary ring-2;
     }
 
     &::after {
-      --at-apply: content-empty absolute w-3/5 h-3/5 top-1/5 left-1/5 rounded-2 bg-stone-2 dark-bg-stone-9 transition;
+      --uno: content-empty absolute w-3/5 h-3/5 top-1/5 left-1/5 rounded-2 bg-stone-2 dark-bg-stone-9 transition;
     }
 
     &.mode-fade {
@@ -1027,13 +1027,13 @@ function handleCopy() {
 }
 
 .setting-item {
-  --at-apply: flex items-center justify-between gap-4 px-4 py-2 rounded-2 transition hover-bg-stone-1 dark-hover-bg-stone-9;
+  --uno: flex items-center justify-between gap-4 px-4 py-2 rounded-2 transition hover-bg-stone-1 dark-hover-bg-stone-9;
 
   .label {
-    --at-apply: flex items-center flex-shrink-0 gap-2 text-sm;
+    --uno: flex items-center flex-shrink-0 gap-2 text-sm;
 
     i {
-      --at-apply: text-xl text-orange cursor-help;
+      --uno: text-xl text-orange cursor-help;
     }
   }
 }

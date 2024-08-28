@@ -180,7 +180,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 [data-app-width-mode="adaption"] {
   #app-main {
     width: 100%;
@@ -249,7 +249,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
   height: 100%;
   margin: 0 auto;
 
-  // 当前标签页全屏
+  /* 当前标签页全屏 */
   &.main-page-maximize {
     header,
     .sidebar-container {
@@ -342,7 +342,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
       transition: 0.3s;
 
       .exit-main-page-maximize {
-        --at-apply: bg-stone-7 dark-bg-stone-3 text-stone-3 dark-text-stone-7 op-50 hover-op-100 transition-opacity;
+        --uno: bg-stone-7 dark-bg-stone-3 text-stone-3 dark-text-stone-7 op-50 hover-op-100 transition-opacity;
 
         position: fixed;
         top: -40px;
@@ -394,7 +394,7 @@ header:not(.header-leave-active) + .wrapper {
 }
 
 .app-setting {
-  --at-apply: text-white dark-text-dark bg-ui-primary;
+  --uno: text-white dark-text-dark bg-ui-primary;
 
   position: fixed;
   inset-inline-end: 0;
@@ -428,7 +428,7 @@ header:not(.header-leave-active) + .wrapper {
   }
 }
 
-// 主内容区动画
+/* 主内容区动画 */
 .fade-enter-active,
 .slide-left-enter-active,
 .slide-right-enter-active,

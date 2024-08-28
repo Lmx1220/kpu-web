@@ -172,7 +172,7 @@ defineExpose({
   </ElScrollbar>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .el-scrollbar {
   padding: 14px;
 }

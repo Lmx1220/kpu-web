@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus'
-import { ElMessage } from 'element-plus'
+import Message from 'vue-m-message'
 
 defineOptions({
   name: 'ResetPasswordForm',
@@ -36,8 +36,8 @@ const rules = ref<FormRules>({
   ],
 })
 function handleReset() {
-  ElMessage({
-    message: t(''),
+  Message({
+    message: '重置密码仅提供界面演示，无实际功能，需开发者自行扩展',
     type: 'info',
   })
   formRef.value?.validate((valid) => {

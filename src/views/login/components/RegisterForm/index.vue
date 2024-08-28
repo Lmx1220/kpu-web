@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus'
-import { ElMessage } from 'element-plus'
+import Message from 'vue-m-message'
 
 defineOptions({
   name: 'RegisterForm',
@@ -51,7 +51,7 @@ const rules = ref<FormRules>({
   ],
 })
 function handleRegister() {
-  ElMessage({
+  Message({
     message: '注册模块仅提供界面演示，无实际功能，需开发者自行扩展',
     type: 'warning',
   })
@@ -106,7 +106,7 @@ function handleRegister() {
       {{ t('registerForm.form.register') }}
     </ElButton>
     <div class="mt-4 flex-center gap-2 text-sm color-[var(--el-text-color-secondary)]">
-      {{ t('registerForm.hasAccount') }}?
+      {{ t('registerForm.hasAccount') }}
       <ElLink type="primary" :underline="false" @click="emits('onLogin', form.account)">
         {{ t('registerForm.login') }}
       </ElLink>

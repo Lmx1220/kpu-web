@@ -101,7 +101,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
   </Transition>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .main-sidebar-container {
   position: relative;
   z-index: 1;
@@ -123,6 +123,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
       .item-container::before,
       :deep(.menu-item::before) {
         inset-inline-end: -5px;
+        top: 50%;
         width: 0;
         height: 0;
         content: "";
@@ -130,8 +131,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
         border-inline-end: 5px solid var(--g-main-sidebar-bg);
         opacity: 0;
         transition: all 0.3s;
-
-        @include position-center(y);
+        transform: translateY(-50%);
       }
 
       .item-container.active::before,
@@ -145,6 +145,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
       .item-container::before,
       :deep(.menu-item::before) {
         inset-inline-start: 6px;
+        top: 50%;
         width: 4px;
         height: 0;
         content: "";
@@ -153,8 +154,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
         box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
         opacity: 0;
         transition: all 0.3s;
-
-        @include position-center(y);
+        transform: translateY(-50%);
       }
 
       .item-container.active::before,
@@ -168,6 +168,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
       .item-container::before,
       :deep(.menu-item::before) {
         inset-inline-start: 0;
+        top: 50%;
         width: 10px;
         height: 10px;
         content: "";
@@ -176,8 +177,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
         box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
         opacity: 0;
         transition: all 0.3s;
-
-        @include position-center(y);
+        transform: translateY(-50%);
       }
 
       .item-container.active::before,
@@ -194,10 +194,10 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
     overflow: hidden auto;
     overscroll-behavior: contain;
 
-    // firefox隐藏滚动条
+    /* firefox隐藏滚动条 */
     scrollbar-width: none;
 
-    // chrome隐藏滚动条
+    /* chrome隐藏滚动条 */
     &::-webkit-scrollbar {
       display: none;
     }
@@ -225,7 +225,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
   }
 }
 
-// 主侧边栏动画
+/* 主侧边栏动画 */
 .main-sidebar-enter-active,
 .main-sidebar-leave-active {
   transition: 0.3s;

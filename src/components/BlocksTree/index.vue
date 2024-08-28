@@ -82,7 +82,7 @@ const labelClassNameItem = reactive([{
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 :deep(.bg-primary) {
   background-color: var(--g-theme-color);
 }

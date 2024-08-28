@@ -144,7 +144,7 @@ function open(url: string) {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .swiper {
   width: 100%;
   height: 300px;

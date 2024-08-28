@@ -68,7 +68,4 @@ function filterMethod(query: string) {
 <template>
    <el-calendar v-model="modelValue" :options="dicts" v-bind="getProps" @change="(val) => emit('change', val)" />
 </template>
-
-<style scoped lang="scss">
-// scss
-</style> -->
+ -->

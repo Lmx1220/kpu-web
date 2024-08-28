@@ -87,7 +87,3 @@ defineExpose({
     </el-form>
   </div>
 </template>
-
-<style lang="scss" scoped>
-// scss
-</style>

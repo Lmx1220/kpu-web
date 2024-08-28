@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 @import "@/assets/fonts/digital-7/stylesheet.css";
 @import "@/assets/fonts/digital-7_mono/stylesheet.css";
 

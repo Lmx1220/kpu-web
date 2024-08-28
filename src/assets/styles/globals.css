@@ -1,31 +1,37 @@
-@use "./vxe.scss" as *;
-// 页面布局 CSS 变量
+/* 页面布局 CSS 变量 */
 :root {
-  // 这是一个复合变量
-  // 当页宽模式为 adaption-min-width 时，它代表 最小宽度
-  // 当页宽模式为 center 时，它代表 固定宽度
-  // 当页宽模式为 center-max-width 时，它代表 最大宽度
-  --g-app-width: #{$g-app-width};
-  // 头部宽度（默认自适应宽度，可固定宽度，固定宽度后为居中显示）
-  --g-header-width: #{$g-header-width};
-  // 头部高度
+  /* 这是一个复合变量
+   当页宽模式为 adaption-min-width 时，它代表 最小宽度
+   当页宽模式为 center 时，它代表 固定宽度
+   当页宽模式为 center-max-width 时，它代表 最大宽度 */
+  --g-app-width: 1400px;
+
+  /* 头部宽度（默认自适应宽度，可固定宽度，固定宽度后为居中显示） */
+  --g-header-width: 100%;
+
+  /* 头部高度 */
   --g-header-height: 60px;
-  // 侧边栏宽度
+
+  /* 侧边栏宽度 */
   --g-main-sidebar-width: 80px;
   --g-sub-sidebar-width: 220px;
   --g-sub-sidebar-collapse-width: 64px;
-  // 侧边栏 Logo 区域高度
+
+  /* 侧边栏 Logo 区域高度 */
   --g-sidebar-logo-height: 50px;
-  // 标签栏高度
+
+  /* 标签栏高度 */
   --g-tabbar-height: 50px;
-  // 工具栏高度
+
+  /* 工具栏高度 */
   --g-toolbar-height: 50px;
-  // 标签页最大最小宽度，两个宽度为同一数值时，则为固定宽度，反之将宽度设置为 unset 则为自适应
+
+  /* 标签页最大最小宽度，两个宽度为同一数值时，则为固定宽度，反之将宽度设置为 unset 则为自适应 */
   --g-tabbar-tab-max-width: 150px;
   --g-tabbar-tab-min-width: 150px;
 }
 
-// 明暗模式 CSS 变量
+/* 明暗模式 CSS 变量 */
 /* stylelint-disable-next-line no-duplicate-selectors */
 :root {
   color-scheme: light;
@@ -102,51 +108,29 @@ body {
   box-sizing: inherit;
 }
 
-// 右侧内容区针对fixed元素，有横向铺满的需求，可在fixed元素上设置 [data-fixed-calc-width]
+/* 右侧内容区针对fixed元素，有横向铺满的需求，可在fixed元素上设置 [data-fixed-calc-width] */
 [data-fixed-calc-width] {
   position: fixed;
   inset-inline: 50% 0;
-}
-
-[data-app-width-mode="adaption"],
-[data-app-width-mode="adaption-min-width"] {
-  [data-fixed-calc-width] {
-    width: calc(100% - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
-    transform: translateX(-50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2));
-
-    [dir="rtl"] & {
-      transform: translateX(50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2 * -1)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2 * -1));
-    }
-  }
+  width: calc(100% - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
+  transform: translate(-50%) translate(calc(var(--g-main-sidebar-actual-width) / 2)) translate(calc(var(--g-sub-sidebar-actual-width) / 2));
 }
 
 [data-app-width-mode="center"],
 [data-app-width-mode="center-max-width"] {
   [data-fixed-calc-width] {
-    width: calc(var(--g-app-width) - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
-    transform: translateX(-50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2));
-
-    [dir="rtl"] & {
-      transform: translateX(50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2 * -1)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2 * -1));
-    }
+    max-width: calc(var(--g-app-width) - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
   }
+}
 
-  @media screen and (max-width: $g-app-width) {
-    [data-fixed-calc-width] {
-      width: calc(100% - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
-      transform: translateX(-50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2));
-
-      [dir="rtl"] & {
-        transform: translateX(50%) translateX(calc(var(--g-main-sidebar-actual-width) / 2 * -1)) translateX(calc(var(--g-sub-sidebar-actual-width) / 2 * -1));
-      }
-    }
-  }
+[dir="rtl"] [data-fixed-calc-width] {
+  transform: translate(50%) translate(calc(var(--g-main-sidebar-actual-width) / 2 * -1)) translate(calc(var(--g-sub-sidebar-actual-width) / 2 * -1));
 }
 
 [data-mode="mobile"] {
   [data-fixed-calc-width] {
     width: 100% !important;
-    transform: translateX(-50%) !important;
+    transform: translate(-50%) !important;
 
     [dir="rtl"] & {
       transform: translateX(50%) !important;
@@ -154,7 +138,7 @@ body {
   }
 }
 
-// textarea 字体跟随系统
+/* textarea 字体跟随系统 */
 textarea {
   font-family: inherit;
 }
@@ -162,12 +146,12 @@ textarea {
 /* Overrides Floating Vue */
 .v-popper--theme-dropdown,
 .v-popper--theme-tooltip {
-  --at-apply: inline-flex;
+  --uno: inline-flex;
 }
 
 .v-popper--theme-dropdown .v-popper__inner,
 .v-popper--theme-tooltip .v-popper__inner {
-  --at-apply: bg-white dark-bg-stone-8 text-dark dark-text-white rounded shadow ring-1 ring-gray-200 dark-ring-gray-800 border border-solid border-stone/20 text-xs font-normal;
+  --uno: bg-white dark-bg-stone-8 text-dark dark-text-white rounded shadow ring-1 ring-gray-200 dark-ring-gray-800 border border-solid border-stone/20 text-xs font-normal;
 
   box-shadow: 0 6px 30px rgb(0 0 0 / 10%);
 }
@@ -176,12 +160,12 @@ textarea {
 .v-popper--theme-dropdown .v-popper__arrow-inner {
   visibility: visible;
 
-  --at-apply: border-white dark-border-stone-8;
+  --uno: border-white dark-border-stone-8;
 }
 
 .v-popper--theme-tooltip .v-popper__arrow-outer,
 .v-popper--theme-dropdown .v-popper__arrow-outer {
-  --at-apply: border-stone/20;
+  --uno: border-stone/20;
 }
 
 .v-popper--theme-tooltip.v-popper--shown,
@@ -189,13 +173,13 @@ textarea {
   transition: none !important;
 }
 
-// medium-zoom
+/* medium-zoom */
 .medium-zoom-overlay,
 .medium-zoom-image {
   z-index: 3000;
 }
 
-// 后续添加
+/* 后续添加 */
 /* stylelint-disable-next-line no-duplicate-selectors */
 * {
   padding: 0;

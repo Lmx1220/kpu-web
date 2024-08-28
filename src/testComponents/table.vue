@@ -292,7 +292,7 @@
 <!--  </div>-->
 <!--</template>-->
 
-<!--<style lang="scss" scoped>-->
+<!--<style scoped>-->
 <!--.el-button + .el-button {-->
 <!--  margin-left: 4px;-->
 <!--}-->

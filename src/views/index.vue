@@ -16,7 +16,3 @@ defineOptions({
     <PageMain class="kpu-j-vxe-table" />
   </div>
 </template>
-
-<style lang="scss" scoped>
-// scss
-</style>

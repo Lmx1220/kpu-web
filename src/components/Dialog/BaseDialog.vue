@@ -200,7 +200,3 @@ function handleFullScreen(e: Event) {
     </template>
   </ElDialog>
 </template>
-
-<style lang="scss" scoped>
-// scss
-</style>

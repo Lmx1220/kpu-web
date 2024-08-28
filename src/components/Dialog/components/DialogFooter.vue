@@ -59,7 +59,3 @@ function handleCancel(e: Event) {
     <slot name="appendFooter" />
   </div>
 </template>
-
-<style scoped lang="scss">
-// scss
-</style>

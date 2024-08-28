@@ -40,7 +40,7 @@ import 'virtual:svg-icons-register'
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 
 // 全局样式
-import '@/assets/styles/globals.scss'
+import '@/assets/styles/globals.css'
 
 VxeTable.setConfig({
   // 对组件内置的提示语进行国际化翻译

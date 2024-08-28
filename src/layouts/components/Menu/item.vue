@@ -131,7 +131,7 @@ defineExpose({
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .badge {
   :deep(> span) {
     inset-inline-start: initial !important;

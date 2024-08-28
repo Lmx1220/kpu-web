@@ -50,7 +50,3 @@ const slots = useSlots()
     </ElRadio>
   </ElRadioGroup>
 </template>
-
-<style scoped lang="scss">
-// scss
-</style>

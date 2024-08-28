@@ -68,12 +68,12 @@ function pathCompile(path: string) {
   </Breadcrumb>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .breadcrumb {
   &.breadcrumb-modern {
     :deep(.breadcrumb-item) {
       .text {
-        --at-apply: bg-stone-2/80 dark-bg-stone-8/80;
+        --uno: bg-stone-2/80 dark-bg-stone-8/80;
 
         padding: 6px 16px;
         clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%, 8px 50%);
@@ -83,7 +83,7 @@ function pathCompile(path: string) {
         }
 
         &.is-link:hover {
-          --at-apply: bg-stone-2 dark-bg-stone-8;
+          --uno: bg-stone-2 dark-bg-stone-8;
         }
       }
 
@@ -99,7 +99,7 @@ function pathCompile(path: string) {
       }
 
       &:last-child:not(:first-child) .text {
-        --at-apply: bg-stone-2 dark-bg-stone-8;
+        --uno: bg-stone-2 dark-bg-stone-8;
 
         padding-inline-end: 12px;
         clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 8px 50%);
@@ -118,7 +118,7 @@ function pathCompile(path: string) {
   }
 }
 
-// 面包屑动画
+/* 面包屑动画 */
 .breadcrumb-enter-active {
   transition: transform 0.3s, opacity 0.3s;
 }

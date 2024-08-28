@@ -59,7 +59,3 @@ onMounted(() => {
     <SystemInfo />
   </Provider>
 </template>
-
-<style lang="scss" scoped>
-// scss
-</style>

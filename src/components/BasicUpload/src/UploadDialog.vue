@@ -270,8 +270,7 @@ function handleRemove(record: FileItem) {
   </BaseDialog>
 </template>
 
-<style lang="scss" scoped>
-// scss
+<style scoped>
 .upload-dialog {
   &-toolbar {
     display: flex;
