@@ -33,6 +33,36 @@ useWatermarkStore()
 const mainPage = useMainPage()
 const menu = useMenu()
 
+// 侧边栏主导航当前实际宽度
+const mainSidebarActualWidth = computed(() => {
+  let actualWidth = Number.parseInt(getComputedStyle(document.documentElement).getPropertyValue('--g-main-sidebar-width'))
+  if (settingsStore.settings.menu.mode === 'single' || (['head', 'only-head', 'head-panel'].includes(settingsStore.settings.menu.mode) && settingsStore.mode !== 'mobile')) {
+    actualWidth = 0
+  }
+  return `${actualWidth}px`
+})
+// 侧边栏次导航当前实际宽度
+const subSidebarActualWidth = computed(() => {
+  let actualWidth = Number.parseInt(getComputedStyle(document.documentElement).getPropertyValue('--g-sub-sidebar-width'))
+  if (settingsStore.settings.menu.subMenuCollapse && settingsStore.mode !== 'mobile') {
+    actualWidth = Number.parseInt(getComputedStyle(document.documentElement).getPropertyValue('--g-sub-sidebar-collapse-width'))
+  }
+  if (['only-side', 'only-head', 'side-panel', 'head-panel'].includes(settingsStore.settings.menu.mode) && settingsStore.mode !== 'mobile') {
+    actualWidth = 0
+  }
+  if (
+    settingsStore.settings.menu.subMenuOnlyOneHide
+    && menuStore.sidebarMenus.length === 1
+    && (
+      !menuStore.sidebarMenus[0].children
+      || menuStore.sidebarMenus[0]?.children.every(item => item.meta?.menu === false)
+    )
+  ) {
+    actualWidth = 0
+  }
+  return `${actualWidth}px`
+})
+
 const isIframe = computed(() => !!routeInfo.meta.iframe)
 const isLink = computed(() => !!routeInfo.meta.link)
 
@@ -102,7 +132,13 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING === 'true'
 </script>
 
 <template>
-  <div class="layout">
+  <div
+    class="layout"
+    :style="{
+      '--g-main-sidebar-actual-width': mainSidebarActualWidth,
+      '--g-sub-sidebar-actual-width': subSidebarActualWidth,
+    }"
+  >
     <div id="app-main" :class="{ 'main-page-maximize': settingsStore.mainPageMaximizeStatus }">
       <Header />
       <div class="wrapper">

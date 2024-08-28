@@ -38,7 +38,6 @@ function createRequestClient(baseURL: string) {
    */
   async function doRefreshToken() {
     const userStore = useUserStore()
-    debugger
     const resp = await refreshTokenApi()
     const newToken = resp.data
     userStore.token = newToken

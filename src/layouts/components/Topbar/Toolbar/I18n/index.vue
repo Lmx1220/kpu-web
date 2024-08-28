@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { getElementLocales } from '@/locales/useLocale.ts'
+import { useLocale } from '@/locales/useLocale.ts'
 
 defineOptions({
   name: 'I18n',
 })
 
 const isAnimating = ref(false)
-const locales = computed(() => getElementLocales())
+const { getLocale } = useLocale()
 
-watch(() => locales, (newVal, oldVal) => {
+watch(getLocale, (newVal, oldVal) => {
   if (newVal !== oldVal) {
     isAnimating.value = true
   }

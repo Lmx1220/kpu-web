@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import useSettingsStore from '@/store/modules/settings'
 
