@@ -1,9 +1,0 @@
-
-/**
- * 由 admin 提供技术支持
- * Powered by admin
- * 代码仓库
- * Github https://github.com/Lmx1220/kpu-web
- */
-    
-import{d as i,b as s,o as r,c as m,e as t,j as e,I as p,J as n,f as a,l as c}from"./index-fOXGxjjY.js";import{_}from"./leftSide.vue_vue_type_script_setup_true_lang-DkF5cjXy.js";import{_ as d}from"./rightSide.vue_vue_type_script_setup_true_lang-CuVPgJni.js";import"./tools.vue_vue_type_script_setup_true_lang-CVBT7Gnt.js";import"./index-CAoU-By9.js";import"./index-D37TxSL5.js";import"./item.vue_vue_type_script_setup_true_lang-Ca6JjSbA.js";import"./index.vue_vue_type_script_setup_true_lang-Cc1xkA_-.js";import"./HDropdown-D0rwspUN.js";import"./HTabList.vue_vue_type_script_setup_true_lang-C2tfL6Yu.js";import"./use-resolve-button-type-BSbqtZ82.js";import"./index.vue_vue_type_script_setup_true_lang-DGcT4Sbw.js";import"./panel-BI-GmznE.js";import"./sortable.esm-C0-Qcoum.js";import"./index.vue_vue_type_script_setup_true_lang-BbUOxijr.js";import"./index-1zTn3GLU.js";import"./HDropdownMenu.vue_vue_type_script_setup_true_lang-BZtwkXmw.js";import"./index.vue_vue_type_script_setup_true_lang-vcbwOwtB.js";import"./HKbd-C5aUzAIQ.js";import"./index-DKrjHjFb.js";import"./HBadge.vue_vue_type_script_setup_true_lang-DqWNh3wJ.js";import"./panel-C3EbFnI9.js";import"./notification-B5ab9XxL.js";import"./index-WL5U5JhD.js";import"./useMainPage-CzZgL_9e.js";import"./useTabbar-CtenUHdD.js";const l={class:"toolbar-container flex items-center justify-between"},f={class:"left-side h-full flex items-center of-hidden pe-16 ps-2"},u={class:"h-full flex items-center justify-end px-2"},h=i({name:"Toolbar",__name:"index",setup(x){const o=s();return(b,v)=>(r(),m("div",l,[t("div",f,[e(_)]),p(t("div",u,[e(d)],512),[[n,["side","single","only-side"].includes(a(o).settings.menu.mode)]])]))}}),P=c(h,[["__scopeId","data-v-3db508cb"]]);export{P as default};
