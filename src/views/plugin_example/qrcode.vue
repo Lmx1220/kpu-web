@@ -15,21 +15,21 @@ const canvasRef = ref()
 
 onMounted(() => {
   // 渲染成 img 标签
-  QRCode.toDataURL('Fantastic-admin 真棒！').then((url: string) => {
+  QRCode.toDataURL('Kpu-web 真棒！').then((url: string) => {
     url1.value = url
   }).catch((err: any) => {
     // eslint-disable-next-line no-console
     console.log(err)
   })
   // 渲染成 canvas 标签
-  QRCode.toCanvas(canvasRef.value, 'Fantastic-admin 真棒！').then(() => {
+  QRCode.toCanvas(canvasRef.value, 'Kpu-web 真棒！').then(() => {
     // 渲染成功
   }).catch((err: any) => {
     // eslint-disable-next-line no-console
     console.log(err)
   })
   // 自定义颜色
-  QRCode.toDataURL('Fantastic-admin 真棒！', {
+  QRCode.toDataURL('Kpu-web 真棒！', {
     color: {
       dark: '#5482EE',
       light: '#E8E8E8',
@@ -41,7 +41,7 @@ onMounted(() => {
     console.log(err)
   })
   // 指定宽度
-  QRCode.toDataURL('Fantastic-admin 真棒！', {
+  QRCode.toDataURL('Kpu-web 真棒！', {
     width: 100,
   }).then((url: string) => {
     url3.value = url

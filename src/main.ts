@@ -29,7 +29,6 @@ import 'uno.css'
 import pinia from '@/store'
 import router from '@/router'
 
-import './permission'
 import { i18n, useI18n } from '@/locales'
 
 // 自定义指令

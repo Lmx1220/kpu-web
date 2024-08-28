@@ -1,0 +1,21 @@
+{
+  "intro": "Explore from here! 🚀",
+  "hasAccount": "Already have an account?",
+  "login": "Login",
+  "form": {
+    "account": "Account",
+    "captcha": "Captcha",
+    "sendCaptcha": "Send Captcha",
+    "password": "Password",
+    "checkPassword": "Check Password",
+    "register": "Register"
+  },
+  "rules": {
+    "account": "Please enter an account",
+    "captcha": "Please enter a captcha",
+    "password": "Please enter a password",
+    "passwordLength": "Password length is 6 to 18 bits",
+    "checkPassword": "Please enter the password again",
+    "checkPasswordError": "The two passwords entered are inconsistent"
+  }
+}

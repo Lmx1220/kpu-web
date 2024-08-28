@@ -53,7 +53,7 @@ const defaultSetting = ref({
   }),
 })
 
-const content = ref('<h1>Fantastic-admin</h1>')
+const content = ref('<h1>Kpu-web</h1>')
 
 onMounted(() => {
   tinymce.init({})

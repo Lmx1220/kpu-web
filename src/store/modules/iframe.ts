@@ -6,19 +6,9 @@ const useIframeStore = defineStore(
   'iframe',
   () => {
     const settingsStore = useSettingsStore()
-
-    const isGenerate = ref(false)
     const list = ref<Iframe.recordRaw[]>([])
     const recentPathList = ref<Iframe.recordRaw['path'][]>([])
     const openedList = computed(() => list.value.filter(item => item.isOpen))
-
-    // 生成 iframe 列表
-    function generateList(val?: Iframe.recordRaw[]) {
-      if (val) {
-        list.value = val
-      }
-      isGenerate.value = true
-    }
     // 关闭加载状态
     function closeLoading(path: string) {
       const index = list.value.findIndex(item => item.path === path)
@@ -27,17 +17,21 @@ const useIframeStore = defineStore(
       }
     }
     // 打开 iframe
-    function open(path: string) {
-      const item = list.value.find(item => item.path === path)
+    function open(iframe: Iframe.recordRaw) {
+      list.value.some(item => item.path === iframe.path) || list.value.push({
+        ...iframe,
+        isOpen: false,
+        isLoading: true,
+      })
+      const item = list.value.find(item => item.path === iframe.path)
       if (item) {
         item.isOpen = true
-        const index = recentPathList.value.findIndex(item => item === path)
-        if (index > -1) {
-          recentPathList.value.splice(0, 0, recentPathList.value[index])
-          recentPathList.value.splice(index + 1, 1)
+        const index = recentPathList.value.findIndex(item => item === iframe.path)
+        if (index > 0) {
+          recentPathList.value.unshift(recentPathList.value.splice(index, 1)[0])
         }
-        else {
-          recentPathList.value.unshift(path)
+        else if (index === -1) {
+          recentPathList.value.unshift(iframe.path)
         }
       }
       // 最大缓存数量检测，超过缓存数量则关闭最早打开的 iframe
@@ -78,9 +72,7 @@ const useIframeStore = defineStore(
     }
 
     return {
-      isGenerate,
       openedList,
-      generateList,
       closeLoading,
       open,
       close,

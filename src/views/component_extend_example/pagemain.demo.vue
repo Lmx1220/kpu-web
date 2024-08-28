@@ -41,7 +41,7 @@ meta:
       </ElCol>
     </ElRow>
     <PageMain title="带展开功能" collaspe height="200px">
-      <h1>Fantastic-admin</h1>
+      <h1>Kpu-web</h1>
       <img src="../../assets/images/logo.png">
       <p>这是一款开箱即用的中后台框架，同时它也经历过数十个真实项目的技术沉淀，确保框架在开发中可落地、可使用、可维护</p>
     </PageMain>
