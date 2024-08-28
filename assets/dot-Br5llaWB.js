@@ -1,0 +1,9 @@
+
+/**
+ * 由 admin 提供技术支持
+ * Powered by admin
+ * 代码仓库
+ * Github https://github.com/Lmx1220/kpu-web
+ */
+    
+import{d as _,bi as i,G as l,o as d,c as m,j as e,w as n,e as u,v as p,f as a,t as f,O as B}from"./index-fOXGxjjY.js";import{_ as g}from"./index.vue_vue_type_script_setup_true_lang-B6BWcwhA.js";const E=_({__name:"dot",setup(v){const t=i();return(x,o)=>{const s=g,c=l("ElButton"),r=B;return d(),m("div",null,[e(s,{title:"注意看子级导航的图标切换",content:"通过设置子级导航路由 meta 对象里的 icon 和 activeIcon 实现图标切换效果"}),e(r,null,{default:n(()=>[u("div",null," 当前 badge 值："+p(a(t).dot),1),e(c,{onClick:o[0]||(o[0]=C=>a(t).switchDot())},{default:n(()=>[f(" 切换 ")]),_:1})]),_:1})])}}});export{E as default};

@@ -1,9 +1,0 @@
-
-/**
- * 由 admin 提供技术支持
- * Powered by admin
- * 代码仓库
- * Github https://github.com/Lmx1220/kpu-web
- */
-    
-import{_}from"./HDropdownMenu.vue_vue_type_script_setup_true_lang-D7zjQdsi.js";import{d as h,a as d,c as f,b as g,a7 as b,H as v,r as x,I as S,o as r,f as c,h as n,w as k,i as y,j as e,N as w,q as B,t as I,U as i,_ as N}from"./index-D6ceO_Rb.js";import{_ as P}from"./tools.vue_vue_type_script_setup_true_lang-BH-9kzo4.js";const T={class:"flex items-center"},V={class:"flex-center gap-1"},$=["src","onerror"],U=h({name:"ToolbarRightSide",__name:"rightSide",setup(C){const u=d(),t=f(),s=g(),{t:o}=b(),{generateI18nTitle:m}=v(),a=x(!1);return S(()=>s.avatar,()=>{a.value&&(a.value=!1)}),(D,E)=>{const l=N,p=_;return r(),c("div",T,[n(P,{mode:"right-side"}),n(p,{items:[[{label:e(m)(e(t).settings.home.title),handle:()=>e(u).push({path:e(t).settings.home.fullPath}),hide:!e(t).settings.home.enable},{label:e(o)("app.preferences"),handle:()=>e(i).emit("global-preferences-toggle"),hide:!e(t).settings.userPreferences.enable}],[{label:e(o)("app.hotkeys"),handle:()=>e(i).emit("global-hotkeys-intro-toggle"),hide:e(t).mode!=="pc"}],[{label:e(o)("app.logout"),handle:()=>e(s).logout(e(t).settings.home.fullPath)}]],class:"flex-center cursor-pointer px-2"},{default:k(()=>[y("div",V,[e(s).avatar&&!e(a)?(r(),c("img",{key:0,src:e(s).avatar,onerror:()=>a.value=!0,class:"h-[24px] w-[24px] rounded-full"},null,8,$)):(r(),w(l,{key:1,name:"i-carbon:user-avatar-filled-alt",size:24,class:"text-gray-400"})),B(" "+I(e(s).account)+" ",1),n(l,{name:"i-ep:caret-bottom"})])]),_:1},8,["items"])])}}});export{U as _};
