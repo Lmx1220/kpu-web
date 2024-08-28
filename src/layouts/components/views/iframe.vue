@@ -10,13 +10,17 @@ const route = useRoute()
 
 const settingsStore = useSettingsStore()
 const iframeStore = useIframeStore()
-
+const { generateI18nTitle } = useMenu()
+const { setCustomTitle } = useMainPage()
 const iframeRef = ref()
 
 watch(() => route.fullPath, (val) => {
   nextTick(() => {
     iframeRef.value?.forEach((item: HTMLIFrameElement) => {
       if (item.dataset.path === val) {
+        const r = iframeStore.openedList.find(item => item.path === val)
+        const title = r == null ? undefined : r.title
+        setCustomTitle(generateI18nTitle(title))
         item.onload = () => {
           iframeStore.closeLoading(val)
         }

@@ -125,7 +125,6 @@ function removeIcon() {
 
 <style lang="scss" scoped>
 .icon-picker {
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -151,8 +150,6 @@ function removeIcon() {
     --icon-picker-size: var(--el-component-size-large);
     --icon-picker-font-size: var(--el-font-size-extra-large);
   }
-
-
 
   &.is-disabled {
     color: var(--el-text-color-disabled);
