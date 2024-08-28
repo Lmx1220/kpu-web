@@ -10,8 +10,6 @@ import ResetPasswordForm from '@/views/login/components/ResetPasswordForm/index.
 defineOptions({
   name: 'Login',
 })
-const logo = new URL('../assets/images/logo.png', import.meta.url).href
-const banner = new URL('../assets/images/login-banner.png', import.meta.url).href
 const route = useRoute()
 const router = useRouter()
 const settingsStore = useSettingsStore()
@@ -67,8 +65,8 @@ const formRef = ref()
 
   <div class="login-box" :class="layout">
     <div class="login-banner">
-      <img :src="logo" class="absolute left-4 top-4 h-30px rounded ring ring-stone-2 dark-ring-stone-8">
-      <img :src="banner" class="banner">
+      <img src="@/assets/images/logo.png" class="absolute left-4 top-4 h-30px rounded ring ring-stone-2 dark-ring-stone-8">
+      <img src="@/assets/images/login-banner.png" class="banner">
       <Copyright v-if="settingsStore.mode === 'pc' && ['left', 'right'].includes(layout)" />
     </div>
     <div class="login-form flex-col-center">
@@ -109,6 +107,7 @@ const formRef = ref()
   height: 100%;
   background: radial-gradient(circle at center, var(--g-container-bg), var(--g-bg));
 }
+
 [data-mode="mobile"] {
   .login-box {
     position: relative;
@@ -140,7 +139,6 @@ const formRef = ref()
   .copyright {
     position: relative;
   }
-
 }
 
 .login-box {
@@ -149,20 +147,24 @@ const formRef = ref()
   overflow: hidden;
   background-color: var(--g-container-bg);
 
-  [data-mode="pc"]  & {
-    &.center{
+  [data-mode="pc"] & {
+    &.center {
       top: 50%;
       left: 50%;
       border-radius: 10px;
       box-shadow: var(--el-box-shadow);
       transform: translate(-50%) translateY(-50%);
     }
-    &.left, &.right {
+
+    &.left,
+ &.right {
       width: 100%;
       height: 100%;
-      .login-banner{
+
+      .login-banner {
         flex: 1;
-        .banner{
+
+        .banner {
           position: absolute;
           top: 50%;
           left: 50%;
@@ -173,10 +175,12 @@ const formRef = ref()
         }
       }
     }
+
     &.left {
       flex-direction: row-reverse;
     }
   }
+
   .login-banner {
     position: relative;
     width: 450px;
@@ -193,7 +197,7 @@ const formRef = ref()
 
   .login-form {
     width: 500px;
-    transition: height .15s ease
+    transition: height 0.15s ease;
   }
 }
 
@@ -205,11 +209,13 @@ const formRef = ref()
   margin: 0;
 }
 
-.fade-enter-active,.fade-leave-active {
-  transition: opacity .15s ease
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s ease;
 }
 
-.fade-enter-from,.fade-leave-to {
-  opacity: 0
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

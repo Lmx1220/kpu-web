@@ -45,7 +45,6 @@ declare module 'vue' {
     ImageUpload: typeof import('./../components/ImageUpload/index.vue')['default']
     JsonPreview: typeof import('./../components/JsonPreview/JsonPreview.vue')['default']
     LayoutContainer: typeof import('./../components/LayoutContainer/index.vue')['default']
-    LoginSwitcher: typeof import('./../components/LoginSwitcher/index.vue')['default']
     NotAllowed: typeof import('./../components/NotAllowed/index.vue')['default']
     PageHeader: typeof import('./../components/PageHeader/index.vue')['default']
     PageMain: typeof import('./../components/PageMain/index.vue')['default']

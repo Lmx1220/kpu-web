@@ -123,7 +123,7 @@ function testAccount(account: string) {
     <div class="mt-4 text-center -mb-4">
       <ElDivider>{{ t('loginFrom.testLogin') }}</ElDivider>
       <ElButton type="primary" size="small" plain @click="testAccount('kpu')">
-        admin
+        kpu
       </ElButton>
       <ElButton size="small" plain @click="testAccount('test')">
         test
