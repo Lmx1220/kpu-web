@@ -107,36 +107,36 @@ const activeName = ref('message')
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .list {
-  --at-apply: border-block-width-1 border-block-solid border-block-stone-2 dark-border-block-stone-7;
+  --uno: border-block-width-1 border-block-solid border-block-stone-2 dark-border-block-stone-7;
 
   .item {
-    --at-apply: flex items-start gap-3 px-3 py-4 cursor-pointer border-b-width-1 last-border-b-width-0 border-b-solid border-b-stone-2 dark-border-b-stone-7 hover:bg-stone-1 dark-hover-bg-dark/50;
+    --uno: flex items-start gap-3 px-3 py-4 cursor-pointer border-b-width-1 last-border-b-width-0 border-b-solid border-b-stone-2 dark-border-b-stone-7 hover:bg-stone-1 dark-hover-bg-dark/50;
 
     i {
-      --at-apply: w-6 h-6 text-xs rounded-full text-white bg-blue;
+      --uno: w-6 h-6 text-xs rounded-full text-white bg-blue;
 
       &.service {
-        --at-apply: bg-green;
+        --uno: bg-green;
       }
 
       &.file-edit {
-        --at-apply: bg-orange;
+        --uno: bg-orange;
       }
 
       &.bug {
-        --at-apply: bg-pink;
+        --uno: bg-pink;
       }
     }
 
     .info {
       .title {
-        --at-apply: text-sm line-clamp-2;
+        --uno: text-sm line-clamp-2;
       }
 
       .date {
-        --at-apply: mt-1 text-xs text-stone-5;
+        --uno: mt-1 text-xs text-stone-5;
       }
     }
   }

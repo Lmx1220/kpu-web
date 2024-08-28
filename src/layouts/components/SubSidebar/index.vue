@@ -143,7 +143,7 @@ const isCollapse = computed(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .sub-sidebar-container {
   position: absolute;
   inset-inline-start: 0;
@@ -191,10 +191,10 @@ const isCollapse = computed(() => {
     overflow: hidden auto;
     overscroll-behavior: contain;
 
-    // firefox隐藏滚动条
+    /* firefox隐藏滚动条 */
     scrollbar-width: none;
 
-    // chrome隐藏滚动条
+    /* chrome隐藏滚动条 */
     &::-webkit-scrollbar {
       display: none;
     }
@@ -217,7 +217,7 @@ const isCollapse = computed(() => {
   }
 }
 
-// 次侧边栏动画
+/* 次侧边栏动画 */
 .sub-sidebar-enter-active {
   transition: 0.2s;
 }

@@ -131,7 +131,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
   </div>
 </template>
 
-<style lang="scss">
+<style>
 .tabbar-dropdown {
   .quick-button {
     display: flex;
@@ -140,7 +140,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
     padding: 15px 15px 10px;
 
     .button {
-      --at-apply: transition-colors;
+      --uno: transition-colors;
 
       display: flex;
       align-items: center;
@@ -154,7 +154,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
       outline: none;
 
       &:hover:not(:disabled) {
-        --at-apply: text-ui-primary;
+        --uno: text-ui-primary;
       }
 
       &:disabled {
@@ -203,7 +203,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
 
       &:hover {
         .title {
-          --at-apply: opacity-100;
+          --uno: opacity-100;
 
           margin-inline-end: 20px;
           mask-image: linear-gradient(to right, #000 calc(100% - 44px), transparent);
@@ -219,7 +219,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
       }
 
       .title {
-        --at-apply: opacity-70 transition;
+        --uno: opacity-70 transition;
 
         position: relative;
         display: flex;
@@ -243,7 +243,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
       }
 
       .action-icon {
-        --at-apply: transition;
+        --uno: transition;
 
         position: absolute;
         inset-inline-end: 6px;
@@ -259,7 +259,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
         opacity: 0;
 
         &:hover {
-          --at-apply: ring-1 ring-stone-3 dark-ring-stone-7;
+          --uno: ring-1 ring-stone-3 dark-ring-stone-7;
 
           background-color: var(--g-bg);
         }
@@ -269,7 +269,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
 }
 </style>
 
-<style lang="scss" scoped>
+<style scoped>
 .tabbar-dropdown {
   .dropdown-tab-enter-from,
   .dropdown-tab-leave-to {

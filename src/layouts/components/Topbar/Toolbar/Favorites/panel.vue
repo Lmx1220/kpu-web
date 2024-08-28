@@ -71,7 +71,7 @@ watch(() => favoritesContainerRef.value, (val) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .draggable-ghost {
   opacity: 0;
 }

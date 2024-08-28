@@ -346,18 +346,18 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style lang="scss">
+<style>
 .tabbar-contextmenu {
   .mx-context-menu {
-    --at-apply: fixed ring-1 ring-stone-2 dark-ring-stone-7 shadow-2xl;
+    --uno: fixed ring-1 ring-stone-2 dark-ring-stone-7 shadow-2xl;
 
     background-color: var(--g-container-bg);
 
     .mx-context-menu-items .mx-context-menu-item {
-      --at-apply: transition-background-color;
+      --uno: transition-background-color;
 
       &:not(.disabled):hover {
-        --at-apply: cursor-pointer bg-stone-1 dark-bg-stone-9;
+        --uno: cursor-pointer bg-stone-1 dark-bg-stone-9;
       }
 
       span {
@@ -378,14 +378,14 @@ onUnmounted(() => {
       background-color: var(--g-container-bg);
 
       &::after {
-        --at-apply: bg-stone-2 dark-bg-stone-7;
+        --uno: bg-stone-2 dark-bg-stone-7;
       }
     }
   }
 }
 </style>
 
-<style lang="scss" scoped>
+<style scoped>
 .tabbar-container {
   position: relative;
   height: var(--g-tabbar-height);
@@ -400,10 +400,10 @@ onUnmounted(() => {
     overflow-y: hidden;
     white-space: nowrap;
 
-    // firefox隐藏滚动条
+    /* firefox隐藏滚动条 */
     scrollbar-width: none;
 
-    // chrome隐藏滚动条
+    /* chrome隐藏滚动条 */
     &::-webkit-scrollbar {
       display: none;
     }
@@ -584,14 +584,14 @@ onUnmounted(() => {
             transform: translateY(-50%);
 
             &:hover {
-              --at-apply: ring-1 ring-stone-3 dark-ring-stone-7;
+              --uno: ring-1 ring-stone-3 dark-ring-stone-7;
 
               background-color: var(--g-bg);
             }
           }
 
           .hotkey-number {
-            --at-apply: ring-1 ring-stone-3 dark-ring-stone-7;
+            --uno: ring-1 ring-stone-3 dark-ring-stone-7;
 
             position: absolute;
             top: 50%;
@@ -706,7 +706,7 @@ onUnmounted(() => {
         &::after {
           height: 2px;
 
-          --at-apply: bg-ui-primary;
+          --uno: bg-ui-primary;
         }
 
         &:has(> .tab.tab-ontop) {
@@ -767,7 +767,7 @@ onUnmounted(() => {
   }
 }
 
-// 标签栏动画
+/* 标签栏动画 */
 .tabs {
   .tabbar-move,
   .tabbar-enter-active,

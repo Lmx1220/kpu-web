@@ -64,7 +64,7 @@ const enabledRightSide = computed(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .flex-container {
   position: absolute;
   display: flex;

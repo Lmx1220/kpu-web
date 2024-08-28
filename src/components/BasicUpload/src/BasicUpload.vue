@@ -128,7 +128,3 @@ const [registerPreviewDialog, { openDialog: openPreviewDialog }] = useDialog()
     />
   </div>
 </template>
-
-<style lang="scss" scoped>
-// scss
-</style>

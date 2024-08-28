@@ -116,7 +116,7 @@ function handlerMouserScroll(event: WheelEvent) {
   </Transition>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 [data-app-width-mode="center"],
 [data-app-width-mode="center-max-width"] {
   header {
@@ -176,12 +176,12 @@ header {
       height: 100%;
       padding: 0 20px;
       overflow-x: auto;
+
+      /* firefox隐藏滚动条 */
+      scrollbar-width: none;
       mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
 
-      // firefox隐藏滚动条
-      scrollbar-width: none;
-
-      // chrome隐藏滚动条
+      /* chrome隐藏滚动条 */
       &::-webkit-scrollbar {
         display: none;
       }
@@ -191,6 +191,7 @@ header {
           .item-container::before,
           :deep(.menu-item::before) {
             bottom: 0;
+            left: 50%;
             width: 0;
             height: 0;
             content: "";
@@ -199,8 +200,7 @@ header {
             border-left: 5px solid transparent;
             opacity: 0;
             transition: all 0.3s;
-
-            @include position-center(x);
+            transform: translateX(-50%);
           }
 
           .item-container.active::before,
@@ -214,6 +214,7 @@ header {
           .item-container::before,
           :deep(.menu-item::before) {
             bottom: 6px;
+            left: 50%;
             width: 0;
             height: 4px;
             content: "";
@@ -222,8 +223,7 @@ header {
             box-shadow: 0 0 0 1px var(--g-header-bg);
             opacity: 0;
             transition: all 0.3s;
-
-            @include position-center(x);
+            transform: translateX(-50%);
           }
 
           .item-container.active::before,
@@ -237,6 +237,7 @@ header {
           .item-container::before,
           :deep(.menu-item::before) {
             bottom: 0;
+            left: 50%;
             width: 10px;
             height: 10px;
             content: "";
@@ -245,8 +246,7 @@ header {
             box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
             opacity: 0;
             transition: all 0.3s;
-
-            @include position-center(x);
+            transform: translateX(-50%);
           }
 
           .item-container.active::before,
@@ -291,7 +291,7 @@ header {
   }
 }
 
-// 头部动画
+/* 头部动画 */
 .header-enter-active,
 .header-leave-active {
   transition: transform 0.3s;

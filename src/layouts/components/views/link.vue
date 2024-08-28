@@ -48,7 +48,7 @@ function open() {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .fade-enter-active,
 .slide-left-enter-active,
 .slide-right-enter-active,

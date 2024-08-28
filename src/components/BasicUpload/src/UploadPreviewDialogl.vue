@@ -84,7 +84,3 @@ async function handleDownload(record: FileResultVO) {
     </ElTable>
   </BaseDialog>
 </template>
-
-<style scoped lang="scss">
-// scss
-</style>

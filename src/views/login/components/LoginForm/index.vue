@@ -99,14 +99,14 @@ function testAccount(account: string) {
           {{ t('loginFrom.remember') }}
         </ElCheckbox>
         <ElLink type="primary" :underline="false" @click="emits('onResetPassword', form.account)">
-          {{ t('loginFrom.forget') }}?
+          {{ t('loginFrom.forget') }}
         </ElLink>
       </div>
       <ElButton :loading="loading" type="primary" size="large" style="width: 100%;" @click.prevent="handleLogin">
         {{ t('loginFrom.form.login') }}
       </ElButton>
       <div class="mt-4 flex-center gap-2 text-sm color-[var(--el-text-color-secondary)]">
-        {{ t('loginFrom.noAccount') }}?
+        {{ t('loginFrom.noAccount') }}
         <ElLink type="primary" :underline="false" @click="emits('onRegister', form.account)">
           {{ t('loginFrom.register') }}
         </ElLink>

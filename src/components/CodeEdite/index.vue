@@ -68,8 +68,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-// scss
+<style scoped>
 .code-edit {
   display: flex;
   max-width: 100%;

@@ -1,6 +1,6 @@
 import type { RouteRecordRaw, Router } from 'vue-router'
 import { useNProgress } from '@vueuse/integrations/useNProgress'
-import '@/assets/styles/nprogress.scss'
+import '@/assets/styles/nprogress.css'
 import { asyncRoutes, asyncRoutesByFilesystem } from './routes'
 import useSettingsStore from '@/store/modules/settings'
 import useUserStore from '@/store/modules/user'

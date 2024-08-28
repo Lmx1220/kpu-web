@@ -157,7 +157,7 @@ const formRef = ref()
     }
 
     &.left,
- &.right {
+    &.right {
       width: 100%;
       height: 100%;
 

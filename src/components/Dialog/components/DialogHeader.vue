@@ -59,7 +59,7 @@ function handleTitleDbClick(e: Event) {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .dialog-close {
   position: absolute;
   top: 6px;

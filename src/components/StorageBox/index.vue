@@ -153,7 +153,7 @@ watch(() => containerRef.value, (val) => {
   </HDropdown>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .draggable-ghost {
   opacity: 0;
 }

@@ -74,7 +74,3 @@ function goBack() {
     </fixed-action-bar>
   </div>
 </template>
-
-<style lang="scss" scoped>
-// scss
-</style>

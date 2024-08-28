@@ -126,7 +126,3 @@ function filterMethod(query: string) {
     />
   </ElSelect>
 </template>
-
-<style scoped lang="scss">
-// scss
-</style>
