@@ -1,0 +1,9 @@
+
+/**
+ * 由 admin 提供技术支持
+ * Powered by admin
+ * 代码仓库
+ * Github https://github.com/Lmx1220/kpu-web
+ */
+    
+import{d as u,o as a,c as m,e as x,a8 as C,j as e,i as f,_ as b,r as E,D as p,w as o,s,f as d,h as $,N as B}from"./index-nFO8NRRw.js";import{_ as N}from"./index.vue_vue_type_script_setup_true_lang-CKnag4rP.js";import{i as S}from"./logo-D-CqFC5K.js";const w={class:"chip inline-block rounded-999 bg-stone-1 px-3 vertical-mid transition-background-color dark-bg-stone-8"},y={class:"content h-8 flex items-center gap-2 text-xs"},V=u({name:"Chip",__name:"index",props:{closable:{type:Boolean}},emits:["close"],setup(g,{emit:n}){const l=n;return(c,r)=>{const i=b;return a(),m("div",w,[x("div",y,[C(c.$slots,"default"),c.closable?(a(),m("span",{key:0,class:"closable h-6 w-6 flex-center cursor-pointer rounded-1/2 bg-stone-2 text-sm text-initial transition-background-color -mr-1.5 dark-bg-stone-9 hover-op-70",onClick:r[0]||(r[0]=t=>l("close"))},[e(i,{name:"i-ep:close-bold"})])):f("",!0)])])}}}),P=u({name:"ComponentExampleChip",__name:"chip.demo",setup(g){const n=E(!0);function l(){n.value=!1}return(c,r)=>{const i=N,t=V,_=p("ElAvatar"),h=b,k=p("ElSpace"),v=B;return a(),m("div",null,[e(i,{title:"纸片",content:"Chip"}),e(v,null,{default:o(()=>[e(k,null,{default:o(()=>[e(t,null,{default:o(()=>[s(" 基础纸片 ")]),_:1}),e(t,null,{default:o(()=>[e(_,{size:"small",class:"-ml-1.5"},{default:o(()=>[s(" Ad ")]),_:1}),s(" 头像文字 ")]),_:1}),e(t,null,{default:o(()=>[e(_,{size:"small",class:"-ml-1.5"},{default:o(()=>[e(h,{name:"i-ep:user-filled"})]),_:1}),s(" 头像图标 ")]),_:1}),e(t,null,{default:o(()=>[e(_,{size:"small",class:"-ml-1.5",src:d(S)},null,8,["src"]),s(" 头像图片 ")]),_:1}),d(n)?(a(),$(t,{key:0,closable:"",onClose:l},{default:o(()=>[s(" 关闭按钮 ")]),_:1})):f("",!0),e(t,{class:"c-white bg-sky!"},{default:o(()=>[s(" 自定义颜色 ")]),_:1})]),_:1})]),_:1})])}}});export{P as default};
