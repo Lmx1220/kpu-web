@@ -49,7 +49,7 @@ function handlerMouserScroll(event: WheelEvent) {
     >
       <div class="header-container">
         <Logo class="title" />
-        <div ref="menuRef" class="menu-container" @wheel.prevent="handlerMouserScroll">
+        <div ref="menuRef" class="menu-container scrollbar-none" @wheel.prevent="handlerMouserScroll">
           <!-- 顶部模式 -->
           <div
             v-if="settingsStore.settings.menu.mode === 'head'" class="menu h-full flex of-hidden transition-all"
@@ -177,14 +177,6 @@ header {
       padding: 0 20px;
       overflow-x: auto;
       mask-image: linear-gradient(to right, transparent, #000 20px, #000 calc(100% - 20px), transparent);
-
-      /* firefox隐藏滚动条 */
-      scrollbar-width: none;
-
-      /* chrome隐藏滚动条 */
-      &::-webkit-scrollbar {
-        display: none;
-      }
 
       .menu-active {
         &-arrow {

@@ -113,7 +113,7 @@ function filterMethod(query: string) {
 </script>
 
 <template>
-  <ElSelect v-model="modelValue" :filterable="showSearch" :filter-method="filterMethod" v-bind="getProps" @change="(val:any) => emit('change', val)">
+  <ElSelect v-model="modelValue" :filterable="showSearch" :filter-method="filterMethod" v-bind="getProps" @change="(val: any) => emit('change', val)">
     <template v-if="slots.default">
       <slot :dicts="dicts" />
     </template>
