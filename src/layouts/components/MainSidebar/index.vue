@@ -38,7 +38,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
     >
       <Logo :show-title="false" class="sidebar-logo" />
       <!-- 侧边栏模式（含主导航） -->
-      <div class="menu">
+      <div class="menu scrollbar-none">
         <div
           v-if="settingsStore.settings.menu.mode === 'side' || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')"
           class="w-full flex flex-col of-hidden transition-all" :class="{
@@ -193,14 +193,6 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
     width: initial;
     overflow: hidden auto;
     overscroll-behavior: contain;
-
-    /* firefox隐藏滚动条 */
-    scrollbar-width: none;
-
-    /* chrome隐藏滚动条 */
-    &::-webkit-scrollbar {
-      display: none;
-    }
 
     :deep(.menu-item) {
       .menu-item-container {

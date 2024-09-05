@@ -15,7 +15,7 @@ interface Props {
   fallback?: string
   placeholder?: string
   isDef?: boolean
-  api: Function | null
+  api?: Function | null
 }
 
 const props = withDefaults(defineProps<Props>(), {

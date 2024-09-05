@@ -303,7 +303,7 @@ onUnmounted(() => {
 <template>
   <div class="tabbar-container">
     <div
-      ref="tabsRef" class="tabs" :class="{
+      ref="tabsRef" class="tabs scrollbar-none" :class="{
         'tabs-ontop': settingsStore.settings.topbar.switchTabbarAndToolbar,
         [`tabs-${settingsStore.settings.tabbar.style}`]: settingsStore.settings.tabbar.style !== '',
       }" @wheel.prevent="handlerMouserScroll"
@@ -399,14 +399,6 @@ onUnmounted(() => {
     padding-inline-end: 50px;
     overflow-y: hidden;
     white-space: nowrap;
-
-    /* firefox隐藏滚动条 */
-    scrollbar-width: none;
-
-    /* chrome隐藏滚动条 */
-    &::-webkit-scrollbar {
-      display: none;
-    }
 
     &.tabs-ontop {
       top: 0 !important;
