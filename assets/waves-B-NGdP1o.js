@@ -1,9 +1,0 @@
-
-/**
- * 由 admin 提供技术支持
- * Powered by admin
- * 代码仓库
- * Github https://github.com/Lmx1220/kpu-web
- */
-    
-import{d as y,bj as b,D as i,o,c as l,j as _,w as n,H as a,f as e,h as c,s,e as u,_ as E,N as k}from"./index-nFO8NRRw.js";import{_ as x}from"./index.vue_vue_type_script_setup_true_lang-CKnag4rP.js";import{i as B}from"./logo-D-CqFC5K.js";const I={my4:""},C={"my-4":"","h-25":"","w-25":"","flex-center":"","border-1":"","border-stone-5":"","border-solid":""},N={"my-4":"","h-25":"","w-25":"","flex-center":"","border-1":"","border-stone-5":"","border-solid":""},V={"w-50":""},L=y({__name:"waves",setup(W){const{vWave:t}=b.createLocalWaveDirective({});function f(d){window.open(d,"_blank")}return(d,p)=>{const m=E,r=i("ElButton"),v=x,w=i("ElImage"),h=i("ElInput"),g=k;return o(),l("div",null,[_(v,{title:"水波纹",content:"更多设置请查看文档"},{default:n(()=>[a((o(),c(r,{onClick:p[0]||(p[0]=$=>f("https://github.com/justintaddei/v-wave"))},{icon:n(()=>[_(m,{name:"i-ep:link"})]),default:n(()=>[s(" 访问 v-wave ")]),_:1})),[[e(t)]])]),_:1}),_(g,null,{default:n(()=>[a((o(),c(r,null,{default:n(()=>[s(" 默认按钮 ")]),_:1})),[[e(t)]]),a((o(),c(r,{type:"primary"},{default:n(()=>[s(" 主要按钮 ")]),_:1})),[[e(t)]]),a((o(),c(r,{type:"success"},{default:n(()=>[s(" 成功按钮 ")]),_:1})),[[e(t)]]),a((o(),c(r,{type:"info"},{default:n(()=>[s(" 信息按钮 ")]),_:1})),[[e(t)]]),a((o(),c(r,{type:"warning"},{default:n(()=>[s(" 警告按钮 ")]),_:1})),[[e(t)]]),a((o(),c(r,{type:"danger"},{default:n(()=>[s(" 危险按钮 ")]),_:1})),[[e(t)]]),u("div",I,[a(_(w,{src:e(B),class:"h-25 w-25"},null,8,["src"]),[[e(t)]])]),a((o(),l("div",C,[s(" 点击我 ")])),[[e(t)]]),a((o(),l("div",N,[s(" 设置颜色 ")])),[[e(t),{color:"#f00",finalOpacity:.3}]]),u("div",V,[a((o(),c(h,null,{append:n(()=>[_(m,{name:"ep:search",class:"cursor-pointer"})]),_:1})),[[e(t)]])])]),_:1})])}}});export{L as default};
