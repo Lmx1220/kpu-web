@@ -71,14 +71,14 @@ function handleRegister() {
     </h3>
     <div>
       <ElFormItem prop="account">
-        <ElInput v-model="form.account" :placeholder="t('registerForm.form.account')" tabindex="1">
+        <ElInput v-model="form.account" size="large" :placeholder="t('registerForm.form.account')" tabindex="1">
           <template #prefix>
             <SvgIcon name="i-ri:user-3-fill" />
           </template>
         </ElInput>
       </ElFormItem>
       <ElFormItem prop="captcha">
-        <ElInput v-model="form.captcha" :placeholder="t('registerForm.form.captcha')" tabindex="2">
+        <ElInput v-model="form.captcha" size="large" :placeholder="t('registerForm.form.captcha')" tabindex="2">
           <template #prefix>
             <SvgIcon name="i-ic:baseline-verified-user" />
           </template>
@@ -88,14 +88,14 @@ function handleRegister() {
         </ElInput>
       </ElFormItem>
       <ElFormItem prop="password">
-        <ElInput v-model="form.password" type="password" :placeholder="t('registerForm.form.password')" tabindex="3" show-password>
+        <ElInput v-model="form.password" type="password" size="large" :placeholder="t('registerForm.form.password')" tabindex="3" show-password>
           <template #prefix>
             <SvgIcon name="i-ri:lock-2-fill" />
           </template>
         </ElInput>
       </ElFormItem>
       <ElFormItem prop="checkPassword">
-        <ElInput v-model="form.checkPassword" type="password" :placeholder="t('registerForm.form.checkPassword')" tabindex="4" show-password>
+        <ElInput v-model="form.checkPassword" type="password" size="large" :placeholder="t('registerForm.form.checkPassword')" tabindex="4" show-password>
           <template #prefix>
             <SvgIcon name="i-ri:lock-2-fill" />
           </template>
@@ -113,37 +113,3 @@ function handleRegister() {
     </div>
   </ElForm>
 </template>
-
-<style scoped>
-:deep(input[type="password"]::-ms-reveal) {
-  display: none;
-}
-
-.el-form-item {
-  margin-bottom: 24px;
-
-  :deep(.el-input) {
-    width: 100%;
-    height: 48px;
-    line-height: inherit;
-
-    input {
-      height: 48px;
-    }
-
-    .el-input__prefix,
-    .el-input__suffix {
-      display: flex;
-      align-items: center;
-    }
-
-    .el-input__prefix {
-      left: 10px;
-    }
-
-    .el-input__suffix {
-      right: 10px;
-    }
-  }
-}
-</style>
