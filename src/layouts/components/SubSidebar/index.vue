@@ -68,14 +68,13 @@ onMounted(() => {
 
 const isCollapse = computed(() => {
   if (settingsStore.mode === 'pc') {
-    if (settingsStore.settings.menu.subMenuCollapse && (!settingsStore.isHoverSidebar || (settingsStore.isHoverSidebar && !settingsStore.settings.menu.subMenuAutoCollapse))) {
-      return true
-    }
-    else {
-      return false
-    }
+    return !!(settingsStore.settings.menu.subMenuCollapse
+      && (!settingsStore.isHoverSidebar
+      || (settingsStore.isHoverSidebar && !settingsStore.settings.menu.subMenuAutoCollapse)))
   }
-  return settingsStore.settings.menu.subMenuCollapse
+  else {
+    return settingsStore.settings.menu.subMenuCollapse
+  }
 })
 </script>
 
@@ -119,9 +118,9 @@ const isCollapse = computed(() => {
       </div>
     </div>
     <div
-      v-if="settingsStore.mode === 'pc'" class="relative flex items-center px-4 py-3" :class="{
+      v-if="settingsStore.mode === 'pc' && settingsStore.settings.menu.enableSubMenuCollapseButton" class="relative flex items-center px-4 py-3" :class="{
         'justify-center': isCollapse,
-        'justify-between': !isCollapse && settingsStore.settings.menu.enableSubMenuCollapseButton,
+        'justify-between': !isCollapse,
       }"
     >
       <span

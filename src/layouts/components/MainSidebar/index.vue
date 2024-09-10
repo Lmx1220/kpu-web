@@ -122,6 +122,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
     &-arrow {
       .item-container::before,
       :deep(.menu-item::before) {
+        position: absolute;
         inset-inline-end: -5px;
         top: 50%;
         width: 0;
@@ -144,6 +145,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
     &-line {
       .item-container::before,
       :deep(.menu-item::before) {
+        position: absolute;
         inset-inline-start: 6px;
         top: 50%;
         width: 4px;
@@ -167,6 +169,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
     &-dot {
       .item-container::before,
       :deep(.menu-item::before) {
+        position: absolute;
         inset-inline-start: 0;
         top: 50%;
         width: 10px;
