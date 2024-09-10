@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import useSettingsStore from '@/store/modules/settings'
-import useTabbarStore from '@/store/modules/tabbar'
-
 defineOptions({
   name: 'NotAllowed',
 })
 
-const route = useRoute()
 const router = useRouter()
-
-const settingsStore = useSettingsStore()
-const tabbarStore = useTabbarStore()
 
 const data = ref({
   inter: Number.NaN,
@@ -22,9 +15,6 @@ onUnmounted(() => {
 })
 
 onMounted(() => {
-  if (settingsStore.settings.tabbar.enable) {
-    tabbarStore.remove(route.meta.activeMenu || route.fullPath)
-  }
   data.value.inter = window.setInterval(() => {
     data.value.countdown--
     if (data.value.countdown === 0) {

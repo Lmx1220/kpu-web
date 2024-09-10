@@ -4,14 +4,16 @@ export default defineFakeRoute([
   {
     url: '/mock/anyTenant/login',
     method: 'post',
-    response: (option: any) => {
+    response: ({ body }) => {
       return {
         msg: '',
         code: 0,
         data: {
-          username: option.body.username,
-          token: '@string',
+          username: body.username,
+          // token: '@string',
           expiration: `${Math.ceil(new Date().getTime()) + (24 * 60 * 60 * 1000)}`,
+          token: `${body.username}_@string`,
+          avatar: 'https://one-step-admin.hurui.me/logo.png',
         },
       }
     },

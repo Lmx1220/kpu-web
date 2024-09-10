@@ -1,38 +1,26 @@
 {
-  "account": "account",
-  "captcha": "captcha",
-  "check": "Submit",
-  "goLogin": "go login",
-  "login": "Login",
-  "logout": "Logout",
-  "newPassword": "new password",
-  "password": "password",
   "profile": "Profile",
   "preferences": "Preferences",
   "hotkeys": "Hotkeys Introduction",
-  "sendCaptcha": "send captcha",
+  "logout": "Logout",
   "search": {
     "text": "Search",
-    "type": {
-      "menu": "Search menus",
-      "tab": "Search tabs"
-    },
-    "input": "Support title, URL fuzzy query",
+    "input": "Support title fuzzy query",
     "empty": "Not found",
     "up_down": "Choice",
     "enter": "Enter",
     "esc": "Exit"
   },
-  "tabbar": {
+  "window": {
+    "undefined": "[ No title ]",
     "reload": "Reload",
-    "close": "Close",
-    "pin": "Pin",
-    "unpin": "Unpin",
+    "remove": "Close",
     "maximize": "Maximize",
-    "newWindow": "Open In New Window",
-    "searchTabs": "Search Tabs",
-    "closeOtherSide": "Close Otherside Tabs",
-    "closeLeftSide": "Close Leftside Tabs",
-    "closeRightSide": "Close Rightside Tabs"
+    "focus": "Focus",
+    "focusPrev": "Focus Previous Window",
+    "focusNext": "Focus Next Window",
+    "removeOtherSide": "Close Otherside Window",
+    "removeLeftSide": "Close Leftside Window",
+    "removeRightSide": "Close Rightside Window"
   }
 }

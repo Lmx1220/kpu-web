@@ -41,6 +41,7 @@ import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 
 // 全局样式
 import '@/assets/styles/globals.css'
+import registerWindowComponent from '@/views/windows/registerWindowComponent.ts'
 
 VxeTable.setConfig({
   // 对组件内置的提示语进行国际化翻译
@@ -141,6 +142,7 @@ async function bootstrap() {
     distance: 12,
   })
   app.use(ui)
+  registerWindowComponent(app)
 
   if (icons.isOfflineUse) {
     for (const info of icons.collections) {

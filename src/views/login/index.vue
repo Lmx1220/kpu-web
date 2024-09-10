@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Copyright from '@/layouts/components/Copyright/index.vue'
+import Copyright from '../components/Copyright/index.vue'
+import ColorScheme from '../components/Topbar/ColorScheme/index.vue'
+import I18n from '../components/Topbar/I18n/index.vue'
 import useSettingsStore from '@/store/modules/settings.ts'
-import ColorScheme from '@/layouts/components/Topbar/Toolbar/ColorScheme/index.vue'
-import I18n from '@/layouts/components/Topbar/Toolbar/I18n/index.vue'
 import LoginForm from '@/views/login/components/LoginForm/index.vue'
 import RegisterForm from '@/views/login/components/RegisterForm/index.vue'
 import ResetPasswordForm from '@/views/login/components/ResetPasswordForm/index.vue'
@@ -15,7 +15,7 @@ const router = useRouter()
 const settingsStore = useSettingsStore()
 
 const layout = ref<'right' | 'center' | 'left'>('center')
-const redirect = ref(route.query.redirect?.toString() ?? settingsStore.settings.home.fullPath)
+const redirect = ref(route.query.redirect?.toString() ?? '/')
 
 // 表单类型，login 登录，register 注册，reset 重置密码
 const formType = ref<'login' | 'register' | 'resetPassword'>('login')
@@ -25,9 +25,11 @@ const formRef = ref()
 
 <template>
   <div class="bg-banner" />
-  <div class="absolute right-4 top-4 z-1 flex-center rounded-full bg-[var(--g-container-bg)] p-1 text-base ring-1 ring-stone-2 dark-ring-stone-8">
+  <div
+    class="absolute right-4 top-4 z-1 flex-center rounded-full bg-[var(--g-container-bg)] p-1 text-base ring-1 ring-stone-2 dark-ring-stone-8"
+  >
     <HDropdownMenu
-      v-if="settingsStore.mode === 'pc'" :items="[
+      :items="[
         [{
           label: '左侧布局',
           disabled: layout === 'left',
@@ -65,9 +67,12 @@ const formRef = ref()
 
   <div class="login-box" :class="layout">
     <div class="login-banner">
-      <img src="@/assets/images/logo.png" class="absolute left-4 top-4 h-30px rounded ring ring-stone-2 dark-ring-stone-8">
+      <img
+        src="@/assets/images/logo.png"
+        class="absolute left-4 top-4 h-30px rounded ring ring-stone-2 dark-ring-stone-8"
+      >
       <img src="@/assets/images/login-banner.png" class="banner">
-      <Copyright v-if="settingsStore.mode === 'pc' && ['left', 'right'].includes(layout)" />
+      <Copyright v-if="['left', 'right'].includes(layout)" />
     </div>
     <div class="login-form flex-col-center">
       <Transition name="fade" mode="out-in">
@@ -96,7 +101,7 @@ const formRef = ref()
       </Transition>
     </div>
   </div>
-  <Copyright v-if="settingsStore.mode === 'mobile' || 'center' === layout" />
+  <Copyright v-if="'center' === layout" />
 </template>
 
 <style scoped>
@@ -108,77 +113,42 @@ const formRef = ref()
   background: radial-gradient(circle at center, var(--g-container-bg), var(--g-bg));
 }
 
-[data-mode="mobile"] {
-  .login-box {
-    position: relative;
-    flex-direction: column;
-    justify-content: start;
-    width: 100%;
-
-    .login-banner {
-      width: 100%;
-      padding: 20px 0;
-
-      .banner {
-        position: relative;
-        top: inherit;
-        right: inherit;
-        display: inherit;
-        width: 100%;
-        max-width: 375px;
-        margin: 0 auto;
-        transform: translateY(0);
-      }
-    }
-
-    .login-form {
-      width: 100%;
-    }
-  }
-
-  .copyright {
-    position: relative;
-  }
-}
-
 .login-box {
   position: absolute;
   display: flex;
   overflow: hidden;
   background-color: var(--g-container-bg);
 
-  [data-mode="pc"] & {
-    &.center {
-      top: 50%;
-      left: 50%;
-      border-radius: 10px;
-      box-shadow: var(--el-box-shadow);
-      transform: translate(-50%) translateY(-50%);
-    }
+  &.center {
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    box-shadow: var(--el-box-shadow);
+    transform: translate(-50%) translateY(-50%);
+  }
 
-    &.left,
-    &.right {
-      width: 100%;
-      height: 100%;
+  &.left,
+  &.right {
+    width: 100%;
+    height: 100%;
 
-      .login-banner {
-        flex: 1;
+    .login-banner {
+      flex: 1;
 
-        .banner {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 50%;
-          height: 50%;
-          object-fit: contain;
-          transform: translate(-50%) translateY(-50%);
-        }
+      .banner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 50%;
+        height: 50%;
+        object-fit: contain;
+        transform: translate(-50%) translateY(-50%);
       }
     }
+  }
 
-    &.left {
-      flex-direction: row-reverse;
-    }
+  &.left {
+    flex-direction: row-reverse;
   }
 
   .login-banner {

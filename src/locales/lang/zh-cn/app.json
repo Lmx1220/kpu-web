@@ -1,38 +1,26 @@
 {
-  "account": "用户名",
-  "captcha": "验证码",
-  "check": "确认",
-  "goLogin": "去登录",
-  "login": "登录",
-  "logout": "退出登录",
-  "newPassword": "新密码",
-  "password": "密码",
   "profile": "个人设置",
   "preferences": "偏好设置",
   "hotkeys": "快捷键介绍",
-  "sendCaptcha": "发送验证码",
+  "logout": "退出登录",
   "search": {
     "text": "搜索",
-    "type": {
-      "menu": "搜索导航菜单",
-      "tab": "搜索标签页"
-    },
-    "input": "支持标题、拼音(首字母)、URL模糊查询",
+    "input": "支持标题、拼音(首字母)模糊查询",
     "empty": "没有找到你想要的",
     "up_down": "切换",
     "enter": "访问",
     "esc": "退出"
   },
-  "tabbar": {
+  "window": {
+    "undefined": "[ 无标题 ]",
     "reload": "重新加载",
-    "close": "关闭标签页",
-    "pin": "固定",
-    "unpin": "取消固定",
+    "remove": "关闭",
     "maximize": "最大化",
-    "newWindow": "新窗口中打开",
-    "searchTabs": "搜索标签页",
-    "closeOtherSide": "关闭其它标签页",
-    "closeLeftSide": "关闭左侧标签页",
-    "closeRightSide": "关闭右侧标签页"
+    "focus": "聚焦",
+    "focusPrev": "聚焦上一个窗口",
+    "focusNext": "聚焦下一个窗口",
+    "removeOtherSide": "关闭其它窗口",
+    "removeLeftSide": "关闭左侧窗口",
+    "removeRightSide": "关闭右侧窗口"
   }
 }

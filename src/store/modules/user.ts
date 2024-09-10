@@ -1,10 +1,8 @@
-import useRouteStore from './route'
-import router from '@/router'
-import useMenuStore from '@/store/modules/menu'
-import useTabbarStore from '@/store/modules/tabbar'
-import useSettingsStore from '@/store/modules/settings'
+import useMenuStore from './menu'
+import useSettingsStore from './settings'
+import useWindowStore from './window'
 
-// import useMenuStore from './menu'
+import router from '@/router'
 import api from '@/api'
 import storage from '@/util/storage'
 
@@ -12,25 +10,21 @@ const useUserStore = defineStore(
   // 唯一ID
   'user',
   () => {
-    const routeStore = useRouteStore()
     const settingsStore = useSettingsStore()
-    const tabbarStore = useTabbarStore()
     const menuStore = useMenuStore()
+    const windowStore = useWindowStore()
 
     const account = ref(storage.local.get('account') ?? '')
     const avatar = ref(storage.local.get('avatar') ?? '')
     const token = ref(storage.local.get('token') ?? '')
-    const failure_time = ref(storage.local.get('failure_time') ?? '')
+    // const failure_time = ref(storage.local.get('failure_time') ?? '')
     const permissions = ref<string[]>([])
     const roles = ref<string[]>([])
     const isLogin = computed(() => {
-      let retn = false
       if (token.value) {
-        if (new Date().getTime() < new Date(Number(failure_time.value)).getTime()) {
-          retn = true
-        }
+        return true
       }
-      return retn
+      return false
     })
 
     // 登录
@@ -50,27 +44,24 @@ const useUserStore = defineStore(
       })
       storage.local.set('account', res.username)
       storage.local.set('token', res.token)
-      storage.local.set('failure_time', res.expiration)
+      storage.local.set('avatar', res.avatar)
       account.value = res.username
       token.value = res.token
-      failure_time.value = res.expiration
+      avatar.value = res.avatar
     }
     // 登出
-    async function logout(redirect = router.currentRoute.value.fullPath) {
+    async function logout() {
       storage.local.remove('account')
       storage.local.remove('token')
-      storage.local.remove('failureTime')
+      storage.local.remove('avatar')
       account.value = ''
       token.value = ''
-      failure_time.value = ''
-      tabbarStore.clean()
-      routeStore.removeRoutes()
+      avatar.value = ''
       menuStore.setActived(0)
+      menuStore.removeMenus()
+      windowStore.removeAll()
       router.push({
         name: 'login',
-        query: {
-          ...(redirect !== settingsStore.settings.home.fullPath && router.currentRoute.value.name !== 'login' && { redirect }),
-        },
       })
     }
     // 获取我的权限

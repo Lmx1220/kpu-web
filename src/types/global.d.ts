@@ -60,16 +60,6 @@ declare namespace Settings {
      */
     enablePermission?: boolean
     /**
-     * 是否开启载入进度条
-     * @默认值 `true`
-     */
-    enableProgress?: boolean
-    /**
-     * 是否开启动态标题
-     * @默认值 `false`
-     */
-    enableDynamicTitle?: boolean
-    /**
      * localStorage/sessionStorage 前缀
      * @默认值 `'fa_'`
      */
@@ -84,13 +74,6 @@ declare namespace Settings {
      * @默认值 `false`
      */
     enableErrorLog?: boolean
-    /**
-     * 路由数据来源
-     * @默认值 `'frontend'` 前端
-     * @可选值 `'backend'` 后端
-     * @可选值 `'filesystem'` 文件系统
-     */
-    routeBaseOn?: 'frontend' | 'backend' | 'filesystem'
     /**
      * 文字方向
      * @默认值 `'ltr'` 从左到右
@@ -160,11 +143,6 @@ declare namespace Settings {
      */
     mode?: 'side' | 'head' | 'single' | 'only-side' | 'only-head' | 'side-panel' | 'head-panel'
     /**
-     * 导航栏是否圆角
-     * @默认值 `false`
-     */
-    isRounded?: boolean
-    /**
      * 导航栏激活风格
      * @默认值 `''`
      * @可选值 `'arrow'` 箭头
@@ -173,20 +151,20 @@ declare namespace Settings {
      */
     style?: '' | 'arrow' | 'line' | 'dot'
     /**
-     * 切换主导航是否跳转页面
+     * 导航栏是否圆角
      * @默认值 `false`
      */
-    switchMainMenuAndPageJump?: boolean
+    isRounded?: boolean
+    /**
+     * 切换主导航同时打开窗口
+     * @默认值 `false`
+     */
+    switchMainMenuAndOpenWindow?: boolean
     /**
      * 次导航是否只保持一个子项的展开
      * @默认值 `true`
      */
     subMenuUniqueOpened?: boolean
-    /**
-     * 次导航只有一个导航时是否自动隐藏
-     * @默认值 `false`
-     */
-    subMenuOnlyOneHide?: boolean
     /**
      * 次导航是否收起
      * @默认值 `false`
@@ -277,15 +255,15 @@ declare namespace Settings {
   }
   interface toolbar {
     /**
+     * 是否开启窗口预览
+     * @默认值 `true`
+     */
+    previewWindows?: boolean
+    /**
      * 是否开启收藏夹
      * @默认值 `false`
      */
     favorites?: boolean
-    /**
-     * 是否开启面包屑导航
-     * @默认值 `true`
-     */
-    breadcrumb?: boolean
     /**
      * 是否开启导航搜索
      * @默认值 `true`
@@ -306,11 +284,6 @@ declare namespace Settings {
      * @默认值 `false`
      */
     fullscreen?: boolean
-    /**
-     * 是否开启页面刷新
-     * @默认值 `false`
-     */
-    pageReload?: boolean
     /**
      * 是否开启颜色主题
      * @默认值 `false`
@@ -376,6 +349,28 @@ declare namespace Settings {
      */
     enableHotkeys?: boolean
   }
+  interface window {
+    /**
+     * 窗口默认宽度，设置为数字时单位为 px
+     * @默认值 `1000`
+     */
+    defaultWidth?: string | number
+    /**
+     * 自动定位窗口位置
+     * @默认值 `''` 居中
+     */
+    autoPosition?: string
+    /**
+     * 窗口最大数量
+     * @默认值 `4`
+     */
+    focusMaxNum?: number
+    /**
+     * 是否开启窗口快捷键
+     * @默认值 `true`
+     */
+    enableHotkeys?: boolean
+  }
   interface copyright {
     /**
      * 是否开启底部版权，同时在路由 meta 对象里可以单独设置某个路由是否显示底部版权信息
@@ -408,26 +403,16 @@ declare namespace Settings {
     app?: app
     /** 用户偏好设置 */
     userPreferences?: userPreferences
-    /** 主页设置 */
-    home?: home
-    /** 布局设置 */
-    layout?: layout
     /** 导航栏设置 */
     menu?: menu
-    /** 顶栏设置 */
-    topbar?: topbar
-    /** 标签栏设置 */
-    tabbar?: tabbar
     /** 工具栏设置 */
     toolbar?: toolbar
     /** 收藏夹设置 */
     favorites?: favorites
-    /** 面包屑导航设置 */
-    breadcrumb?: breadcrumb
-    /** 页面设置 */
-    mainPage?: mainPage
     /** 导航搜索设置 */
     navSearch?: navSearch
+    /** 窗口设置 */
+    window?: window
     /** 底部版权设置 */
     copyright?: copyright
   }
@@ -493,32 +478,28 @@ declare namespace Route {
 declare namespace Menu {
   /** 原始 */
   interface recordRaw {
-    path?: string
-    meta?: {
-      title?: string | (() => string)
-      i18n?: string
-      icon?: string
-      activeIcon?: string
-      defaultOpened?: boolean
-      alwaysOpened?: boolean
-      auth?: string | string[]
-      menu?: boolean
-      badge?: boolean | string | number | (() => boolean | string | number)
-      newWindow?: boolean
-      link?: string
-    }
+    windowWidth?: string | number
+    title?: string | (() => string)
+    noTitle?: boolean
+    icon?: string
+    auth?: string | string[]
+    params?: object
+    windowName?: string
+    badge?: boolean | string | number | (() => boolean | string | number)
+    breadcrumbNeste?: Menu.breadcrumb[]
     children?: recordRaw[]
+
   }
   /** 主导航 */
   interface recordMainRaw {
-    meta?: {
-      title?: string | (() => string)
-      i18n?: string
-      icon?: string
-      activeIcon?: string
-      auth?: string | string[]
-    }
+
+    title?: string | (() => string)
+    icon?: string
+    auth?: string | string[]
     children: recordRaw[]
+  }
+  interface breadcrumb {
+    title?: string | (() => string)
   }
 }
 
@@ -545,10 +526,8 @@ declare namespace Tabbar {
 
 declare namespace Favorites {
   interface recordRaw {
-    fullPath: string
+    windowName: string
     title?: string | (() => string)
-    i18n?: string
-    icon?: string
   }
 }
 
@@ -633,4 +612,15 @@ declare global {
       [elem: string]: any
     }
   }
+}
+
+interface window {
+  name: string
+  width?: string | number
+  title?: string | (() => string)
+  noTitle?: boolean
+  params?: object
+  breadcrumbNeste?: Menu.breadcrumb[]
+  isMaximize?: boolean
+  reload?: boolean
 }

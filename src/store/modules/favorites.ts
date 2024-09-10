@@ -1,9 +1,7 @@
-import type { RouteLocationNormalized } from 'vue-router'
 import useSettingsStore from './settings'
 import useUserStore from './user'
 import useMenuStore from './menu'
 import { favorites, favoritesEdit } from '@/api/modules/user'
-import { resolveRoutePath } from '@/util'
 import storage from '@/util/storage'
 import type { Favorites, Menu } from '#/global'
 
@@ -17,30 +15,21 @@ const useFavoritesStore = defineStore(
 
     const list = ref<Favorites.recordRaw[]>([])
 
-    function hasChildren(item: Menu.recordRaw) {
-      let flag = true
-      if (item.children?.every(i => i.meta?.menu === false)) {
-        flag = false
-      }
-      return flag
-    }
-    function getSourceListByMenus(arr: Menu.recordRaw[], basePath?: string) {
-      const list: string[] = []
+    function getSourceListByMenus(arr: Menu.recordRaw[]) {
+      const list: Menu.recordRaw[] = []
       arr.forEach((item) => {
-        if (item.meta?.menu !== false) {
-          if (item.children && hasChildren(item)) {
-            list.push(...getSourceListByMenus(item.children, resolveRoutePath(basePath, item.path)))
-          }
-          else {
-            list.push(item.path as string ?? resolveRoutePath(basePath, item.path))
-          }
+        if (item.children && item.children.length > 0) {
+          list.push(...getSourceListByMenus(item.children))
+        }
+        else {
+          list.push(item)
         }
       })
       return list
     }
 
     const flatSidebarMenu = computed(() => {
-      const list: string[] = []
+      const list: Menu.recordRaw[] = []
       menuStore.allMenus.forEach((item) => {
         list.push(...getSourceListByMenus(item.children))
       })
@@ -48,30 +37,29 @@ const useFavoritesStore = defineStore(
     })
 
     // 判断路由是否可添加进收藏夹
-    function canAdd(fullPath: Favorites.recordRaw['fullPath']) {
-      return flatSidebarMenu.value.includes(fullPath)
+    function canAdd(windowName: Favorites.recordRaw['windowName']) {
+      return flatSidebarMenu.value.some(item => item.windowName === windowName)
     }
     // 判断路由是否已经添加进收藏夹
-    function isAdd(fullPath: Favorites.recordRaw['fullPath']) {
-      return list.value.some(item => item.fullPath === fullPath)
+    function isAdd(windowName: Favorites.recordRaw['windowName']) {
+      return list.value.some(item => item.windowName === windowName)
     }
     // 新增收藏
-    function add(route: RouteLocationNormalized) {
-      const meta = route.matched.at(-1)?.meta
-      if (!list.value.find(item => item.fullPath === route.fullPath)) {
+    function add(windowName: string) {
+      const existingWindow = flatSidebarMenu.value.find(item => item.windowName === windowName)
+
+      if (existingWindow && !list.value.find(item => item.windowName === windowName)) {
         list.value.push({
-          fullPath: route.fullPath,
-          title: meta?.title,
-          i18n: meta?.i18n,
-          icon: meta?.icon ?? meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon,
+          windowName,
+          title: existingWindow.title,
         })
       }
       updateStorage()
     }
     // 删除收藏
-    function remove(fullPath: Favorites.recordRaw['fullPath']) {
+    function remove(windowName: Favorites.recordRaw['windowName']) {
       list.value = list.value.filter((item) => {
-        return item.fullPath !== fullPath
+        return item.windowName !== windowName
       })
       updateStorage()
     }

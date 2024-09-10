@@ -8,6 +8,7 @@ export default {
     '--ui-primary': hex2rgba('#0f0f0f')!.join(' '),
     '--ui-text': hex2rgba('#fcfcfc')!.join(' '),
     // 主体
+    '--g-app-bg': '#fff',
     '--g-bg': '#f2f2f2',
     '--g-container-bg': '#fff',
     '--g-border-color': '#f2f2f2',

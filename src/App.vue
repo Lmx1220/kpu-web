@@ -1,61 +1,44 @@
 <script setup lang="ts">
 import hotkeys from 'hotkeys-js'
-import { useTitle as usePageTitle } from '@vueuse/core'
+import dayjs from 'dayjs'
 import Provider from './ui-provider/index.vue'
 
 import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
+import { useLocale } from '@/locales/useLocale.ts'
 
-const route = useRoute()
 const settingsStore = useSettingsStore()
-const { auth } = useAuth()
-const { generateI18nTitle } = useMenu()
+const { getLocale } = useLocale()
 
-const isAuth = computed(() => {
-  return route.matched.every((item) => {
-    return auth(item.meta.auth ?? '')
-  })
-})
-
-const pageTitle = usePageTitle()
 watch([
-  () => settingsStore.settings.app.enableDynamicTitle,
   () => settingsStore.title,
-  () => settingsStore.customTitleList,
-  () => settingsStore.settings.app.defaultLang,
 ], () => {
-  nextTick(() => {
-    if (settingsStore.settings.app.enableDynamicTitle && settingsStore.title) {
-      const title = settingsStore.customTitleList.find(item => item.fullPath === route.fullPath)?.title
-        || generateI18nTitle(settingsStore.title)
-
-      pageTitle.value = `${title} - ${import.meta.env.VITE_APP_TITLE}`
-    }
-    else {
-      pageTitle.value = import.meta.env.VITE_APP_TITLE
-    }
-  })
+  document.title = 'One-KPU-admin 专业版'
 }, {
   immediate: true,
-  deep: true,
 })
 onMounted(() => {
-  settingsStore.setMode(document.documentElement.clientWidth)
-  window.addEventListener('resize', () => {
-    settingsStore.setMode(document.documentElement.clientWidth)
-  })
   hotkeys('alt+i', () => {
     eventBus.emit('global-system-info-toggle')
   })
+})
+watch(getLocale, () => {
+  switch (getLocale.value) {
+    case 'zh-cn':
+      dayjs.locale('zh-cn')
+      break
+    case 'en':
+      dayjs.locale('en')
+      break
+  }
+}, {
+  immediate: true,
 })
 </script>
 
 <template>
   <Provider>
-    <RouterView v-slot="{ Component }">
-      <component :is="Component" v-if="isAuth" />
-      <NotAllowed v-else />
-    </RouterView>
+    <RouterView />
     <SystemInfo />
   </Provider>
 </template>

@@ -59,7 +59,7 @@ export default function createVitePlugins(viteEnv, isBuild = false) {
     components({
       dirs: [
         'src/components',
-        'src/layouts/ui-kit',
+        'src/views/ui-kit',
       ],
       include: [/\.vue$/, /\.vue\?vue/, /\.tsx$/],
       dts: './src/types/components.d.ts',

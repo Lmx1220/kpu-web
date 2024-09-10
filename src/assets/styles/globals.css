@@ -1,15 +1,6 @@
 /* 页面布局 CSS 变量 */
 :root {
-  /* 这是一个复合变量
-   当页宽模式为 adaption-min-width 时，它代表 最小宽度
-   当页宽模式为 center 时，它代表 固定宽度
-   当页宽模式为 center-max-width 时，它代表 最大宽度 */
-  --g-app-width: 1400px;
-
-  /* 头部宽度（默认自适应宽度，可固定宽度，固定宽度后为居中显示） */
-  --g-header-width: 100%;
-
-  /* 头部高度 */
+  /* 顶栏高度 */
   --g-header-height: 60px;
 
   /* 侧边栏宽度 */
@@ -17,18 +8,17 @@
   --g-sub-sidebar-width: 220px;
   --g-sub-sidebar-collapse-width: 64px;
 
-  /* 侧边栏 Logo 区域高度 */
+  /* 侧边栏Logo高度 */
   --g-sidebar-logo-height: 50px;
 
-  /* 标签栏高度 */
-  --g-tabbar-height: 50px;
+  /* 顶栏高度 */
+  --g-topbar-height: 50px;
 
-  /* 工具栏高度 */
-  --g-toolbar-height: 50px;
+  /* 窗口高度（仅在窗口预览时使用） */
+  --g-window-height: 800px;
 
-  /* 标签页最大最小宽度，两个宽度为同一数值时，则为固定宽度，反之将宽度设置为 unset 则为自适应 */
-  --g-tabbar-tab-max-width: 150px;
-  --g-tabbar-tab-min-width: 150px;
+  /* 窗口预览缩放系数 */
+  --g-window-perview-scale: 0.5;
 }
 
 /* 明暗模式 CSS 变量 */

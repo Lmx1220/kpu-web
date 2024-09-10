@@ -1,5 +1,5 @@
 import { defaultsDeep } from 'lodash-es'
-import type { RouteLocationNormalized, RouteMeta } from 'vue-router'
+import type { RouteMeta } from 'vue-router'
 import type { Settings } from '#/global'
 // import { getLocales } from '@/locales'
 import settingsDefault from '@/settings'
@@ -65,12 +65,6 @@ const useSettingsStore = defineStore(
     }, {
       immediate: true,
     })
-
-    watch(() => settings.value.layout.widthMode, (val) => {
-      document.body.setAttribute('data-app-width-mode', val)
-    }, {
-      immediate: true,
-    })
     watch(() => settings.value.menu.mode, (val) => {
       document.body.setAttribute('data-menu-mode', val)
     }, {
@@ -100,79 +94,14 @@ const useSettingsStore = defineStore(
 
     // 页面标题
     const title = ref<RouteMeta['title']>()
-    // 记录页面标题
-    function setTitle(_title: RouteMeta['title']) {
-      title.value = _title
-    }
-    // 自定义标题
-    const customTitleList = ref<{
-      fullPath: RouteLocationNormalized['fullPath']
-      title: string
-    }[]>([])
-    // 设置自定义标题
-    function setCustomTitle(fullPath: RouteLocationNormalized['fullPath'], title: string) {
-      const index = customTitleList.value.findIndex(item => item.fullPath === fullPath)
-      if (index > -1) {
-        customTitleList.value[index].title = title
-      }
-      else {
-        customTitleList.value.push({
-          fullPath,
-          title,
-        })
-      }
-    }
-    // 重置自定义标题
-    function resetCustomTitle(fullPath: RouteLocationNormalized['fullPath']) {
-      const index = customTitleList.value.findIndex(item => item.fullPath === fullPath)
-      if (index > -1) {
-        customTitleList.value.splice(index, 1)
-      }
-    }
+    const previewAllWindows = ref(false)
 
     // 显示模式
-    const mode = ref<'pc' | 'mobile'>('pc')
-    // 设置显示模式
-    function setMode(width: number) {
-      if (settings.value.layout.enableMobileAdaptation) {
-        // 先判断 UA 是否为移动端设备（手机&平板）
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-          mode.value = 'mobile'
-        }
-        else {
-          // 如果是桌面设备，则根据页面宽度判断是否需要切换为移动端展示
-          mode.value = width < 1024 ? 'mobile' : 'pc'
-        }
-      }
-      else {
-        mode.value = 'pc'
-      }
-    }
 
     // 切换侧边栏导航展开/收起
     function toggleSidebarCollapse() {
       settings.value.menu.subMenuCollapse = !settings.value.menu.subMenuCollapse
     }
-    // 次导航是否收起（用于记录 pc 模式下最后的状态）
-    const subMenuCollapseLastStatus = ref(settingsDefault.menu.subMenuCollapse)
-    watch(() => settings.value.menu.subMenuCollapse, (val) => {
-      if (mode.value === 'pc') {
-        subMenuCollapseLastStatus.value = val
-      }
-    })
-    watch(mode, (val) => {
-      switch (val) {
-        case 'pc':
-          settings.value.menu.subMenuCollapse = subMenuCollapseLastStatus.value
-          break
-        case 'mobile':
-          settings.value.menu.subMenuCollapse = true
-          break
-      }
-      document.body.setAttribute('data-mode', val)
-    }, {
-      immediate: true,
-    })
 
     // 切换侧边栏导航自动收起
     function toggleSidebarAutoCollapse() {
@@ -213,13 +142,6 @@ const useSettingsStore = defineStore(
       settings.value.app.colorScheme = color
     }
 
-    // 主页面是否最大化
-    const mainPageMaximizeStatus = ref(false)
-    // 切换当前主页面最大化
-    function setMainPageMaximize(value?: boolean) {
-      mainPageMaximizeStatus.value = value ?? !mainPageMaximizeStatus.value
-    }
-
     // 更新应用配置
     function updateSettings(data: Settings.all, fromBase = false) {
       settings.value = defaultsDeep(data, fromBase ? settingsDefault : settings.value)
@@ -230,13 +152,7 @@ const useSettingsStore = defineStore(
       currentColorScheme,
       os,
       title,
-      setTitle,
-      customTitleList,
-      setCustomTitle,
-      resetCustomTitle,
-      mode,
-      setMode,
-      subMenuCollapseLastStatus,
+      previewAllWindows,
       toggleSidebarCollapse,
       toggleSidebarAutoCollapse,
       isHoverSidebar,
@@ -244,8 +160,6 @@ const useSettingsStore = defineStore(
       // lang,
       setDefaultLang,
       setColorScheme,
-      mainPageMaximizeStatus,
-      setMainPageMaximize,
       updateSettings,
     }
   },
