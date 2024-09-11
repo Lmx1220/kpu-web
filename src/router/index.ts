@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { loadingFadeOut } from 'virtual:app-loading'
 
 // 路由相关数据
 import { constantRoutes, constantRoutesByFilesystem } from './routes'
@@ -12,4 +13,7 @@ const router = createRouter({
 })
 
 setupGuards(router)
+router.isReady().then(() => {
+  loadingFadeOut()
+})
 export default router
