@@ -43,7 +43,7 @@ const useUserStore = defineStore(
     async function login(data: {
       username: string
       password: string
-      grantType: string
+      grantType?: string
     }): Promise<DefUserInfoResultVO | null> {
       try {
       // 通过 mock 进行登录

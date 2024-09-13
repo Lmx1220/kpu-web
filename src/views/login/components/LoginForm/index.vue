@@ -35,7 +35,7 @@ const rules = ref<FormRules>({
   ],
   password: [
     { required: true, trigger: 'blur', message: t('loginFrom.rules.password') },
-    { min: 6, max: 18, trigger: 'blur', message: t('loginFrom.rules.passwordLength') },
+    // { min: 6, max: 18, trigger: 'blur', message: t('loginFrom.rules.passwordLength') },
   ],
 })
 function handleLogin() {

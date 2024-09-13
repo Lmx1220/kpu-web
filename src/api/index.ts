@@ -93,7 +93,7 @@ const transform: AxiosTransform = {
     }
     else if (options.errorMessageMode === 'message') {
       // createMessage.error(timeoutMsg)
-      Message.error(timeoutMsg)
+      Message.error(timeoutMsg, {})
     }
 
     throw new Error(timeoutMsg || t('sys.api.apiRequestFailed'))
@@ -243,7 +243,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     {
       // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
       // authentication schemes，e.g: Bearer
-      authenticationScheme: '',
+      authenticationScheme: 'Bearer ',
       // authenticationScheme: '',
       timeout: 10 * 1000 * 60, // 10 * 1000 * 60 = 10分钟
       headers: {

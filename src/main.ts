@@ -3,7 +3,7 @@ import './util/system.copyright'
 
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
-
+import 'vue-m-message/dist/style.css'
 import VWave from 'v-wave'
 
 import VxeTable from 'vxe-table'
