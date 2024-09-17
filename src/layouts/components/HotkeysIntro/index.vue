@@ -36,6 +36,11 @@ onMounted(() => {
               <HKbd>S</HKbd>
               唤起导航搜索
             </li>
+            <li class="py-1">
+              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
+              <HKbd>L</HKbd>
+              锁屏
+            </li>
           </ul>
         </div>
         <div v-if="settingsStore.settings.menu.enableHotkeys && ['side', 'head'].includes(settingsStore.settings.menu.mode)">

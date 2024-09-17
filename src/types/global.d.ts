@@ -297,6 +297,11 @@ declare namespace Settings {
      */
     notification?: boolean
     /**
+     * 是否开启锁屏
+     * @默认值 `false`
+     */
+    lock?: boolean
+    /**
      * 是否开启国际化
      * @默认值 `false`
      */

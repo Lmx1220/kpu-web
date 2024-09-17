@@ -431,6 +431,12 @@ function handleCopy() {
       </div>
       <div class="setting-item">
         <div class="label">
+          锁屏
+        </div>
+        <HToggle v-model="settingsStore.settings.toolbar.lock" />
+      </div>
+      <div class="setting-item">
+        <div class="label">
           国际化
         </div>
         <HToggle v-model="settingsStore.settings.toolbar.i18n" />
@@ -471,6 +477,7 @@ function handleCopy() {
           <SvgIcon v-if="tool === 'breadcrumb'" name="i-ic:twotone-double-arrow" :rotate="settingsStore.settings.app.direction === 'rtl' ? 180 : 0" />
           <SvgIcon v-if="tool === 'navSearch'" name="i-ri:search-line" />
           <SvgIcon v-if="tool === 'notification'" name="i-ri:notification-3-line" />
+          <SvgIcon v-if="tool === 'lock'" name="i-ri:lock-line" />
           <SvgIcon v-if="tool === 'i18n'" name="i-ri:translate" />
           <SvgIcon v-if="tool === 'fullscreen'" name="i-ri:fullscreen-line" />
           <SvgIcon v-if="tool === 'pageReload'" name="i-iconoir:refresh-double" />

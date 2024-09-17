@@ -97,9 +97,11 @@ const useSettingsStore = defineStore(
         os.value = 'linux'
         break
     }
+    const lock = ref<boolean>(false)
 
     // 页面标题
     const title = ref<RouteMeta['title']>()
+
     // 记录页面标题
     function setTitle(_title: RouteMeta['title']) {
       title.value = _title
@@ -229,6 +231,7 @@ const useSettingsStore = defineStore(
       settings,
       currentColorScheme,
       os,
+      lock,
       title,
       setTitle,
       customTitleList,

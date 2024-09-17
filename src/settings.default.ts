@@ -64,11 +64,12 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     breadcrumb: true,
     navSearch: true,
     notification: false,
+    lock: false,
     i18n: false,
     fullscreen: false,
     pageReload: false,
     colorScheme: false,
-    layout: ['favorites', 'breadcrumb', '->', 'navSearch', 'notification', 'i18n', 'fullscreen', 'pageReload', 'colorScheme'],
+    layout: ['favorites', 'breadcrumb', '->', 'navSearch', 'notification', 'i18n', 'lock', 'fullscreen', 'pageReload', 'colorScheme'],
   },
   favorites: {
     storageTo: 'local',

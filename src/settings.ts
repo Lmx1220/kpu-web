@@ -36,6 +36,7 @@ const globalSettings: Settings.all = {
   toolbar: {
     favorites: true,
     notification: true,
+    lock: true,
     i18n: true,
     fullscreen: true,
     pageReload: true,
