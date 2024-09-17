@@ -18,12 +18,5 @@ declare const __SYSTEM_INFO__: {
   lastBuildTime: string
 }
 
-declare module 'virtual:app-loading' {
-  const loadingFadeOut: () => void
-  export {
-    loadingFadeOut,
-  }
-}
-
 declare module 'vue-esign'
 declare module '@bytemd/plugin-gfm/lib/locales/zh_Hans.json'

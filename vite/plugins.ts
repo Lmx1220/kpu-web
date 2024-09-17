@@ -16,6 +16,7 @@ import Pages from 'vite-plugin-pages'
 import { compression } from 'vite-plugin-compression2'
 import dayjs from 'dayjs'
 import archiver from 'archiver'
+import AppLoading from 'vite-plugin-app-loading'
 import TurboConsole from 'unplugin-turbo-console/vite'
 import banner from 'vite-plugin-banner'
 import picocolors from 'picocolors'
@@ -126,44 +127,7 @@ export default function createVitePlugins(viteEnv, isBuild = false) {
       }
     })(),
 
-    (function () {
-      const virtualModuleId = 'virtual:app-loading'
-      const resolvedVirtualModuleId = `\0${virtualModuleId}`
-      return {
-        name: 'vite-plugin-loading',
-        resolveId(id) {
-          if (id === virtualModuleId) {
-            return resolvedVirtualModuleId
-          }
-        },
-        load(id) {
-          if (id === resolvedVirtualModuleId) {
-            return {
-              code: `
-                export function loadingFadeOut() {
-                  const loadingEl = document.querySelector('[data-app-loading]')
-                  if (loadingEl) {
-                    loadingEl.style['pointer-events'] = 'none'
-                    loadingEl.style.visibility = 'hidden'
-                    loadingEl.style.opacity = 0
-                    loadingEl.style.transition = 'all 0.5s ease-out'
-                    loadingEl.addEventListener('transitionend', () => loadingEl.remove(), { once: true })
-                  }
-                }
-              `,
-              map: null,
-            }
-          }
-        },
-        enforce: 'pre',
-        transformIndexHtml: {
-          handler: async html => html.replace(/<\/body>/, `${
-            `<div data-app-loading>${await fs.readFileSync(path.resolve(process.cwd(), 'loading.html'), 'utf8')}</div>`
-          }</body>`),
-          order: 'pre',
-        },
-      }
-    })(),
+    AppLoading('loading.html'),
 
     // https://github.com/unplugin/unplugin-turbo-console
     TurboConsole(),
