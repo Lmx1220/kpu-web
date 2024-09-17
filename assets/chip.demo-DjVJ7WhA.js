@@ -1,9 +1,0 @@
-
-/**
- * 由 admin 提供技术支持
- * Powered by admin
- * 代码仓库
- * Github https://github.com/Lmx1220/kpu-web
- */
-    
-import{d as _,o as a,c as p,e as C,a6 as B,j as o,i as f,_ as b,r as E,B as d,w as t,p as s,f as u,h as $,L as S}from"./index-CR1TrdTw.js";import{_ as w}from"./index.vue_vue_type_script_setup_true_lang-DVyoy_T3.js";import{i as y}from"./logo-D-CqFC5K.js";const N={class:"chip inline-block rounded-999 bg-stone-1 px-3 vertical-mid transition-background-color dark-bg-stone-8"},V={class:"content h-8 flex items-center gap-2 text-xs"},z=_({name:"Chip",__name:"index",props:{closable:{type:Boolean}},emits:["close"],setup(g,{emit:l}){const r=l;return(i,e)=>{const m=b;return a(),p("div",N,[C("div",V,[B(i.$slots,"default"),i.closable?(a(),p("span",{key:0,class:"closable h-6 w-6 flex-center cursor-pointer rounded-1/2 bg-stone-2 text-sm text-initial transition-background-color -mr-1.5 dark-bg-stone-9 hover-op-70",onClick:e[0]||(e[0]=n=>r("close"))},[o(m,{name:"i-ep:close-bold"})])):f("",!0)])])}}}),P=_({name:"ComponentExampleChip",__name:"chip.demo",setup(g){const l=E(!0);function r(){l.value=!1}return(i,e)=>{const m=w,n=z,c=d("ElAvatar"),k=b,v=d("ElSpace"),x=S;return a(),p("div",null,[o(m,{title:"纸片",content:"Chip"}),o(x,null,{default:t(()=>[o(v,null,{default:t(()=>[o(n,null,{default:t(()=>e[0]||(e[0]=[s(" 基础纸片 ")])),_:1}),o(n,null,{default:t(()=>[o(c,{size:"small",class:"-ml-1.5"},{default:t(()=>e[1]||(e[1]=[s(" Ad ")])),_:1}),e[2]||(e[2]=s(" 头像文字 "))]),_:1}),o(n,null,{default:t(()=>[o(c,{size:"small",class:"-ml-1.5"},{default:t(()=>[o(k,{name:"i-ep:user-filled"})]),_:1}),e[3]||(e[3]=s(" 头像图标 "))]),_:1}),o(n,null,{default:t(()=>[o(c,{size:"small",class:"-ml-1.5",src:u(y)},null,8,["src"]),e[4]||(e[4]=s(" 头像图片 "))]),_:1}),u(l)?(a(),$(n,{key:0,closable:"",onClose:r},{default:t(()=>e[5]||(e[5]=[s(" 关闭按钮 ")])),_:1})):f("",!0),o(n,{class:"c-white bg-sky!"},{default:t(()=>e[6]||(e[6]=[s(" 自定义颜色 ")])),_:1})]),_:1})]),_:1})])}}});export{P as default};
