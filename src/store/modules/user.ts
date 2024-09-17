@@ -50,9 +50,11 @@ const useUserStore = defineStore(
       })
       storage.local.set('account', res.username)
       storage.local.set('token', res.token)
+      storage.local.set('avatar', res.avatar)
       storage.local.set('failure_time', res.expiration)
       account.value = res.username
       token.value = res.token
+      avatar.value = res.avatar
       failure_time.value = res.expiration
     }
     // 登出
