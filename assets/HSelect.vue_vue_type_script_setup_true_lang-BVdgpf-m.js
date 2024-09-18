@@ -1,9 +1,0 @@
-
-/**
- * 由 admin 提供技术支持
- * Powered by admin
- * 代码仓库
- * Github https://github.com/Lmx1220/kpu-web
- */
-    
-import{d as m,aw as b,ax as f,x as g,B as v,o as a,h as _,w as d,e as o,c as i,aa as h,n as w,t as c,F as k,f as x,j as y,a9 as V,_ as B}from"./index-dN0_CLwN.js";const C={class:"w-full inline-flex"},M=["disabled"],S={class:"block truncate"},$={class:"pointer-events-none absolute end-0 inset-y-0 flex items-center pe-2.5"},z={class:"max-h-60 w-full scroll-py-1 overflow-y-auto p-1 lg-w-48 focus-outline-none"},F=["disabled","onClick"],E=m({__name:"HSelect",props:b({options:{},disabled:{type:Boolean,default:!1}},{modelValue:{},modelModifiers:{}}),emits:["update:modelValue"],setup(t){const l=t,n=f(t,"modelValue"),r=g({get(){return l.options.find(e=>e.value===n.value)??l.options[0]},set(e){n.value=e.value}});return(e,N)=>{const u=B,p=v("VMenu");return a(),_(p,V({triggers:["click"],"popper-triggers":["click"],delay:0,disabled:e.disabled},e.$attrs),{popper:d(()=>[o("div",z,[(a(!0),i(k,null,h(e.options,s=>(a(),i("button",{key:s.value,disabled:s.disabled,class:w(["w-full cursor-pointer truncate border-size-0 rounded-md bg-inherit px-2 py-1.5 text-start text-sm disabled-cursor-not-allowed hover-not-disabled-bg-stone-1 dark-hover-not-disabled-bg-stone-9",{"font-bold":t.modelValue===s.value}]),onClick:j=>r.value=s},c(s.label),11,F))),128))])]),default:d(()=>[o("div",C,[o("button",{class:"relative block w-full flex cursor-default items-center gap-x-2 border-0 rounded-md bg-white px-2.5 py-1.5 pe-9 text-left text-sm shadow-sm ring-1 ring-stone-2 ring-inset lg-w-48 disabled-cursor-not-allowed dark-bg-dark focus-outline-none focus-ring-2 dark-ring-stone-8 focus-ring-ui-primary",disabled:e.disabled},[o("span",S,c(x(r).label),1),o("span",$,[y(u,{name:"i-carbon:chevron-down",class:"h-5 w-5 flex-shrink-0 text-stone-5"})])],8,M)])]),_:1},16,["disabled"])}}});export{E as _};
