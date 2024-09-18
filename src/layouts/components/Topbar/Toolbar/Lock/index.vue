@@ -7,6 +7,7 @@ import hotkeys from 'hotkeys-js'
 import useSettingsStore from '@/store/modules/settings.ts'
 import useUserStore from '@/store/modules/user.ts'
 import useBingStore from '@/store/modules/bing.ts'
+import storage from '@/util/storage.ts'
 
 defineOptions({
   name: 'Lock',
@@ -16,16 +17,37 @@ const vFocus: any = {
     el.querySelector('input')?.focus()
   },
 }
+const overlayTransitionClass = ref({
+  enter: 'ease-in-out duration-500',
+  enterFrom: 'opacity-0',
+  enterTo: 'opacity-100',
+  leave: 'ease-in-out duration-500',
+  leaveFrom: 'opacity-100',
+  leaveTo: 'opacity-0',
+})
+
+const transitionClass = computed(() => {
+  return {
+    enter: 'duration-300 ease-out',
+    enterFrom: '-translate-y-full',
+    enterTo: 'translate-y-0',
+    leave: 'duration-200 ease-in',
+    leaveFrom: 'translate-y-0',
+    leaveTo: '-translate-y-full',
+  }
+})
 const { t } = useI18n()
 const title = import.meta.env.VITE_APP_TITLE
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
-// const { lock, title } = settingsStore
+
 function handleLock() {
   settingsStore.lock = true
+  storage.local.set('lock', 'true')
 }
 function _handleUnLock() {
   settingsStore.lock = false
+  storage.local.set('lock', 'false')
 }
 const bingStore = useBingStore()
 const url = 'https://cdn.jsdelivr.net/gh/chuzhixin/image/vab-image-lock/'
@@ -107,32 +129,17 @@ onUnmounted(() => {
 <template>
   <div class="flex-center cursor-pointer px-2 py-1">
     <svg-icon name="i-ri:lock-line" @click="handleLock" />
-    <TransitionRoot as="template" appear :show="settingsStore.lock">
+    <TransitionRoot
+      as="template"
+      appear :show="settingsStore.lock"
+    >
       <Dialog
         class="lock-drawer fixed inset-0 z-2000 flex backdrop-filter-none" @close="settingsStore.lock = false"
       >
-        <TransitionChild
-          as="template"
-          enter="duration-300 ease-out"
-          enter-from="opacity-0"
-          enter-to="opacity-100"
-          leave="duration-200 ease-in"
-          leave-from="opacity-100"
-          leave-to="opacity-0"
-          appear
-        >
+        <TransitionChild as="template" v-bind="overlayTransitionClass" :class="overlayTransitionClass.enterFrom" appear>
           <div class="fixed inset-0 bg-black/25" />
         </TransitionChild>
-        <TransitionChild
-          as="template"
-          enter="duration-300 ease-out"
-          enter-from="opacity-0"
-          enter-to="opacity-100"
-          leave="duration-200 ease-in"
-          leave-from="opacity-100"
-          leave-to="opacity-0"
-          appear
-        >
+        <TransitionChild as="template" v-bind="transitionClass" :class="transitionClass.enterFrom" appear>
           <DialogPanel class="overflow-hidden! p-0!" relative w-full w-screen flex flex-1 flex-col bg-white dark-bg-stone-8 focus-outline-none>
             <div class="screen-lock">
               <div

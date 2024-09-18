@@ -269,12 +269,12 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
 <template>
   <TransitionRoot as="template" :show="isShow">
     <Dialog :initial-focus="searchInputRef" class="fixed inset-0 z-2000 flex" @close="isShow && eventBus.emit('global-search-toggle')">
-      <TransitionChild as="template" v-bind="overlayTransitionClass">
+      <TransitionChild :class="overlayTransitionClass.enterFrom" as="template" v-bind="overlayTransitionClass">
         <div class="fixed inset-0 bg-stone-200/75 backdrop-blur-sm transition-opacity dark-bg-stone-8/75" />
       </TransitionChild>
       <div class="fixed inset-0">
         <div class="h-full flex items-end justify-center p-4 text-center lg-items-center">
-          <TransitionChild as="template" v-bind="transitionClass">
+          <TransitionChild :class="transitionClass.enterFrom" as="template" v-bind="transitionClass">
             <DialogPanel class="relative h-full max-h-4/5 w-full flex flex-col text-left lg-max-w-2xl">
               <HTabList
                 v-if="settingsStore.settings.tabbar.enable"

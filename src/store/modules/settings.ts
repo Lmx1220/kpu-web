@@ -4,6 +4,7 @@ import type { Settings } from '#/global'
 // import { getLocales } from '@/locales'
 import settingsDefault from '@/settings'
 import type { LocaleType } from '#/config'
+import storage from '@/util/storage.ts'
 
 const useSettingsStore = defineStore(
   // 唯一ID
@@ -97,7 +98,7 @@ const useSettingsStore = defineStore(
         os.value = 'linux'
         break
     }
-    const lock = ref<boolean>(false)
+    const lock = ref<boolean>(storage.local.get('lock') === 'true')
 
     // 页面标题
     const title = ref<RouteMeta['title']>()
