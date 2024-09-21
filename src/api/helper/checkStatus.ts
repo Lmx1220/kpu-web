@@ -1,6 +1,6 @@
-import Message from 'vue-m-message'
-import useUserStore from '@/store/modules/user'
 import type { ErrorMessageMode } from '#/axios'
+import useUserStore from '@/store/modules/user'
+import Message from 'vue-m-message'
 
 /**
  * @description: 校验网络请求状态码

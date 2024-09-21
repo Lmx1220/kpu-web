@@ -1,11 +1,11 @@
-import { cloneDeep } from 'lodash-es'
+import type { Route } from '#/global'
 import type { RouteRecordRaw } from 'vue-router'
+import api from '@/api'
+import { systemRoutes } from '@/router/routes'
+import { resolveRoutePath } from '@/utils'
+import { cloneDeep } from 'lodash-es'
 import useSettingsStore from './settings'
 import useTabbarStore from './tabbar'
-import { resolveRoutePath } from '@/util'
-import { systemRoutes } from '@/router/routes'
-import api from '@/api'
-import type { Route } from '#/global'
 
 const useRouteStore = defineStore(
   // 唯一ID

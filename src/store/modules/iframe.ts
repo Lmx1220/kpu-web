@@ -1,5 +1,5 @@
-import useSettingsStore from './settings'
 import type { Iframe } from '#/global'
+import useSettingsStore from './settings'
 
 const useIframeStore = defineStore(
   // 唯一ID

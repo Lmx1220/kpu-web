@@ -1,5 +1,5 @@
-import type { ExtractPropTypes } from 'vue'
 import type { radioGroupProps } from 'element-plus'
+import type { ExtractPropTypes } from 'vue'
 
 export interface ApiRadioGroupProps {
   modelValue: string | number | boolean | undefined

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import useSettingsStore from '@/store/modules/settings'
 import { Dialog, DialogDescription, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
-import useSettingsStore from '@/store/modules/settings'
 
 const props = withDefaults(
   defineProps<{

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Tools from './tools.vue'
 import useSettingsStore from '@/store/modules/settings'
+import Tools from './tools.vue'
 
 defineOptions({
   name: 'ToolbarLeftSide',

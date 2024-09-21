@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-import Tools from './tools.vue'
-import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
 import useUserStore from '@/store/modules/user'
+import eventBus from '@/utils/eventBus'
+import { useI18n } from 'vue-i18n'
+import Tools from './tools.vue'
 
 defineOptions({
   name: 'ToolbarRightSide',

@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import crud from '@/api/modules/standardModuleExample.ts'
+import { ActionEnum } from '@/enums/commonEnum.ts'
+import useSettingsStore from '@/store/modules/settings.ts'
+import eventBus from '@/utils/eventBus.ts'
+import usePagination from '@/utils/usePagination.ts'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
-import useSettingsStore from '@/store/modules/settings.ts'
-import usePagination from '@/util/usePagination.ts'
-import crud from '@/api/modules/standardModuleExample.ts'
-import eventBus from '@/util/eventBus.ts'
-import { ActionEnum } from '@/enums/commonEnum.ts'
 
 const router = useRouter()
 const tabbar = useTabbar()

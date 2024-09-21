@@ -1,9 +1,9 @@
 <script lang="ts" setup>
+import type { FieldNames, KeyType, TreeProps, TreeState } from './tree'
+import { isString } from '@/utils/is'
+
 import { ElTree } from 'element-plus'
 import { omit } from 'lodash-es'
-
-import type { FieldNames, KeyType, TreeProps, TreeState } from './tree'
-import { isString } from '@/util/is'
 
 defineOptions({
   name: 'BasicTree',

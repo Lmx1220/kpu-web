@@ -1,11 +1,11 @@
 <script lang="ts" setup>
+import type { PromiseFn } from '#/global'
+import type { FileResultVO } from '@/api/modules/system/model/fileModel'
+
+import { useDialog } from '@/components/Dialog/hooks/useDialog'
 import { omit } from 'lodash-es'
 import { useAttrs } from 'vue'
-
 import UploadDialog from './UploadDialog.vue'
-import { useDialog } from '@/components/Dialog/hooks/useDialog'
-import type { FileResultVO } from '@/api/modules/system/model/fileModel'
-import type { PromiseFn } from '#/global'
 
 export interface BasicProps {
   helpText?: string

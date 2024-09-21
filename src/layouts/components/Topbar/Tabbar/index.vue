@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import Sortable from 'sortablejs'
-import ContextMenu from '@imengyu/vue3-context-menu'
-import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
-import { useI18n } from 'vue-i18n'
-import hotkeys from 'hotkeys-js'
-import Message from 'vue-m-message'
-import { useMagicKeys } from '@vueuse/core'
-import MoreAction from './moreAction.vue'
+import type { Tabbar } from '#/global'
 import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar'
-import storage from '@/util/storage'
-import type { Tabbar } from '#/global'
+import storage from '@/utils/storage'
+import ContextMenu from '@imengyu/vue3-context-menu'
+import { useMagicKeys } from '@vueuse/core'
+import hotkeys from 'hotkeys-js'
+import Sortable from 'sortablejs'
+import { useI18n } from 'vue-i18n'
+import Message from 'vue-m-message'
+import MoreAction from './moreAction.vue'
+import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 
 defineOptions({
   name: 'Tabbar',

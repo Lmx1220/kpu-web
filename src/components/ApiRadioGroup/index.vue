@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import type { ApiRadioGroupProps } from './typing'
 import { radioGroupEmits } from 'element-plus'
 import { get } from 'lodash-es'
-import type { ApiRadioGroupProps } from './typing'
 
 defineOptions({
   name: 'ApiRadioGroup',

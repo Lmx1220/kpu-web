@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { FileResultVO } from '@/api/modules/system/model/fileModel'
+import type { DialogMethods } from '@/components/Dialog/typing'
 import { downloadIds } from '@/api/modules/system/upload'
 import { useDialogInner } from '@/components/Dialog/hooks/useDialog'
-import type { DialogMethods } from '@/components/Dialog/typing'
-import { isArray } from '@/util/is'
-import { downloadFile } from '@/util/kpu/common.ts'
+import { isArray } from '@/utils/is'
+import { downloadFile } from '@/utils/kpu/common.ts'
 
 interface Props {
   value?: FileResultVO[]

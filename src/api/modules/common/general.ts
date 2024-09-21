@@ -1,9 +1,9 @@
-import defHttp from '@/api'
-import { RequestEnum } from '@/enums/httpEnum'
 import type { AsyncResult, DelayResult } from '@/api/helper/timeDelayReq.ts'
-import { TimeDelayReq } from '@/api/helper/timeDelayReq.ts'
-import { isString } from '@/util/is.ts'
 import type { CodeQueryVO, OptionsGetResultModel, SystemApiVO } from '@/api/modules/common/model/optionsModel.ts'
+import defHttp from '@/api'
+import { TimeDelayReq } from '@/api/helper/timeDelayReq.ts'
+import { RequestEnum } from '@/enums/httpEnum'
+import { isString } from '@/utils/is.ts'
 
 const ServicePrefix = ''
 export const Api = {

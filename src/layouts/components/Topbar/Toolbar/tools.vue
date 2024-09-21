@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { pascalCase } from 'scule'
 import type { Settings } from '#/global'
 import useSettingsStore from '@/store/modules/settings'
+import { pascalCase } from 'scule'
 
 defineOptions({
   name: 'ToolbarTools',

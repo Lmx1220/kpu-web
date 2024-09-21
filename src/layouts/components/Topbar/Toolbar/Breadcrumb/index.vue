@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import useMenuStore from '@/store/modules/menu'
+import useSettingsStore from '@/store/modules/settings'
 import { compile } from 'path-to-regexp'
 import Breadcrumb from '../../../Breadcrumb/index.vue'
 import BreadcrumbItem from '../../../Breadcrumb/item.vue'
-import useSettingsStore from '@/store/modules/settings'
-import useMenuStore from '@/store/modules/menu'
 
 defineOptions({
   name: 'Breadcrumb',

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Sortable from 'sortablejs'
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import useFavoritesStore from '@/store/modules/favorites'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+import Sortable from 'sortablejs'
 
 defineOptions({
   name: 'FavoritesPanel',

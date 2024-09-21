@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import Sortable from 'sortablejs'
+import settingsDefault from '@/settings.default'
+import useMenuStore from '@/store/modules/menu'
+import useSettingsStore from '@/store/modules/settings'
+import { getTwoObjectDiff } from '@/utils'
+import eventBus from '@/utils/eventBus'
 import { useClipboard } from '@vueuse/core'
+import Sortable from 'sortablejs'
 import Message from 'vue-m-message'
 import themes from '../../../../themes'
-import settingsDefault from '@/settings.default'
-import { getTwoObjectDiff } from '@/util'
-import eventBus from '@/util/eventBus'
-import useSettingsStore from '@/store/modules/settings'
-import useMenuStore from '@/store/modules/menu'
 
 defineOptions({
   name: 'AppSetting',

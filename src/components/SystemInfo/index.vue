@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import eventBus from '@/util/eventBus'
+import eventBus from '@/utils/eventBus'
 
 const isShow = ref(false)
 

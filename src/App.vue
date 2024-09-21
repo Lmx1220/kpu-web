@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import hotkeys from 'hotkeys-js'
-import { useTitle as usePageTitle } from '@vueuse/core'
-import Provider from './ui-provider/index.vue'
-
-import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
+import eventBus from '@/utils/eventBus'
+import { useTitle as usePageTitle } from '@vueuse/core'
+
+import hotkeys from 'hotkeys-js'
+import Provider from './ui-provider/index.vue'
 
 const route = useRoute()
 const settingsStore = useSettingsStore()

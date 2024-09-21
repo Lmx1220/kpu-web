@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import useSettingsStore from '@/store/modules/settings'
 import { useClipboard } from '@vueuse/core'
 import Message from 'vue-m-message'
-import useSettingsStore from '@/store/modules/settings'
 
 defineOptions({
   name: 'LinkView',

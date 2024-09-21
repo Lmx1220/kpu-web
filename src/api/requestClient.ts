@@ -2,11 +2,11 @@
  * 该文件可自行根据业务逻辑进行调整
  */
 
-import { ElMessage } from 'element-plus'
-import { RequestClient, authenticateResponseInterceptor, errorMessageResponseInterceptor } from '@/util/request-client'
-import useUserStore from '@/store/modules/user.ts'
-import useSettingsStore from '@/store/modules/settings.ts'
 import { refreshTokenApi } from '@/api/modules/user.ts'
+import useSettingsStore from '@/store/modules/settings.ts'
+import useUserStore from '@/store/modules/user.ts'
+import { authenticateResponseInterceptor, errorMessageResponseInterceptor, RequestClient } from '@/utils/request-client'
+import { ElMessage } from 'element-plus'
 
 const apiURL = (import.meta.env.DEV && import.meta.env.VITE_OPEN_PROXY === 'true') ? '/proxy/' : import.meta.env.VITE_APP_API_BASEURL
 

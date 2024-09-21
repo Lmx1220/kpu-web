@@ -4,8 +4,8 @@ import { get } from 'lodash-es'
 import FormMode from './components/FormMode/index.vue'
 import type { {{ pascalCase moduleName }}Params } from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}model/{{ moduleName }}Model'
 import crud{{properCase moduleName}} from '@/api/modules/{{#if relativePath}}{{ relativePath }}/{{/if}}{{ moduleName }}'
-import eventBus from '@/util/eventBus'
-import usePagination from '@/util/usePagination.js'
+import eventBus from '../../src/utils/eventBus'
+import usePagination from '../../src/utils/usePagination.js'
 import type { DataConfig } from '@/types/global'
 
 defineOptions({

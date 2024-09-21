@@ -1,28 +1,28 @@
+import type { PluginOption } from 'vite'
+import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
-import fs from 'node:fs'
-import type { PluginOption } from 'vite'
+import vueLegacy from '@vitejs/plugin-legacy'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import vueLegacy from '@vitejs/plugin-legacy'
-import VueDevTools from 'vite-plugin-vue-devtools'
-import autoImport from 'unplugin-auto-import/vite'
-import components from 'unplugin-vue-components/vite'
-import Unocss from 'unocss/vite'
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import { vitePluginFakeServer } from 'vite-plugin-fake-server'
-import Layouts from 'vite-plugin-vue-meta-layouts'
-import Pages from 'vite-plugin-pages'
-import { compression } from 'vite-plugin-compression2'
-import dayjs from 'dayjs'
 import archiver from 'archiver'
-import AppLoading from 'vite-plugin-app-loading'
-import TurboConsole from 'unplugin-turbo-console/vite'
-import banner from 'vite-plugin-banner'
-import picocolors from 'picocolors'
 import boxen from 'boxen'
+import dayjs from 'dayjs'
+import picocolors from 'picocolors'
 import { visualizer } from 'rollup-plugin-visualizer'
+import Unocss from 'unocss/vite'
+import autoImport from 'unplugin-auto-import/vite'
+import TurboConsole from 'unplugin-turbo-console/vite'
+import components from 'unplugin-vue-components/vite'
+import AppLoading from 'vite-plugin-app-loading'
+import banner from 'vite-plugin-banner'
+import { compression } from 'vite-plugin-compression2'
+import { vitePluginFakeServer } from 'vite-plugin-fake-server'
+import Pages from 'vite-plugin-pages'
 import { VitePWA } from 'vite-plugin-pwa'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import VueDevTools from 'vite-plugin-vue-devtools'
+import Layouts from 'vite-plugin-vue-meta-layouts'
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -52,7 +52,7 @@ export default function createVitePlugins(viteEnv, isBuild = false) {
       ],
       dts: './src/types/auto-imports.d.ts',
       dirs: [
-        './src/util/composables/**',
+        './src/utils/composables/**',
       ],
     }),
 

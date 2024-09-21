@@ -1,10 +1,10 @@
-import { defaultsDeep } from 'lodash-es'
-import type { RouteLocationNormalized, RouteMeta } from 'vue-router'
+import type { LocaleType } from '#/config'
 import type { Settings } from '#/global'
+import type { RouteLocationNormalized, RouteMeta } from 'vue-router'
+import { defaultsDeep } from 'lodash-es'
 // import { getLocales } from '@/locales'
 import settingsDefault from '@/settings'
-import type { LocaleType } from '#/config'
-import storage from '@/util/storage.ts'
+import storage from '@/utils/storage.ts'
 
 const useSettingsStore = defineStore(
   // 唯一ID

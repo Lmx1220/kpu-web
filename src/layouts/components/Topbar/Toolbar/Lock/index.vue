@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { sample, shuffle } from 'lodash-es'
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { useI18n } from 'vue-i18n'
-import Message from 'vue-m-message'
-import hotkeys from 'hotkeys-js'
+import useBingStore from '@/store/modules/bing.ts'
 import useSettingsStore from '@/store/modules/settings.ts'
 import useUserStore from '@/store/modules/user.ts'
-import useBingStore from '@/store/modules/bing.ts'
-import storage from '@/util/storage.ts'
+import storage from '@/utils/storage.ts'
+import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import hotkeys from 'hotkeys-js'
+import { sample, shuffle } from 'lodash-es'
+import { useI18n } from 'vue-i18n'
+import Message from 'vue-m-message'
 
 defineOptions({
   name: 'Lock',

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import useWatermarkStore from '@/store/modules/watermark.ts'
 import useSettingsStore from '@/store/modules/settings.ts'
-import dayjs from '@/util/dayjs.ts'
+import useWatermarkStore from '@/store/modules/watermark.ts'
+import dayjs from '@/utils/dayjs.ts'
 
 const settingsStore = useSettingsStore()
 const watermarkStore = useWatermarkStore()

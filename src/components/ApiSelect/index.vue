@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { get, omit } from 'lodash-es'
-import type { ApiSelectProps } from './typing'
-import { isFunction } from '@/util/is.ts'
 import type { OptionsItem } from '@/api/modules/common/model/optionsModel.ts'
+import type { ApiSelectProps } from './typing'
+import { isFunction } from '@/utils/is.ts'
+import { get, omit } from 'lodash-es'
 
 defineOptions({
   name: 'ApiSelect',

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import Copyright from '@/layouts/components/Copyright/index.vue'
-import useSettingsStore from '@/store/modules/settings.ts'
 import ColorScheme from '@/layouts/components/Topbar/Toolbar/ColorScheme/index.vue'
 import I18n from '@/layouts/components/Topbar/Toolbar/I18n/index.vue'
+import useSettingsStore from '@/store/modules/settings.ts'
 import LoginForm from '@/views/login/components/LoginForm/index.vue'
 import RegisterForm from '@/views/login/components/RegisterForm/index.vue'
 import ResetPasswordForm from '@/views/login/components/ResetPasswordForm/index.vue'

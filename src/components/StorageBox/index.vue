@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Sortable from 'sortablejs'
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
-import Message from 'vue-m-message'
 import useUserStore from '@/store/modules/user'
-import storage from '@/util/storage'
+import storage from '@/utils/storage'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+import Sortable from 'sortablejs'
+import Message from 'vue-m-message'
 
 defineOptions({
   name: 'StorageBox',

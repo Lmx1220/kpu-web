@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import DetailForm from './components/DetailForm/index.vue'
 import useSettingsStore from '@/store/modules/settings'
-import eventBus from '@/util/eventBus'
+import eventBus from '@/utils/eventBus'
+import DetailForm from './components/DetailForm/index.vue'
 
 defineOptions({
   name: 'StandardModuleExampleEdit',

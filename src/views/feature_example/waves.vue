@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import VWave from 'v-wave'
 import logo from '@/assets/images/logo.png'
+import VWave from 'v-wave'
 
 const { vWave } = VWave.createLocalWaveDirective({
 })

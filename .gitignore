@@ -6,13 +6,16 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
 node_modules
-dist
+
+.DS_Store
+dist*
 dist-ssr
 *.local
+*.tsbuildinfo
 .eslintcache
 .stylelintcache
+
 # Editor directories and files
 # .vscode/*
 # !.vscode/extensions.json

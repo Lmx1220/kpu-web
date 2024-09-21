@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Sortable from 'sortablejs'
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
-import { useI18n } from 'vue-i18n'
+import type { Tabbar } from '#/global'
 import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar'
-import eventBus from '@/util/eventBus'
-import type { Tabbar } from '#/global'
+import eventBus from '@/utils/eventBus'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+import Sortable from 'sortablejs'
+import { useI18n } from 'vue-i18n'
 
 defineOptions({
   name: 'TabbarMoreAction',

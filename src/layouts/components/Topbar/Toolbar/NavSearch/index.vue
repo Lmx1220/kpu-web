@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
+import eventBus from '@/utils/eventBus'
+import { useI18n } from 'vue-i18n'
 
 defineOptions({
   name: 'NavSearch',

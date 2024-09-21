@@ -1,13 +1,13 @@
+import type { Tabbar } from '@/types/global'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
+import api from '@/api'
+import storage from '@/utils/storage'
 import { cloneDeep } from 'lodash-es'
+import useIframeStore from './iframe'
+import useKeepAliveStore from './keepAlive'
+import useRouteStore from './route'
 import useSettingsStore from './settings'
 import useUserStore from './user'
-import useRouteStore from './route'
-import useKeepAliveStore from './keepAlive'
-import useIframeStore from './iframe'
-import storage from '@/util/storage'
-import type { Tabbar } from '@/types/global'
-import api from '@/api'
 
 const useTabbarStore = defineStore(
   // 唯一ID

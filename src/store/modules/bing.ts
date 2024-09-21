@@ -1,5 +1,5 @@
+import dayjs from '@/utils/dayjs.ts'
 import axios from 'axios'
-import dayjs from '@/util/dayjs.ts'
 
 const today = dayjs().format('YYYY-MM-DD')
 const useBingStore = defineStore(

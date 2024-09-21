@@ -1,8 +1,8 @@
-import type { FormRules } from 'element-plus'
-import type { RouteRecordRaw } from 'vue-router'
-import type { ComponentRenderProxy, VNode } from 'vue'
-import type { ActionEnum } from '@/enums/commonEnum'
 import type { LocaleType } from '#/config'
+import type { ActionEnum } from '@/enums/commonEnum'
+import type { FormRules } from 'element-plus'
+import type { ComponentRenderProxy, VNode } from 'vue'
+import type { RouteRecordRaw } from 'vue-router'
 
 type RecursiveRequired<T> = {
   [P in keyof T]-?: RecursiveRequired<T[P]>
@@ -565,11 +565,6 @@ declare namespace Iframe {
     isOpen?: boolean
     isLoading?: boolean
   }
-}
-
-interface CustomTitleList {
-  fullPath: string
-  title?: string
 }
 
 declare global {

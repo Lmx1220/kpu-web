@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import type { UploadRawFile } from 'element-plus'
-import { ElMessage } from 'element-plus'
-import { isFunction } from 'lodash-es'
-
-import { checkImgType, getBase64WithFile } from './helper'
-import { useUploadType } from './useUpload'
 import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 import type { BasicProps } from '@/components/BasicUpload/src/BasicUpload.vue'
 import type { FileItem } from '@/components/BasicUpload/src/types'
+
+import type { DialogMethods } from '@/components/Dialog/typing'
+import type { UploadRawFile } from 'element-plus'
 import { UploadResultStatus } from '@/components/BasicUpload/src/types'
 import { useDialogInner } from '@/components/Dialog/hooks/useDialog'
-import type { DialogMethods } from '@/components/Dialog/typing'
-import { buildUUID } from '@/util/uuid'
+import { buildUUID } from '@/utils/uuid'
+import { ElMessage } from 'element-plus'
+import { isFunction } from 'lodash-es'
+import { checkImgType, getBase64WithFile } from './helper'
+import { useUploadType } from './useUpload'
 
 interface Props extends BasicProps {
   previewFileList?: FileResultVO[]

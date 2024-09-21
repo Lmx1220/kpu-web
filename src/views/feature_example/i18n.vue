@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Message from 'vue-m-message'
-import { useLocale } from '@/locales/useLocale.ts'
 import type { LocaleType } from '#/config'
+import { useLocale } from '@/locales/useLocale.ts'
+import Message from 'vue-m-message'
 
 const { t } = useI18n()
 const currentPage = ref(1)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getElementLocales, useLocale } from '@/locales/useLocale.ts'
 import type { LocaleType } from '@/types/config'
+import { getElementLocales, useLocale } from '@/locales/useLocale.ts'
 
 defineOptions({
   name: 'I18nSelector',

@@ -1,11 +1,11 @@
+import type { Favorites, Menu } from '#/global'
 import type { RouteLocationNormalized } from 'vue-router'
+import { favorites, favoritesEdit } from '@/api/modules/user'
+import { resolveRoutePath } from '@/utils'
+import storage from '@/utils/storage'
+import useMenuStore from './menu'
 import useSettingsStore from './settings'
 import useUserStore from './user'
-import useMenuStore from './menu'
-import { favorites, favoritesEdit } from '@/api/modules/user'
-import { resolveRoutePath } from '@/util'
-import storage from '@/util/storage'
-import type { Favorites, Menu } from '#/global'
 
 const useFavoritesStore = defineStore(
   // 唯一ID

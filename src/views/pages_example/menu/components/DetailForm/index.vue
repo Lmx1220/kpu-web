@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
-import { ElMessage } from 'element-plus'
 import crud from '@/api/modules/standardModuleExample.ts'
 import { ActionEnum } from '@/enums/commonEnum.ts'
+import { ElMessage } from 'element-plus'
 
 export interface Props {
   id?: string

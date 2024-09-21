@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import dayjs from '@/util/dayjs'
+import dayjs from '@/utils/dayjs'
 
 const data = [{
   title: '文章标题1',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import useSettingsStore from '@/store/modules/settings'
 import useIframeStore from '@/store/modules/iframe'
+import useSettingsStore from '@/store/modules/settings'
 
 defineOptions({
   name: 'IframeView',

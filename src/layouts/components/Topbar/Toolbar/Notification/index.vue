@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Panel from './panel.vue'
 import useNotificationStore from '@/store/modules/notification'
+import Panel from './panel.vue'
 
 defineOptions({
   name: 'Notification',

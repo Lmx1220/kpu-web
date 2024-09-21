@@ -5,10 +5,10 @@ meta:
 
 <script setup lang="ts">
 import type { VxeTableInstance } from 'vxe-table'
-import VxeUITable from 'vxe-table'
-import { ElMessageBox } from 'element-plus'
-import Alert from './components/alert.vue'
 import useSettingsStore from '@/store/modules/settings'
+import { ElMessageBox } from 'element-plus'
+import VxeUITable from 'vxe-table'
+import Alert from './components/alert.vue'
 
 const settingsStore = useSettingsStore()
 watch(() => settingsStore.currentColorScheme, () => {

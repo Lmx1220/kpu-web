@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { Dialog, DialogDescription, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import type { Menu, Tabbar } from '#/global'
 import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-vue'
+import useMenuStore from '@/store/modules/menu'
+import useSettingsStore from '@/store/modules/settings'
+import useTabbarStore from '@/store/modules/tabbar'
+import { resolveRoutePath } from '@/utils'
+import eventBus from '@/utils/eventBus'
+import { Dialog, DialogDescription, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import hotkeys from 'hotkeys-js'
+import { cloneDeep } from 'lodash-es'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import { match } from 'pinyin-pro'
 import { useI18n } from 'vue-i18n'
-import { cloneDeep } from 'lodash-es'
-import hotkeys from 'hotkeys-js'
 import Breadcrumb from '../Breadcrumb/index.vue'
 import BreadcrumbItem from '../Breadcrumb/item.vue'
-import { resolveRoutePath } from '@/util'
-import eventBus from '@/util/eventBus'
-import useSettingsStore from '@/store/modules/settings'
-import useMenuStore from '@/store/modules/menu'
-import useTabbarStore from '@/store/modules/tabbar'
-import type { Menu, Tabbar } from '#/global'
 
 defineOptions({
   name: 'Search',
