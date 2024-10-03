@@ -1,20 +1,23 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 defineOptions({
   name: 'Auth',
 })
 
 const props = defineProps<{
   value: string | string[]
+  all?: boolean
 }>()
 
+const auth = useAuth()
+
 function check() {
-  return useAuth().auth(props.value)
+  return props.all
+    ? auth.authAll(typeof props.value === 'string' ? [props.value] : props.value)
+    : auth.auth(props.value)
 }
 </script>
 
 <template>
-  <div>
-    <slot v-if="check()" />
-    <slot v-else name="no-auth" />
-  </div>
+  <slot v-if="check()" />
+  <slot v-else name="no-auth" />
 </template>

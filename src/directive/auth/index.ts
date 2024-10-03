@@ -1,17 +1,12 @@
 import type { DirectiveBinding } from 'vue'
 
 function checkPermission(el: HTMLElement, binding: DirectiveBinding) {
-  const { value } = binding
-  if (!useAuth().auth(value) && el.parentNode) {
-    el.parentNode.removeChild(el)
+  if (binding.modifiers.all ? useAuth().authAll(binding.value) : useAuth().auth(binding.value)) {
+    el.style.display = ''
+  }
+  else {
+    el.style.display = 'none'
   }
 }
 
-export default {
-  mounted(el: HTMLElement, binding: DirectiveBinding) {
-    checkPermission(el, binding)
-  },
-  updated(el: HTMLElement, binding: DirectiveBinding) {
-    checkPermission(el, binding)
-  },
-}
+export default checkPermission

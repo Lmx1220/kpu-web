@@ -89,11 +89,11 @@ const transitionClass = computed(() => {
       }
     : {
         enterActiveClass: 'ease-in-out duration-300',
-        enterFromClass: 'opacity-0',
-        enterToClass: 'opacity-100',
+        enterFromClass: 'opacity-0 translate-y-4 scale-95 blur-4',
+        enterToClass: 'opacity-100 translate-y-0 scale-100 blur-0',
         leaveActiveClass: 'ease-in-out duration-300',
-        leaveFromClass: 'opacity-100',
-        leaveToClass: 'opacity-0',
+        leaveFromClass: 'opacity-100 translate-y-0 scale-100 blur-0',
+        leaveToClass: 'opacity-0 translate-y-4 scale-95 blur-4',
       }
 })
 
@@ -196,7 +196,7 @@ function handleMouseleave() {
   <Teleport v-if="hasChildren" to="body" :disabled="!rootMenu.isMenuPopup">
     <Transition v-bind="transitionClass" v-on="transitionEvent">
       <OverlayScrollbarsComponent
-        v-if="opened" ref="subMenuRef" :options="{ scrollbars: { visibility: 'hidden' } }" defer
+        v-show="opened" ref="subMenuRef" :options="{ scrollbars: { visibility: 'hidden' } }" defer
         class="sub-menu"
         :class="{
           'bg-[var(--g-sub-sidebar-bg)]': rootMenu.isMenuPopup,
