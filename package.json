@@ -65,7 +65,7 @@
     "overlayscrollbars": "^2.10.0",
     "overlayscrollbars-vue": "^0.5.9",
     "path-browserify": "^1.0.1",
-    "path-to-regexp": "^7.1.0",
+    "path-to-regexp": "^8.0.0",
     "pinia": "^2.2.2",
     "pinyin-pro": "^3.24.2",
     "print-js": "^1.6.0",
