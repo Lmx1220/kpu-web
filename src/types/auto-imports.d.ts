@@ -7,6 +7,7 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const SCROLL_FIXED_CLASS: typeof import('../utils/composables/use-scroll-lock')['SCROLL_FIXED_CLASS']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
@@ -84,6 +85,7 @@ declare global {
   const usePriorityValues: typeof import('../utils/composables/use-priority-value')['usePriorityValues']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
+  const useScrollLock: typeof import('../utils/composables/use-scroll-lock')['useScrollLock']
   const useSlots: typeof import('vue')['useSlots']
   const useTabbar: typeof import('../utils/composables/useTabbar')['default']
   const useTemplateRef: typeof import('vue')['useTemplateRef']

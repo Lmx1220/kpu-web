@@ -6,8 +6,9 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useVbenModal } from '@/utils/model'
+import { useVbenDrawer, useVbenModal } from '@/ui-kit'
 import AutoHeightDemo from './auto-height-demo.vue'
+import AutoHeightDemo2 from './auto-height-demo2.vue'
 
 defineOptions({
   name: 'Home',
@@ -15,8 +16,15 @@ defineOptions({
 const [AutoHeightModal, autoHeightModalApi] = useVbenModal({
   connectedComponent: AutoHeightDemo,
 })
+const [AutoHeightDrawer2, autoHeightDrawerApi] = useVbenDrawer({
+  connectedComponent: AutoHeightDemo2,
+})
+
 function openAutoHeightModal() {
   autoHeightModalApi.open()
+}
+function openAutoHeightDrawer() {
+  autoHeightDrawerApi.open()
 }
 </script>
 
@@ -24,10 +32,14 @@ function openAutoHeightModal() {
   <div>
     <PageMain class="kpu-j-vxe-table">
       <el-button @click="openAutoHeightModal">
-        Dakai
+        打开Modal
+      </el-button>
+      <el-button @click="openAutoHeightDrawer">
+        打开Drawer
       </el-button>
     </PageMain>
 
     <AutoHeightModal />
+    <AutoHeightDrawer2 />
   </div>
 </template>

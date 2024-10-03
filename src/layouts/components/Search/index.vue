@@ -133,9 +133,9 @@ onMounted(() => {
       isShow.value = true
     }
   })
-  hotkeys('esc', (e) => {
+  hotkeys('esc', (_e) => {
     if (settingsStore.settings.toolbar.navSearch && settingsStore.settings.navSearch.enableHotkeys) {
-      e.preventDefault()
+      // e.preventDefault()
       isShow.value = false
     }
   })

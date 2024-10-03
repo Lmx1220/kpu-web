@@ -1,14 +1,13 @@
 <script lang="ts" setup>
-import { useVbenModal } from '@/ui-kit'
+import { useVbenDrawer } from '@/ui-kit'
 import { ref } from 'vue'
 import Message from 'vue-m-message'
 
 const list = ref<number[]>([])
 
-const [Modal, modalApi] = useVbenModal({
-  // draggable: true,
+const [Drawer, drawerApi] = useVbenDrawer({
   onCancel() {
-    modalApi.close()
+    drawerApi.close()
   },
   onConfirm() {
     Message.info('onConfirm', {
@@ -24,16 +23,19 @@ const [Modal, modalApi] = useVbenModal({
 })
 
 function handleUpdate(len: number) {
-  modalApi.setState({ loading: true })
+  drawerApi.setState({ loading: true })
   setTimeout(() => {
     list.value = Array.from({ length: len }, (_v, k) => k + 1)
-    modalApi.setState({ loading: false })
+    drawerApi.setState({ loading: false })
   }, 2000)
 }
 </script>
 
 <template>
-  <Modal title="自动计算高度" title-tooltip="标题提示内容">
+  <Drawer title="自动计算高度" title-tooltip="标题提示内容">
+    <template #extra>
+      extra
+    </template>
     <div
       v-for="item in list"
       :key="item"
@@ -46,5 +48,5 @@ function handleUpdate(len: number) {
         点击更新数据
       </ElButton>
     </template>
-  </Modal>
+  </Drawer>
 </template>
