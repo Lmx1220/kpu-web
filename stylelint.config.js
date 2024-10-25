@@ -47,6 +47,7 @@ export default {
   ignoreFiles: [
     'node_modules/**/*',
     'dist*/**/*',
+    'public/tinymce/**/*',
     'src/assets/fonts/**/*',
   ],
 }

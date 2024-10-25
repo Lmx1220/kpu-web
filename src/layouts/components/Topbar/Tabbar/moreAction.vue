@@ -27,11 +27,11 @@ const activedTabId = computed(() => tabbar.getId())
 const dropdownTabContainerRef = ref()
 
 const isDragging = ref(false)
-// eslint-disable-next-line unused-imports/no-unused-vars
-let dropdownTabSortable: Sortable
+// let dropdownTabSortable: Sortable
 watch(() => dropdownTabContainerRef.value, (val) => {
   if (val) {
-    dropdownTabSortable = new Sortable(dropdownTabContainerRef.value.$el, {
+    // eslint-disable-next-line no-new
+    new Sortable(dropdownTabContainerRef.value.$el, {
       animation: 200,
       ghostClass: 'ghost',
       draggable: '.tab',

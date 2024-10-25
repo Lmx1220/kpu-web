@@ -38,12 +38,11 @@ watch(() => settingsStore.settings.menu.mode, (value) => {
   }
 })
 
-// eslint-disable-next-line unused-imports/no-unused-vars
-let toolbarLayoutSortable: Sortable
 const toolbarLayoutRef = ref()
 watch(() => toolbarLayoutRef.value, (val) => {
   if (val) {
-    toolbarLayoutSortable = new Sortable(toolbarLayoutRef.value, {
+    // eslint-disable-next-line no-new
+    new Sortable(toolbarLayoutRef.value, {
       animation: 200,
       ghostClass: 'op-30',
       draggable: '.draggable',

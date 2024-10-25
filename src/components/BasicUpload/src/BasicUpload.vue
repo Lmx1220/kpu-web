@@ -2,10 +2,11 @@
 import type { PromiseFn } from '#/global'
 import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 
-import { useDialog } from '@/components/Dialog/hooks/useDialog'
+import { useVbenModal } from '@/ui-kit'
 import { omit } from 'lodash-es'
 import { useAttrs } from 'vue'
 import UploadDialog from './UploadDialog.vue'
+import UploadPreviewDialogl from './UploadPreviewDialogl.vue'
 
 export interface BasicProps {
   helpText?: string
@@ -87,15 +88,20 @@ function handleDelete(record: Recordable<any>) {
 function handlePreviewDelete(url: any) {
   emits('previewDelete', url)
 }
-
-const [registerUploadDialog, { openDialog: openUploadDialog }] = useDialog()
-const [registerPreviewDialog, { openDialog: openPreviewDialog }] = useDialog()
+const [UploadDialogModal, uploadDialogModalApi] = useVbenModal({
+  connectedComponent: UploadDialog,
+})
+const [UploadPreviewDialoglModal, uploadPreviewDialoglApi] = useVbenModal({
+  connectedComponent: UploadPreviewDialogl,
+})
+// const [registerUploadDialog, { openDialog: openUploadDialog }] = useDialog()
+// const [registerPreviewDialog, { openDialog: openPreviewDialog }] = useDialog()
 </script>
 
 <template>
   <div>
     <ElButtonGroup>
-      <ElButton @click="openUploadDialog()">
+      <ElButton @click="uploadDialogModalApi.open()">
         {{ t('component.upload.upload') }}
       </ElButton>
       <ElTooltip v-if="showPreview && showPreviewButton" placement="bottom">
@@ -105,7 +111,7 @@ const [registerPreviewDialog, { openDialog: openPreviewDialog }] = useDialog()
             {{ fileList.length }}
           </template>
         </template>
-        <ElButton @click="openPreviewDialog()">
+        <ElButton @click="uploadPreviewDialoglApi.open()">
           <SvgIcon name="bi:eye" />
           <template v-if="fileList.length && showPreviewNumber">
             {{ fileList.length }}
@@ -113,16 +119,14 @@ const [registerPreviewDialog, { openDialog: openPreviewDialog }] = useDialog()
         </ElButton>
       </ElTooltip>
     </ElButtonGroup>
-    <UploadDialog
+    <UploadDialogModal
       v-bind="bindValue"
       :preview-file-list="fileList"
-      @register="registerUploadDialog"
       @change="handleChange"
       @delete="handleDelete"
     />
-    <UploadPreviewDialogl
+    <UploadPreviewDialoglModal
       :value="fileList"
-      @register="registerPreviewDialog"
       @list-change="handlePreviewChange"
       @delete="handlePreviewDelete"
     />

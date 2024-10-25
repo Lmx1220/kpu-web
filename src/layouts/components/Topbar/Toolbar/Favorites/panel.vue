@@ -15,11 +15,11 @@ const { generateI18nTitle } = useMenu()
 
 const favoritesContainerRef = ref()
 
-// eslint-disable-next-line unused-imports/no-unused-vars
-let favoritesSortable: Sortable
+// let favoritesSortable: Sortable
 watch(() => favoritesContainerRef.value, (val) => {
   if (val) {
-    favoritesSortable = new Sortable(favoritesContainerRef.value, {
+    // eslint-disable-next-line no-new
+    new Sortable(favoritesContainerRef.value, {
       animation: 200,
       ghostClass: 'draggable-ghost',
       draggable: '.draggable-item',

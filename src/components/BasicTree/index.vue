@@ -304,7 +304,7 @@ const getBindValues = computed(() => {
         emits('update:selectedKeys', [])
       }
     },
-    'onCheck': (node: any, v: any) => {
+    'onCheck': (_node: any, v: any) => {
       state.checkedKeys = v.checkedKeys
 
       const rawVal = toRaw(state.checkedKeys)

@@ -368,7 +368,7 @@ watch(
           具体秒数(可多选)
         </ElRadio>
         <ElSelect v-model="state.second.specificSpecific" clearable multiple style="width: 140px;">
-          <ElOption v-for="(item, index) in 60" :key="index" :label="index" :value="index" />
+          <ElOption v-for="(_item, index) in 60" :key="index" :label="index" :value="index" />
         </ElSelect>
       </div>
       <!-- 周期从 -->
@@ -406,7 +406,7 @@ watch(
           具体分钟数(可多选)
         </ElRadio>
         <ElSelect v-model="state.minute.specificSpecific" multiple clearable style="width: 140px;">
-          <ElOption v-for="(item, index) in 60" :key="index" :label="index" :value="index" />
+          <ElOption v-for="(_item, index) in 60" :key="index" :label="index" :value="index" />
         </ElSelect>
       </div>
       <!-- 周期从 -->
@@ -444,7 +444,7 @@ watch(
           具体小时数(可多选)
         </ElRadio>
         <ElSelect v-model="state.hour.specificSpecific" multiple clearable style="width: 140px;">
-          <ElOption v-for="(item, index) in 24" :key="index" :label="index" :value="index" />
+          <ElOption v-for="(_item, index) in 24" :key="index" :label="index" :value="index" />
         </ElSelect>
       </div>
       <!-- 周期从 -->

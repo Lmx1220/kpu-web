@@ -20,8 +20,8 @@ export default defineConfig(({ mode, command }) => {
     // 开发服务器选项 https://cn.vitejs.dev/config/server-options
     base: './',
     server: {
-      open: true,
       host: true,
+      open: true,
       port: 9002,
       proxy: {
         '/proxy': {
@@ -46,7 +46,7 @@ export default defineConfig(({ mode, command }) => {
         lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       }),
     },
-    plugins: createVitePlugins(env, command === 'build'),
+    plugins: createVitePlugins(mode, command === 'build'),
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),
@@ -56,7 +56,6 @@ export default defineConfig(({ mode, command }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          api: 'modern-compiler',
           additionalData: scssResources.join(''),
         },
       },

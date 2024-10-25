@@ -7,8 +7,8 @@ import { isString } from '@/utils/is.ts'
 
 const ServicePrefix = ''
 export const Api = {
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  SystemApiScan: (serviceProfix: string) => {
+
+  SystemApiScan: (_serviceProfix: string) => {
     return {
       url: `/anyone/systemApiScan`,
       method: RequestEnum.GET,

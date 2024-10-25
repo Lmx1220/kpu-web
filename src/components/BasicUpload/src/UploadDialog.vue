@@ -3,10 +3,9 @@ import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 import type { BasicProps } from '@/components/BasicUpload/src/BasicUpload.vue'
 import type { FileItem } from '@/components/BasicUpload/src/types'
 
-import type { DialogMethods } from '@/components/Dialog/typing'
 import type { UploadRawFile } from 'element-plus'
 import { UploadResultStatus } from '@/components/BasicUpload/src/types'
-import { useDialogInner } from '@/components/Dialog/hooks/useDialog'
+import { useVbenModal } from '@/ui-kit'
 import { buildUUID } from '@/utils/uuid'
 import { ElMessage } from 'element-plus'
 import { isFunction } from 'lodash-es'
@@ -26,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits<{
   change: [FileResultVO[]]
-  register: [DialogMethods, string]
+  // register: [DialogMethods, string]
   delete: [FileItem]
 }>()
 const { t } = useI18n()
@@ -38,8 +37,12 @@ const {
   maxNumber,
   maxSize,
 } = toRefs(props)
-const [register, { closeDialog }] = useDialogInner()
-
+const [BaseDialog, modalApi] = useVbenModal({
+  // draggable: true,
+  onCancel() {
+    modalApi.close()
+  },
+})
 async function handleCloseFunc() {
   if (!isUploadingRef.value) {
     fileListRef.value = []
@@ -91,7 +94,7 @@ function handleOk() {
     return ElMessage.warning(t('component.upload.saveError'))
   }
   fileListRef.value = []
-  closeDialog()
+  modalApi.close()
   emits('change', fileList)
 }
 
@@ -239,7 +242,6 @@ function handleRemove(record: FileItem) {
     class="upload-modal"
     :ok-button-props="getOkButtonProps"
     :cancel-button-props="{ disabled: isUploadingRef }"
-    @register="register"
     @ok="handleOk"
   >
     <template #centerFooter>

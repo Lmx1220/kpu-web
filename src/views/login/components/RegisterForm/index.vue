@@ -39,7 +39,7 @@ const rules = ref<FormRules>({
   checkPassword: [
     { required: true, trigger: 'blur', message: t('registerForm.rules.checkPassword') },
     {
-      validator: (rule, value, callback) => {
+      validator: (_rule, value, callback) => {
         if (value !== form.value.password) {
           callback(new Error(t('registerForm.rules.checkPasswordError')))
         }

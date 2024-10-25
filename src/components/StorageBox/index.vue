@@ -89,11 +89,11 @@ function recoveryStorage() {
 
 const containerRef = ref()
 
-// eslint-disable-next-line unused-imports/no-unused-vars
-let sortable: Sortable
+// let sortable: Sortable
 watch(() => containerRef.value, (val) => {
   if (val) {
-    sortable = new Sortable(containerRef.value, {
+    // eslint-disable-next-line no-new
+    new Sortable(containerRef.value, {
       animation: 200,
       ghostClass: 'draggable-ghost',
       draggable: '.draggable-item',

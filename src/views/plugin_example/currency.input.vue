@@ -52,7 +52,7 @@ const precisionEnabled = ref(false)
 const precisionRangeEnabled = ref(false)
 const precisionRangeValue = ref([2, 5])
 function range(from: number, to: number) {
-  return Array.from({ length: to - from }).fill(from).map((x, y) => x + y)
+  return Array.from({ length: to - from }, (_, i) => from + i)
 }
 const precision = ref(2)
 const precisionOptions = computed(() => range(1, 16))
