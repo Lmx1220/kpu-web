@@ -1,9 +1,0 @@
-
-/**
- * 由 admin 提供技术支持
- * Powered by admin
- * 代码仓库
- * Github https://github.com/Lmx1220/kpu-web
- */
-    
-import{k as f,I as s,o as u,c as p,h as e,w as n,q as l,_ as r}from"./index-BNUlLVNv.js";const a={};function m(y,t){const o=s("ElDivider"),d=s("ElLink"),i=r;return u(),p("div",null,[e(o,{"content-position":"left"},{default:n(()=>t[0]||(t[0]=[l(" 基础用法 ")])),_:1}),e(d,{href:"https://element.eleme.io",target:"_blank"},{default:n(()=>t[1]||(t[1]=[l(" 默认链接 ")])),_:1}),e(d,{type:"primary"},{default:n(()=>t[2]||(t[2]=[l(" 主要链接 ")])),_:1}),e(d,{type:"success"},{default:n(()=>t[3]||(t[3]=[l(" 成功链接 ")])),_:1}),e(d,{type:"warning"},{default:n(()=>t[4]||(t[4]=[l(" 警告链接 ")])),_:1}),e(d,{type:"danger"},{default:n(()=>t[5]||(t[5]=[l(" 危险链接 ")])),_:1}),e(d,{type:"info"},{default:n(()=>t[6]||(t[6]=[l(" 信息链接 ")])),_:1}),e(o,{"content-position":"left"},{default:n(()=>t[7]||(t[7]=[l(" 禁用状态 ")])),_:1}),e(d,{disabled:""},{default:n(()=>t[8]||(t[8]=[l(" 默认链接 ")])),_:1}),e(d,{type:"primary",disabled:""},{default:n(()=>t[9]||(t[9]=[l(" 主要链接 ")])),_:1}),e(d,{type:"success",disabled:""},{default:n(()=>t[10]||(t[10]=[l(" 成功链接 ")])),_:1}),e(d,{type:"warning",disabled:""},{default:n(()=>t[11]||(t[11]=[l(" 警告链接 ")])),_:1}),e(d,{type:"danger",disabled:""},{default:n(()=>t[12]||(t[12]=[l(" 危险链接 ")])),_:1}),e(d,{type:"info",disabled:""},{default:n(()=>t[13]||(t[13]=[l(" 信息链接 ")])),_:1}),e(o,{"content-position":"left"},{default:n(()=>t[14]||(t[14]=[l(" 下划线 ")])),_:1}),e(d,{underline:!1},{default:n(()=>t[15]||(t[15]=[l(" 无下划线 ")])),_:1}),e(d,null,{default:n(()=>t[16]||(t[16]=[l("有下划线")])),_:1}),e(o,{"content-position":"left"},{default:n(()=>t[17]||(t[17]=[l(" 图标 ")])),_:1}),e(d,null,{default:n(()=>[e(i,{name:"i-ep:edit",class:"el-icon--left"}),t[18]||(t[18]=l(" 编辑 "))]),_:1}),e(d,null,{default:n(()=>[t[19]||(t[19]=l(" 查看 ")),e(i,{name:"i-ep:view",class:"el-icon--right"})]),_:1})])}const g=f(a,[["render",m],["__scopeId","data-v-21084c53"]]);export{g as default};
