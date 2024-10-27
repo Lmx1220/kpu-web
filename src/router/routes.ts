@@ -56,7 +56,7 @@ const systemRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        component: () => import('@/views/index.vue'),
+        component: () => import('@/views/index/index.vue'),
         meta: {
           title: useSettingsStore(pinia).settings.home.title,
           icon: 'i-ant-design:home-twotone',

@@ -18,6 +18,7 @@ declare module 'vue' {
     Chip: typeof import('./../components/Chip/index.vue')['default']
     CodeEdite: typeof import('./../components/CodeEdite/index.vue')['default']
     ColorfulCard: typeof import('./../components/ColorfulCard/index.vue')['default']
+    Count: typeof import('./../components/Count/index.vue')['default']
     FileList: typeof import('./../components/BasicUpload/src/FileList.vue')['default']
     FileUpload: typeof import('./../components/FileUpload/index.vue')['default']
     FixedActionBar: typeof import('./../components/FixedActionBar/index.vue')['default']
