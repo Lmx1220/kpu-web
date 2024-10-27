@@ -47,7 +47,7 @@ const apps = ref([{
 </script>
 
 <template>
-  <ElCard class="recommendation" :body-class="{ height: '100%' }">
+  <ElCard class="recommendation" :body-style="{ height: '100%' }">
     <template #header>
       <SvgIcon name="ri:reserved-line" />
       经营建议
