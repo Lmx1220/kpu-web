@@ -1,9 +1,9 @@
+import type { LocaleType } from '#/config'
 import type { App } from 'vue'
 import type { I18nOptions } from 'vue-i18n'
+import useSettingsStore from '@/store/modules/settings'
 import { createI18n } from 'vue-i18n'
 import { setHtmlPageLang, setLoadLocalePool } from './helper.ts'
-import useSettingsStore from '@/store/modules/settings'
-import type { LocaleType } from '#/config'
 
 // eslint-disable-next-line import/no-mutable-exports
 export let i18n: ReturnType<typeof createI18n>

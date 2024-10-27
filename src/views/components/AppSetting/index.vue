@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import Sortable from 'sortablejs'
+import settingsDefault from '@/settings.default'
+import useMenuStore from '@/store/modules/menu'
+import useSettingsStore from '@/store/modules/settings'
+import { getTwoObjectDiff } from '@/utils'
+import eventBus from '@/utils/eventBus'
 import { useClipboard } from '@vueuse/core'
+import Sortable from 'sortablejs'
 import Message from 'vue-m-message'
 import themes from '../../../../themes'
-import settingsDefault from '@/settings.default'
-import { getTwoObjectDiff } from '@/util'
-import eventBus from '@/util/eventBus'
-import useSettingsStore from '@/store/modules/settings'
-import useMenuStore from '@/store/modules/menu'
 
 defineOptions({
   name: 'AppSetting',
@@ -36,12 +36,11 @@ watch(() => settingsStore.settings.menu.mode, (value) => {
   // }
 })
 
-// eslint-disable-next-line unused-imports/no-unused-vars
-let toolbarLayoutSortable: Sortable
 const toolbarLayoutRef = ref()
 watch(() => toolbarLayoutRef.value, (val) => {
   if (val) {
-    toolbarLayoutSortable = new Sortable(toolbarLayoutRef.value, {
+    // eslint-disable-next-line no-new
+    new Sortable(toolbarLayoutRef.value, {
       animation: 200,
       ghostClass: 'op-30',
       draggable: '.draggable',
@@ -254,6 +253,12 @@ function handleCopy() {
       </div>
       <div class="setting-item">
         <div class="label">
+          锁屏
+        </div>
+        <HToggle v-model="settingsStore.settings.toolbar.lock" />
+      </div>
+      <div class="setting-item">
+        <div class="label">
           国际化
         </div>
         <HToggle v-model="settingsStore.settings.toolbar.i18n" />
@@ -285,6 +290,7 @@ function handleCopy() {
           <SvgIcon v-if="tool === 'favorites'" name="i-uiw:star-off" />
           <SvgIcon v-if="tool === 'navSearch'" name="i-ri:search-line" />
           <SvgIcon v-if="tool === 'notification'" name="i-ri:notification-3-line" />
+          <SvgIcon v-if="tool === 'lock'" name="i-ri:lock-line" />
           <SvgIcon v-if="tool === 'i18n'" name="i-ri:translate" />
           <SvgIcon v-if="tool === 'fullscreen'" name="i-ri:fullscreen-line" />
           <SvgIcon v-if="tool === 'colorScheme'" name="i-ri:sun-line" />

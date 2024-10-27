@@ -18,6 +18,6 @@ function loadingHide() {
 }
 
 export {
-  loadingShow,
   loadingHide,
+  loadingShow,
 }

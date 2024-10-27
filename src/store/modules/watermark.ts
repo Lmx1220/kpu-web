@@ -1,7 +1,7 @@
+import type { settingsType } from '@/utils/watermark'
+import watermark from '@/utils/watermark'
 import useSettingsStore from './settings'
 import useUserStore from './user'
-import type { settingsType } from '@/util/watermark'
-import watermark from '@/util/watermark'
 
 const useWatermarkStore = defineStore(
   // 唯一ID

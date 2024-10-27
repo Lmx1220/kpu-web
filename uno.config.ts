@@ -1,4 +1,5 @@
 import type { Theme } from 'unocss/preset-uno'
+import { entriesToCss, toArray } from '@unocss/core'
 import {
   defineConfig,
   presetAttributify,
@@ -9,7 +10,7 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
-import { entriesToCss, toArray } from '@unocss/core'
+import { presetAnimations } from 'unocss-preset-animations'
 import { presetScrollbar } from 'unocss-preset-scrollbar'
 import themes from './themes'
 
@@ -62,10 +63,13 @@ export default defineConfig<Theme>({
     colors: {
       'ui-primary': 'rgb(var(--ui-primary))',
       'ui-text': 'rgb(var(--ui-text))',
+      'background': 'var(--g-container-bg)',
+      'border': 'var(--g-border-color)',
     },
   },
   presets: [
     presetUno(),
+    () => presetAnimations(),
     presetAttributify(),
     presetIcons({
       extraProperties: {
@@ -75,6 +79,7 @@ export default defineConfig<Theme>({
     }),
     presetTypography(),
     presetScrollbar(),
+
   ],
   transformers: [
     transformerDirectives(),

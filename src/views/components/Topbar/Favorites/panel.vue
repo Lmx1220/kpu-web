@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Sortable from 'sortablejs'
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import useFavoritesStore from '@/store/modules/favorites'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+import Sortable from 'sortablejs'
 
 defineOptions({
   name: 'FavoritesPanel',
@@ -15,11 +15,11 @@ const { generateI18nTitle } = useMenu()
 
 const favoritesContainerRef = ref()
 
-// eslint-disable-next-line unused-imports/no-unused-vars
-let favoritesSortable: Sortable
+// let favoritesSortable: Sortable
 watch(() => favoritesContainerRef.value, (val) => {
   if (val) {
-    favoritesSortable = new Sortable(favoritesContainerRef.value, {
+    // eslint-disable-next-line no-new
+    new Sortable(favoritesContainerRef.value, {
       animation: 200,
       ghostClass: 'draggable-ghost',
       draggable: '.draggable-item',

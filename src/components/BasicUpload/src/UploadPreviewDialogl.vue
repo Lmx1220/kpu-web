@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 import { downloadIds } from '@/api/modules/system/upload'
-import { useDialogInner } from '@/components/Dialog/hooks/useDialog'
-import type { DialogMethods } from '@/components/Dialog/typing'
-import { isArray } from '@/util/is'
-import { downloadFile } from '@/util/kpu/common.ts'
+import { useVbenModal } from '@/ui-kit'
+import { isArray } from '@/utils/is'
+import { downloadFile } from '@/utils/kpu/common.ts'
 
 interface Props {
   value?: FileResultVO[]
@@ -16,13 +15,16 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{
   'listChange': [FileResultVO[]]
   'delete': [string]
-  'register': [DialogMethods, string]
   'update:value': [FileResultVO[]]
 }>()
 const { t } = useI18n()
-const [register] = useDialogInner()
 const fileListRef = ref<FileResultVO[]>([])
-
+const [BaseDialog, modalApi] = useVbenModal({
+  // draggable: true,
+  onCancel() {
+    modalApi.close()
+  },
+})
 watch(
   () => props.value,
   (value) => {
@@ -57,7 +59,6 @@ async function handleDownload(record: FileResultVO) {
     class="upload-preview-modal"
     v-bind="$attrs"
     :show-ok-btn="false"
-    @register="register"
   >
     <ElTable :data="fileListRef">
       <ElTableColumn type="index" width="50" />

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Sortable from 'sortablejs'
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
-import Message from 'vue-m-message'
 import useUserStore from '@/store/modules/user'
-import storage from '@/util/storage'
+import storage from '@/utils/storage'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
+import Sortable from 'sortablejs'
+import Message from 'vue-m-message'
 
 defineOptions({
   name: 'StorageBox',
@@ -89,11 +89,11 @@ function recoveryStorage() {
 
 const containerRef = ref()
 
-// eslint-disable-next-line unused-imports/no-unused-vars
-let sortable: Sortable
+// let sortable: Sortable
 watch(() => containerRef.value, (val) => {
   if (val) {
-    sortable = new Sortable(containerRef.value, {
+    // eslint-disable-next-line no-new
+    new Sortable(containerRef.value, {
       animation: 200,
       ghostClass: 'draggable-ghost',
       draggable: '.draggable-item',

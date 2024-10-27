@@ -1,12 +1,12 @@
+import type { LocaleType } from '#/config'
+import useSettingsStore from '@/store/modules/settings'
 /**
  * Multi-language related operations
  */
 import { computed, unref } from 'vue'
-import { i18n } from './index.ts'
 import { loadLocalePool, setHtmlPageLang } from './helper'
-import type { LocaleType } from '#/config'
 
-import useSettingsStore from '@/store/modules/settings'
+import { i18n } from './index.ts'
 
 interface LangModule {
   message: Recordable

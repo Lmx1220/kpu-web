@@ -1,5 +1,5 @@
-import { defineFakeRoute } from 'vite-plugin-fake-server/client'
 import Mock from 'mockjs'
+import { defineFakeRoute } from 'vite-plugin-fake-server/client'
 
 const AllList: any[] = []
 for (let i = 0; i < 50; i++) {
@@ -20,7 +20,7 @@ export default defineFakeRoute([
       const list = AllList.filter((item) => {
         return title ? item.title.includes(title) : true
       })
-      const pageList = list.filter((item, index) => {
+      const pageList = list.filter((_item, index) => {
         return index >= from && index < (from + limit)
       })
       return {

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { encode } from 'js-base64'
 import type { CSSProperties } from 'vue'
 import { timeDelayReqFindUrlById } from '@/api/modules/system/upload'
-import { defaultBase64Img } from '@/util/file/base64Conver'
+import { defaultBase64Img } from '@/utils/file/base64Conver'
+import { encode } from 'js-base64'
 
 interface Props {
   fileUrl?: string

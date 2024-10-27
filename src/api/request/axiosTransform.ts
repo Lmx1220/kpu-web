@@ -1,3 +1,4 @@
+import type { RequestOptions, Result } from '#/axios'
 /**
  * Data processing class, can be configured according to the project
  */
@@ -7,7 +8,6 @@ import type {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios'
-import type { RequestOptions, Result } from '#/axios'
 
 export interface CreateAxiosOptions extends AxiosRequestConfig {
   authenticationScheme?: string

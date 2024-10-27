@@ -1,33 +1,29 @@
 import path from 'node:path'
 import process from 'node:process'
-import fs from 'node:fs'
-import type { PluginOption } from 'vite'
+import vueLegacy from '@vitejs/plugin-legacy'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import vueLegacy from '@vitejs/plugin-legacy'
-import VueDevTools from 'vite-plugin-vue-devtools'
-import autoImport from 'unplugin-auto-import/vite'
-import components from 'unplugin-vue-components/vite'
-import Unocss from 'unocss/vite'
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import { vitePluginFakeServer } from 'vite-plugin-fake-server'
-import Layouts from 'vite-plugin-vue-meta-layouts'
-import Pages from 'vite-plugin-pages'
-import { compression } from 'vite-plugin-compression2'
-import dayjs from 'dayjs'
-import archiver from 'archiver'
-import TurboConsole from 'unplugin-turbo-console/vite'
-import banner from 'vite-plugin-banner'
-import picocolors from 'picocolors'
 import boxen from 'boxen'
+import picocolors from 'picocolors'
 import { visualizer } from 'rollup-plugin-visualizer'
+import Unocss from 'unocss/vite'
+import autoImport from 'unplugin-auto-import/vite'
+import TurboConsole from 'unplugin-turbo-console/vite'
+import components from 'unplugin-vue-components/vite'
+import { loadEnv, type PluginOption } from 'vite'
+import AppLoading from 'vite-plugin-app-loading'
+import Archiver from 'vite-plugin-archiver'
+import banner from 'vite-plugin-banner'
+import { compression } from 'vite-plugin-compression2'
+import { vitePluginFakeServer } from 'vite-plugin-fake-server'
+import Pages from 'vite-plugin-pages'
 import { VitePWA } from 'vite-plugin-pwa'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import VueDevTools from 'vite-plugin-vue-devtools'
+import Layouts from 'vite-plugin-vue-meta-layouts'
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-
-export default function createVitePlugins(viteEnv, isBuild = false) {
+export default function createVitePlugins(mode: string, isBuild = false) {
+  const viteEnv = loadEnv(mode, process.cwd())
   const vitePlugins: (PluginOption | PluginOption[])[] = [
     vue(),
     vueJsx(),
@@ -51,7 +47,7 @@ export default function createVitePlugins(viteEnv, isBuild = false) {
       ],
       dts: './src/types/auto-imports.d.ts',
       dirs: [
-        './src/util/composables/**',
+        './src/utils/composables/**',
       ],
     }),
 
@@ -102,58 +98,11 @@ export default function createVitePlugins(viteEnv, isBuild = false) {
       algorithm: 'brotliCompress',
     }),
 
-    (function () {
-      let outDir: string
-      return {
-        name: 'vite-plugin-archiver',
-        apply: 'build',
-        configResolved(resolvedConfig) {
-          outDir = resolvedConfig.build.outDir
-        },
-        async closeBundle() {
-          if (['zip', 'tar'].includes(viteEnv.VITE_BUILD_ARCHIVE)) {
-            await sleep(1000)
-            const archive = archiver(viteEnv.VITE_BUILD_ARCHIVE, {
-              ...(viteEnv.VITE_BUILD_ARCHIVE === 'zip' && { zlib: { level: 9 } }),
-              ...(viteEnv.VITE_BUILD_ARCHIVE === 'tar' && { gzip: true, gzipOptions: { level: 9 } }),
-            })
-            const output = fs.createWriteStream(`${outDir}.${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.${viteEnv.VITE_BUILD_ARCHIVE === 'zip' ? 'zip' : 'tar.gz'}`)
-            archive.pipe(output)
-            archive.directory(outDir, false)
-            archive.finalize()
-          }
-        },
-      }
-    })(),
+    viteEnv.VITE_BUILD_ARCHIVE && Archiver({
+      archiveType: viteEnv.VITE_BUILD_ARCHIVE,
+    }),
 
-    {
-      name: 'vite-plugin-loading',
-      enforce: 'pre',
-      transformIndexHtml: {
-        handler: async html => html.replace(/<\/body>/, `${
-          `<div data-app-loading>${await fs.readFileSync(path.resolve(process.cwd(), 'loading.html'), 'utf8')}</div>`
-        }</body>`),
-        order: 'pre',
-      },
-      transform: (code, id) => {
-        if (/src\/main.ts$/.test(id)) {
-          code = code.concat(`
-            const loadingEl = document.querySelector('[data-app-loading]')
-            if (loadingEl) {
-              loadingEl.style['pointer-events'] = 'none'
-              loadingEl.style.visibility = 'hidden'
-              loadingEl.style.opacity = 0
-              loadingEl.style.transition = 'all 0.5s ease-out'
-              loadingEl.addEventListener('transitionend', () => loadingEl.remove(), { once: true })
-            }
-          `)
-          return {
-            code,
-            map: null,
-          }
-        }
-      },
-    },
+    AppLoading('loading.html'),
 
     // https://github.com/unplugin/unplugin-turbo-console
     TurboConsole(),

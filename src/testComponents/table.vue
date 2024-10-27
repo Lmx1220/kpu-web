@@ -5,7 +5,7 @@
 <!--import { onUnmounted } from 'vue'-->
 <!---->
 <!--import XEUtils from 'xe-utils'-->
-<!--import { eqEmptyValue, isArray } from '@/util/is'-->
+<!--import { eqEmptyValue, isArray } from '@/utils/is'-->
 
 <!--defineOptions({-->
 <!--  name: 'Table',-->

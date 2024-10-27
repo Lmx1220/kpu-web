@@ -19,7 +19,7 @@ export default [
       const list = AllList.filter((item) => {
         return title ? item.title.includes(title) : true
       })
-      const pageList = list.filter((item, index) => {
+      const pageList = list.filter((_item, index) => {
         return index >= current && index < (current + size)
       })
       return {

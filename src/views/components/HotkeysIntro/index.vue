@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import eventBus from '@/util/eventBus'
 import useSettingsStore from '@/store/modules/settings'
+import eventBus from '@/utils/eventBus'
 
 defineOptions({
   name: 'HotkeysIntro',
@@ -35,6 +35,11 @@ onMounted(() => {
               <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
               <HKbd>S</HKbd>
               唤起导航搜索
+            </li>
+            <li class="py-1">
+              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
+              <HKbd>L</HKbd>
+              锁屏
             </li>
           </ul>
         </div>

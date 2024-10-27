@@ -1,3 +1,4 @@
+import type { PageParams, PageResult } from '@/api/model/baseModel'
 import type { AxiosRequestConfig } from 'axios'
 import type {
   StandardModuleExamplePageQuery,
@@ -7,7 +8,6 @@ import type {
 } from './model/standardModuleExampleModel.ts'
 import defHttp from '@/api'
 import { RequestEnum } from '@/enums/httpEnum'
-import type { PageParams, PageResult } from '@/api/model/baseModel'
 
 const MODULAR = 'standardModuleExample'
 const ServicePrefix = 'mock'

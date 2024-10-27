@@ -1,9 +1,9 @@
 <script lang="ts" setup>
+import type { FieldNames, KeyType, TreeProps, TreeState } from './tree'
+import { isString } from '@/utils/is'
+
 import { ElTree } from 'element-plus'
 import { omit } from 'lodash-es'
-
-import type { FieldNames, KeyType, TreeProps, TreeState } from './tree'
-import { isString } from '@/util/is'
 
 defineOptions({
   name: 'BasicTree',
@@ -304,7 +304,7 @@ const getBindValues = computed(() => {
         emits('update:selectedKeys', [])
       }
     },
-    'onCheck': (node: any, v: any) => {
+    'onCheck': (_node: any, v: any) => {
       state.checkedKeys = v.checkedKeys
 
       const rawVal = toRaw(state.checkedKeys)

@@ -1,6 +1,6 @@
-import { defaultsDeep } from 'lodash-es'
 import type { RecursiveRequired, Settings } from '#/global'
 import settingsDefault from '@/settings.default'
+import { defaultsDeep } from 'lodash-es'
 
 const globalSettings: Settings.all = {
   app: {
@@ -19,6 +19,7 @@ const globalSettings: Settings.all = {
   toolbar: {
     favorites: true,
     notification: true,
+    lock: true,
     i18n: true,
     fullscreen: true,
     colorScheme: true,

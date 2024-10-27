@@ -1,9 +1,9 @@
-import type { AxiosProgressEvent } from 'axios'
-import qs from 'qs'
-import type { FileResultVO } from './model/fileModel'
 import type { UploadFileParams } from '#/axios'
-import { TimeDelayReq } from '@/api/helper/timeDelayReq'
+import type { AxiosProgressEvent } from 'axios'
+import type { FileResultVO } from './model/fileModel'
 import defHttp from '@/api'
+import { TimeDelayReq } from '@/api/helper/timeDelayReq'
+import qs from 'qs'
 
 const MODULAR = 'file'
 const ServicePrefix = ''
