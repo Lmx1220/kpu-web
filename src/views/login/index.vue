@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Copyright from '../components/Copyright/index.vue'
-import ColorScheme from '../components/Topbar/ColorScheme/index.vue'
-import I18n from '../components/Topbar/I18n/index.vue'
 import useSettingsStore from '@/store/modules/settings.ts'
 import LoginForm from '@/views/login/components/LoginForm/index.vue'
 import RegisterForm from '@/views/login/components/RegisterForm/index.vue'
 import ResetPasswordForm from '@/views/login/components/ResetPasswordForm/index.vue'
+import Copyright from '../components/Copyright/index.vue'
+import ColorScheme from '../components/Topbar/ColorScheme/index.vue'
+import I18n from '../components/Topbar/I18n/index.vue'
 
 defineOptions({
   name: 'Login',

@@ -1,6 +1,6 @@
 import type { window } from '#/global'
 import useWindowStore from '@/store/modules/window'
-import eventBus from '@/util/eventBus'
+import eventBus from '@/utils/eventBus'
 
 export default function useAuth() {
   const windowStore = useWindowStore()

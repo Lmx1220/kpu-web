@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import hotkeys from 'hotkeys-js'
-import dayjs from 'dayjs'
-import Provider from './ui-provider/index.vue'
-
-import eventBus from '@/util/eventBus'
-import useSettingsStore from '@/store/modules/settings'
 import { useLocale } from '@/locales/useLocale.ts'
+import useSettingsStore from '@/store/modules/settings'
+import eventBus from '@/utils/eventBus'
+
+import dayjs from 'dayjs'
+import hotkeys from 'hotkeys-js'
+import Provider from './ui-provider/index.vue'
 
 const settingsStore = useSettingsStore()
 const { getLocale } = useLocale()

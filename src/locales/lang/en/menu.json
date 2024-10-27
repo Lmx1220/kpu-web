@@ -1,0 +1,11 @@
+{
+  "window": {
+    "root": "Window Functions",
+    "add": "Open new window",
+    "remove": "Close window",
+    "maximize": "Maximize window",
+    "notitle": "No title window",
+    "params": "Params window",
+    "width": "Custom window width"
+  }
+}

@@ -81,6 +81,7 @@ declare namespace Settings {
      */
     direction?: 'ltr' | 'rtl'
   }
+
   interface userPreferences {
     /**
      * 是否开启用户偏好设置
@@ -94,6 +95,7 @@ declare namespace Settings {
      */
     storageTo?: 'local' | 'server'
   }
+
   interface home {
     /**
      * 是否开启主页
@@ -111,6 +113,7 @@ declare namespace Settings {
      */
     fullPath?: string
   }
+
   interface layout {
     /**
      * 页宽模式，当设置为非 `'adaption'` 时，可以去 /src/assets/styles/resources/variables.scss 里设置 `$g-app-width` 宽度变量
@@ -126,6 +129,7 @@ declare namespace Settings {
      */
     enableMobileAdaptation?: boolean
   }
+
   interface menu {
     /**
      * 导航栏数据来源，当 `app.routeBaseOn: 'filesystem'` 时生效
@@ -186,6 +190,7 @@ declare namespace Settings {
      */
     enableHotkeys?: boolean
   }
+
   interface topbar {
     /**
      * 模式
@@ -201,6 +206,7 @@ declare namespace Settings {
      */
     switchTabbarAndToolbar?: boolean
   }
+
   interface tabbar {
     /**
      * 是否开启标签栏
@@ -253,6 +259,7 @@ declare namespace Settings {
      */
     storageTo?: 'local' | 'server'
   }
+
   interface toolbar {
     /**
      * 是否开启窗口预览
@@ -296,10 +303,11 @@ declare namespace Settings {
     colorScheme?: boolean
     /**
      * 布局设置，可自定义摆放位置和顺序，其中 `->` 为分隔符，用于分隔左右两侧的工具栏。修改时请确保默认值里的所有值都存在，不可删减。
-     * @默认值 `['favorites', 'breadcrumb', '->', 'navSearch', 'notification', 'i18n', 'fullscreen', 'pageReload', 'colorScheme']`
+     * @默认值 `['favorites', 'breadcrumb', '->', 'navSearch', 'notification','lock', 'i18n', 'fullscreen', 'pageReload', 'colorScheme']`
      */
     layout?: (Exclude<keyof toolbar, 'layout'> | '->')[]
   }
+
   interface favorites {
     /**
      * 存储位置
@@ -308,6 +316,7 @@ declare namespace Settings {
      */
     storageTo?: 'local' | 'server'
   }
+
   interface breadcrumb {
     /**
      * 面包屑导航风格
@@ -321,6 +330,7 @@ declare namespace Settings {
      */
     enableMainMenu?: boolean
   }
+
   interface mainPage {
     /**
      * 是否开启页面快捷键
@@ -347,6 +357,7 @@ declare namespace Settings {
      */
     transitionMode?: 'fade' | 'slide-left' | 'slide-right' | 'slide-top' | 'slide-bottom'
   }
+
   interface navSearch {
     /**
      * 是否开启导航搜索快捷键
@@ -354,6 +365,7 @@ declare namespace Settings {
      */
     enableHotkeys?: boolean
   }
+
   interface window {
     /**
      * 窗口默认宽度，设置为数字时单位为 px
@@ -376,6 +388,7 @@ declare namespace Settings {
      */
     enableHotkeys?: boolean
   }
+
   interface copyright {
     /**
      * 是否开启底部版权，同时在路由 meta 对象里可以单独设置某个路由是否显示底部版权信息
@@ -403,6 +416,7 @@ declare namespace Settings {
      */
     beian?: string
   }
+
   interface all {
     /** 应用设置 */
     app?: app
@@ -470,6 +484,7 @@ declare namespace Route {
     }
     children: RouteRecordRaw[]
   }
+
   interface breadcrumb {
     path: string
     title?: string | (() => string)
@@ -495,6 +510,7 @@ declare namespace Menu {
     children?: recordRaw[]
 
   }
+
   /** 主导航 */
   interface recordMainRaw {
 
@@ -503,6 +519,7 @@ declare namespace Menu {
     auth?: string | string[]
     children: recordRaw[]
   }
+
   interface breadcrumb {
     title?: string | (() => string)
   }
@@ -547,10 +564,10 @@ declare namespace Iframe {
 }
 
 declare global {
-    type Recordable<T = any> = Record<any, T>
-    type Id<T = any> = Record<string, T> & {
-      id?: string
-    }
+  type Recordable<T = any> = Record<any, T>
+  type Id<T = any> = Record<string, T> & {
+    id?: string
+  }
 
 }
 declare type DataConfig<SEARCH = any, T = any> = Record<any, any> & {
@@ -602,12 +619,15 @@ declare global {
     type Element = VNode
     // tslint:disable no-empty-interface
     type ElementClass = ComponentRenderProxy
+
     interface ElementAttributesProperty {
       $props: any
     }
+
     interface IntrinsicElements {
       [elem: string]: any
     }
+
     interface IntrinsicAttributes {
       [elem: string]: any
     }

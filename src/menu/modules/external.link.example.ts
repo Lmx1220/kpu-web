@@ -6,11 +6,11 @@ const menus: Menu.recordRaw = {
   children: [
     {
       title: 'Gitee 仓库',
-      windowName: 'https://gitee.com/one-step-admin/basic',
+      windowName: 'https://gitee.com/muxian/vue3-ts',
     },
     {
       title: 'Github 仓库',
-      windowName: 'https://github.com/one-step-admin/basic',
+      windowName: 'https://github.com/muxian/vue3-ts',
     },
   ],
 }

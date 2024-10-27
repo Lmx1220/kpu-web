@@ -1,21 +1,22 @@
+import Mock from 'mockjs'
 import { defineFakeRoute } from 'vite-plugin-fake-server/client'
 
 export default defineFakeRoute([
   {
     url: '/mock/anyTenant/login',
     method: 'post',
-    response: ({ body }) => {
-      return {
+    response: (option) => {
+      return Mock.mock({
         msg: '',
         code: 0,
         data: {
-          username: body.username,
-          // token: '@string',
+          username: option.body.username,
+          token: '@guid',
+          avatar: `@image("600x600/000/fff&text=${option.body.username}")`,
+          // avater1: faker.image.avatar(),
           expiration: `${Math.ceil(new Date().getTime()) + (24 * 60 * 60 * 1000)}`,
-          token: `${body.username}_@string`,
-          avatar: 'https://one-step-admin.hurui.me/logo.png',
         },
-      }
+      })
     },
   },
   {

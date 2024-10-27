@@ -1,9 +1,10 @@
-import { defaultsDeep } from 'lodash-es'
-import type { RouteMeta } from 'vue-router'
+import type { LocaleType } from '#/config'
 import type { Settings } from '#/global'
+import type { RouteMeta } from 'vue-router'
+import { defaultsDeep } from 'lodash-es'
 // import { getLocales } from '@/locales'
 import settingsDefault from '@/settings'
-import type { LocaleType } from '#/config'
+import storage from '@/utils/storage.ts'
 
 const useSettingsStore = defineStore(
   // 唯一ID
@@ -92,6 +93,8 @@ const useSettingsStore = defineStore(
         break
     }
 
+    const lock = ref<boolean>(storage.local.get('lock') === 'true')
+
     // 页面标题
     const title = ref<RouteMeta['title']>()
     const previewAllWindows = ref(false)
@@ -151,6 +154,7 @@ const useSettingsStore = defineStore(
       settings,
       currentColorScheme,
       os,
+      lock,
       title,
       previewAllWindows,
       toggleSidebarCollapse,

@@ -27,8 +27,8 @@ const globalSettings: Settings.all = {
   copyright: {
     enable: true,
     dates: '2021-present',
-    company: 'One-step-admin',
-    website: 'https://one-step-admin.hurui.me',
+    company: 'One-kpu-admin',
+    website: 'https://one-kpu-admin.com',
   },
 }
 export default defaultsDeep(globalSettings, settingsDefault) as RecursiveRequired<Settings.all>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Logo from '../Logo/index.vue'
-import ToolbarRightSide from '../Topbar/rightSide.vue'
-import Menu from '../Menu/index.vue'
-import PanelMenu from '../PanelMenu/index.vue'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
+import Logo from '../Logo/index.vue'
+import Menu from '../Menu/index.vue'
+import PanelMenu from '../PanelMenu/index.vue'
+import ToolbarRightSide from '../Topbar/rightSide.vue'
 
 defineOptions({
   name: 'LayoutHeader',

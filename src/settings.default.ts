@@ -40,10 +40,11 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     favorites: false,
     navSearch: true,
     notification: false,
+    lock: false,
     i18n: false,
     fullscreen: false,
     colorScheme: false,
-    layout: ['previewWindows', 'favorites', '->', 'navSearch', 'notification', 'i18n', 'fullscreen', 'colorScheme'],
+    layout: ['previewWindows', 'favorites', '->', 'navSearch', 'notification', 'lock', 'i18n', 'fullscreen', 'colorScheme'],
   },
   navSearch: {
     enableHotkeys: true,

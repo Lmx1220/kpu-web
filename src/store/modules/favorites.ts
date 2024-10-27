@@ -1,9 +1,9 @@
+import type { Favorites, Menu } from '#/global'
+import { favorites, favoritesEdit } from '@/api/modules/user'
+import storage from '@/utils/storage'
+import useMenuStore from './menu'
 import useSettingsStore from './settings'
 import useUserStore from './user'
-import useMenuStore from './menu'
-import { favorites, favoritesEdit } from '@/api/modules/user'
-import storage from '@/util/storage'
-import type { Favorites, Menu } from '#/global'
 
 const useFavoritesStore = defineStore(
   // 唯一ID

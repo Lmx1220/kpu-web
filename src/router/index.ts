@@ -1,9 +1,10 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import useFavoritesStore from '@/store/modules/favorites.ts'
+import useMenuStore from '@/store/modules/menu.ts'
 import useSettingsStore from '@/store/modules/settings.ts'
 import useUserStore from '@/store/modules/user.ts'
-import useMenuStore from '@/store/modules/menu.ts'
-import useFavoritesStore from '@/store/modules/favorites.ts'
+import { loadingFadeOut } from 'virtual:app-loading'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 // 路由数据
 const routes: RouteRecordRaw[] = [
@@ -35,7 +36,7 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
 })
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _from, next) => {
   const settingsStore = useSettingsStore()
   const userStore = useUserStore()
   const menuStore = useMenuStore()
@@ -93,5 +94,8 @@ router.beforeEach(async (to, from, next) => {
       next()
     }
   }
+})
+router.isReady().then(() => {
+  loadingFadeOut()
 })
 export default router

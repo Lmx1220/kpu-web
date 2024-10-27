@@ -1,9 +1,9 @@
-import { cloneDeep } from 'lodash-es'
-import useSettingsStore from './settings'
-import useUserStore from './user'
-
 import type { Menu } from '#/global'
 import menu from '@/menu'
+import { cloneDeep } from 'lodash-es'
+
+import useSettingsStore from './settings'
+import useUserStore from './user'
 
 const useMenuStore = defineStore(
   // 唯一ID

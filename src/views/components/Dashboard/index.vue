@@ -1,16 +1,16 @@
 <script setup lang="ts">
+import type { window } from '#/global'
+import useFavoritesStore from '@/store/modules/favorites.ts'
+import useSettingsStore from '@/store/modules/settings'
+import useWindowStore from '@/store/modules/window'
+import eventBus from '@/utils/eventBus'
+import storage from '@/utils/storage.ts'
+import ContextMenu from '@imengyu/vue3-context-menu'
 import hotkeys from 'hotkeys-js'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import Sortable from 'sortablejs'
 import Message from 'vue-m-message'
-import ContextMenu from '@imengyu/vue3-context-menu'
 import Empty from './Empty/index.vue'
-import useSettingsStore from '@/store/modules/settings'
-import useWindowStore from '@/store/modules/window'
-import eventBus from '@/util/eventBus'
-import type { window } from '#/global'
-import storage from '@/util/storage.ts'
-import useFavoritesStore from '@/store/modules/favorites.ts'
 
 defineOptions({
   name: 'Dashboard',

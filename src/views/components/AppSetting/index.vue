@@ -225,6 +225,12 @@ function handleCopy() {
       </div>
       <div class="setting-item">
         <div class="label">
+          窗口预览
+        </div>
+        <HToggle v-model="settingsStore.settings.toolbar.previewWindows" />
+      </div>
+      <div class="setting-item">
+        <div class="label">
           收藏夹
           <HTooltip text="可将常用导航添加进收藏夹，方便快读访问">
             <SvgIcon name="i-ri:question-line" />

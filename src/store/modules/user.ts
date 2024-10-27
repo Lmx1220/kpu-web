@@ -1,10 +1,10 @@
+import api from '@/api'
+import router from '@/router'
+import storage from '@/utils/storage'
+
 import useMenuStore from './menu'
 import useSettingsStore from './settings'
 import useWindowStore from './window'
-
-import router from '@/router'
-import api from '@/api'
-import storage from '@/util/storage'
 
 const useUserStore = defineStore(
   // 唯一ID

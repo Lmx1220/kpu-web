@@ -1,5 +1,5 @@
-import useMenuStore from './menu'
 import type { window } from '#/global'
+import useMenuStore from './menu'
 
 export const useWindowStore = defineStore(
   // 唯一ID
@@ -51,11 +51,11 @@ export const useWindowStore = defineStore(
     }
     function removeLeftSide(name: string) {
       const i = list.value.findIndex(item => item.name === name)
-      list.value = list.value.filter((item, index) => index >= i)
+      list.value = list.value.filter((_item, index) => index >= i)
     }
     function removeRightSide(name: string) {
       const i = list.value.findIndex(item => item.name === name)
-      list.value = list.value.filter((item, index) => index <= i)
+      list.value = list.value.filter((_item, index) => index <= i)
     }
     function removeAll() {
       list.value = []
