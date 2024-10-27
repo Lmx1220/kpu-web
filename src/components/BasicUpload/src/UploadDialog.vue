@@ -138,7 +138,7 @@ async function uploadApiByItem(item: FileItem) {
 
 async function handleStartUpload() {
   const { maxNumber } = props
-  if ((fileListRef.value.length + props.previewFileList?.length ?? 0) > maxNumber) {
+  if ((fileListRef.value.length + (props.previewFileList?.length || 0)) > maxNumber) {
     return ElMessage.warning(t('component.upload.maxNumber', [maxNumber]))
   }
   try {
