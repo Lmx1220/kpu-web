@@ -391,8 +391,8 @@ importers:
         specifier: ^0.32.3
         version: 0.32.3(@vue/compiler-sfc@3.5.12)(vite@5.4.10(@types/node@22.8.0)(sass-embedded@1.80.4)(sass@1.79.2)(terser@5.36.0))(vue-router@4.4.5(vue@3.5.12(typescript@5.6.3)))
       vite-plugin-pwa:
-        specifier: ^0.17.5
-        version: 0.17.5(vite@5.4.10(@types/node@22.8.0)(sass-embedded@1.80.4)(sass@1.79.2)(terser@5.36.0))(workbox-build@7.1.1)(workbox-window@7.1.0)
+        specifier: ^0.20.5
+        version: 0.20.5(vite@5.4.10(@types/node@22.8.0)(sass-embedded@1.80.4)(sass@1.79.2)(terser@5.36.0))(workbox-build@7.1.1)(workbox-window@7.1.0)
       vite-plugin-svg-icons:
         specifier: ^2.0.1
         version: 2.0.1(vite@5.4.10(@types/node@22.8.0)(sass-embedded@1.80.4)(sass@1.79.2)(terser@5.36.0))
@@ -7338,13 +7338,17 @@ packages:
       vue-router:
         optional: true
 
-  vite-plugin-pwa@0.17.5:
-    resolution: {integrity: sha512-UxRNPiJBzh4tqU/vc8G2TxmrUTzT6BqvSzhszLk62uKsf+npXdvLxGDz9C675f4BJi6MbD2tPnJhi5txlMzxbQ==}
+  vite-plugin-pwa@0.20.5:
+    resolution: {integrity: sha512-aweuI/6G6n4C5Inn0vwHumElU/UEpNuO+9iZzwPZGTCH87TeZ6YFMrEY6ZUBQdIHHlhTsbMDryFARcSuOdsz9Q==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
+      '@vite-pwa/assets-generator': ^0.2.6
       vite: ^3.1.0 || ^4.0.0 || ^5.0.0
-      workbox-build: ^7.0.0
-      workbox-window: ^7.0.0
+      workbox-build: ^7.1.0
+      workbox-window: ^7.1.0
+    peerDependenciesMeta:
+      '@vite-pwa/assets-generator':
+        optional: true
 
   vite-plugin-svg-icons@2.0.1:
     resolution: {integrity: sha512-6ktD+DhV6Rz3VtedYvBKKVA2eXF+sAQVaKkKLDSqGUfnhqXl3bj5PPkVTl3VexfTuZy66PmINi8Q6eFnVfRUmA==}
@@ -15875,11 +15879,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-pwa@0.17.5(vite@5.4.10(@types/node@22.8.0)(sass-embedded@1.80.4)(sass@1.79.2)(terser@5.36.0))(workbox-build@7.1.1)(workbox-window@7.1.0):
+  vite-plugin-pwa@0.20.5(vite@5.4.10(@types/node@22.8.0)(sass-embedded@1.80.4)(sass@1.79.2)(terser@5.36.0))(workbox-build@7.1.1)(workbox-window@7.1.0):
     dependencies:
       debug: 4.3.7
-      fast-glob: 3.3.2
       pretty-bytes: 6.1.1
+      tinyglobby: 0.2.10
       vite: 5.4.10(@types/node@22.8.0)(sass-embedded@1.80.4)(sass@1.79.2)(terser@5.36.0)
       workbox-build: 7.1.1
       workbox-window: 7.1.0
