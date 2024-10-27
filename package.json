@@ -3,6 +3,7 @@
   "type": "module",
   "version": "1.0.1",
   "private": true,
+  "packageManager": "pnpm@9.12.1",
   "engines": {
     "node": "^20.9.0 || >=21.1.0"
   },
@@ -36,8 +37,8 @@
     "@headlessui/vue": "^1.7.23",
     "@imengyu/vue3-context-menu": "^1.4.3",
     "@tanstack/vue-store": "^0.5.6",
-    "@tinymce/tinymce-vue": "^6.1.0",
-    "@visactor/vchart": "^1.12.9",
+    "@tinymce/tinymce-vue": "^6.0.1",
+    "@visactor/vchart": "^1.12.8",
     "@vueuse/components": "^11.1.0",
     "@vueuse/core": "^11.1.0",
     "@vueuse/integrations": "^11.1.0",
@@ -54,7 +55,7 @@
     "defu": "^6.1.4",
     "disable-devtool": "^0.3.8",
     "echarts": "^5.5.1",
-    "element-plus": "^2.8.6",
+    "element-plus": "^2.8.5",
     "eruda": "^3.4.0",
     "floating-vue": "5.2.2",
     "highlight.js": "^11.10.0",
@@ -96,12 +97,12 @@
     "vue-router": "^4.4.5",
     "vue3-blocks-tree": "^0.6.2",
     "vue3-count-to": "^1.1.2",
-    "vxe-table": "^4.7.95",
+    "vxe-table": "^4.7.16",
     "xe-utils": "^3.5.31"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.8.0",
-    "@iconify/json": "^2.2.263",
+    "@iconify/json": "^2.2.261",
     "@iconify/vue": "^4.1.2",
     "@stylistic/stylelint-config": "^2.0.0",
     "@types/lodash-es": "^4.17.12",
@@ -112,7 +113,7 @@
     "@types/qs": "^6.9.16",
     "@types/sortablejs": "^1.15.8",
     "@types/splitpanes": "^2.2.6",
-    "@unocss/eslint-plugin": "^0.62.4",
+    "@unocss/eslint-plugin": "^0.63.4",
     "@vitejs/plugin-legacy": "^5.4.2",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
@@ -120,13 +121,13 @@
     "autoprefixer": "^10.4.20",
     "boxen": "^8.0.1",
     "cross-env": "^7.0.3",
-    "eslint": "^9.13.0",
+    "eslint": "^9.12.0",
     "esno": "^4.8.0",
     "fs-extra": "^11.2.0",
     "http-server": "^14.1.1",
     "inquirer": "^9.3.7",
     "lint-staged": "^15.2.10",
-    "npm-run-all2": "^6.2.6",
+    "npm-run-all2": "^6.2.4",
     "picocolors": "^1.1.1",
     "plop": "^4.0.1",
     "postcss": "^8.4.47",
@@ -142,14 +143,14 @@
     "stylelint-scss": "^6.8.1",
     "svgo": "^3.3.2",
     "terser": "^5.36.0",
-    "typescript": "5.5.4",
-    "unocss": "^0.62.4",
+    "typescript": "^5.6.3",
+    "unocss": "^0.63.4",
     "unocss-preset-animations": "^1.1.0",
     "unocss-preset-scrollbar": "^0.3.1",
     "unplugin-auto-import": "^0.18.3",
     "unplugin-turbo-console": "^1.10.4",
     "unplugin-vue-components": "^0.27.4",
-    "vite": "^5.4.10",
+    "vite": "^5.4.9",
     "vite-plugin-app-loading": "^0.3.0",
     "vite-plugin-archiver": "^0.1.1",
     "vite-plugin-banner": "^0.8.0",
@@ -158,7 +159,7 @@
     "vite-plugin-pages": "^0.32.3",
     "vite-plugin-pwa": "^0.17.5",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vite-plugin-vue-devtools": "^7.5.4",
+    "vite-plugin-vue-devtools": "^7.5.2",
     "vite-plugin-vue-meta-layouts": "^0.4.3",
     "vue-tsc": "^2.1.6"
   },
@@ -170,6 +171,5 @@
     "commitizen": {
       "path": "node_modules/cz-git"
     }
-  },
-  "packageManager": "pnpm@9.12.1+sha512.e5a7e52a4183a02d5931057f7a0dbff9d5e9ce3161e33fa68ae392125b79282a8a8a470a51dfc8a0ed86221442eb2fb57019b0990ed24fab519bf0e1bc5ccfc4"
+  }
 }

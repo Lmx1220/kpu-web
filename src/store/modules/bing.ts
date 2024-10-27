@@ -11,16 +11,14 @@ const useBingStore = defineStore(
       JSON.parse(localStorage.getItem(`backgroundList-${today}`) as string) || await axios({
         url: 'https://api.vuejs-core.cn/getBingImage',
         method: 'get',
-      }).then((({ data }) => {
+      }).then(({ data }) => {
         backgroundList.value = data.data
 
-        Object.keys(localStorage).forEach(((item) => {
+        Object.keys(localStorage).forEach((item) => {
           item.startsWith('backgroundList') && localStorage.removeItem(item)
-        }
-        ))
+        })
         localStorage.setItem(`backgroundList-${today}`, JSON.stringify(data.data))
-      }
-      ))
+      })
     }
     return {
       backgroundList,
