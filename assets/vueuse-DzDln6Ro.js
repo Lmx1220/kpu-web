@@ -1,9 +1,0 @@
-
-/**
- * 由 admin 提供技术支持
- * Powered by admin
- * 代码仓库
- * Github https://github.com/Lmx1220/kpu-web
- */
-    
-import{d as w,bd as x,r as N,an as P,z as U,N as r,I as m,o as f,c as y,h as n,w as t,q as u,a as c,b as o,e as M,Z as A,f as F,be as S,_ as T,M as q,P as _}from"./index-DI_iSbuB.js";import{_ as z}from"./index.vue_vue_type_script_setup_true_lang-DN1ItRwK.js";const D=w({__name:"vueuse",setup(H){function d(){r.success({message:"恭喜你，这是一条成功消息"})}const k=S(()=>{d()},1e3),C=x(()=>{d()},1e3),s=N(""),{text:V,copy:b,copied:v,isSupported:g}=P();U(v,l=>{l&&r.success(`复制成功：${V.value}`)});function B(l){window.open(l,"_blank")}return(l,e)=>{const E=T,a=m("ElButton"),I=z,i=q,$=m("ElInput");return f(),y("div",null,[n(I,{title:"VueUse",content:"VueUse 是一个 Vue Composition API 实用程序的集合，更多 API 和例子请查看 VueUse 官网。"},{default:t(()=>[n(a,{onClick:e[0]||(e[0]=p=>B("https://vueuse.org/"))},{icon:t(()=>[n(E,{name:"i-ep:link"})]),default:t(()=>[e[3]||(e[3]=u(" VueUse 官网 "))]),_:1})]),_:1}),n(i,{title:"防抖：debounce"},{default:t(()=>[e[5]||(e[5]=c("p",{class:"mt-0"}," 所谓防抖，就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。 ",-1)),n(a,{onClick:o(k)},{default:t(()=>e[4]||(e[4]=[u(" 连续点击我，只会执行最后一次点击事件 ")])),_:1},8,["onClick"])]),_:1}),n(i,{title:"节流：throttle"},{default:t(()=>[e[7]||(e[7]=c("p",{class:"mt-0"}," 所谓节流，就是指连续触发事件但是在 n 秒中只执行一次函数。节流会稀释函数的执行频率。 ",-1)),n(a,{onClick:o(C)},{default:t(()=>e[6]||(e[6]=[u(" 连续点击我，每一秒只会执行一次点击事件 ")])),_:1},8,["onClick"])]),_:1}),o(g)?(f(),M(i,{key:0,title:"复制：clipboard"},{default:t(()=>[n($,{modelValue:o(s),"onUpdate:modelValue":e[2]||(e[2]=p=>A(s)?s.value=p:null),placeholder:"输入内容，并点击复制按钮"},{append:t(()=>[n(a,{onClick:e[1]||(e[1]=p=>o(b)(o(s)))},{default:t(()=>e[8]||(e[8]=[u(" 复制 ")])),_:1})]),_:1},8,["modelValue"])]),_:1})):F("",!0)])}}});typeof _=="function"&&_(D);export{D as default};
