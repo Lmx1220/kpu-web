@@ -1,0 +1,9 @@
+
+/**
+ * 由 admin 提供技术支持
+ * Powered by admin
+ * 代码仓库
+ * Github https://github.com/Lmx1220/kpu-web
+ */
+    
+import{d as y,y as g,o as p,c as i,t as f,f as _,a as n,h as e,b as m,n as C,_ as w,I as d,w as s,M as $,P as v}from"./index-BhImQte4.js";import{_ as h}from"./index.vue_vue_type_script_setup_true_lang-HdufEI_y.js";const k={key:0,class:"prefix"},E={class:"text"},B={key:1,class:"suffix"},a=y({name:"Trend",__name:"index",props:{value:{},type:{default:"up"},prefix:{default:""},suffix:{default:""},reverse:{type:Boolean,default:!1}},setup(c){const u=c,l=g(()=>{let t=u.type==="up";return u.reverse&&(t=!t),t});return(t,r)=>{const o=w;return p(),i("div",{class:C(["flex items-center transition",`${m(l)?"c-green":"c-red"}`])},[t.prefix?(p(),i("span",k,f(t.prefix),1)):_("",!0),n("span",E,f(t.value),1),t.suffix?(p(),i("span",B,f(t.suffix),1)):_("",!0),e(o,{name:"i-ep:caret-top",rotate:m(l)?0:180,class:"ml-1 transition"},null,8,["rotate"])],2)}}}),b=y({__name:"trend.demo",setup(c){return(u,l)=>{const t=h,r=$,o=d("ElCol"),x=d("ElRow");return p(),i("div",null,[e(t,{title:"趋势符号"},{content:s(()=>l[0]||(l[0]=[n("p",null,"Trend",-1),n("p",{style:{"margin-bottom":"0"}}," 标记上升和下降趋势。通常用绿色代表“好”，红色代表“不好”，股票涨跌场景除外 ",-1)])),_:1}),e(x,{gutter:20,style:{margin:"0 10px"}},{default:s(()=>[e(o,{md:8},{default:s(()=>[e(r,{title:"基础用法",style:{margin:"0"}},{default:s(()=>[n("p",null,[e(a,{value:"12.3"})]),n("p",null,[e(a,{value:"12.3",type:"down"})])]),_:1})]),_:1}),e(o,{md:8},{default:s(()=>[e(r,{title:"颜色反转",style:{margin:"0"}},{default:s(()=>[n("p",null,[e(a,{value:"12.3",reverse:""})]),n("p",null,[e(a,{value:"12.3",type:"down",reverse:""})])]),_:1})]),_:1}),e(o,{md:8},{default:s(()=>[e(r,{title:"前缀后缀",style:{margin:"0"}},{default:s(()=>[n("p",null,[e(a,{value:"12.3",prefix:"$"})]),n("p",null,[e(a,{value:"12.3",suffix:"%"})])]),_:1})]),_:1})]),_:1})])}}});typeof v=="function"&&v(b);export{b as default};
