@@ -59,16 +59,30 @@ const isDragging = ref(false)
 let tabSortable: Sortable
 onMounted(() => {
   tabSortable = new Sortable(tabContainerRef.value.$el, {
-    animation: 200,
+    animation: 300,
+    delay: 400,
+    delayOnTouchOnly: true,
     ghostClass: 'tab-ghost',
     draggable: '.tab',
     handle: '.drag-handle',
-    filter: '.no-drag',
     onStart: () => {
       isDragging.value = true
     },
     onEnd: () => {
       isDragging.value = false
+    },
+    onMove: (evt) => {
+      const dragged = evt.dragged
+      const related = evt.related
+
+      if (dragged.classList.contains('pinned')) {
+        // 如果拖拽的元素是固定的，只允许拖到其他固定元素上
+        return related.classList.contains('pinned')
+      }
+      else {
+        // 如果拖拽的元素是可移动的，不允许拖到固定元素上
+        return !related.classList.contains('pinned')
+      }
     },
     onUpdate: (e) => {
       if (e.newIndex !== undefined && e.oldIndex !== undefined) {
@@ -314,9 +328,9 @@ onUnmounted(() => {
           ref="tabRef" :data-index="index" class="tab" :class="{
             'tab-ontop': settingsStore.settings.topbar.switchTabbarAndToolbar,
             'actived': element.tabId === activedTabId,
-            'no-drag': element.isPermanent || element.isPin,
+            'pinned': element.isPermanent || element.isPin,
           }"
-          :title="element.customTitleList.find(item => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title)"
+          :title="element.customTitleList.find((item) => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title)"
           @click="router.push(element.fullPath)"
           @dblclick="onTabbarDblclick(element)"
           @contextmenu="onTabbarContextmenu($event, element)"

@@ -19,6 +19,7 @@ declare type Nullable<T> = T | null
 
 declare namespace Settings {
   interface app {
+
     /**
      * 亮色主题
      * @默认值 `'light'`
@@ -48,6 +49,11 @@ declare namespace Settings {
      * @默认值 `false`
      */
     enableColorAmblyopiaMode?: boolean
+    /**
+     * 是否开启自动更新
+     * @默认值 `true`
+     */
+    enableAutoUpdate?: boolean
     /**
      * 默认语言
      * @默认值 `''` 跟随浏览器语言设置

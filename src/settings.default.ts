@@ -3,6 +3,7 @@ import type { RecursiveRequired, Settings } from '#/global'
 
 const globalSettingsDefault: RecursiveRequired<Settings.all> = {
   app: {
+    enableAutoUpdate: true,
     lightTheme: 'light',
     darkTheme: 'dark',
     colorScheme: 'light',

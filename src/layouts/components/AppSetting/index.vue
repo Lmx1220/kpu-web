@@ -632,6 +632,12 @@ function handleCopy() {
       </div>
       <div class="setting-item">
         <div class="label">
+          检测更新
+        </div>
+        <HToggle v-model="settingsStore.settings.app.enableAutoUpdate" />
+      </div>
+      <div class="setting-item">
+        <div class="label">
           Storage 前缀
           <HTooltip text="localStorage 和 sessionStorage 的字段前缀">
             <SvgIcon name="i-ri:question-line" />

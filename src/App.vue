@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import CheckUpdates from '@/layouts/components/CheckUpdates/index.vue'
 import useSettingsStore from '@/store/modules/settings'
 import eventBus from '@/utils/eventBus'
-import { useTitle as usePageTitle } from '@vueuse/core'
 
+import { useTitle as usePageTitle } from '@vueuse/core'
 import hotkeys from 'hotkeys-js'
 import Provider from './ui-provider/index.vue'
 
@@ -57,5 +58,6 @@ onMounted(() => {
       <NotAllowed v-else />
     </RouterView>
     <SystemInfo />
+    <CheckUpdates v-if="settingsStore.settings.app.enableAutoUpdate" />
   </Provider>
 </template>

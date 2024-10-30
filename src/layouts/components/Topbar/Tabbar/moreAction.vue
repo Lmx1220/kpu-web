@@ -35,12 +35,24 @@ watch(() => dropdownTabContainerRef.value, (val) => {
       animation: 200,
       ghostClass: 'ghost',
       draggable: '.tab',
-      filter: '.no-drag',
       onStart: () => {
         isDragging.value = true
       },
       onEnd: () => {
         isDragging.value = false
+      },
+      onMove: (evt) => {
+        const dragged = evt.dragged
+        const related = evt.related
+
+        if (dragged.classList.contains('pinned')) {
+          // 如果拖拽的元素是固定的，只允许拖到其他固定元素上
+          return related.classList.contains('pinned')
+        }
+        else {
+          // 如果拖拽的元素是可移动的，不允许拖到固定元素上
+          return !related.classList.contains('pinned')
+        }
       },
       onUpdate: (e) => {
         if (e.newIndex !== undefined && e.oldIndex !== undefined) {
@@ -113,8 +125,8 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
           <TransitionGroup ref="dropdownTabContainerRef" :name="!isDragging ? 'dropdown-tab' : undefined" tag="div" class="tabs" :class="{ dragging: isDragging }">
             <div
               v-for="element in tabbarStore.list" :key="element.tabId" class="tab" :class="{
-                'actived': element.tabId === activedTabId,
-                'no-drag': element.isPermanent || element.isPin,
+                actived: element.tabId === activedTabId,
+                pinned: element.isPermanent || element.isPin,
               }"
             >
               <div :key="element.tabId" class="title" :title="element.customTitleList.find(item => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title)" @click="router.push(element.fullPath)">

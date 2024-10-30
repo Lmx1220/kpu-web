@@ -45,4 +45,12 @@ export async function useI18n(app: App) {
   const options = await createI18nOptions()
   i18n = createI18n(options)
   app.use(i18n)
+  // 在控制台打印警告
+  // i18n.global.setMissingHandler((locale, key) => {
+  //   if (key.includes('.')) {
+  //     console.warn(
+  //       `[intlify] Not found '${key}' key in '${locale}' locale messages.`,
+  //     )
+  //   }
+  // })
 }

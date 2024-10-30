@@ -11,6 +11,8 @@
   "preferences": "偏好设置",
   "hotkeys": "快捷键介绍",
   "sendCaptcha": "发送验证码",
+  "checkUpdatesTitle": "新版本可用",
+  "checkUpdatesDescription": "点击刷新以获取最新版本",
   "search": {
     "text": "搜索",
     "type": {
