@@ -4,7 +4,7 @@ const menuList = [{
   id: 1,
   parentId: 0,
   meta: {
-    title: '演示',
+    title: 'route.demo',
     icon: 'uim:box',
     activeIcon: '',
     auth: [],

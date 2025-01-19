@@ -95,7 +95,7 @@ onMounted(() => {
   }
   getDicts()
 })
-const slots = useSlots()
+const slots: Record<string, Function> = useSlots()
 function filterMethod(query: string) {
   if (query) {
     loading.value = true

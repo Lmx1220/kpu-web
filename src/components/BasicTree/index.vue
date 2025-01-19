@@ -314,7 +314,7 @@ const getBindValues = computed(() => {
   }
   return omit(propsData, 'treeData', 'class')
 })
-const slots = useSlots()
+const slots: Record<string, Function> = useSlots()
 defineExpose({
   getCheckedKeys,
   getSelectedKeys,

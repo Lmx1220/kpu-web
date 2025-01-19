@@ -1,25 +1,26 @@
 import type { RecursiveRequired, Settings } from '#/global'
 import settingsDefault from '@/settings.default'
-import { defaultsDeep } from 'lodash-es'
+import { merge } from '@/utils/object'
+import { cloneDeep } from 'es-toolkit'
 
 const globalSettings: Settings.all = {
   app: {
     enablePermission: true,
     enableDynamicTitle: true,
     enableErrorLog: true,
-  },
-  home: {
-    fullPath: '/',
+    enableCheckUpdates: true,
   },
   userPreferences: {
     enable: true,
+  },
+  home: {
+    fullPath: '/',
   },
   layout: {
     enableMobileAdaptation: true,
   },
   menu: {
     style: 'dot',
-    isRounded: true,
     enableSubMenuCollapseButton: true,
     enableHotkeys: true,
   },
@@ -36,8 +37,8 @@ const globalSettings: Settings.all = {
   toolbar: {
     favorites: true,
     notification: true,
-    lock: true,
     i18n: true,
+    lock: true,
     fullscreen: true,
     pageReload: true,
     colorScheme: true,
@@ -47,16 +48,14 @@ const globalSettings: Settings.all = {
     enableMainMenu: true,
   },
   mainPage: {
-    enableHotkeys: true,
     iframeCacheMax: 9,
     transitionMode: 'slide-right',
   },
   copyright: {
     enable: true,
-    dates: '2020-2023',
-    company: 'admin',
-    website: 'https://admin/',
-    beian: '',
+    dates: '2020-present',
+    company: 'Fantastic-admin',
+    website: 'https://fantastic-admin.hurui.me',
   },
 }
-export default defaultsDeep(globalSettings, settingsDefault) as RecursiveRequired<Settings.all>
+export default merge(globalSettings, cloneDeep(settingsDefault)) as RecursiveRequired<Settings.all>

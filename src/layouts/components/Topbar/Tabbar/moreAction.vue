@@ -3,7 +3,6 @@ import type { Tabbar } from '#/global'
 import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar'
 import eventBus from '@/utils/eventBus'
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import Sortable from 'sortablejs'
 import { useI18n } from 'vue-i18n'
 
@@ -26,7 +25,10 @@ const activedTabId = computed(() => tabbar.getId())
 
 const dropdownTabContainerRef = ref()
 
+const searchInputRef = ref()
+
 const isDragging = ref(false)
+const isNavSearch = ref(false)
 // let dropdownTabSortable: Sortable
 watch(() => dropdownTabContainerRef.value, (val) => {
   if (val) {
@@ -94,212 +96,180 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
 
 <template>
   <div>
-    <HDropdown placement="bottom-end" popper-class="tabbar-dropdown">
-      <div class="h-6 w-6 flex-center cursor-pointer rounded-1 bg-[var(--g-container-bg)] text-lg shadow transition-background-color transition-shadow">
-        <SvgIcon name="i-ri:arrow-down-s-fill" />
-      </div>
-      <template #dropdown>
-        <div class="quick-button">
-          <button v-if="settingsStore.settings.toolbar.navSearch" class="button" @click="actionCommand('search-tabs')">
-            <HTooltip :text="t('app.tabbar.searchTabs')">
-              <SvgIcon name="i-ri:search-line" />
-            </HTooltip>
-          </button>
-          <button class="button" :disabled="!tabbar.checkCloseOtherSide()" @click="actionCommand('other-side')">
-            <HTooltip :text="t('app.tabbar.closeOtherSide')">
-              <SvgIcon name="i-ri:close-fill" />
-            </HTooltip>
-          </button>
-          <button class="button" :disabled="!tabbar.checkCloseLeftSide()" @click="actionCommand('left-side')">
-            <HTooltip :text="t('app.tabbar.closeLeftSide')">
-              <SvgIcon name="i-ph:arrow-line-left" />
-            </HTooltip>
-          </button>
-          <button class="button" :disabled="!tabbar.checkCloseRightSide()" @click="actionCommand('right-side')">
-            <HTooltip :text="t('app.tabbar.closeRightSide')">
-              <SvgIcon name="i-ph:arrow-line-right" />
-            </HTooltip>
-          </button>
-        </div>
-        <OverlayScrollbarsComponent :options="{ scrollbars: { autoHide: 'leave', autoHideDelay: 300 } }" defer class="max-h-[300px]">
-          <TransitionGroup ref="dropdownTabContainerRef" :name="!isDragging ? 'dropdown-tab' : undefined" tag="div" class="tabs" :class="{ dragging: isDragging }">
-            <div
-              v-for="element in tabbarStore.list" :key="element.tabId" class="tab" :class="{
-                actived: element.tabId === activedTabId,
-                pinned: element.isPermanent || element.isPin,
-              }"
+    <KPopover align="end" class="min-w-auto p-0">
+      <KButton variant="outline" size="icon" class="h-7 w-7">
+        <SvgIcon name="i-ep:caret-bottom" />
+      </KButton>
+      <template #panel>
+        <div class="max-h-[320px] w-[200px] flex flex-col">
+          <div class="flex-center-between gap-2 p-4">
+            <template v-if="isNavSearch">
+              <KInput
+                ref="searchInputRef" :placeholder="t('searchPlaceholder')"
+                class="h-8 w-0 flex-1 border border-input rounded-md bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none"
+              />
+              <KButton variant="outline" size="icon" class="h-8 w-8" @click="isNavSearch = false">
+                <SvgIcon name="i-ri:close-fill" :size="16" />
+              </KButton>
+            </template>
+            <template v-else>
+              <KTooltip :text="t('app.tabbar.searchTabs')">
+                <KButton
+                  v-if="settingsStore.settings.toolbar.navSearch" variant="secondary" size="icon" class="h-8 w-8"
+                  @click="isNavSearch = true"
+                >
+                  <SvgIcon name="i-ri:search-line" />
+                </KButton>
+              </KTooltip>
+              <KTooltip :text="t('app.tabbar.closeOtherSide')">
+                <KButton
+                  variant="secondary" size="icon" class="h-8 w-8" :disabled="!tabbar.checkCloseOtherSide()"
+                  @click="actionCommand('other-side')"
+                >
+                  <SvgIcon name="i-ri:close-fill" />
+                </KButton>
+              </KTooltip>
+              <KTooltip :text="t('app.tabbar.closeLeftSide')">
+                <KButton
+                  variant="secondary" size="icon" class="h-8 w-8" :disabled="!tabbar.checkCloseLeftSide()"
+                  @click="actionCommand('left-side')"
+                >
+                  <SvgIcon name="i-ph:arrow-line-left" />
+                </KButton>
+              </KTooltip>
+              <KTooltip :text="t('app.tabbar.closeRightSide')">
+                <KButton
+                  variant="secondary" size="icon" class="h-8 w-8" :disabled="!tabbar.checkCloseRightSide()"
+                  @click="actionCommand('right-side')"
+                >
+                  <SvgIcon name="i-ph:arrow-line-right" />
+                </KButton>
+              </KTooltip>
+            </template>
+          </div>
+          <KScrollArea :scrollbar="false" mask gradient-color="hsl(var(--popover))" class="mb-4 flex-1 -mt-2">
+            <TransitionGroup
+              ref="dropdownTabContainerRef" tag="div" class="tabs space-y-1"
+              :class="{ dragging: isDragging }"
             >
-              <div :key="element.tabId" class="title" :title="element.customTitleList.find(item => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title)" @click="router.push(element.fullPath)">
-                <SvgIcon v-if="settingsStore.settings.tabbar.enableIcon && iconName(element.tabId === activedTabId, element.icon, element.activeIcon)" :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)!" />
-                {{ element.customTitleList.find(item => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title) }}
+              <div
+                v-for="element in tabbarStore.list" :key="element.tabId" class="relative mx-4 h-8 rounded-md px-2 tab"
+                :class="{
+                  'bg-accent': element.tabId === activedTabId,
+                  'pinned': element.isPermanent || element.isPin,
+                }"
+              >
+                <div
+                  :key="element.tabId" class="title"
+                  :title="element.customTitleList.find(item => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title)"
+                  @click="router.push(element.fullPath)"
+                >
+                  <SvgIcon
+                    v-if="settingsStore.settings.tabbar.enableIcon && iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
+                    :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)!"
+                  />
+                  {{
+                    element.customTitleList.find(item => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title)
+                  }}
+                </div>
+                <SvgIcon
+                  v-if="!element.isPermanent && element.isPin" name="i-ri:pushpin-2-fill" class="action-icon"
+                  @click.stop="tabbarStore.unPin(element.tabId)"
+                />
+                <SvgIcon
+                  v-else-if="!element.isPermanent && tabbarStore.list.length > 1" name="ri:close-fill"
+                  class="action-icon" @click.stop="tabbar.closeById(element.tabId)"
+                />
               </div>
-              <SvgIcon v-if="!element.isPermanent && element.isPin" name="i-ri:pushpin-2-fill" class="action-icon" @click.stop="tabbarStore.unPin(element.tabId)" />
-              <SvgIcon v-else-if="!element.isPermanent && tabbarStore.list.length > 1" name="ri:close-fill" class="action-icon" @click.stop="tabbar.closeById(element.tabId)" />
-            </div>
-          </TransitionGroup>
-        </OverlayScrollbarsComponent>
+            </TransitionGroup>
+          </KScrollArea>
+        </div>
       </template>
-    </HDropdown>
+    </KPopover>
   </div>
 </template>
 
-<style>
-.tabbar-dropdown {
-  .quick-button {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 15px 10px;
-
-    .button {
-      --uno: transition-colors;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      background-color: var(--g-bg);
-      border: none;
-      border-radius: 5px;
-      outline: none;
-
-      &:hover:not(:disabled) {
-        --uno: text-ui-primary;
-      }
-
-      &:disabled {
-        cursor: not-allowed;
-      }
-
-      i {
-        font-size: 16px !important;
-      }
-    }
-  }
-
-  .tabs {
-    width: 200px;
-    padding: 0 0 10px;
-
-    &:not(.dragging) {
-      .tab:hover {
-        &:not(.actived) {
-          background-color: var(--g-bg);
-        }
-
-        .action-icon {
-          opacity: 1;
-        }
-      }
-    }
-
-    .tab {
-      position: relative;
-      width: calc(100% - 30px);
-      height: 30px;
-      padding: 0 5px;
-      margin: 0 15px;
-      background-color: var(--g-container-bg);
-      border-radius: 5px;
-      transition: background-color 0.3s;
-
-      &.actived {
-        background-color: var(--g-bg);
-      }
-
-      &.ghost {
-        opacity: 0;
-      }
-
-      &:hover {
-        .title {
-          --uno: opacity-100;
-
-          margin-inline-end: 20px;
-          mask-image: linear-gradient(to right, #000 calc(100% - 44px), transparent);
-
-          [dir="rtl"] & {
-            mask-image: linear-gradient(to left, #000 calc(100% - 44px), transparent);
-          }
-        }
-      }
-
-      * {
-        user-select: none;
-      }
-
-      .title {
-        --uno: opacity-70 transition;
-
-        position: relative;
-        display: flex;
-        gap: 5px;
-        align-items: center;
-        height: 100%;
-        overflow: hidden;
-        font-size: 14px;
-        white-space: nowrap;
-        cursor: pointer;
-        mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
-
-        [dir="rtl"] & {
-          mask-image: linear-gradient(to left, #000 calc(100% - 24px), transparent);
-        }
-
-        i {
-          flex-shrink: 0;
-          font-size: 16px;
-        }
+<style scoped>
+.tabs {
+  &:not(.dragging) {
+    .tab:hover {
+      &:not(.actived) {
+        --uno: bg-accent;
       }
 
       .action-icon {
-        --uno: transition;
-
-        position: absolute;
-        inset-inline-end: 6px;
-        top: 50%;
-        z-index: 10;
-        width: 1.5em;
-        height: 1.5em;
-        margin-top: -9px;
-        font-size: 12px;
-        color: var(--g-tabbar-tab-color);
-        pointer-events: all;
-        border-radius: 50%;
-        opacity: 0;
-
-        &:hover {
-          --uno: ring-1 ring-stone-3 dark-ring-stone-7;
-
-          background-color: var(--g-bg);
-        }
+        opacity: 1;
       }
     }
   }
-}
-</style>
 
-<style scoped>
-.tabbar-dropdown {
-  .dropdown-tab-enter-from,
-  .dropdown-tab-leave-to {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
+  .tab {
+    transition: background-color 0.3s;
 
-  .dropdown-tab-enter-active {
-    transition: all 0.3s;
-  }
+    &:hover {
+      .title {
+        --uno: opacity-100;
 
-  .dropdown-tab-leave-active {
-    position: absolute !important;
-    transition: all 0.3s;
-  }
+        margin-inline-end: 20px;
+        mask-image: linear-gradient(to right, #000 calc(100% - 44px), transparent);
 
-  .dropdown-tab-move {
-    transition: transform 0.3s;
+        [dir="rtl"] & {
+          mask-image: linear-gradient(to left, #000 calc(100% - 44px), transparent);
+        }
+      }
+    }
+
+    * {
+      user-select: none;
+    }
+
+    .title {
+      --uno: opacity-70 transition;
+
+      position: relative;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      height: 100%;
+      overflow: hidden;
+      font-size: 14px;
+      white-space: nowrap;
+      cursor: pointer;
+      mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+
+      [dir="rtl"] & {
+        mask-image: linear-gradient(to left, #000 calc(100% - 24px), transparent);
+      }
+
+      i {
+        flex-shrink: 0;
+        font-size: 16px;
+      }
+    }
+
+    .action-icon {
+      --uno: transition -translate-y-1\/2;
+
+      position: absolute;
+      inset-inline-end: 0.5rem;
+      top: 50%;
+      z-index: 10;
+      width: 1.25rem;
+      height: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      color: var(--g-tabbar-tab-color);
+      opacity: 0;
+
+      &:hover {
+        --uno: b bg-secondary;
+      }
+    }
   }
 }
 </style>

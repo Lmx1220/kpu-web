@@ -32,16 +32,16 @@ function open() {
             是否访问此链接
           </div>
           <div class="my-2 max-w-[300px] cursor-pointer text-center text-[14px] text-stone-5" @click="route.meta.link && copy(route.meta.link)">
-            <HTooltip text="复制链接">
+            <KTooltip text="复制链接">
               <div class="line-clamp-3">
                 {{ route.meta.link }}
               </div>
-            </HTooltip>
+            </KTooltip>
           </div>
-          <HButton class="my-4" @click="open">
+          <KButton class="my-4" @click="open">
             <SvgIcon name="i-ri:external-link-fill" />
             立即访问
-          </HButton>
+          </KButton>
         </div>
       </PageMain>
     </Transition>

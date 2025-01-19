@@ -72,7 +72,7 @@ function onTransitionEnd() {
     @transitionend="onTransitionEnd"
   >
     <div
-      class="loader relative size-12 after:absolute before:absolute after:left-0 after:top-0 before:left-0 before:top-[60px] after:h-full after:w-full before:h-[5px] before:w-12 after:rounded before:rounded-[50%] after:bg-ui-primary before:bg-ui-primary/50 after:content-[''] before:content-['']"
+      class="loader relative size-12 after:absolute before:absolute after:left-0 after:top-0 before:left-0 before:top-[60px] after:h-full after:w-full before:h-[5px] before:w-12 after:rounded before:rounded-[50%] after:bg-primary before:bg-primary/50 after:content-[''] before:content-['']"
     />
   </div>
 </template>

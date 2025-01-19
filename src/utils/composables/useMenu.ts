@@ -12,7 +12,10 @@ export default function useMenu() {
   }
   function switchTo(index: number | string) {
     menuStore.setActived(index)
-    if (settingsStore.settings.menu.switchMainMenuAndPageJump) {
+    if (
+      settingsStore.settings.menu.mainMenuClickMode === 'jump'
+      || (settingsStore.settings.menu.mainMenuClickMode === 'smart' && menuStore.sidebarMenusHasOnlyMenu)
+    ) {
       router.push(menuStore.sidebarMenusFirstDeepestPath)
     }
   }

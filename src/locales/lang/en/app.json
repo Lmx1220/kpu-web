@@ -10,7 +10,11 @@
   "profile": "Profile",
   "preferences": "Preferences",
   "hotkeys": "Hotkeys Introduction",
+  "currentAccount": "Current Login Account",
   "sendCaptcha": "send captcha",
+  "route": {
+    "home": "Home"
+  },
   "search": {
     "text": "Search",
     "type": {

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import type { FormInstance, FormRules } from 'element-plus'
-import Message from 'vue-m-message'
+import { FormControl, FormField, FormItem, FormMessage } from '@/ui/shadcn/ui/form'
+import { toTypedSchema } from '@vee-validate/zod'
+import { useForm } from 'vee-validate'
+import * as z from 'zod'
 
 defineOptions({
   name: 'ResetPasswordForm',
@@ -11,82 +13,97 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits<{
-  onLogin: [account: string]
-  onResetPassword: [account: string]
+  onLogin: [account?: string]
+  onResetPassword: [account?: string]
 }>()
+
 const { t } = useI18n()
 const loading = ref(false)
 
-const formRef = ref<FormInstance>()
-const form = ref({
-  account: props.account ?? localStorage.login_account ?? '',
-  captcha: '',
-  newPassword: '',
+const form = useForm({
+  validationSchema: toTypedSchema(z.object({
+    account: z.string().min(1, t('resetPasswordForm.rules.account')),
+    captcha: z.string().min(6, t('resetPasswordForm.rules.captcha')),
+    newPassword: z.string().min(1, t('resetPasswordForm.rules.newPassword')).min(6, t('resetPasswordForm.rules.newPasswordLength')).max(18, t('resetPasswordForm.rules.newPasswordLength')),
+  })),
+  initialValues: {
+    account: props.account ?? '',
+    captcha: '',
+    newPassword: '',
+  },
 })
-const rules = ref<FormRules>({
-  account: [
-    { required: true, trigger: 'blur', message: t('resetPasswordForm.rules.account') },
-  ],
-  captcha: [
-    { required: true, trigger: 'blur', message: t('resetPasswordForm.rules.captcha') },
-  ],
-  newPassword: [
-    { required: true, trigger: 'blur', message: t('resetPasswordForm.rules.newPassword') },
-    { min: 6, max: 18, trigger: 'blur', message: t('resetPasswordForm.rules.newPasswordLength') },
-  ],
+const onSubmit = form.handleSubmit((values) => {
+  loading.value = true
+  emits('onResetPassword', values.account)
 })
-function handleReset() {
-  Message({
-    message: '重置密码仅提供界面演示，无实际功能，需开发者自行扩展',
-    type: 'info',
-  })
-  formRef.value?.validate((valid) => {
-    if (valid) {
-      // 这里编写业务代码
-      emits('onResetPassword', form.value.account)
+
+const countdown = ref(0)
+const countdownInterval = ref(Number.NaN)
+function handleSendCaptcha() {
+  countdown.value = 60
+  countdownInterval.value = window.setInterval(() => {
+    countdown.value--
+    if (countdown.value === 0) {
+      clearInterval(countdownInterval.value)
     }
-  })
+  }, 1000)
 }
 </script>
 
 <template>
-  <ElForm ref="formRef" :model="form" :rules="rules" class="min-h-500px w-full flex-col-stretch-center p-12">
-    <h3 class="mb-8 text-xl color-[var(--el-text-color-primary)] font-bold">
-      {{ t('resetPasswordForm.intro') }}
-    </h3>
-    <div>
-      <ElFormItem prop="account">
-        <ElInput v-model="form.account" size="large" :placeholder="t('resetPasswordForm.form.account')" type="text" tabindex="1">
-          <template #prefix>
-            <SvgIcon name="i-ri:user-3-fill" />
-          </template>
-        </ElInput>
-      </ElFormItem>
-      <ElFormItem prop="captcha">
-        <ElInput v-model="form.captcha" size="large" :placeholder="t('resetPasswordForm.form.captcha')" type="text" tabindex="2">
-          <template #prefix>
-            <SvgIcon name="i-ic:baseline-verified-user" />
-          </template>
-          <template #append>
-            <ElButton>{{ t('resetPasswordForm.form.sendCaptcha') }}</ElButton>
-          </template>
-        </ElInput>
-      </ElFormItem>
-      <ElFormItem prop="newPassword">
-        <ElInput v-model="form.newPassword" type="password" size="large" :placeholder="t('resetPasswordForm.form.newPassword')" tabindex="3" show-password>
-          <template #prefix>
-            <SvgIcon name="i-ri:lock-2-fill" />
-          </template>
-        </ElInput>
-      </ElFormItem>
-    </div>
-    <ElButton :loading="loading" type="primary" size="large" style="width: 100%; margin-top: 20px;" @click.prevent="handleReset">
-      {{ t('resetPasswordForm.form.confirm') }}
-    </ElButton>
-    <div class="mt-4 flex-center gap-2 text-sm color-[var(--el-text-color-secondary)]">
-      <ElLink type="primary" :underline="false" @click="emits('onLogin', form.account)">
-        {{ t('resetPasswordForm.login') }}
-      </ElLink>
-    </div>
-  </ElForm>
+  <div class="min-h-500px w-full flex-col-stretch-center p-12">
+    <form @submit="onSubmit">
+      <div class="mb-8 space-y-2">
+        <h3 class="text-4xl color-[var(--el-text-color-primary)] font-bold">
+          {{ t('resetPasswordForm.intro') }}
+        </h3>
+        <p class="text-sm text-muted-foreground lg:text-base">
+          演示系统未提供该功能
+        </p>
+      </div>
+      <FormField v-slot="{ componentField, errors }" name="account">
+        <FormItem class="relative pb-6 space-y-0">
+          <FormControl>
+            <KInput type="text" :placeholder="t('resetPasswordForm.form.account')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+          </FormControl>
+          <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
+            <FormMessage class="absolute bottom-1 text-xs" />
+          </Transition>
+        </FormItem>
+      </FormField>
+      <div class="flex-start-between gap-2">
+        <FormField v-slot="{ componentField, value, setValue }" name="captcha">
+          <FormItem class="relative pb-6 space-y-0">
+            <FormControl>
+              <KPinInput :model-value="value" :name="componentField.name" :length="6" class="border-destructive" @update:model-value="val => setValue(val)" />
+            </FormControl>
+            <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
+              <FormMessage class="absolute bottom-1 text-xs" />
+            </Transition>
+          </FormItem>
+        </FormField>
+        <KButton variant="outline" size="lg" :disabled="countdown > 0" class="flex-1 px-4" @click="handleSendCaptcha">
+          {{ countdown === 0 ? t('resetPasswordForm.form.sendCaptcha') : t('resetPasswordForm.form.captchaCountdown', { countdown }) }}
+        </KButton>
+      </div>
+      <FormField v-slot="{ componentField, errors }" name="newPassword">
+        <FormItem class="relative pb-6 space-y-0">
+          <FormControl>
+            <KInput type="password" :placeholder="t('resetPasswordForm.form.newPassword')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+          </FormControl>
+          <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
+            <FormMessage class="absolute bottom-1 text-xs" />
+          </Transition>
+        </FormItem>
+      </FormField>
+      <KButton :loading="loading" size="lg" class="mt-4 w-full" type="submit">
+        {{ t('resetPasswordForm.form.confirm') }}
+      </KButton>
+      <div class="mt-4 flex-center gap-2 text-sm color-[var(--el-text-color-secondary)]">
+        <KButton variant="link" class="h-auto p-0" @click="emits('onLogin', form.values.account)">
+          {{ t('resetPasswordForm.login') }}
+        </KButton>
+      </div>
+    </form>
+  </div>
 </template>

@@ -38,7 +38,7 @@ function open(url: string) {
 
 <template>
   <div>
-    <PageHeader title="基础组件">
+    <KPageHeader title="基础组件">
       <template #content>
         <p>框架内置 Element Plus 组件库，本页仅展示部分组件，更多组件及使用说明请查看 Element Plus 官网</p>
         <p class="mb-0">
@@ -53,13 +53,13 @@ function open(url: string) {
         </template>
         Element Plus 官网
       </ElButton>
-    </PageHeader>
-    <PageMain>
+    </KPageHeader>
+    <KPageMain>
       <ElTabs type="border-card">
         <ElTabPane v-for="(item, key) in components" :key="key" :label="key">
           <component :is="item" />
         </ElTabPane>
       </ElTabs>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>

@@ -3,7 +3,7 @@ import { Icon } from '@iconify/vue'
 import { UseImage } from '@vueuse/components'
 
 defineOptions({
-  name: 'SvgIcon',
+  name: 'FaIcon',
 })
 
 const props = defineProps<{
@@ -61,12 +61,12 @@ const style = computed(() => {
 
 <template>
   <i class="relative h-[1em] w-[1em] flex-inline items-center justify-center fill-current leading-[1em]" :style="style">
-    <i v-if="outputType === 'unocss'" class="h-[1em] w-[1em]" :class="name" />
+    <i v-if="outputType === 'unocss'" class="h-[1em] w-[1em] shrink-0" :class="name" />
     <Icon v-else-if="outputType === 'iconify'" :icon="name" />
-    <svg v-else-if="outputType === 'svg'" class="h-[1em] w-[1em]" aria-hidden="true">
+    <svg v-else-if="outputType === 'svg'" class="h-[1em] w-[1em] shrink-0" aria-hidden="true">
       <use :xlink:href="`#icon-${name}`" />
     </svg>
-    <UseImage v-else-if="outputType === 'img'" :src="name" class="h-[1em] w-[1em]">
+    <UseImage v-else-if="outputType === 'img'" :src="name" class="h-[1em] w-[1em] shrink-0">
       <template #loading>
         <i class="i-line-md:loading-loop h-[1em] w-[1em]" />
       </template>

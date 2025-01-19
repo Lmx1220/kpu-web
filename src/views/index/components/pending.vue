@@ -4,7 +4,7 @@ defineOptions({
 })
 const v = ref('rgba(240,2,20,0.098)')
 const _ = ref('#fff')
-const h = ref('rgb(var(--ui-primary) / 10%)')
+const h = ref('rgb(var(--primary) / 10%)')
 const b = ref('#fff')
 const f = {
   background: `linear-gradient(to right,${v.value}, ${_.value}) no-repeat`,
@@ -108,7 +108,7 @@ const y = {
       }
 
       &-primary {
-        background: rgb(var(--ui-primary));
+        background: rgb(var(--primary));
       }
     }
   }
@@ -130,7 +130,7 @@ const y = {
     }
 
     &-primary {
-      color: rgb(var(--ui-primary));
+      color: rgb(var(--primary));
     }
   }
 

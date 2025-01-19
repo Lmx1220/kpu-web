@@ -24,9 +24,9 @@ const themeList = computed(() => {
   return Object.keys(themes).map((key) => {
     return {
       label: key,
-      value: (themes as any)[key],
+      value: (themes as any)[key][settingsStore.currentColorScheme || 'light'],
     }
-  }).filter(item => item.value['color-scheme'] === settingsStore.currentColorScheme)
+  })
 })
 
 watch(() => settingsStore.settings.menu.mode, (value) => {
@@ -78,7 +78,7 @@ function handleCopy() {
 </script>
 
 <template>
-  <HSlideover v-model="isShow" title="应用配置" :side="settingsStore.settings.app.direction === 'ltr' ? 'right' : 'left'">
+  <KDrawer v-model="isShow" title="应用配置" description="在生产环境中应关闭该模块" :footer="isSupported">
     <div class="rounded-2 bg-rose/20 px-4 py-2 text-sm/6 c-rose">
       <p class="my-1">
         应用配置可实时预览效果，但只是临时生效，要想真正应用于项目，可以点击下方的「复制配置」按钮，并将配置粘贴到 src/settings.ts 文件中。
@@ -88,13 +88,11 @@ function handleCopy() {
       </p>
     </div>
     <div>
-      <div class="divider">
-        颜色主题风格
-      </div>
+      <KDivider>颜色主题风格</KDivider>
       <div class="flex items-center justify-center pb-4">
-        <HTabList
+        <KTabs
           v-model="settingsStore.settings.app.colorScheme"
-          :options="[
+          :list="[
             { icon: 'i-ri:sun-line', label: '明亮', value: 'light' },
             { icon: 'i-ri:moon-line', label: '暗黑', value: 'dark' },
             { icon: 'i-codicon:color-mode', label: '系统', value: '' },
@@ -104,245 +102,274 @@ function handleCopy() {
       </div>
       <div class="themes">
         <div v-for="item in themeList" :key="item.label" class="theme" :class="{ active: settingsStore.currentColorScheme === 'dark' ? settingsStore.settings.app.darkTheme === item.label : settingsStore.settings.app.lightTheme === item.label }" @click="settingsStore.currentColorScheme === 'dark' ? settingsStore.settings.app.darkTheme = item.label : settingsStore.settings.app.lightTheme = item.label">
-          <div class="content" :style="`background-color: rgb(${item.value['--ui-primary']});`" />
+          <div class="content" :style="`background-color: hsl(${item.value['--primary']});`" />
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="label">
+          圆角系数
+        </div>
+        <div class="flex-center-start gap-1">
+          <KButton
+            v-for="(item, index) in [
+              { label: 0, value: 0 },
+              { label: 0.25, value: 0.25 },
+              { label: 0.5, value: 0.5 },
+              { label: 0.75, value: 0.75 },
+              { label: 1, value: 1 },
+            ]" :key="index" :variant="settingsStore.settings.app.radius === item.value ? 'default' : 'outline'" size="sm" class="w-12" @click="settingsStore.settings.app.radius = (item.value as any)"
+          >
+            {{ item.label }}
+          </KButton>
         </div>
       </div>
     </div>
     <div v-if="settingsStore.mode === 'pc'">
-      <div class="divider">
-        导航栏模式
-      </div>
+      <KDivider>导航栏模式</KDivider>
       <div class="menu-mode">
-        <HTooltip text="侧边栏模式 (含主导航)" placement="bottom" :delay="500">
+        <KTooltip text="侧边栏模式 (含主导航)" :delay="500">
           <div class="mode mode-side" :class="{ active: settingsStore.settings.menu.mode === 'side' }" @click="settingsStore.settings.menu.mode = 'side'">
             <div class="mode-container" />
           </div>
-        </HTooltip>
-        <HTooltip text="顶部模式" placement="bottom" :delay="500">
+        </KTooltip>
+        <KTooltip text="顶部模式" :delay="500">
           <div class="mode mode-head" :class="{ active: settingsStore.settings.menu.mode === 'head' }" @click="settingsStore.settings.menu.mode = 'head'">
             <div class="mode-container" />
           </div>
-        </HTooltip>
-        <HTooltip text="侧边栏模式 (不含主导航)" placement="bottom" :delay="500">
+        </KTooltip>
+        <KTooltip text="侧边栏模式 (不含主导航)" :delay="500">
           <div class="mode mode-single" :class="{ active: settingsStore.settings.menu.mode === 'single' }" @click="settingsStore.settings.menu.mode = 'single'">
             <div class="mode-container" />
           </div>
-        </HTooltip>
+        </KTooltip>
       </div>
       <div class="menu-mode">
-        <HTooltip text="侧边栏精简模式" placement="bottom" :delay="500">
+        <KTooltip text="侧边栏精简模式" :delay="500">
           <div class="mode mode-only-side" :class="{ active: settingsStore.settings.menu.mode === 'only-side' }" @click="settingsStore.settings.menu.mode = 'only-side'">
             <div class="mode-container" />
           </div>
-        </HTooltip>
-        <HTooltip text="顶部精简模式" placement="bottom" :delay="500">
+        </KTooltip>
+        <KTooltip text="顶部精简模式" :delay="500">
           <div class="mode mode-only-head" :class="{ active: settingsStore.settings.menu.mode === 'only-head' }" @click="settingsStore.settings.menu.mode = 'only-head'">
             <div class="mode-container" />
           </div>
-        </HTooltip>
-        <HTooltip text="侧边栏面板模式" placement="bottom" :delay="500">
+        </KTooltip>
+        <KTooltip text="侧边栏面板模式" :delay="500">
           <div class="mode mode-side-panel" :class="{ active: settingsStore.settings.menu.mode === 'side-panel' }" @click="settingsStore.settings.menu.mode = 'side-panel'">
             <div class="mode-container" />
           </div>
-        </HTooltip>
-        <HTooltip text="顶部面板模式" placement="bottom" :delay="500">
+        </KTooltip>
+        <KTooltip text="顶部面板模式" :delay="500">
           <div class="mode mode-head-panel" :class="{ active: settingsStore.settings.menu.mode === 'head-panel' }" @click="settingsStore.settings.menu.mode = 'head-panel'">
             <div class="mode-container" />
           </div>
-        </HTooltip>
+        </KTooltip>
       </div>
     </div>
     <div v-if="settingsStore.mode === 'pc'">
-      <div class="divider">
-        页宽模式
-      </div>
+      <KDivider>页宽模式</KDivider>
       <div class="app-width-mode">
-        <HTooltip text="自适应" placement="bottom" :delay="500">
+        <KTooltip text="自适应" :delay="500">
           <div class="mode mode-adaption" :class="{ active: settingsStore.settings.layout.widthMode === 'adaption' }" @click="settingsStore.settings.layout.widthMode = 'adaption'">
             <SvgIcon name="i-ep:back" class="left" />
             <SvgIcon name="i-ep:right" class="right" />
           </div>
-        </HTooltip>
-        <HTooltip text="自适应 (有最小宽度)" placement="bottom" :delay="500">
+        </KTooltip>
+        <KTooltip text="自适应 (有最小宽度)" :delay="500">
           <div class="mode mode-adaption-min-width" :class="{ active: settingsStore.settings.layout.widthMode === 'adaption-min-width' }" @click="settingsStore.settings.layout.widthMode = 'adaption-min-width'">
             <SvgIcon name="i-ep:back" class="left" />
             <SvgIcon name="i-ep:right" class="right" />
           </div>
-        </HTooltip>
-        <HTooltip text="定宽居中" placement="bottom" :delay="500">
+        </KTooltip>
+        <KTooltip text="定宽居中" :delay="500">
           <div class="mode mode-center" :class="{ active: settingsStore.settings.layout.widthMode === 'center' }" @click="settingsStore.settings.layout.widthMode = 'center'" />
-        </HTooltip>
-        <HTooltip text="定宽居中 (有最大宽度)" placement="bottom" :delay="500">
+        </KTooltip>
+        <KTooltip text="定宽居中 (有最大宽度)" :delay="500">
           <div class="mode mode-center-max-width" :class="{ active: settingsStore.settings.layout.widthMode === 'center-max-width' }" @click="settingsStore.settings.layout.widthMode = 'center-max-width'">
             <SvgIcon name="i-ep:back" class="left" />
             <SvgIcon name="i-ep:right" class="right" />
           </div>
-        </HTooltip>
+        </KTooltip>
       </div>
     </div>
     <div>
-      <div class="divider">
-        页面切换动画
-      </div>
+      <KDivider>页面切换动画</KDivider>
       <div class="flex items-center justify-center pb-4">
-        <HToggle v-model="settingsStore.settings.mainPage.enableTransition" />
+        <KSwitch v-model="settingsStore.settings.mainPage.enableTransition" />
       </div>
       <div v-if="settingsStore.settings.mainPage.enableTransition" class="transition-mode">
-        <HTooltip text="淡入淡出" placement="bottom" :delay="500">
+        <KTooltip text="淡入淡出" :delay="500">
           <div class="mode mode-fade" :class="{ active: settingsStore.settings.mainPage.transitionMode === 'fade' }" @click="settingsStore.settings.mainPage.transitionMode = 'fade'" />
-        </HTooltip>
-        <HTooltip text="向左滑动" placement="bottom" :delay="500">
+        </KTooltip>
+        <KTooltip text="向左滑动" :delay="500">
           <div class="mode mode-slide-left" :class="{ active: settingsStore.settings.mainPage.transitionMode === 'slide-left' }" @click="settingsStore.settings.mainPage.transitionMode = 'slide-left'" />
-        </HTooltip>
-        <HTooltip text="向右滑动" placement="bottom" :delay="500">
+        </KTooltip>
+        <KTooltip text="向右滑动" :delay="500">
           <div class="mode mode-slide-right" :class="{ active: settingsStore.settings.mainPage.transitionMode === 'slide-right' }" @click="settingsStore.settings.mainPage.transitionMode = 'slide-right'" />
-        </HTooltip>
-        <HTooltip text="向上滑动" placement="bottom" :delay="500">
+        </KTooltip>
+        <KTooltip text="向上滑动" :delay="500">
           <div class="mode mode-slide-top" :class="{ active: settingsStore.settings.mainPage.transitionMode === 'slide-top' }" @click="settingsStore.settings.mainPage.transitionMode = 'slide-top'" />
-        </HTooltip>
-        <HTooltip text="向下滑动" placement="bottom" :delay="500">
+        </KTooltip>
+        <KTooltip text="向下滑动" :delay="500">
           <div class="mode mode-slide-bottom" :class="{ active: settingsStore.settings.mainPage.transitionMode === 'slide-bottom' }" @click="settingsStore.settings.mainPage.transitionMode = 'slide-bottom'" />
-        </HTooltip>
+        </KTooltip>
       </div>
     </div>
     <div>
-      <div class="divider">
-        导航栏
-      </div>
+      <KDivider>导航栏</KDivider>
       <div class="setting-item">
         <div class="label">
-          主导航切换跳转
-          <HTooltip text="切换主导航时，页面自动跳转至该主导航下，次导航里第一个导航">
+          主导航点击模式
+          <KTooltip text="智能选择会判断次导航是否只有且只有一个可访问的菜单进行切换或跳转操作">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.menu.switchMainMenuAndPageJump" :disabled="['single', 'only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
-      </div>
-      <div class="setting-item">
-        <div class="label">
-          次导航自动隐藏
-          <HTooltip text="切换主导航时，如果次导航里只有一个导航时，则自动隐藏">
-            <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+        <div class="flex-center-start gap-1">
+          <KButton
+            v-for="(item, index) in [{
+              label: '切换',
+              value: 'switch',
+            }, {
+              label: '跳转',
+              value: 'jump',
+            }, {
+              label: '智能选择',
+              value: 'smart',
+            }]" :key="index" :variant="settingsStore.settings.menu.mainMenuClickMode === item.value ? 'default' : 'outline'" size="sm" :disabled="['single', 'side', 'head'].includes(settingsStore.settings.menu.mode)" @click="settingsStore.settings.menu.mainMenuClickMode = (item.value as any)"
+          >
+            {{ item.label }}
+          </KButton>
         </div>
-        <HToggle v-model="settingsStore.settings.menu.subMenuOnlyOneHide" :disabled="['single', 'only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
       </div>
+      <!--      <div class="setting-item"> -->
+      <!--        <div class="label"> -->
+      <!--          次导航自动隐藏 -->
+      <!--          <KTooltip text="切换主导航时，如果次导航里只有一个导航时，则自动隐藏"> -->
+      <!--            <SvgIcon name="i-ri:question-line" /> -->
+      <!--          </KTooltip> -->
+      <!--        </div> -->
+      <!--        <KSwitch v-model="settingsStore.settings.menu.subMenuOnlyOneHide" :disabled="['single', 'only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" /> -->
+      <!--      </div> -->
       <div class="setting-item">
         <div class="label">
           次导航保持展开一个
-          <HTooltip text="次导航只保持单个菜单的展开">
+          <KTooltip text="次导航只保持单个菜单的展开">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.menu.subMenuUniqueOpened" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
+        <KSwitch v-model="settingsStore.settings.menu.subMenuUniqueOpened" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
       </div>
       <div class="setting-item">
         <div class="label">
           次导航是否收起
         </div>
-        <HToggle v-model="settingsStore.settings.menu.subMenuCollapse" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
+        <KSwitch v-model="settingsStore.settings.menu.subMenuCollapse" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
       </div>
       <div class="setting-item">
         <div class="label">
           次导航是否自动收起
-          <HTooltip text="次导航收起时，鼠标悬停会临时展开">
+          <KTooltip text="次导航收起时，鼠标悬停会临时展开">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.menu.subMenuAutoCollapse" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
+        <KSwitch v-model="settingsStore.settings.menu.subMenuAutoCollapse" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
       </div>
       <div v-if="settingsStore.mode === 'pc'" class="setting-item">
         <div class="label">
           显示次导航展开/收起按钮
         </div>
-        <HToggle v-model="settingsStore.settings.menu.enableSubMenuCollapseButton" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
-      </div>
-      <div class="setting-item">
-        <div class="label">
-          是否圆角
-        </div>
-        <HToggle v-model="settingsStore.settings.menu.isRounded" />
-      </div>
-      <div class="setting-item">
-        <div class="label">
-          激活风格
-        </div>
-        <HCheckList
-          v-model="settingsStore.settings.menu.style" :options="[
-            { icon: 'i-jam:stop-sign', value: '' },
-            { icon: ['head', 'only-head'].includes(settingsStore.settings.menu.mode) ? 'i-ep:caret-top' : 'i-ep:caret-left', value: 'arrow' },
-            { icon: ['side', 'only-side'].includes(settingsStore.settings.menu.mode) ? 'i-tabler:minus-vertical' : 'i-tabler:minus', value: 'line' },
-            { icon: 'i-icon-park-outline:dot', value: 'dot' },
-          ]" :disabled="settingsStore.settings.menu.mode === 'single'"
-        />
-      </div>
-      <div class="setting-item">
-        <div class="label">
-          是否启用快捷键
-        </div>
-        <HToggle v-model="settingsStore.settings.menu.enableHotkeys" :disabled="['single', 'only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
-      </div>
-    </div>
-    <div>
-      <div class="divider">
-        顶栏
-      </div>
-      <div class="setting-item">
-        <div class="label">
-          模式
-        </div>
-        <HCheckList
-          v-model="settingsStore.settings.topbar.mode" :options="[
-            { label: '静止', value: 'static' },
-            { label: '固定', value: 'fixed' },
-            { label: '粘性', value: 'sticky' },
-          ]"
-        />
-      </div>
-      <div class="setting-item">
-        <div class="label">
-          展示切换
-          <HTooltip text="切换标签栏和工具栏的展示顺序">
-            <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
-        </div>
-        <HToggle v-model="settingsStore.settings.topbar.switchTabbarAndToolbar" />
-      </div>
-    </div>
-    <div>
-      <div class="divider">
-        标签栏
-      </div>
-      <div class="setting-item">
-        <div class="label">
-          是否启用
-        </div>
-        <HToggle v-model="settingsStore.settings.tabbar.enable" />
+        <KSwitch v-model="settingsStore.settings.menu.enableSubMenuCollapseButton" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
       </div>
       <div class="setting-item">
         <div class="label">
           风格
         </div>
-        <HCheckList
-          v-model="settingsStore.settings.tabbar.style" :options="[
-            { label: '默认', value: '' },
-            { label: '时尚', value: 'fashion' },
-            { label: '卡片', value: 'card' },
-            { label: '方块', value: 'square' },
-          ]" :disabled="!settingsStore.settings.tabbar.enable"
-        />
+        <div class="flex-center-start gap-1">
+          <KButton
+            v-for="(item, index) in [
+              { icon: 'i-jam:stop-sign', value: '' },
+              { icon: ['head', 'only-head'].includes(settingsStore.settings.menu.mode) ? 'i-ep:caret-top' : 'i-ep:caret-left', value: 'arrow' },
+              { icon: ['side', 'only-side'].includes(settingsStore.settings.menu.mode) ? 'i-tabler:minus-vertical' : 'i-tabler:minus', value: 'line' },
+              { icon: 'i-icon-park-outline:dot', value: 'dot' },
+            ]" :key="index" :variant="settingsStore.settings.menu.style === item.value ? 'default' : 'outline'"
+            size="icon" class="h-7 w-7"
+            :disabled="settingsStore.settings.menu.mode === 'single'" @click="settingsStore.settings.menu.style = (item.value as any)"
+          >
+            <SvgIcon :name="item.icon" />
+          </KButton>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="label">
+          是否启用快捷键
+        </div>
+        <KSwitch v-model="settingsStore.settings.menu.enableHotkeys" :disabled="['single', 'only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
+      </div>
+    </div>
+    <div>
+      <KDivider>顶栏</KDivider>
+      <div class="setting-item">
+        <div class="label">
+          模式
+        </div>
+        <div class="flex-center-start gap-1">
+          <KButton
+            v-for="(item, index) in [
+              { label: '静止', value: 'static' },
+              { label: '固定', value: 'fixed' },
+              { label: '粘性', value: 'sticky' },
+            ]" :key="index" :variant="settingsStore.settings.topbar.mode === item.value ? 'default' : 'outline'" size="sm" @click="settingsStore.settings.topbar.mode = (item.value as any)"
+          >
+            {{ item.label }}
+          </KButton>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="label">
+          展示切换
+          <KTooltip text="切换标签栏和工具栏的展示顺序">
+            <SvgIcon name="i-ri:question-line" />
+          </KTooltip>
+        </div>
+        <KSwitch v-model="settingsStore.settings.topbar.switchTabbarAndToolbar" />
+      </div>
+    </div>
+    <div>
+      <KDivider>标签栏</KDivider>
+      <div class="setting-item">
+        <div class="label">
+          是否启用
+        </div>
+        <KSwitch v-model="settingsStore.settings.tabbar.enable" />
+      </div>
+      <div class="setting-item">
+        <div class="label">
+          风格
+        </div>
+        <div class="flex-center-start gap-1">
+          <KButton
+            v-for="(item, index) in [
+              { label: '默认', value: '' },
+              { label: '时尚', value: 'fashion' },
+              { label: '卡片', value: 'card' },
+              { label: '方块', value: 'square' },
+            ]" :key="index" :variant="settingsStore.settings.tabbar.style === item.value ? 'default' : 'outline'" size="sm" :disabled="!settingsStore.settings.tabbar.enable" @click="settingsStore.settings.tabbar.style = (item.value as any)"
+          >
+            {{ item.label }}
+          </KButton>
+        </div>
       </div>
       <div class="setting-item">
         <div class="label">
           是否显示图标
         </div>
-        <HToggle v-model="settingsStore.settings.tabbar.enableIcon" :disabled="!settingsStore.settings.tabbar.enable" />
+        <KSwitch v-model="settingsStore.settings.tabbar.enableIcon" :disabled="!settingsStore.settings.tabbar.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           标签页双击执行动作
         </div>
-        <HSelect
+        <KSelect
           v-model="settingsStore.settings.tabbar.dblclickAction" :options="[{
             label: '刷新',
             value: 'reload',
@@ -366,105 +393,106 @@ function handleCopy() {
         <div class="label">
           标签页合并规则
         </div>
-        <HSelect
-          v-model="settingsStore.settings.tabbar.mergeTabsBy" :options="[
-            { label: '不合并', value: '' },
-            { label: '根据 activeMenu 合并', value: 'activeMenu' },
-            { label: '根据路由名称合并', value: 'routeName' },
-          ]"
-          :disabled="!settingsStore.settings.tabbar.enable"
-        />
+        <div class="flex-center-start gap-1">
+          <KButton
+            v-for="(item, index) in [
+              { label: '不合并', value: '' },
+              { label: '激活导航', value: 'activeMenu' },
+              { label: '路由名称', value: 'routeName' },
+            ]" :key="index" :variant="settingsStore.settings.tabbar.mergeTabsBy === item.value ? 'default' : 'outline'" size="sm" :disabled="!settingsStore.settings.tabbar.enable" @click="settingsStore.settings.tabbar.mergeTabsBy = (item.value as any)"
+          >
+            {{ item.label }}
+          </KButton>
+        </div>
       </div>
       <div class="setting-item">
         <div class="label">
           是否启用记忆功能
-          <HTooltip text="非固定和非常驻的标签页将在本次会话窗口中始终存在，刷新浏览器或重新登录时不会丢失">
+          <KTooltip text="非固定和非常驻的标签页将在本次会话窗口中始终存在，刷新浏览器或重新登录时不会丢失">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.tabbar.enableMemory" :disabled="!settingsStore.settings.tabbar.enable" />
+        <KSwitch v-model="settingsStore.settings.tabbar.enableMemory" :disabled="!settingsStore.settings.tabbar.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           是否启用快捷键
         </div>
-        <HToggle v-model="settingsStore.settings.tabbar.enableHotkeys" :disabled="!settingsStore.settings.tabbar.enable" />
+        <KSwitch v-model="settingsStore.settings.tabbar.enableHotkeys" :disabled="!settingsStore.settings.tabbar.enable" />
       </div>
     </div>
     <div>
-      <div class="divider">
-        工具栏
-      </div>
+      <KDivider>工具栏</KDivider>
       <div class="setting-item">
         <div class="label">
           收藏夹
-          <HTooltip text="可将常用导航添加进收藏夹，方便快读访问">
+          <KTooltip text="可将常用导航添加进收藏夹，方便快读访问">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.toolbar.favorites" />
+        <KSwitch v-model="settingsStore.settings.toolbar.favorites" />
       </div>
       <div v-if="settingsStore.mode === 'pc'" class="setting-item">
         <div class="label">
           面包屑导航
         </div>
-        <HToggle v-model="settingsStore.settings.toolbar.breadcrumb" />
+        <KSwitch v-model="settingsStore.settings.toolbar.breadcrumb" />
       </div>
       <div class="setting-item">
         <div class="label">
           导航搜索
-          <HTooltip text="对导航进行快捷搜索">
+          <KTooltip text="对导航进行快捷搜索">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.toolbar.navSearch" />
+        <KSwitch v-model="settingsStore.settings.toolbar.navSearch" />
       </div>
       <div class="setting-item">
         <div class="label">
           通知中心
-          <HTooltip text="该功能具体业务功能需自行开发，框架仅提供示例模版">
+          <KTooltip text="该功能具体业务功能需自行开发，框架仅提供示例模版">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.toolbar.notification" />
+        <KSwitch v-model="settingsStore.settings.toolbar.notification" />
       </div>
       <div class="setting-item">
         <div class="label">
           锁屏
         </div>
-        <HToggle v-model="settingsStore.settings.toolbar.lock" />
+        <KSwitch v-model="settingsStore.settings.toolbar.lock" />
       </div>
       <div class="setting-item">
         <div class="label">
           国际化
         </div>
-        <HToggle v-model="settingsStore.settings.toolbar.i18n" />
+        <KSwitch v-model="settingsStore.settings.toolbar.i18n" />
       </div>
       <div v-if="settingsStore.mode === 'pc'" class="setting-item">
         <div class="label">
           全屏
         </div>
-        <HToggle v-model="settingsStore.settings.toolbar.fullscreen" />
+        <KSwitch v-model="settingsStore.settings.toolbar.fullscreen" />
       </div>
       <div class="setting-item">
         <div class="label">
           页面刷新
-          <HTooltip text="使用框架内提供的刷新功能进行页面刷新">
+          <KTooltip text="使用框架内提供的刷新功能进行页面刷新">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.toolbar.pageReload" />
+        <KSwitch v-model="settingsStore.settings.toolbar.pageReload" />
       </div>
       <div class="setting-item">
         <div class="label">
           颜色主题
-          <HTooltip text="可切换明亮/暗黑模式">
+          <KTooltip text="可切换明亮/暗黑模式">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.toolbar.colorScheme" />
+        <KSwitch v-model="settingsStore.settings.toolbar.colorScheme" />
       </div>
-      <div ref="toolbarLayoutRef" class="mx-4 my-2 flex items-center rounded-2 px-2 py-1 ring-1 ring-stone-2 dark-ring-stone-7">
+      <div ref="toolbarLayoutRef" class="mx-4 my-2 flex items-center rounded-2 px-2 py-1 ring-1 ring-border">
         <span
           v-for="tool in settingsStore.settings.toolbar.layout" :key="tool" class="draggable flex-center p-1" :class="{
             'flex-1 text-stone-3 dark-text-stone-7 no-drag': tool === '->',
@@ -486,210 +514,198 @@ function handleCopy() {
       </div>
     </div>
     <div v-if="settingsStore.mode === 'pc'">
-      <div class="divider">
-        面包屑导航
-      </div>
+      <KDivider>面包屑导航</KDivider>
       <div class="setting-item">
         <div class="label">
           风格
         </div>
-        <HCheckList
-          v-model="settingsStore.settings.breadcrumb.style" :options="[
-            { label: '默认', value: '' },
-            { label: '现代', value: 'modern' },
-          ]" :disabled="!settingsStore.settings.toolbar.breadcrumb"
-        />
+
+        <div class="flex-center-start gap-1">
+          <KButton
+            v-for="(item, index) in [
+              { label: '默认', value: '' },
+              { label: '现代', value: 'modern' },
+            ]" :key="index" :variant="settingsStore.settings.breadcrumb.style === item.value ? 'default' : 'outline'" size="sm" :disabled="!settingsStore.settings.toolbar.breadcrumb" @click="settingsStore.settings.breadcrumb.style = (item.value as any)"
+          >
+            {{ item.label }}
+          </KButton>
+        </div>
       </div>
       <div class="setting-item">
         <div class="label">
           是否显示主导航
         </div>
-        <HToggle v-model="settingsStore.settings.breadcrumb.enableMainMenu" :disabled="!settingsStore.settings.toolbar.breadcrumb || ['single'].includes(settingsStore.settings.menu.mode)" />
+        <KSwitch v-model="settingsStore.settings.breadcrumb.enableMainMenu" :disabled="!settingsStore.settings.toolbar.breadcrumb || ['single'].includes(settingsStore.settings.menu.mode)" />
       </div>
     </div>
     <div>
-      <div class="divider">
-        页面
-      </div>
+      <KDivider>页面</KDivider>
       <div class="setting-item">
         <div class="label">
           是否启用快捷键
         </div>
-        <HToggle v-model="settingsStore.settings.mainPage.enableHotkeys" />
+        <KSwitch v-model="settingsStore.settings.mainPage.enableHotkeys" />
       </div>
     </div>
     <div>
-      <div class="divider">
-        导航搜索
-      </div>
+      <KDivider>导航搜索</KDivider>
       <div class="setting-item">
         <div class="label">
           是否启用快捷键
         </div>
-        <HToggle v-model="settingsStore.settings.navSearch.enableHotkeys" :disabled="!settingsStore.settings.toolbar.navSearch" />
+        <KSwitch v-model="settingsStore.settings.navSearch.enableHotkeys" :disabled="!settingsStore.settings.toolbar.navSearch" />
       </div>
     </div>
     <div>
-      <div class="divider">
-        底部版权
-      </div>
+      <KDivider>底部版权</KDivider>
       <div class="setting-item">
         <div class="label">
           是否启用
         </div>
-        <HToggle v-model="settingsStore.settings.copyright.enable" />
+        <KSwitch v-model="settingsStore.settings.copyright.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           日期
         </div>
-        <HInput v-model="settingsStore.settings.copyright.dates" :disabled="!settingsStore.settings.copyright.enable" />
+        <KInput v-model="settingsStore.settings.copyright.dates" :disabled="!settingsStore.settings.copyright.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           公司
         </div>
-        <HInput v-model="settingsStore.settings.copyright.company" :disabled="!settingsStore.settings.copyright.enable" />
+        <KInput v-model="settingsStore.settings.copyright.company" :disabled="!settingsStore.settings.copyright.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           网址
         </div>
-        <HInput v-model="settingsStore.settings.copyright.website" :disabled="!settingsStore.settings.copyright.enable" />
+        <KInput v-model="settingsStore.settings.copyright.website" :disabled="!settingsStore.settings.copyright.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           备案
         </div>
-        <HInput v-model="settingsStore.settings.copyright.beian" :disabled="!settingsStore.settings.copyright.enable" />
+        <KInput v-model="settingsStore.settings.copyright.beian" :disabled="!settingsStore.settings.copyright.enable" />
       </div>
     </div>
     <div>
-      <div class="divider">
-        主页
-      </div>
+      <KDivider>主页</KDivider>
       <div class="setting-item">
         <div class="label">
           是否启用
-          <HTooltip text="该功能开启时，登录成功默认进入主页，反之则默认进入导航栏里第一个导航页面">
+          <KTooltip text="该功能开启时，登录成功默认进入主页，反之则默认进入导航栏里第一个导航页面">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.home.enable" />
+        <KSwitch v-model="settingsStore.settings.home.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           主页名称
-          <HTooltip text="开启国际化时，该设置无效">
+          <KTooltip text="开启国际化时，该设置无效">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HInput v-model="settingsStore.settings.home.title" :disabled="settingsStore.settings.toolbar.i18n" />
+        <KInput v-model="settingsStore.settings.home.title" :disabled="settingsStore.settings.toolbar.i18n" />
       </div>
     </div>
     <div>
-      <div class="divider">
-        其它
-      </div>
+      <KDivider>其它</KDivider>
       <div class="setting-item">
         <div class="label">
           是否启用权限
         </div>
-        <HToggle v-model="settingsStore.settings.app.enablePermission" />
+        <KSwitch v-model="settingsStore.settings.app.enablePermission" />
       </div>
       <div class="setting-item">
         <div class="label">
           载入进度条
-          <HTooltip text="该功能开启时，跳转路由会看到页面顶部有进度条">
+          <KTooltip text="该功能开启时，跳转路由会看到页面顶部有进度条">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.app.enableProgress" />
+        <KSwitch v-model="settingsStore.settings.app.enableProgress" />
       </div>
       <div class="setting-item">
         <div class="label">
           哀悼模式
-          <HTooltip text="该功能开启时，整站会变为灰色">
+          <KTooltip text="该功能开启时，整站会变为灰色">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.app.enableMournMode" />
+        <KSwitch v-model="settingsStore.settings.app.enableMournMode" />
       </div>
       <div class="setting-item">
         <div class="label">
           色弱模式
         </div>
-        <HToggle v-model="settingsStore.settings.app.enableColorAmblyopiaMode" />
+        <KSwitch v-model="settingsStore.settings.app.enableColorAmblyopiaMode" />
       </div>
       <div class="setting-item">
         <div class="label">
           动态标题
-          <HTooltip text="该功能开启时，页面标题会显示当前路由标题，格式为“页面标题 - 网站名称”；关闭时则显示网站名称，网站名称在项目根目录下 .env.* 文件里配置">
+          <KTooltip text="该功能开启时，页面标题会显示当前路由标题，格式为“页面标题 - 网站名称”；关闭时则显示网站名称，网站名称在项目根目录下 .env.* 文件里配置">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HToggle v-model="settingsStore.settings.app.enableDynamicTitle" />
+        <KSwitch v-model="settingsStore.settings.app.enableDynamicTitle" />
       </div>
       <div class="setting-item">
         <div class="label">
           检测更新
         </div>
-        <HToggle v-model="settingsStore.settings.app.enableAutoUpdate" />
+        <KSwitch v-model="settingsStore.settings.app.enableCheckUpdates" />
       </div>
       <div class="setting-item">
         <div class="label">
           Storage 前缀
-          <HTooltip text="localStorage 和 sessionStorage 的字段前缀">
+          <KTooltip text="localStorage 和 sessionStorage 的字段前缀">
             <SvgIcon name="i-ri:question-line" />
-          </HTooltip>
+          </KTooltip>
         </div>
-        <HInput v-model="settingsStore.settings.app.storagePrefix" />
+        <KInput v-model="settingsStore.settings.app.storagePrefix" />
       </div>
       <div class="setting-item">
         <div class="label">
           页面水印
         </div>
-        <HToggle v-model="settingsStore.settings.app.enableWatermark" />
+        <KSwitch v-model="settingsStore.settings.app.enableWatermark" />
       </div>
       <div class="setting-item">
         <div class="label">
           文本方向
         </div>
-        <HCheckList
-          v-model="settingsStore.settings.app.direction" :options="[
-            { label: 'LTR', value: 'ltr' },
-            { label: 'RTL', value: 'rtl' },
-          ]"
-        />
+        <div class="flex-center-start gap-1">
+          <KButton
+            v-for="(item, index) in [
+              { label: 'LTR', value: 'ltr' },
+              { label: 'RTL', value: 'rtl' },
+            ]" :key="index" :variant="settingsStore.settings.app.direction === item.value ? 'default' : 'outline'" size="sm" @click="settingsStore.settings.app.direction = (item.value as any)"
+          >
+            {{ item.label }}
+          </KButton>
+        </div>
       </div>
     </div>
-    <template v-if="isSupported" #footer>
-      <HButton block @click="handleCopy">
+    <template #footer>
+      <KButton class="w-full" @click="handleCopy">
         <SvgIcon name="i-ep:document-copy" />
         复制配置
-      </HButton>
+      </KButton>
     </template>
-  </HSlideover>
+  </KDrawer>
 </template>
 
 <style scoped>
-.divider {
-  --uno: flex items-center justify-between gap-4 my-4 whitespace-nowrap text-sm font-500;
-
-  &::before,
-  &::after {
-    --uno: content-empty w-full h-1px bg-stone-2 dark-bg-stone-6;
-  }
-}
-
 .themes {
-  --uno: flex flex-wrap items-center justify-center gap-4 pb-4;
+  --uno: grid grid-cols-4 gap-4 pb-4 ps-8 pe-8;
 
   .theme {
-    --uno: flex items-center justify-center w-12 h-12 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer transition;
+    --uno: w-full h-12 cursor-pointer flex place-self-center items-center justify-center  rounded-2 ring-1 ring-border  transition;
 
     &.active {
-      --uno: ring-ui-primary ring-2;
+      --uno: ring-2 ring-primary ;
 
       .content {
         --uno: rotate-0;
@@ -697,7 +713,7 @@ function handleCopy() {
     }
 
     .content {
-      --uno: w-6 h-4 rounded-50% -rotate-45 transition;
+      --uno: w-6 h-4 rounded-1/2 -rotate-45 transition;
     }
   }
 }
@@ -706,10 +722,10 @@ function handleCopy() {
   --uno: flex items-center justify-center gap-4 pb-4;
 
   .mode {
-    --uno: relative w-16 h-12 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer transition;
+    --uno: relative w-16 h-12 rounded-2 ring-1 ring-border cursor-pointer transition;
 
     &.active {
-      --uno: ring-ui-primary ring-2;
+      --uno: ring-primary ring-2;
     }
 
     &::before,
@@ -719,15 +735,15 @@ function handleCopy() {
     }
 
     &::before {
-      --uno: content-empty bg-ui-primary;
+      --uno: content-empty bg-primary;
     }
 
     &::after {
-      --uno: content-empty bg-ui-primary/60;
+      --uno: content-empty bg-primary/60;
     }
 
     .mode-container {
-      --uno: bg-ui-primary/20 border-width-1.5 border-dashed border-ui-primary;
+      --uno: bg-primary/20 border-width-1.5 border-dashed border-primary;
 
       &::before {
         --uno: content-empty absolute w-full h-full;
@@ -826,15 +842,15 @@ function handleCopy() {
   --uno: flex items-center justify-center gap-4 pb-4;
 
   .mode {
-    --uno: relative w-16 h-12 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer transition of-hidden;
+    --uno: relative w-16 h-12 rounded-2 ring-1 ring-border cursor-pointer transition of-hidden;
 
     &.active {
-      --uno: ring-ui-primary ring-2;
+      --uno: ring-primary ring-2;
     }
 
     &-adaption {
       &::before {
-        --uno: content-empty absolute w-full h-full bg-stone-1 dark-bg-stone-9;
+        --uno: content-empty absolute w-full h-full bg-primary/20;
       }
 
       .left,
@@ -853,7 +869,7 @@ function handleCopy() {
 
     &-adaption-min-width {
       &::before {
-        --uno: content-empty absolute w-1/2 h-full left-1/2 -translate-x-1/2 bg-stone-1 dark-bg-stone-9;
+        --uno: content-empty absolute w-1/2 h-full left-1/2 -translate-x-1/2 bg-primary/20;
       }
 
       .left,
@@ -872,13 +888,13 @@ function handleCopy() {
 
     &-center {
       &::before {
-        --uno: content-empty absolute w-3/5 h-full left-1/2 -translate-x-1/2 bg-stone-1 dark-bg-stone-9;
+        --uno: content-empty absolute w-3/5 h-full left-1/2 -translate-x-1/2 bg-primary/20;
       }
     }
 
     &-center-max-width {
       &::before {
-        --uno: content-empty absolute w-3/5 h-full left-1/2 -translate-x-1/2 bg-stone-1 dark-bg-stone-9;
+        --uno: content-empty absolute w-3/5 h-full left-1/2 -translate-x-1/2 bg-primary/20;
       }
 
       .left,
@@ -901,14 +917,14 @@ function handleCopy() {
   --uno: flex items-center justify-center gap-4 pb-4;
 
   .mode {
-    --uno: relative flex items-center justify-center w-14 h-10 rounded-2 ring-1 ring-stone-2 dark-ring-stone-7 cursor-pointer;
+    --uno: relative flex items-center justify-center w-14 h-10 rounded-2 ring-1 ring-border cursor-pointer;
 
     &.active {
-      --uno: ring-ui-primary ring-2;
+      --uno: ring-primary ring-2;
     }
 
     &::after {
-      --uno: content-empty absolute w-3/5 h-3/5 top-1/5 left-1/5 rounded-2 bg-stone-2 dark-bg-stone-9 transition;
+      --uno: content-empty absolute w-3/5 h-3/5 top-1/5 left-1/5 rounded-2 bg-primary/20 transition;
     }
 
     &.mode-fade {
@@ -1039,7 +1055,7 @@ function handleCopy() {
 }
 
 .setting-item {
-  --uno: flex items-center justify-between gap-4 px-4 py-2 rounded-2 transition hover-bg-stone-1 dark-hover-bg-stone-9;
+  --uno: flex items-center justify-between gap-4 px-4 py-2 rounded-lg transition hover-bg-secondary;
 
   .label {
     --uno: flex items-center flex-shrink-0 gap-2 text-sm;

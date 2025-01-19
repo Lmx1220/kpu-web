@@ -2,7 +2,7 @@
 const checkList = ref(1)
 const dialog = ref(false)
 const input = ref('')
-const select = ref(1)
+const select = ref('1')
 const slideover = ref(false)
 const tabList = ref(1)
 const toggle = ref(false)
@@ -10,67 +10,67 @@ const toggle = ref(false)
 
 <template>
   <div>
-    <PageHeader title="内建组件" content="内建组件仅服务于框架自身，不建议在业务页面内使用，业务页面内请使用专业的 UI 组件库。" />
+    <KPageHeader title="内建组件" content="内建组件仅服务于框架自身，不建议在业务页面内使用，业务页面内请使用专业的 UI 组件库。" />
     <div class="flex flex-col flex-wrap gap-4 px-4 lg-flex-row">
-      <PageMain title="Badge">
-        <HBadge :value="true">
-          <svg-icon name="i-ri:notification-3-line" />
-        </HBadge>
+      <KPageMain title="Badge">
+        <KBadge :value="true">
+          <SvgIcon name="i-ri:notification-3-line" />
+        </KBadge>
 
-        <HBadge :value="99">
-          <svg-icon name="i-ri:notification-3-line" />
-        </HBadge>
+        <KBadge :value="99">
+          <SvgIcon name="i-ri:notification-3-line" />
+        </KBadge>
 
-        <HBadge value="噢">
-          <svg-icon name="i-ri:notification-3-line" />
-        </HBadge>
-      </PageMain>
-      <PageMain title="Button">
-        <HButton>
+        <KBadge value="噢">
+          <SvgIcon name="i-ri:notification-3-line" />
+        </KBadge>
+      </KPageMain>
+      <KPageMain title="Button">
+        <KButton>
           按钮
-        </HButton>
-        <HButton outline>
+        </KButton>
+        <KButton outline>
           按钮
-        </HButton>
-        <HButton disabled>
+        </KButton>
+        <KButton disabled>
           按钮
-        </HButton>
-        <HButton disabled outline>
+        </KButton>
+        <KButton disabled outline>
           按钮
-        </HButton>
-      </PageMain>
-      <PageMain title="CheckList">
-        <HCheckList
-          v-model="checkList" :options="[
-            { label: '选项1', value: 1 },
-            { label: '选项2', value: 2, disabled: true },
-            { label: '选项3', value: 3 },
+        </KButton>
+      </KPageMain>
+      <KPageMain title="CheckList">
+        <KTabs
+          v-model="checkList" :list="[
+            { label: '选项1', value: '1' },
+            { label: '选项2', value: '2' },
+            { label: '选项3', value: '3' },
           ]"
         />
-      </PageMain>
-      <PageMain title="Dialog">
-        <HButton @click="dialog = true">
+      </KPageMain>
+      <KPageMain title="Dialog">
+        <KButton @click="dialog = true">
           打开
-        </HButton>
-        <HDialog v-model="dialog" title="标题">
+        </KButton>
+        <KModal v-model="dialog" title="标题">
           这里是 dialog 内容
-        </HDialog>
-      </PageMain>
-      <PageMain title="Dropdown">
-        <HDropdown>
+        </KModal>
+      </KPageMain>
+      <KPageMain title="Dropdown">
+        <KPopover>
           <div class="flex-center">
             下拉面板
             <SvgIcon name="i-ep:caret-bottom" />
           </div>
-          <template #dropdown>
+          <template #panel>
             <div class="h-30 w-60 flex items-center justify-center">
               下拉内容
             </div>
           </template>
-        </HDropdown>
-      </PageMain>
-      <PageMain title="DropdownMenu">
-        <HDropdownMenu
+        </KPopover>
+      </KPageMain>
+      <KPageMain title="DropdownMenu">
+        <KDropdown
           :items="[
             [
               { label: '菜单1-1' },
@@ -86,33 +86,33 @@ const toggle = ref(false)
             下拉菜单
             <SvgIcon name="i-ep:caret-bottom" />
           </div>
-        </HDropdownMenu>
-      </PageMain>
-      <PageMain title="Input">
-        <HInput v-model="input" />
-      </PageMain>
-      <PageMain title="Kbd">
-        <HKbd>Ctrl</HKbd>
-        <HKbd>⌘ K</HKbd>
-      </PageMain>
-      <PageMain title="Select">
-        <HSelect
+        </KDropdown>
+      </KPageMain>
+      <KPageMain title="Input">
+        <KInput v-model="input" />
+      </KPageMain>
+      <KPageMain title="Kbd">
+        <KKbd>Ctrl</KKbd>
+        <KKbd>⌘ K</KKbd>
+      </KPageMain>
+      <KPageMain title="Select">
+        <KSelect
           v-model="select" :options="[
-            { label: '选项1', value: 1 },
-            { label: '选项2', value: 2, disabled: true },
-            { label: '选项3', value: 3 },
+            { label: '选项1', value: '1' },
+            { label: '选项2', value: '2', disabled: true },
+            { label: '选项3', value: '3' },
           ]"
         />
-      </PageMain>
-      <PageMain title="Slideover">
+      </KPageMain>
+      <KPageMain title="Slideover">
         <HButton @click="slideover = true">
           打开
         </HButton>
         <HSlideover v-model="slideover" title="标题" :overlay="false">
           这里是 slideover 内容
         </HSlideover>
-      </PageMain>
-      <PageMain title="TabList">
+      </KPageMain>
+      <KPageMain title="TabList">
         <HTabList
           v-model="tabList"
           :options="[
@@ -121,11 +121,11 @@ const toggle = ref(false)
             { label: '标签3', value: 3 },
           ]"
         />
-      </PageMain>
-      <PageMain title="Toggle">
+      </KPageMain>
+      <KPageMain title="Toggle">
         <HToggle v-model="toggle" />
         <HToggle v-model="toggle" on-icon="ri:sun-line" off-icon="ri:moon-line" />
-      </PageMain>
+      </KPageMain>
       <PageMain title="Tooltip">
         <HTooltip text="注意噢！">
           <SvgIcon name="i-ri:question-line" />

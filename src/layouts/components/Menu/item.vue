@@ -61,7 +61,7 @@ defineExpose({
     }"
   >
     <router-link v-slot="{ href, navigate }" custom :to="uniqueKey.at(-1) ?? ''">
-      <HTooltip :enable="rootMenu.isMenuPopup && level === 0 && !subMenu" :text="generateI18nTitle(item.meta?.title)" placement="right" class="h-full w-full">
+      <KTooltip :disabled="!rootMenu.isMenuPopup || level !== 0 || subMenu" :text="generateI18nTitle(item.meta?.title)" :side="rootMenu.props.mode === 'vertical' ? 'right' : 'bottom'" class="h-full w-full">
         <component
           :is="subMenu ? 'div' : 'a'" v-bind="{
             ...(!subMenu && {
@@ -69,17 +69,16 @@ defineExpose({
               target: item.meta?.newWindow || item.meta?.link ? '_blank' : '_self',
               class: 'no-underline',
             }),
-          }" class="group menu-item-container h-full w-full flex items-center justify-between gap-1 px-4 py-3" :class="{
+          }" class="group menu-item-container relative h-full w-full flex items-center justify-between gap-1 rounded-lg px-4 py-3" :class="{
             ...(rootMenu.isMenuPopup || !alwaysExpand
               ? {
-                'cursor-pointer text-[var(--g-sub-sidebar-menu-color)] transition-all hover-(bg-[var(--g-sub-sidebar-menu-hover-bg)] text-[var(--g-sub-sidebar-menu-hover-color)])': true,
+                'cursor-pointer text-[var(--g-sub-sidebar-menu-color)] transition-all hover-bg-[var(--g-sub-sidebar-menu-hover-bg)] hover-text-[var(--g-sub-sidebar-menu-hover-color)]': true,
                 'text-[var(--g-sub-sidebar-menu-active-color)]! bg-[var(--g-sub-sidebar-menu-active-bg)]!': isItemActive,
-                'rounded-2': rootMenu.props.rounded,
                 'px-3!': rootMenu.isMenuPopup && level === 0,
-                'py-3!': rootMenu.props.rounded && rootMenu.isMenuPopup && level !== 0,
+                'py-3!': rootMenu.isMenuPopup && level !== 0,
               }
               : {
-                'py-2! opacity-30': true,
+                'py-2! opacity-50 font-bold': true,
               }
             ),
           }" :title="generateI18nTitle(item.meta?.title)" v-on="{
@@ -110,7 +109,13 @@ defineExpose({
             >
               {{ generateI18nTitle(item.meta?.title) }}
             </span>
-            <HBadge v-if="item.meta?.badge && !(rootMenu.isMenuPopup && level === 0)" :value="typeof item.meta.badge === 'function' ? item.meta.badge() : item.meta.badge" class="badge" />
+            <KBadge
+              v-if="item.meta?.badge && !(rootMenu.isMenuPopup && level === 0)"
+              :value="typeof item.meta.badge === 'function' ? item.meta.badge() : item.meta.badge"
+              :variant="typeof item.meta.badgeVariant == 'function' ? item.meta.badgeVariant() : item.meta.badgeVariant"
+              class="badge"
+              :class="{ hidden: rootMenu.isMenuPopup && level === 0 }"
+            />
           </div>
           <i
             v-if="
@@ -120,22 +125,22 @@ defineExpose({
             "
             class="relative ms-1 w-[10px] after:absolute before:absolute after:h-[1.5px] after:w-[6px] before:h-[1.5px] before:w-[6px] after:bg-current before:bg-current after:transition-transform-200 before:transition-transform-200 after:content-empty before:content-empty after:-translate-y-[1px] before:-translate-y-[1px]"
             :class="[
-              expand ? 'before-(-rotate-45 -translate-x-[2px]) after-(rotate-45 translate-x-[2px])' : 'before-(rotate-45 -translate-x-[2px]) after-(-rotate-45 translate-x-[2px])',
+              expand ? 'before:-rotate-45 before:-translate-x-[2px] after:rotate-45 after:translate-x-[2px]' : 'before:rotate-45 before:-translate-x-[2px] after:-rotate-45 after:translate-x-[2px]',
               rootMenu.isMenuPopup && level === 0 && 'opacity-0',
               rootMenu.isMenuPopup && level !== 0 && '-rotate-90 -top-[1.5px]',
             ]"
           />
         </component>
-      </HTooltip>
+      </KTooltip>
     </router-link>
   </div>
 </template>
 
 <style scoped>
 .badge {
-  :deep(> span) {
-    inset-inline-start: initial !important;
-    inset-inline-end: 0;
+  :deep(>div>div) {
+    inset-inline-start:initial!important;
+    inset-inline-end:0;
   }
 }
 </style>

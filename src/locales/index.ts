@@ -2,6 +2,7 @@ import type { LocaleType } from '#/config'
 import type { App } from 'vue'
 import type { I18nOptions } from 'vue-i18n'
 import useSettingsStore from '@/store/modules/settings'
+import useUserStore from '@/store/modules/user.ts'
 import { createI18n } from 'vue-i18n'
 import { setHtmlPageLang, setLoadLocalePool } from './helper.ts'
 
@@ -10,13 +11,21 @@ export let i18n: ReturnType<typeof createI18n>
 
 async function createI18nOptions(): Promise<I18nOptions> {
   const settingsStore = useSettingsStore()
+  const userStore = useUserStore()
+
   let locale = settingsStore.settings.app.defaultLang
+  if (settingsStore.settings.userPreferences.enable && userStore.isLogin) {
+    await userStore.getPreferences()
+    locale = userStore.preferences.app.defaultLang
+  }
 
   if (!locale) {
     // navigator.language || navigator.browserLanguage
     const lang = (navigator.language).toLowerCase() as LocaleType
     locale = lang
-    settingsStore.setDefaultLang(lang)
+    setTimeout(() => {
+      settingsStore.setDefaultLang(lang)
+    }, 100)
   }
   const defaultLocal = await import(`./lang/${locale}.ts`)
   const message = defaultLocal.default?.message ?? {}

@@ -43,3 +43,5 @@ export interface SubMenuItemProps {
   level?: number
   subMenu?: boolean
 }
+
+export const subMenuInjectionKey = Symbol('subMenu') as InjectionKey<SubMenuItemProps>

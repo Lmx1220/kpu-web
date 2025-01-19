@@ -6,6 +6,7 @@ import useSettingsStore from '@/store/modules/settings.ts'
 import LoginForm from '@/views/login/components/LoginForm/index.vue'
 import RegisterForm from '@/views/login/components/RegisterForm/index.vue'
 import ResetPasswordForm from '@/views/login/components/ResetPasswordForm/index.vue'
+import themes from '../../../themes'
 
 defineOptions({
   name: 'Login',
@@ -13,6 +14,15 @@ defineOptions({
 const route = useRoute()
 const router = useRouter()
 const settingsStore = useSettingsStore()
+
+const themeList = computed(() => {
+  return Object.keys(themes).map((key) => {
+    return {
+      label: key,
+      value: (themes as any)[key][settingsStore.currentColorScheme || 'light'],
+    }
+  })
+})
 
 const layout = ref<'right' | 'center' | 'left'>('center')
 const redirect = ref(route.query.redirect?.toString() ?? settingsStore.settings.home.fullPath)
@@ -25,8 +35,8 @@ const formRef = ref()
 
 <template>
   <div class="bg-banner" />
-  <div class="absolute right-4 top-4 z-1 flex-center rounded-full bg-[var(--g-container-bg)] p-1 text-base ring-1 ring-stone-2 dark-ring-stone-8">
-    <HDropdownMenu
+  <div class="absolute right-4 top-4 z-1 flex-center border rounded-lg bg-background p-1 text-base">
+    <KDropdown
       v-if="settingsStore.mode === 'pc'" :items="[
         [{
           label: '左侧布局',
@@ -48,18 +58,39 @@ const formRef = ref()
           },
         }],
       ]"
-      class="cursor-pointer rounded-full p-2 hover-bg-[var(--g-bg)]"
     >
-      <svg-icon
-        :name="{
-          left: 'i-icon-park-outline:left-bar',
-          center: 'i-icon-park-outline:square',
-          right: 'i-icon-park-outline:right-bar',
-        }[layout]"
-      />
-    </HDropdownMenu>
+      <KButton variant="ghost" size="icon" class="h-9 w-9">
+        <SvgIcon
+          :name="{
+            left: 'i-icon-park-outline:left-bar',
+            center: 'i-icon-park-outline:square',
+            right: 'i-icon-park-outline:right-bar',
+          }[layout]"
+          :size="16"
+        />
+      </KButton>
+    </KDropdown>
 
     <I18n v-if="settingsStore.settings.toolbar.i18n" class="rounded-full hover-bg-[var(--g-bg)]" />
+    <KPopover class="min-w-auto p-0">
+      <template #panel>
+        <div class="grid grid-cols-3 w-28 gap-2 p-4">
+          <div
+            v-for="item in themeList" :key="item.label"
+            class="m-auto h-5 w-5 flex cursor-pointer items-center justify-center border-2 border-border border-transparent rounded-full text-xs transition-border"
+            :class="{
+              'border-primary!': settingsStore.currentColorScheme === 'dark' ? settingsStore.settings.app.darkTheme === item.label : settingsStore.settings.app.lightTheme === item.label,
+            }"
+            @click="settingsStore.currentColorScheme === 'dark' ? settingsStore.settings.app.darkTheme = item.label : settingsStore.settings.app.lightTheme = item.label"
+          >
+            <div class="h-3 w-3 flex items-center justify-center rounded-full" :style="`background-color: hsl(${item.value['--primary']});`" />
+          </div>
+        </div>
+      </template>
+      <KButton variant="ghost" size="icon" class="h-9 w-9">
+        <SvgIcon name="i-mdi:circle" class="text-primary" />
+      </KButton>
+    </KPopover>
     <ColorScheme v-if="settingsStore.settings.toolbar.colorScheme" class="rounded-full hover-bg-[var(--g-bg)]" />
   </div>
 
@@ -76,21 +107,21 @@ const formRef = ref()
           ref="formRef"
           :account
           @on-login="router.push(redirect)"
-          @on-register="(account) => { formType = 'register'; account = account }"
-          @on-reset-password="(account) => { formType = 'resetPassword'; account = account }"
+          @on-register="(val) => { formType = 'register'; account = val }"
+          @on-reset-password="(val) => { formType = 'resetPassword'; account = val }"
         />
         <RegisterForm
           v-else-if="formType === 'register'"
           ref="formRef"
           :account
-          @on-register="(account) => { formType = 'login'; account = account }"
+          @on-register="(val) => { formType = 'login'; account = val }"
           @on-login="formType = 'login'"
         />
         <ResetPasswordForm
           v-else-if="formType === 'resetPassword'"
           ref="formRef"
           :account
-          @on-reset-password="(account) => { formType = 'login'; account = account }"
+          @on-reset-password="(val) => { formType = 'login'; account = val }"
           @on-login="formType = 'login'"
         />
       </Transition>
@@ -105,7 +136,10 @@ const formRef = ref()
   z-index: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, var(--g-container-bg), var(--g-bg));
+  background: radial-gradient(closest-side,hsl(var(--border) / 10%) 30%,hsl(var(--primary) / 20%) 30%,hsl(var(--border) / 30%) 50%) no-repeat,radial-gradient(closest-side,hsl(var(--border) / 10%) 30%,hsl(var(--primary) / 20%) 30%,hsl(var(--border) / 30%) 50%) no-repeat;
+  filter: blur(100px);
+  background-position: 100% 100%,0% 0%;
+  background-size: 200vw 200vh;
 }
 
 [data-mode="mobile"] {
@@ -145,14 +179,13 @@ const formRef = ref()
   position: absolute;
   display: flex;
   overflow: hidden;
-  background-color: var(--g-container-bg);
+  background-color: hsl(var(--background));
 
   [data-mode="pc"] & {
     &.center {
+      --uno: shadow-md rounded-md;
       top: 50%;
       left: 50%;
-      border-radius: 10px;
-      box-shadow: var(--el-box-shadow);
       transform: translate(-50%) translateY(-50%);
     }
 
@@ -174,6 +207,9 @@ const formRef = ref()
           transform: translate(-50%) translateY(-50%);
         }
       }
+      .login-form {
+        margin: 0 5vw
+      }
     }
 
     &.left {
@@ -182,11 +218,22 @@ const formRef = ref()
   }
 
   .login-banner {
+    --uno: bg-muted dark:bg-muted/30;
+
     position: relative;
     width: 450px;
     overflow: hidden;
-    background-color: var(--g-bg);
-
+    &::before {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      content: "";
+      background: radial-gradient(closest-side,hsl(var(--border) / 10%) 30%,hsl(var(--primary) / 20%) 30%,hsl(var(--border) / 30%) 50%) no-repeat,
+                  radial-gradient(closest-side,hsl(var(--border) / 10%) 30%,hsl(var(--primary) / 20%) 30%,hsl(var(--border) / 30%) 50%) no-repeat;
+      filter: blur(100px);
+      background-position: 100% 100%,0% 0%;
+      background-size: 200vw 200vh
+    }
     .banner {
       position: absolute;
       top: 50%;

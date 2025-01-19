@@ -49,13 +49,13 @@ defineExpose({
     ref="itemRef" class="menu-item relative transition-all" :class="{
       'active': isActived,
       'py-1': level !== 0,
-      'px-2 py-1': rootMenu.props.rounded,
-      'px-1! py-2!': rootMenu.props.rounded && level === 0 && rootMenu.props.mode === 'horizontal',
+      'py-1 px-2': level === 0 && rootMenu.props.mode === 'vertical',
+      'px-1 py-2': level === 0 && rootMenu.props.mode === 'horizontal',
     }"
   >
     <router-link v-slot="{ href, navigate }" custom :to="uniqueKey.at(-1) ?? ''">
-      <HTooltip
-        :enable="level === 0 && !subMenu" :text="generateI18nTitle(item.meta?.title)" placement="right"
+      <KTooltip
+        :enable="level !== 0 || !subMenu" :text="generateI18nTitle(item.meta?.title)" placement="right"
         class="h-full w-full"
       >
         <component
@@ -65,21 +65,18 @@ defineExpose({
               target: item.meta?.newWindow || item.meta?.link ? '_blank' : '_self',
               class: 'no-underline',
             }),
-          }" class="group menu-item-container h-full w-full flex items-center justify-between gap-1 px-2 py-2" :class="{
+          }" class="group menu-item-container relative h-full w-full flex items-center justify-between gap-1 rounded-lg px-2 py-2" :class="{
             ...(level !== 1 || level === 1 && !subMenu
               ? {
                 'text-[var(--g-sub-sidebar-menu-color)] transition-all': true,
                 'cursor-pointer': !subMenu || level === 0,
                 'hover-bg-[var(--g-sub-sidebar-menu-hover-bg)] hover-text-[var(--g-sub-sidebar-menu-hover-color)]': !subMenu,
                 'text-[var(--g-sub-sidebar-menu-active-color)]! bg-[var(--g-sub-sidebar-menu-active-bg)]!': rootMenu.activeIndex === uniqueKey.at(-1),
-                'rounded-2': rootMenu.props.rounded && level === 0,
-                'rounded-1': rootMenu.props.rounded && level !== 0,
                 'px-3!': level === 0,
-                'py-1!': rootMenu.props.rounded && level !== 0,
+                'py-1!': level > 1,
               }
               : {
                 'bg-[var(--g-sub-sidebar-menu-hover-bg)] text-[var(--g-sub-sidebar-menu-hover-color)]': true,
-                'rounded-1': rootMenu.props.rounded,
               }
             ),
           }" :title="generateI18nTitle(item.meta?.title)" v-on="{
@@ -108,21 +105,25 @@ defineExpose({
             >
               {{ generateI18nTitle(item.meta?.title) }}
             </span>
-            <HBadge
-              v-if="item.meta?.badge && level !== 0"
+            <KBadge
+              v-if="item.meta?.badge"
               :value="typeof item.meta.badge === 'function' ? item.meta.badge() : item.meta.badge"
+              :variant="typeof item.meta.badgeVariant == 'function' ? item.meta.badgeVariant() : item.meta.badgeVariant"
               class="badge transform-scale-80"
+              :class="{
+                hidden: level === 0,
+              }"
             />
           </div>
         </component>
-      </HTooltip>
+      </KTooltip>
     </router-link>
   </div>
 </template>
 
 <style scoped>
 .badge {
-  :deep(> span) {
+  :deep(>div>div) {
     inset-inline-start: initial !important;
     inset-inline-end: 0;
   }

@@ -3,10 +3,11 @@ import type { RecursiveRequired, Settings } from '#/global'
 
 const globalSettingsDefault: RecursiveRequired<Settings.all> = {
   app: {
-    enableAutoUpdate: true,
-    lightTheme: 'light',
-    darkTheme: 'dark',
+    themeSync: true,
+    lightTheme: 'default',
+    darkTheme: 'default',
     colorScheme: 'light',
+    radius: 0.5,
     enableMournMode: false,
     enableColorAmblyopiaMode: false,
     defaultLang: '',
@@ -16,6 +17,9 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     storagePrefix: 'fa_',
     enableWatermark: false,
     enableErrorLog: false,
+    loginExpiredMode: 'redirect',
+    enableCheckUpdates: false,
+    checkUpdatesInterval: 1,
     routeBaseOn: 'frontend',
     direction: 'ltr',
   },
@@ -25,7 +29,7 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
   },
   home: {
     enable: true,
-    title: 'route.home',
+    title: 'app.route.home',
     fullPath: '/',
   },
   layout: {
@@ -36,10 +40,8 @@ const globalSettingsDefault: RecursiveRequired<Settings.all> = {
     baseOn: 'frontend',
     mode: 'side',
     style: '',
-    isRounded: false,
-    switchMainMenuAndPageJump: false,
+    mainMenuClickMode: 'switch',
     subMenuUniqueOpened: true,
-    subMenuOnlyOneHide: false,
     subMenuCollapse: false,
     subMenuAutoCollapse: false,
     enableSubMenuCollapseButton: false,

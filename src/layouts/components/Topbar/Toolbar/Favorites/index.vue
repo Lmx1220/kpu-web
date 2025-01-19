@@ -7,10 +7,12 @@ defineOptions({
 </script>
 
 <template>
-  <HDropdown class="flex-center cursor-pointer px-2 py-1">
-    <SvgIcon name="i-uiw:star-off" />
-    <template #dropdown>
+  <KPopover class="p-0">
+    <KButton variant="ghost" size="icon" class="animation">
+      <SvgIcon name="i-uiw:star-off" :size="16" />
+    </KButton>
+    <template #panel>
       <Panel />
     </template>
-  </HDropdown>
+  </KPopover>
 </template>

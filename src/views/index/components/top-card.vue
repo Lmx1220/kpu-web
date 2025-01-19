@@ -92,9 +92,9 @@ withDefaults(
     width: 60px;
     height: 60px;
     line-height: 60px;
-    color: rgb(var(--ui-primary));
+    color: rgb(var(--primary));
     text-align: center;
-    background: rgb(var(--ui-primary) / 10%);
+    background: rgb(var(--primary) / 10%);
     border-radius: 50%;
     transform: translateY(-50%);
 
@@ -123,17 +123,17 @@ withDefaults(
 
   &-blue {
     color: #fff;
-    background: rgb(var(--ui-primary));
+    background: rgb(var(--primary));
     background:
       linear-gradient(
         90deg,
-        rgb(var(--ui-primary) / 40%),
-        rgb(var(--ui-primary))
+        rgb(var(--primary) / 40%),
+        rgb(var(--primary))
       );
 
     .right-icon,
     .bottom > i {
-      color: rgb(var(--ui-primary));
+      color: rgb(var(--primary));
       background: #fff;
     }
 

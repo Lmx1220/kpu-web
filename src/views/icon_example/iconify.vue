@@ -16,7 +16,7 @@ const dialog = ref({
 })
 
 const code = computed(() => {
-  return `<SvgIcon name="i-${dialog.value.iconName}" />`
+  return `<FaIcon name="i-${dialog.value.iconName}" />`
 })
 
 watch(copied, (val) => {
@@ -31,20 +31,18 @@ function showInfo(iconName: string) {
 
 <template>
   <div>
-    <PageHeader title="Iconify">
+    <KPageHeader title="Iconify">
       <template #content>
         本框架支持使用 Iconify 的所有图标集，以下展示部分图标集。
       </template>
-    </PageHeader>
-    <PageMain v-for="(icon, key) in icons" :key="key" :title="icon.info.name">
-      <ElRow :gutter="20">
-        <ElCol v-for="(item, index) in icon.info.samples" :key="index" :xs="6" :sm="8" :md="3" :lg="2">
-          <ElCard shadow="hover" @click="showInfo(`${icon.prefix}:${item}`)">
-            <SvgIcon :name="`${icon.prefix}:${item}`" />
-          </ElCard>
-        </ElCol>
-      </ElRow>
-    </PageMain>
+    </KPageHeader>
+    <KPageMain v-for="(icon, key) in icons" :key="key" :title="icon.info.name">
+      <div class="flex-center-start gap-2">
+        <KButton v-for="(item, index) in icon.info.samples" :key="index" variant="outline" size="icon" @click="showInfo(`${icon.prefix}:${item}`)">
+          <SvgIcon :name="`${icon.prefix}:${item}`" :size="18" />
+        </KButton>
+      </div>
+    </KPageMain>
     <ElDialog v-model="dialog.visible" :show-close="false" width="600px">
       <ElRow type="flex">
         <ElCol style="max-width: 100px;">

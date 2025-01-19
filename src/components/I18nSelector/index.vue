@@ -24,9 +24,9 @@ async function languageCommand(lang: LocaleType | string) {
 </script>
 
 <template>
-  <HDropdownMenu
+  <KDropdown
     :items="[localesOptions]"
   >
     <slot />
-  </HDropdownMenu>
+  </KDropdown>
 </template>

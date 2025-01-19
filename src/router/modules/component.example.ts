@@ -24,10 +24,311 @@ const routes: RouteRecordRaw = {
   }, {
     path: 'builtIn',
     name: 'componentExampleBuiltIn',
-    component: () => import('@/views/component_built_in_example/index.vue'),
     meta: {
-      title: 'route.component.builtIn',
+      title: 'route.component.builtIn.root',
+      badge: true,
     },
+    children: [
+      {
+        path: 'avatar',
+        name: 'componentExampleBuiltInAvatar',
+        component: () => import('@/views/component_built_in_example/avatar.vue'),
+        meta: {
+          title: 'route.component.builtIn.avatar',
+        },
+      },
+      {
+        path: 'badge',
+        name: 'componentExampleBuiltInBadge',
+        component: () => import('@/views/component_built_in_example/badge.vue'),
+        meta: {
+          title: 'route.component.builtIn.badge',
+          badge: 'PRO',
+        },
+      },
+      {
+        path: 'button',
+        name: 'componentExampleBuiltInButton',
+        component: () => import('@/views/component_built_in_example/button.vue'),
+        meta: {
+          title: 'route.component.builtIn.button',
+        },
+      },
+      {
+        path: 'card',
+        name: 'componentExampleBuiltInCard',
+        component: () => import('@/views/component_built_in_example/card.vue'),
+        meta: {
+          title: 'route.component.builtIn.card',
+        },
+      },
+      {
+        path: 'checkbox',
+        name: 'componentExampleBuiltInCheckbox',
+        component: () => import('@/views/component_built_in_example/checkbox.vue'),
+        meta: {
+          title: 'route.component.builtIn.checkbox',
+        },
+      },
+      {
+        path: 'chip',
+        name: 'componentExampleBuiltInChip',
+        component: () => import('@/views/component_built_in_example/chip.vue'),
+        meta: {
+          title: 'route.component.builtIn.chip',
+          badge: 'PRO',
+        },
+      },
+      {
+        path: 'contextmenu',
+        name: 'componentExampleBuiltInContextMenu',
+        component: () => import('@/views/component_built_in_example/contextmenu.vue'),
+        meta: {
+          title: 'route.component.builtIn.contextmenu',
+        },
+      },
+      {
+        path: 'countto',
+        name: 'componentExampleBuiltInCountTo',
+        component: () => import('@/views/component_built_in_example/countto.vue'),
+        meta: {
+          title: 'route.component.builtIn.countto',
+          badge: 'PRO',
+        },
+      },
+      {
+        path: 'digitalcard',
+        name: 'componentExampleBuiltInDigitalCard',
+        component: () => import('@/views/component_built_in_example/avatar.vue'),
+        meta: {
+          title: 'route.component.builtIn.digitalcard',
+          badge: 'PRO',
+        },
+      },
+      {
+        path: 'divider',
+        name: 'componentExampleBuiltInDivider',
+        component: () => import('@/views/component_built_in_example/divider.vue'),
+        meta: {
+          title: 'route.component.builtIn.divider',
+        },
+      },
+      {
+        path: 'drawer',
+        name: 'componentExampleBuiltInDrawer',
+        component: () => import('@/views/component_built_in_example/drawer.vue'),
+        meta: {
+          title: 'route.component.builtIn.drawer',
+        },
+      },
+      {
+        path: 'dropdown',
+        name: 'componentExampleBuiltInDropdown',
+        component: () => import('@/views/component_built_in_example/dropdown.vue'),
+        meta: {
+          title: 'route.component.builtIn.dropdown',
+        },
+      },
+      {
+        path: 'fixedactionbar',
+        name: 'componentExampleBuiltInFixedactionbar',
+        component: () => import('@/views/component_built_in_example/fixedactionbar.vue'),
+        meta: {
+          title: 'route.component.builtIn.fixedactionbar',
+          copyright: !1,
+        },
+      },
+      {
+        path: 'iconpicker',
+        name: 'componentExampleBuiltInIconPicker',
+        component: () => import('@/views/component_built_in_example/iconpicker.vue'),
+        meta: {
+          title: 'route.component.builtIn.iconpicker',
+          badge: 'PRO',
+        },
+      },
+      {
+        path: 'input',
+        name: 'componentExampleBuiltInInput',
+        component: () => import('@/views/component_built_in_example/input.vue'),
+        meta: {
+          title: 'route.component.builtIn.input',
+        },
+      },
+      {
+        path: 'kbd',
+        name: 'componentExampleBuiltInKbd',
+        component: () => import('@/views/component_built_in_example/kbd.vue'),
+        meta: {
+          title: 'route.component.builtIn.kbd',
+        },
+      },
+      {
+        path: 'loading',
+        name: 'componentExampleBuiltInLoading',
+        component: () => import('@/views/component_built_in_example/loading.vue'),
+        meta: {
+          title: 'route.component.builtIn.loading',
+          badge: 'PRO',
+        },
+      },
+      {
+        path: 'modal',
+        name: 'componentExampleBuiltInModal',
+        component: () => import('@/views/component_built_in_example/modal.vue'),
+        meta: {
+          title: 'route.component.builtIn.modal',
+        },
+      },
+      {
+        path: 'notification',
+        name: 'componentExampleBuiltInNotification',
+        component: () => import('@/views/component_built_in_example/notification.vue'),
+        meta: {
+          title: 'route.component.builtIn.notification',
+        },
+      },
+      {
+        path: 'pageheader',
+        name: 'componentExampleBuiltInPageheader',
+        component: () => import('@/views/component_built_in_example/pageheader.vue'),
+        meta: {
+          title: 'route.component.builtIn.pageheader',
+        },
+      },
+      {
+        path: 'pagemain',
+        name: 'componentExampleBuiltInPagemain',
+        component: () => import('@/views/component_built_in_example/pagemain.vue'),
+        meta: {
+          title: 'route.component.builtIn.pagemain',
+        },
+      },
+      {
+        path: 'pagination',
+        name: 'componentExampleBuiltInPagination',
+        component: () => import('@/views/component_built_in_example/pagination.vue'),
+        meta: {
+          title: 'route.component.builtIn.pagination',
+          badge: 'PRO',
+        },
+      },
+      {
+        path: 'passwordstrength',
+        name: 'componentExampleBuiltInPasswordStrength',
+        component: () => import('@/views/component_built_in_example/passwordstrength.vue'),
+        meta: {
+          title: 'route.component.builtIn.passwordstrength',
+        },
+      },
+      {
+        path: 'pininput',
+        name: 'componentExampleBuiltInPinInput',
+        component: () => import('@/views/component_built_in_example/pininput.vue'),
+        meta: {
+          title: 'route.component.builtIn.pininput',
+        },
+      },
+      {
+        path: 'popover',
+        name: 'componentExampleBuiltInPopover',
+        component: () => import('@/views/component_built_in_example/popover.vue'),
+        meta: {
+          title: 'route.component.builtIn.popover',
+        },
+      },
+      {
+        path: 'scrollarea',
+        name: 'componentExampleBuiltInScrollArea',
+        component: () => import('@/views/component_built_in_example/scrollarea.vue'),
+        meta: {
+          title: 'route.component.builtIn.scrollarea',
+        },
+      },
+      {
+        path: 'searchbar',
+        name: 'componentExampleBuiltInSearchbar',
+        component: () => import('@/views/component_built_in_example/searchbar.vue'),
+        meta: {
+          title: 'route.component.builtIn.searchbar',
+        },
+      },
+      {
+        path: 'select',
+        name: 'componentExampleBuiltInSelect',
+        component: () => import('@/views/component_built_in_example/select.vue'),
+        meta: {
+          title: 'route.component.builtIn.select',
+        },
+      },
+      {
+        path: 'sparkline',
+        name: 'componentExampleBuiltInSparkline',
+        component: () => import('@/views/component_built_in_example/sparkline.vue'),
+        meta: {
+          title: 'route.component.builtIn.sparkline',
+          badge: 'PRO',
+        },
+      },
+      {
+        path: 'storagebox',
+        name: 'componentExampleBuiltInStoragebox',
+        component: () => import('@/views/component_built_in_example/storagebox.vue'),
+        meta: {
+          title: 'route.component.builtIn.storagebox',
+          badge: 'PRO',
+        },
+      },
+      {
+        path: 'switch',
+        name: 'componentExampleBuiltInSwitch',
+        component: () => import('@/views/component_built_in_example/switch.vue'),
+        meta: {
+          title: 'route.component.builtIn.switch',
+        },
+      },
+      {
+        path: 'tabs',
+        name: 'componentExampleBuiltInTabs',
+        component: () => import('@/views/component_built_in_example/tabs.vue'),
+        meta: {
+          title: 'route.component.builtIn.tabs',
+        },
+      },
+      {
+        path: 'timeago',
+        name: 'componentExampleBuiltInTimeAgo',
+        component: () => import('@/views/component_built_in_example/timeago.vue'),
+        meta: {
+          title: 'route.component.builtIn.timeago',
+          badge: 'PRO',
+        },
+      },
+      {
+        path: 'toast',
+        name: 'componentExampleBuiltInToast',
+        component: () => import('@/views/component_built_in_example/toast.vue'),
+        meta: {
+          title: 'route.component.builtIn.toast',
+        },
+      },
+      {
+        path: 'tooltip',
+        name: 'componentExampleBuiltInTooltip',
+        component: () => import('@/views/component_built_in_example/tooltip.vue'),
+        meta: {
+          title: 'route.component.builtIn.tooltip',
+        },
+      },
+      {
+        path: 'trend',
+        name: 'componentExampleBuiltInTrend',
+        component: () => import('@/views/component_built_in_example/trend.vue'),
+        meta: {
+          title: 'route.component.builtIn.trend',
+        },
+      },
+    ],
   }, {
     path: 'extend',
     redirect: 'pageheader',
@@ -36,113 +337,32 @@ const routes: RouteRecordRaw = {
       title: 'route.component.extend.root',
       badge: true,
     },
-    children: [{
-      path: 'pageheader',
-      name: 'componentExampleExtendPageheader',
-      component: () => import('@/views/component_extend_example/pageheader.demo.vue'),
-      meta: {
-        title: 'route.component.extend.pageheader',
+    children: [
+      {
+        path: 'upload',
+        name: 'componentExampleExtendUpload',
+        component: () => import('@/views/component_extend_example/upload.demo.vue'),
+        meta: {
+          title: 'route.component.extend.upload',
+        },
       },
-    }, {
-      path: 'pagemain',
-      name: 'componentExampleExtendPagemain',
-      component: () => import('@/views/component_extend_example/pagemain.demo.vue'),
-      meta: {
-        title: 'route.component.extend.pagemain',
+      {
+        path: 'imagepreview',
+        name: 'componentExampleExtendImagePreview',
+        component: () => import('@/views/component_extend_example/image.preview.demo.vue'),
+        meta: {
+          title: 'route.component.extend.imagepreview',
+        },
       },
-    }, {
-      path: 'actionbar',
-      name: 'componentExampleExtendActionbar',
-      component: () => import('@/views/component_extend_example/actionbar.demo.vue'),
-      meta: {
-        title: 'route.component.extend.actionbar',
-        copyright: false,
-        paddingBottom: '80px',
+      {
+        path: 'pcas',
+        name: 'componentExampleExtendPcas',
+        component: () => import('@/views/component_extend_example/pcas.demo.vue'),
+        meta: {
+          title: 'route.component.extend.pcas',
+        },
       },
-    }, {
-      path: 'searchbar',
-      name: 'componentExampleExtendSearchbar',
-      component: () => import('@/views/component_extend_example/searchbar.demo.vue'),
-      meta: {
-        title: 'route.component.extend.searchbar',
-      },
-    }, {
-      path: 'upload',
-      name: 'componentExampleExtendUpload',
-      component: () => import('@/views/component_extend_example/upload.demo.vue'),
-      meta: {
-        title: 'route.component.extend.upload',
-      },
-    }, {
-      path: 'imagepreview',
-      name: 'componentExampleExtendImagePreview',
-      component: () => import('@/views/component_extend_example/image.preview.demo.vue'),
-      meta: {
-        title: 'route.component.extend.imagepreview',
-      },
-    }, {
-      path: 'trend',
-      name: 'componentExampleExtendTrend',
-      component: () => import('@/views/component_extend_example/trend.demo.vue'),
-      meta: {
-        title: 'route.component.extend.trend',
-      },
-    }, {
-      path: 'pcas',
-      name: 'componentExampleExtendPcas',
-      component: () => import('@/views/component_extend_example/pcas.demo.vue'),
-      meta: {
-        title: 'route.component.extend.pcas',
-      },
-    }, {
-      path: 'colorfulcard',
-      name: 'componentExampleExtendColorfulCard',
-      component: () => import('@/views/component_extend_example/colorful.card.demo.vue'),
-      meta: {
-        title: 'route.component.extend.colorfulcard',
-        badge: 'PRO',
-      },
-    }, {
-      path: 'chip',
-      name: 'componentExampleExtendChip',
-      component: () => import('@/views/component_extend_example/chip.demo.vue'),
-      meta: {
-        title: 'route.component.extend.chip',
-        badge: 'PRO',
-      },
-    }, {
-      path: 'iconpicker',
-      name: 'componentExampleExtendIconPicker',
-      component: () => import('@/views/component_extend_example/iconpicker.demo.vue'),
-      meta: {
-        title: 'route.component.extend.iconpicker',
-        badge: 'PRO',
-      },
-    }, {
-      path: 'loading',
-      name: 'componentExampleExtendLoading',
-      component: () => import('@/views/component_extend_example/loading.demo.vue'),
-      meta: {
-        title: 'route.component.extend.loading',
-        badge: 'PRO',
-      },
-    }, {
-      path: 'sparkline',
-      name: 'componentExampleExtendSpartline',
-      component: () => import('@/views/component_extend_example/sparkline.demo.vue'),
-      meta: {
-        title: 'route.component.extend.sparkline',
-        badge: 'PRO',
-      },
-    }, {
-      path: 'storagebox',
-      name: 'componentExampleExtendStoragebox',
-      component: () => import('@/views/component_extend_example/storagebox.vue'),
-      meta: {
-        title: 'route.component.extend.storagebox',
-        badge: 'PRO',
-      },
-    }],
+    ],
   }],
 }
 export default routes

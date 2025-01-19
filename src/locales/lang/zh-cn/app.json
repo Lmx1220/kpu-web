@@ -10,9 +10,13 @@
   "profile": "个人设置",
   "preferences": "偏好设置",
   "hotkeys": "快捷键介绍",
+  "currentAccount": "当前登录账号",
   "sendCaptcha": "发送验证码",
   "checkUpdatesTitle": "新版本可用",
   "checkUpdatesDescription": "点击刷新以获取最新版本",
+  "route": {
+    "home": "主页"
+  },
   "search": {
     "text": "搜索",
     "type": {

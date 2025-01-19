@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import useFavoritesStore from '@/store/modules/favorites'
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import Sortable from 'sortablejs'
 
 defineOptions({
@@ -44,30 +43,33 @@ watch(() => favoritesContainerRef.value, (val) => {
         <SvgIcon v-else class="cursor-pointer text-xl" name="i-mdi:star-remove" title="从收藏夹删除" @click="favoritesStore.remove(route.fullPath)" />
       </template>
     </div>
-    <OverlayScrollbarsComponent :options="{ scrollbars: { autoHide: 'leave', autoHideDelay: 300 } }" defer class="max-h-220px">
+    <KScrollArea class="max-h-220px">
       <div v-if="favoritesStore.list.length > 0" ref="favoritesContainerRef" class="flex flex-wrap items-center justify-between gap-2 px-4 pb-4">
-        <div v-for="item in favoritesStore.list" :key="item.fullPath" :title="generateI18nTitle(item.title)" class="draggable-item relative w-[calc(50%-0.25rem)] flex cursor-pointer items-center gap-1 rounded px-2 py-2 ring-1 ring-stone-3 ring-inset hover-bg-stone-1 dark-ring-stone-7 dark-hover-bg-dark/50" @click="router.push(item.fullPath)">
+        <div
+          v-for="item in favoritesStore.list" :key="item.fullPath" :title="generateI18nTitle(item.title)"
+          class="group draggable-item relative w-[calc(50%-0.25rem)] flex cursor-pointer items-center gap-1 rounded-lg px-2 py-2 ring-1 ring-border ring-inset hover-bg-accent" @click="router.push(item.fullPath)"
+        >
           <SvgIcon v-if="item.icon" :name="item.icon" :size="18" />
-          <div class="name flex-1 truncate pe-4">
+          <div class="flex-1 truncate pe-4 text-sm group-hover:[mask-image:linear-gradient(90deg,#000_calc(100%-80px),transparent)]">
             {{ generateI18nTitle(item.title) }}
           </div>
-          <div class="right-1 h-5 w-6 rounded-full text-stone-3 !absolute dark-text-stone-7 hover-text-stone-7 dark-hover-text-stone-3">
+          <div class="absolute right-2 h-5 w-5 rounded-full text-secondary-foreground hidden group-hover:flex-center hover:bg-secondary hover:ring-1">
             <SvgIcon name="i-ep:delete" :size="14" @click.stop="favoritesStore.remove(item.fullPath)" />
           </div>
         </div>
       </div>
-      <div v-else flex="center col" py-6 text-stone-5>
+      <div v-else class="flex-col-center py-6 text-secondary-foreground">
         <SvgIcon name="i-tabler:mood-empty" :size="40" />
-        <p m-2 text-base>
+        <p class="m-2 text-base">
           收藏夹是空的
         </p>
-        <p v-show="favoritesStore.canAdd(route.fullPath)" m-0 flex-center text-sm op-75>
+        <p v-show="favoritesStore.canAdd(route.fullPath)" class="m-0 flex-center text-sm op-75">
           点击右上角
-          <SvgIcon name="i-mdi:star-plus-outline" :size="20" mx-1 text-stone-6 dark-text-stone-4 />
+          <SvgIcon name="i-mdi:star-plus-outline" :size="20" class="mx-1 text-secondary-foreground" />
           将当前页面添加到收藏夹
         </p>
       </div>
-    </OverlayScrollbarsComponent>
+    </KScrollArea>
   </div>
 </template>
 

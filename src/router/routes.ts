@@ -104,7 +104,7 @@ const systemRoutes: RouteRecordRaw[] = [
 const asyncRoutes: Route.recordMainRaw[] = [
   {
     meta: {
-      title: '演示',
+      title: 'route.demo',
       icon: 'sidebar-default',
     },
     children: [

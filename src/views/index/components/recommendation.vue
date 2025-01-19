@@ -92,7 +92,7 @@ const apps = ref([{
 
   .icon-panel:hover .item > i {
     color: #fff;
-    background: rgb(var(--ui-primary));
+    background: rgb(var(--primary));
   }
 
   .item {
@@ -102,8 +102,8 @@ const apps = ref([{
       height: 50px;
       font-size: 30px;
       line-height: 50px;
-      color: rgb(var(--ui-primary));
-      background: rgb(var(--ui-primary) / 10%);
+      color: rgb(var(--primary));
+      background: rgb(var(--primary) / 10%);
       border-radius: var(--el-border-radius-base);
       transition: all ease-in-out 0.3s;
     }

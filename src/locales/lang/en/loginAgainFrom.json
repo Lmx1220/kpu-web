@@ -1,0 +1,16 @@
+{
+  "accountLogin": "Account Login",
+  "qrcodeLogin": "Scan Login",
+  "intro": "Please re-login",
+  "subIntro": "Your login status has expired",
+  "wechatQrcode": "Please use WeChat scan login",
+  "form": {
+    "account": "Account",
+    "password": "Password",
+    "login": "Login"
+  },
+  "rules": {
+    "account": "Please enter the account",
+    "password": "Please enter the password"
+  }
+}

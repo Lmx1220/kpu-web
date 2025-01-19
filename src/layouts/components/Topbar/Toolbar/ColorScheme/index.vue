@@ -37,24 +37,26 @@ function toggleColorScheme(event: MouseEvent) {
 </script>
 
 <template>
-  <HDropdown class="flex-center cursor-pointer px-2 py-1">
-    <SvgIcon
-      :name="{
-        'light': 'i-ri:sun-line',
-        'dark': 'i-ri:moon-line',
-        '': 'i-codicon:color-mode',
-      }[settingsStore.settings.app.colorScheme]" @click="toggleColorScheme"
-    />
-    <template #dropdown>
-      <HTabList
+  <KPopover class="min-w-auto flex-center cursor-pointer px-2 py-1">
+    <KButton variant="ghost" size="icon" @click="toggleColorScheme">
+      <SvgIcon
+        :name="{
+          'light': 'i-ri:sun-line',
+          'dark': 'i-ri:moon-line',
+          '': 'i-codicon:color-mode',
+        }[settingsStore.settings.app.colorScheme]" :size="16"
+      />
+    </KButton>
+    <template #panel>
+      <KTabs
         v-model="settingsStore.settings.app.colorScheme"
-        :options="[
+        :list="[
           { icon: 'i-ri:sun-line', label: '', value: 'light' },
           { icon: 'i-ri:moon-line', label: '', value: 'dark' },
           { icon: 'i-codicon:color-mode', label: '', value: '' },
         ]"
-        class="m-3"
+        class="h-full"
       />
     </template>
-  </HDropdown>
+  </KPopover>
 </template>

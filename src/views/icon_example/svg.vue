@@ -10,8 +10,8 @@ const rotate = ref(0)
 
 <template>
   <div>
-    <PageHeader title="SVG Icon" content="可以使用自定义的 SVG 图标" />
-    <PageMain>
+    <KPageHeader title="SVG Icon" content="可以使用自定义的 SVG 图标" />
+    <KPageMain>
       <p>单色 SVG Icon</p>
       <SvgIcon name="example-emotion-line" :size="48" :flip="flip" :rotate="rotate" />
       <SvgIcon name="example-emotion-laugh-line" :size="48" :flip="flip" :rotate="rotate" />
@@ -44,6 +44,6 @@ const rotate = ref(0)
         <li>上 <a href="https://www.iconfont.cn/" target="_blank">Iconfont</a> 下载需要的 svg 图标</li>
         <li>将 svg 文件放入 ./src/assets/icons 目录下，文件名即为 name</li>
       </ol>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>

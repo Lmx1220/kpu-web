@@ -16,8 +16,10 @@ watch(getLocale, (newVal, oldVal) => {
 </script>
 
 <template>
-  <I18nSelector class="flex-center cursor-pointer px-2 py-1" :class="{ animation: isAnimating }" @animationend="isAnimating = false">
-    <SvgIcon name="i-ri:translate" />
+  <I18nSelector :class="{ animation: isAnimating }" @animationend="isAnimating = false">
+    <KButton variant="ghost" size="icon">
+      <SvgIcon name="i-ri:translate" :size="16" />
+    </KButton>
   </I18nSelector>
 </template>
 

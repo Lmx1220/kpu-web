@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import type { FormInstance, FormRules } from 'element-plus'
 import useUserStore from '@/store/modules/user.ts'
+import { FormControl, FormField, FormItem, FormMessage } from '@/ui/shadcn/ui/form'
+import { toTypedSchema } from '@vee-validate/zod'
+import { useForm } from 'vee-validate'
+
+import * as z from 'zod'
 
 defineOptions({
   name: 'LoginForm',
@@ -11,9 +15,9 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits<{
-  onLogin: [account: string]
-  onRegister: [account: string]
-  onResetPassword: [account: string]
+  onLogin: [account?: string]
+  onRegister: [account?: string]
+  onResetPassword: [account?: string]
 }>()
 const { t } = useI18n()
 const userStore = useUserStore()
@@ -22,112 +26,126 @@ const title = import.meta.env.VITE_APP_TITLE
 const loading = ref(false)
 
 // 登录方式，default 账号密码登录，qrcode 扫码登录
-const type = ref('default')
-const formRef = ref<FormInstance>()
-const form = ref({
-  account: props.account ?? localStorage.login_account ?? '',
-  password: '',
-  remember: !!localStorage.login_account,
+const type = ref<'default' | 'qrcode'>('default')
+const form = useForm({
+  validationSchema: toTypedSchema(z.object({
+    account: z.string().min(1, t('loginFrom.rules.account')),
+    password: z.string().min(1, t('loginFrom.rules.password')),
+    remember: z.boolean(),
+  })),
+  initialValues: {
+    account: props.account ?? localStorage.getItem('login_account') ?? '',
+    password: '',
+    remember: !!localStorage.getItem('login_account'),
+  },
 })
-const rules = ref<FormRules>({
-  account: [
-    { required: true, trigger: 'blur', message: t('loginFrom.rules.account') },
-  ],
-  password: [
-    { required: true, trigger: 'blur', message: t('loginFrom.rules.password') },
-    { min: 6, max: 18, trigger: 'blur', message: t('loginFrom.rules.passwordLength') },
-  ],
-})
-function handleLogin() {
-  formRef.value?.validate((valid) => {
-    if (valid) {
-      loading.value = true
-      userStore.login({ username: form.value.account, password: form.value.password }).then(() => {
-        if (form.value.remember) {
-          localStorage.setItem('login_account', form.value.account)
-        }
-        else {
-          localStorage.removeItem('login_account')
-        }
-        emits('onLogin', form.value.account)
-      }).finally(() => {
-        loading.value = false
-      })
+const onSubmit = form.handleSubmit((values) => {
+  loading.value = true
+  userStore.login({ username: values.account, password: values.password }).then(() => {
+    if (values.remember) {
+      localStorage.setItem('login_account', values.account)
     }
+    else {
+      localStorage.removeItem('login_account')
+    }
+    emits('onLogin', values.account)
+  }).finally(() => {
+    loading.value = false
   })
-}
+})
 
 function testAccount(account: string) {
-  form.value.account = account
-  form.value.password = '123456'
-  handleLogin()
+  form.setFieldValue('account', account)
+  form.setFieldValue('password', '123456')
+  onSubmit()
 }
 </script>
 
 <template>
-  <ElForm ref="formRef" :model="form" :rules="rules" class="min-h-500px w-full flex-col-stretch-center p-12">
-    <div class="mb-6">
-      <HTabList
-        v-model="type" :options="[
+  <div class="min-h-500px w-full flex-col-stretch-center p-12">
+    <div class="mb-6 space-y-2">
+      <h3 class="text-4xl color-[var(--el-text-color-primary)] font-bold">
+        {{ t('loginFrom.intro') }}
+      </h3>
+      <p class="text-sm text-muted-foreground lg:text-base">
+        {{ title }}
+      </p>
+    </div>
+    <div class="mb-4">
+      <KTabs
+        v-model="type" :list="[
           { label: t('loginFrom.accountLogin'), value: 'default' },
           { label: t('loginFrom.qrcodeLogin'), value: 'qrcode' },
-        ]"
+        ]" class="inline-flex"
       />
     </div>
-    <template v-if="type === 'default'">
-      <h3 class="mb-8 text-xl color-[var(--el-text-color-primary)] font-bold">
-        {{ t('loginFrom.intro', { title }) }}
-      </h3>
-      <div>
-        <ElFormItem prop="account">
-          <ElInput v-model="form.account" size="large" :placeholder="t('loginFrom.form.account')" type="text" tabindex="1">
-            <template #prefix>
-              <SvgIcon name="i-ri:user-3-fill" />
-            </template>
-          </ElInput>
-        </ElFormItem>
-        <ElFormItem prop="password">
-          <ElInput v-model="form.password" type="password" size="large" :placeholder="t('loginFrom.form.password')" tabindex="2" show-password @keyup.enter="handleLogin">
-            <template #prefix>
-              <SvgIcon name="i-ri:lock-2-fill" />
-            </template>
-          </ElInput>
-        </ElFormItem>
+    <div v-show="type === 'default'">
+      <form @submit="onSubmit">
+        <FormField v-slot="{ componentField, errors }" name="account">
+          <FormItem class="relative pb-6 space-y-0">
+            <FormControl>
+              <KInput type="text" :placeholder="t('loginFrom.form.account')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+            </FormControl>
+            <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
+              <FormMessage class="absolute bottom-1 text-xs" />
+            </Transition>
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField, errors }" name="password">
+          <FormItem class="relative pb-6 space-y-0">
+            <FormControl>
+              <KInput type="password" :placeholder="t('loginFrom.form.password')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+            </FormControl>
+            <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
+              <FormMessage class="absolute bottom-1 text-xs" />
+            </Transition>
+          </FormItem>
+        </FormField>
+        <div class="mb-4 flex-center-between">
+          <div class="flex-center-start">
+            <FormField v-slot="{ componentField }" type="checkbox" name="remember">
+              <FormItem>
+                <FormControl>
+                  <KCheckbox v-bind="componentField">
+                    {{ t('loginFrom.remember') }}
+                  </KCheckbox>
+                </FormControl>
+              </FormItem>
+            </FormField>
+          </div>
+          <KButton variant="link" class="h-auto p-0" type="button" @click="emits('onResetPassword', form.values.account)">
+            {{ t('loginFrom.forget') }}
+          </KButton>
+        </div>
+        <KButton :loading="loading" size="lg" class="w-full" type="submit">
+          {{ t('loginFrom.form.login') }}
+        </KButton>
+        <div class="mt-4 flex-center gap-2 text-sm">
+          <span class="text-secondary-foreground op-50"> {{ t('loginFrom.noAccount') }}</span>
+          <KButton variant="link" class="h-auto p-0" type="button" @click="emits('onRegister', form.values.account)">
+            {{ t('loginFrom.register') }}
+          </KButton>
+        </div>
+      </form>
+      <div class="mt-4 text-center -mb-4">
+        <KDivider>{{ t('loginFrom.testLogin') }}</KDivider>
+        <div class="space-x-2">
+          <KButton variant="default" size="sm" plain @click="testAccount('kpu')">
+            kpu
+          </KButton>
+          <KButton variant="outline" size="sm" plain @click="testAccount('test')">
+            test
+          </KButton>
+        </div>
       </div>
-      <div class="mb-4 flex-center-between">
-        <ElCheckbox v-model="form.remember">
-          {{ t('loginFrom.remember') }}
-        </ElCheckbox>
-        <ElLink type="primary" :underline="false" @click="emits('onResetPassword', form.account)">
-          {{ t('loginFrom.forget') }}
-        </ElLink>
-      </div>
-      <ElButton :loading="loading" type="primary" size="large" style="width: 100%;" @click.prevent="handleLogin">
-        {{ t('loginFrom.form.login') }}
-      </ElButton>
-      <div class="mt-4 flex-center gap-2 text-sm color-[var(--el-text-color-secondary)]">
-        {{ t('loginFrom.noAccount') }}
-        <ElLink type="primary" :underline="false" @click="emits('onRegister', form.account)">
-          {{ t('loginFrom.register') }}
-        </ElLink>
-      </div>
-    </template>
-    <template v-else-if="type === 'qrcode'">
+    </div>
+    <div v-show="type === 'qrcode'">
       <div class="flex-col-center">
-        <el-image src="https://s2.loli.net/2024/04/26/GsahtuIZ9XOg5jr.png" class="h-[250px] w-[250px]" />
-        <div class="mt-2 op-50">
+        <img src="https://s2.loli.net/2024/04/26/GsahtuIZ9XOg5jr.png" class="h-[250px] w-[250px]">
+        <div class="mt-2 text-sm text-secondary-foreground op-50">
           {{ t('loginFrom.wechatQrcode') }}
         </div>
       </div>
-    </template>
-    <div class="mt-4 text-center -mb-4">
-      <ElDivider>{{ t('loginFrom.testLogin') }}</ElDivider>
-      <ElButton type="primary" size="small" plain @click="testAccount('kpu')">
-        kpu
-      </ElButton>
-      <ElButton size="small" plain @click="testAccount('test')">
-        test
-      </ElButton>
     </div>
-  </ElForm>
+  </div>
 </template>

@@ -74,7 +74,6 @@ declare global {
   const useForwardPriorityValues: typeof import('../utils/composables/use-priority-value')['useForwardPriorityValues']
   const useGlobalProperties: typeof import('../utils/composables/useGlobalProperties')['default']
   const useI18n: typeof import('../utils/composables/useI18n')['useI18n']
-  const useI18nTitle: typeof import('@/utils/composables/useI18nTitle')['default']
   const useId: typeof import('vue')['useId']
   const useIsMobile: typeof import('../utils/composables/use-is-mobile')['useIsMobile']
   const useLink: typeof import('vue-router')['useLink']

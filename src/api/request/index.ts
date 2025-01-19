@@ -5,7 +5,7 @@ import { AxiosCanceler } from '@/api/helper/axiosCancel'
 import { ContentTypeEnum, RequestEnum } from '@/enums/httpEnum'
 import { isFunction } from '@/utils/is'
 import axios from 'axios'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 import qs from 'qs'
 
 class HttpRequest {

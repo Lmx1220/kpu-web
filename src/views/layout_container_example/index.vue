@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import ListLayout from '@/components/LayoutContainer/index.vue'
-
 const router = useRouter()
 
 const enableLeftSide = ref(true)
@@ -41,8 +39,8 @@ const layout = computed({
 
 <template>
   <div>
-    <PageHeader title="Iconify" content="提供双栏、三栏布局，侧栏支持折叠。" />
-    <ListLayout :enable-left-side="enableLeftSide" :enable-right-side="enableRightSide" :left-side-width="leftSideWidth" :right-side-width="rightSidewidth">
+    <KPageHeader title="Iconify" content="提供双栏、三栏布局，侧栏支持折叠。" />
+    <KLayoutContainer :enable-left-side="enableLeftSide" :enable-right-side="enableRightSide" :left-side-width="leftSideWidth" :right-side-width="rightSidewidth">
       <template #leftSide>
         <h2>左侧栏</h2>
         <p>调整宽度</p>
@@ -77,10 +75,10 @@ const layout = computed({
           </el-radio-button>
         </el-radio-group>
         <h2>示例页面</h2>
-        <HButton @click="router.push('pagesExampleSidelayout')">
+        <KButton @click="router.push('pagesExampleSidelayout')">
           查看
-        </HButton>
+        </KButton>
       </template>
-    </ListLayout>
+    </KLayoutContainer>
   </div>
 </template>

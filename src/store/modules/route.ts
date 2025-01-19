@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import api from '@/api'
 import { systemRoutes } from '@/router/routes'
 import { resolveRoutePath } from '@/utils'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 import useSettingsStore from './settings'
 import useTabbarStore from './tabbar'
 

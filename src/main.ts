@@ -1,45 +1,40 @@
-import errorLog from '@/utils/error.log'
-import VxeUIPluginRenderElement from '@vxe-ui/plugin-render-element'
+// 自定义指令
+import directive from '@/directive'
+// 加载 iconify 图标
+import { downloadAndInstall } from '@/iconify'
 
+import icons from '@/iconify/index.json'
+import { i18n, useI18n } from '@/locales'
+import errorLog from '@/utils/error.log'
+
+import VxeUIPluginRenderElement from '@vxe-ui/plugin-render-element'
 import FloatingVue from 'floating-vue'
+
 import VWave from 'v-wave'
 import VxeUI from 'vxe-pc-ui'
 
 import VxeTable from 'vxe-table'
-
 import App from './App.vue'
-import ui from './ui-provider'
-import '@/utils/baidu'
+import router from './router'
+import pinia from './store'
 
+import uiProvider from './ui/provider'
+
+import '@/utils/baidu'
 import '@/utils/system.copyright'
+
 import 'floating-vue/dist/style.css'
 import 'vue-m-message/dist/style.css'
+
 import 'vxe-table/lib/style.css'
 
 import 'vxe-pc-ui/lib/style.css'
-
 import '@vxe-ui/plugin-render-element/dist/style.css'
-import 'overlayscrollbars/overlayscrollbars.css'
-
-// 加载 iconify 图标
-import { downloadAndInstall } from '@/iconify'
-import icons from '@/iconify/index.json'
-
-import { i18n, useI18n } from '@/locales'
-
-import router from '@/router'
-import pinia from '@/store'
-
-import 'uno.css'
-
-// 自定义指令
-import directive from '@/directive'
 
 // 加载svg图标
 import 'virtual:svg-icons-register'
-
-import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
-
+import 'virtual:uno.css'
+import '@unocss/reset/tailwind-compat.css'
 // 全局样式
 import '@/assets/styles/globals.css'
 
@@ -134,6 +129,8 @@ async function bootstrap() {
 
   app.use(pinia)
   app.use(router)
+
+  app.use(uiProvider)
   await useI18n(app)
   app.use(directive)
   errorLog(app)
@@ -141,7 +138,6 @@ async function bootstrap() {
   app.use(FloatingVue, {
     distance: 12,
   })
-  app.use(ui)
 
   if (icons.isOfflineUse) {
     for (const info of icons.collections) {

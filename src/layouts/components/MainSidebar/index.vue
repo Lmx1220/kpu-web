@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useSlots } from '@/slots'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
 import Logo from '../Logo/index.vue'
@@ -36,12 +37,14 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
       v-if="['side', 'only-side', 'side-panel'].includes(settingsStore.settings.menu.mode) || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')"
       class="main-sidebar-container"
     >
+      <component :is="useSlots('main-sidebar-top')" />
       <Logo :show-title="false" class="sidebar-logo" />
-      <!-- 侧边栏模式（含主导航） -->
-      <div class="menu scrollbar-none">
+      <component :is="useSlots('main-sidebar-after-logo')" />
+      <KScrollArea :scrollbar="false" mask gradient-color="var(--g-main-sidebar-bg)" class="menu">
+        <!-- 侧边栏模式（含主导航） -->
         <div
-          v-if="settingsStore.settings.menu.mode === 'side' || (settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single')"
-          class="w-full flex flex-col of-hidden transition-all" :class="{
+          v-if="settingsStore.settings.menu.mode === 'side' || settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single'"
+          class="w-full flex flex-col of-hidden py-1 transition-all -mt-2" :class="{
             [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
           }"
         >
@@ -53,10 +56,9 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
             >
               <div
                 v-if="item.children && item.children.length !== 0"
-                class="group menu-item-container h-full w-full flex cursor-pointer items-center justify-between gap-1 py-4 text-[var(--g-main-sidebar-menu-color)] transition-all hover-(bg-[var(--g-main-sidebar-menu-hover-bg)] text-[var(--g-main-sidebar-menu-hover-color)]) px-2!"
+                class="group menu-item-container relative h-full w-full flex cursor-pointer items-center justify-between gap-1 rounded-lg py-4 text-[var(--g-main-sidebar-menu-color)] transition-all hover-bg-[var(--g-main-sidebar-menu-hover-bg)] px-2! hover-text-[var(--g-main-sidebar-menu-hover-color)]"
                 :class="{
                   'text-[var(--g-main-sidebar-menu-active-color)]! bg-[var(--g-main-sidebar-menu-active-bg)]!': index === menuStore.actived,
-                  'rounded-lg': settingsStore.settings.menu.isRounded,
                 }" :title="generateI18nTitle(item.meta?.title)" @click="switchTo(index)"
               >
                 <div class="w-full inline-flex flex-1 flex-col items-center justify-center gap-1">
@@ -65,9 +67,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
                     :name="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)!"
                     class="menu-item-container-icon transition-transform group-hover-scale-120"
                   />
-                  <span
-                    class="w-full flex-1 truncate text-center text-sm transition-height transition-opacity transition-width"
-                  >
+                  <span class="w-full flex-1 truncate text-center text-sm transition-height transition-opacity transition-width">
                     {{ generateI18nTitle(item.meta?.title) }}
                   </span>
                 </div>
@@ -79,7 +79,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
         <Menu
           v-else-if="settingsStore.settings.menu.mode === 'only-side'"
           :menu="menuStore.allMenus" :value="route.meta.activeMenu || route.path" show-collapse-name collapse
-          :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction"
+          :direction="settingsStore.settings.app.direction"
           class="-mt-2"
           :class="{
             [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
@@ -90,13 +90,14 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
           :menu="menuStore.allMenus"
           :value="route.meta.activeMenu || route.path"
           show-collapse-name collapse
-          :rounded="settingsStore.settings.menu.isRounded" :direction="settingsStore.settings.app.direction"
+          :direction="settingsStore.settings.app.direction"
           class="-mt-2"
           :class="{
             [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
           }"
         />
-      </div>
+      </KScrollArea>
+      <component :is="useSlots('main-sidebar-bottom')" />
     </div>
   </Transition>
 </template>
@@ -104,102 +105,99 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
 <style scoped>
 .main-sidebar-container {
   position: relative;
-  z-index: 1;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   width: var(--g-main-sidebar-width);
   color: var(--g-main-sidebar-menu-color);
   background-color: var(--g-main-sidebar-bg);
-  box-shadow: 1px 0 0 0 var(--g-border-color);
+  box-shadow: 1px 0 hsl(var(--border)),-1px 0 hsl(var(--border));
   transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 
   .sidebar-logo {
     background-color: var(--g-main-sidebar-bg);
     transition: background-color 0.3s;
   }
-
-  .menu-active {
-    &-arrow {
-      .item-container::before,
-      :deep(.menu-item::before) {
-        position: absolute;
-        inset-inline-end: -5px;
-        top: 50%;
-        width: 0;
-        height: 0;
-        content: "";
-        border-block: 5px solid transparent;
-        border-inline-end: 5px solid var(--g-main-sidebar-bg);
-        opacity: 0;
-        transition: all 0.3s;
-        transform: translateY(-50%);
-      }
-
-      .item-container.active::before,
-      :deep(.menu-item.active::before) {
-        inset-inline-end: 8px;
-        opacity: 1;
-      }
-    }
-
-    &-line {
-      .item-container::before,
-      :deep(.menu-item::before) {
-        position: absolute;
-        inset-inline-start: 6px;
-        top: 50%;
-        width: 4px;
-        height: 0;
-        content: "";
-        background-color: var(--g-main-sidebar-menu-active-bg);
-        border-radius: 2px;
-        box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
-        opacity: 0;
-        transition: all 0.3s;
-        transform: translateY(-50%);
-      }
-
-      .item-container.active::before,
-      :deep(.menu-item.active::before) {
-        height: 20px;
-        opacity: 1;
-      }
-    }
-
-    &-dot {
-      .item-container::before,
-      :deep(.menu-item::before) {
-        position: absolute;
-        inset-inline-start: 0;
-        top: 50%;
-        width: 10px;
-        height: 10px;
-        content: "";
-        background-color: var(--g-main-sidebar-menu-active-bg);
-        border-radius: 50%;
-        box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
-        opacity: 0;
-        transition: all 0.3s;
-        transform: translateY(-50%);
-      }
-
-      .item-container.active::before,
-      :deep(.menu-item.active::before) {
-        inset-inline-start: 4px;
-        opacity: 1;
-      }
-    }
-  }
-
   .menu {
     flex: 1;
-    width: initial;
-    overflow: hidden auto;
-    overscroll-behavior: contain;
+    .menu-active {
+      &-arrow {
+        .item-container::before,
+        :deep(.menu-item::before) {
+          position: absolute;
+          inset-inline-end: -5px;
+          top: 50%;
+          z-index: 1;
+          width: 0;
+          height: 0;
+          content: "";
+          border-block:5px solid transparent;
+          border-inline-end:5px solid var(--g-main-sidebar-bg);
+          opacity: 0;
+          transition: all 0.3s;
+          transform: translateY(-50%);
+        }
 
+        .item-container.active::before,
+        :deep(.menu-item.active::before) {
+          inset-inline-end: 8px;
+          opacity: 1;
+        }
+      }
+
+      &-line {
+        .item-container::before,
+        :deep(.menu-item::before) {
+          position: absolute;
+          inset-inline-start: 6px;
+          top: 50%;
+          z-index: 1;
+          width: 4px;
+          height: 0;
+          content: "";
+          background-color: var(--g-main-sidebar-menu-active-bg);
+          border-radius: 2px;
+          box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
+          opacity: 0;
+          transition: all 0.3s;
+          transform: translateY(-50%)
+        }
+
+        .item-container.active::before,
+        :deep(.menu-item.active::before) {
+          height: 20px;
+          opacity: 1;
+        }
+      }
+
+      &-dot {
+        .item-container::before,
+        :deep(.menu-item::before) {
+          position: absolute;
+          inset-inline-start: 0;
+          top: 50%;
+          z-index: 1;
+          width: 10px;
+          height: 10px;
+          content: "";
+          background-color: var(--g-main-sidebar-menu-active-bg);
+          border-radius: 50%;
+          box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
+          opacity: 0;
+          transition: all .3s;
+          transform: translateY(-50%);
+        }
+
+        .item-container.active::before,
+        :deep(.menu-item.active::before) {
+          inset-inline-start: 4px;
+          opacity: 1;
+        }
+      }
+    }
     :deep(.menu-item) {
       .menu-item-container {
-        padding-block: 8px;
+        padding-block:8px;
         color: var(--g-main-sidebar-menu-color);
 
         &:hover {
@@ -210,14 +208,22 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
         .menu-item-container-icon {
           font-size: 20px !important;
         }
+        .badge {
+          position: absolute;
+          inset-inline-end: 0;
+          top: .5rem;
+          display: inline-flex;
+          transform: scale(1);
+        }
       }
 
       &.active .menu-item-container {
-        color: var(--g-main-sidebar-menu-active-color) !important;
-        background-color: var(--g-main-sidebar-menu-active-bg) !important;
+        color: var(--g-main-sidebar-menu-active-color)!important;
+        background-color: var(--g-main-sidebar-menu-active-bg)!important;
       }
     }
   }
+
 }
 
 /* 主侧边栏动画 */

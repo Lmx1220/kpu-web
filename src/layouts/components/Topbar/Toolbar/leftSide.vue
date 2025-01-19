@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useSlots } from '@/slots'
 import useSettingsStore from '@/store/modules/settings'
 import Tools from './tools.vue'
 
@@ -11,9 +12,10 @@ const settingsStore = useSettingsStore()
 
 <template>
   <div class="flex items-center">
-    <div v-if="settingsStore.mode === 'mobile'" class="flex-center cursor-pointer px-2 py-1 -rotate-z-180" @click="settingsStore.toggleSidebarCollapse()">
+    <KButton v-if="settingsStore.mode === 'mobile'" variant="ghost" size="icon" class="h-9 w-9 -rotate-z-180" @click="settingsStore.toggleSidebarCollapse()">
       <SvgIcon name="toolbar-collapse" :rotate="settingsStore.settings.app.direction === 'rtl' ? 180 : 0" />
-    </div>
+    </KButton>
+    <component :is="useSlots('toolbar-start')" />
     <Tools mode="left-side" />
   </div>
 </template>

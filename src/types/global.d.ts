@@ -19,7 +19,11 @@ declare type Nullable<T> = T | null
 
 declare namespace Settings {
   interface app {
-
+    /**
+     * 切换颜色方案将共用一套主题
+     * @默认值 `true`
+     */
+    themeSync?: boolean
     /**
      * 亮色主题
      * @默认值 `'light'`
@@ -40,6 +44,12 @@ declare namespace Settings {
      */
     colorScheme?: '' | 'light' | 'dark'
     /**
+     * 圆角系数
+     * @默认值 `0.5`
+     * @可选值 `0` / `0.25` / `0.5` / `0.75` / `1`
+     */
+    radius?: 0 | 0.25 | 0.5 | 0.75 | 1
+    /**
      * 是否开启哀悼模式
      * @默认值 `false`
      */
@@ -53,7 +63,12 @@ declare namespace Settings {
      * 是否开启自动更新
      * @默认值 `true`
      */
-    enableAutoUpdate?: boolean
+    enableCheckUpdates?: boolean
+    /**
+     * 轮训时间，分钟
+     * @默认值 `1`
+     */
+    checkUpdatesInterval?: number
     /**
      * 默认语言
      * @默认值 `''` 跟随浏览器语言设置
@@ -90,6 +105,12 @@ declare namespace Settings {
      * @默认值 `false`
      */
     enableErrorLog?: boolean
+    /**
+     * 登录过期模式
+     * @默认值 `'redirect'` 跳转到登录页
+     * @可选值 `'modal'` 弹窗
+     */
+    loginExpiredMode?: 'redirect' | 'modal'
     /**
      * 路由数据来源
      * @默认值 `'frontend'` 前端
@@ -166,10 +187,12 @@ declare namespace Settings {
      */
     mode?: 'side' | 'head' | 'single' | 'only-side' | 'only-head' | 'side-panel' | 'head-panel'
     /**
-     * 导航栏是否圆角
-     * @默认值 `false`
+     * 主导航点击模式
+     * @默认值 `'switch'` 切换
+     * @可选值 `'jump'` 跳转
+     * @可选值 `'smart'` 智能选择，判断次导航是否只有且只有一个可访问的菜单进行切换或跳转操作
      */
-    isRounded?: boolean
+    mainMenuClickMode?: 'switch' | 'smart' | 'jump'
     /**
      * 导航栏激活风格
      * @默认值 `''`
@@ -179,20 +202,10 @@ declare namespace Settings {
      */
     style?: '' | 'arrow' | 'line' | 'dot'
     /**
-     * 切换主导航是否跳转页面
-     * @默认值 `false`
-     */
-    switchMainMenuAndPageJump?: boolean
-    /**
      * 次导航是否只保持一个子项的展开
      * @默认值 `true`
      */
     subMenuUniqueOpened?: boolean
-    /**
-     * 次导航只有一个导航时是否自动隐藏
-     * @默认值 `false`
-     */
-    subMenuOnlyOneHide?: boolean
     /**
      * 次导航是否收起
      * @默认值 `false`
@@ -515,6 +528,7 @@ declare namespace Menu {
       auth?: string | string[]
       menu?: boolean
       badge?: boolean | string | number | (() => boolean | string | number)
+      badgeVariant?: 'default' | 'secondary' | 'destructive' | (() => 'default' | 'secondary' | 'destructive')
       newWindow?: boolean
       link?: string
     }

@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import type { IntervalHandle } from '@/hooks/utils.ts'
+import useSettingsStore from '@/store/modules/settings.ts'
 import { useVbenModal } from '@/ui-kit'
 
 interface Props {
   // 轮训时间，分钟
-  checkUpdatesInterval?: number
+  // checkUpdatesInterval?: number
   // 检查更新的地址
   checkUpdateUrl?: string
 }
 
 defineOptions({ name: 'CheckUpdates' })
 const props = withDefaults(defineProps<Props>(), {
-  checkUpdatesInterval: 1,
+  // checkUpdatesInterval: 1,
   checkUpdateUrl: import.meta.env.BASE_URL || '/',
 })
 const { t } = useI18n()
+const settingsStore = useSettingsStore()
 let isCheckingUpdates = false
 const currentVersionTag = ref('')
 const lastVersionTag = ref('')
@@ -77,14 +79,14 @@ function handleNotice(versionTag: string) {
 }
 
 function start() {
-  if (props.checkUpdatesInterval <= 0) {
+  if (settingsStore.settings.app.checkUpdatesInterval <= 0) {
     return
   }
 
   // 每 checkUpdatesInterval(默认值为1) 分钟检查一次
   timer.value = setInterval(
     checkForUpdates,
-    props.checkUpdatesInterval * 60 * 1000,
+    settingsStore.settings.app.checkUpdatesInterval * 60 * 1000,
   )
 }
 
@@ -108,13 +110,17 @@ function stop() {
 }
 
 onMounted(() => {
-  start()
-  document.addEventListener('visibilitychange', handleVisibilitychange)
+  if (settingsStore.settings.app.enableCheckUpdates) {
+    start()
+    document.addEventListener('visibilitychange', handleVisibilitychange)
+  }
 })
 
 onUnmounted(() => {
-  stop()
-  document.removeEventListener('visibilitychange', handleVisibilitychange)
+  if (settingsStore.settings.app.enableCheckUpdates) {
+    stop()
+    document.removeEventListener('visibilitychange', handleVisibilitychange)
+  }
 })
 </script>
 

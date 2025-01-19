@@ -59,7 +59,7 @@ function handleTips() {
     position: relative;
     min-height: 120px;
     cursor: pointer;
-    background: #fff linear-gradient(120deg, rgb(var(--ui-primary) / 10%) 10%, #fff) no-repeat;
+    background: #fff linear-gradient(120deg, rgb(var(--primary) / 10%) 10%, #fff) no-repeat;
   }
 
   :deep(.el-card__body) {

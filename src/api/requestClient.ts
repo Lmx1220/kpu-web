@@ -8,7 +8,7 @@ import useUserStore from '@/store/modules/user.ts'
 import { authenticateResponseInterceptor, errorMessageResponseInterceptor, RequestClient } from '@/utils/request-client'
 import { ElMessage } from 'element-plus'
 
-const apiURL = (import.meta.env.DEV && import.meta.env.VITE_OPEN_PROXY === 'true') ? '/proxy/' : import.meta.env.VITE_APP_API_BASEURL
+const apiURL = (import.meta.env.DEV && import.meta.env.VITE_OPEN_PROXY) ? '/proxy/' : import.meta.env.VITE_APP_API_BASEURL
 
 function createRequestClient(baseURL: string) {
   const client = new RequestClient({

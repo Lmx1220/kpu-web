@@ -37,7 +37,7 @@ onMounted(() => {
   }
   getDicts()
 })
-const slots = useSlots()
+const slots: Record<string, Function> = useSlots()
 </script>
 
 <template>

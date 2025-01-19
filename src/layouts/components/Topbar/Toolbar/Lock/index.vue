@@ -127,8 +127,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex-center cursor-pointer px-2 py-1">
-    <svg-icon name="i-ri:lock-line" @click="handleLock" />
+  <div>
+    <KButton variant="ghost" size="icon" @click="handleLock">
+      <SvgIcon name="i-ri:lock-line" :size="16" />
+    </KButton>
     <TransitionRoot
       as="template"
       appear :show="settingsStore.lock"
@@ -151,7 +153,7 @@ onUnmounted(() => {
               <div class="screen-lock-content">
                 <div class="screen-lock-content-title">
                   <img width="180px" :src="userStore.avatar" alt="">
-                  <svg-icon name="i-ri:lock-2-line" class="i-ri:lock-2-line" />
+                  <SvgIcon name="i-ri:lock-2-line" class="i-ri:lock-2-line" />
                   {{ t(title) }} {{ t('屏幕已锁定') }}
                 </div>
                 <div class="screen-lock-content-form">
@@ -166,18 +168,18 @@ onUnmounted(() => {
                         type="password"
                         @keyup.enter="handleUnLock"
                       >
-                      <HButton
+                      <KButton
                         class="form-button"
                         native-type="submit"
                         type="primary"
                         @click="handleUnLock"
                       >
-                        <svg-icon
+                        <SvgIcon
                           name="i-ri:rotate-lock-2-line"
                           class="i-ri:rotate-lock-2-line"
                         />
                         {{ t('解锁') }}
-                      </HButton>
+                      </KButton>
                     </div>
                   </div>
                 </div>

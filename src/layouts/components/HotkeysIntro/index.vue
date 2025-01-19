@@ -18,7 +18,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <HDialog v-model="isShow" title="快捷键介绍">
+  <KModal v-model="isShow" title="快捷键介绍" :footer="false">
     <div class="px-4">
       <div class="grid gap-2 sm-grid-cols-2">
         <div>
@@ -27,18 +27,30 @@ onMounted(() => {
           </h2>
           <ul class="list-none ps-4 text-sm">
             <li class="py-1">
-              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>I</HKbd>
+              <KKbd>
+                {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
+              </KKbd>
+              <KKbd>
+                I
+              </KKbd>
               查看系统信息
             </li>
             <li v-if="settingsStore.settings.toolbar.navSearch && settingsStore.settings.navSearch.enableHotkeys" class="py-1">
-              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>S</HKbd>
+              <KKbd>
+                {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
+              </KKbd>
+              <KKbd>
+                K
+              </KKbd>
               唤起导航搜索
             </li>
             <li class="py-1">
-              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>L</HKbd>
+              <KKbd>
+                {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
+              </KKbd>
+              <KKbd>
+                L
+              </KKbd>
               锁屏
             </li>
           </ul>
@@ -49,8 +61,12 @@ onMounted(() => {
           </h2>
           <ul class="list-none ps-4 text-sm">
             <li class="py-1">
-              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>`</HKbd>
+              <KKbd>
+                {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
+              </KKbd>
+              <KKbd>
+                `
+              </KKbd>
               激活下一个主导航
             </li>
           </ul>
@@ -61,28 +77,48 @@ onMounted(() => {
           </h2>
           <ul class="list-none ps-4 text-sm">
             <li class="py-1">
-              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>←</HKbd>
+              <KKbd>
+                {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
+              </KKbd>
+              <KKbd>
+                ←
+              </KKbd>
               切换到上一个标签页
             </li>
             <li class="py-1">
-              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>→</HKbd>
+              <KKbd>
+                {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
+              </KKbd>
+              <KKbd>
+                →
+              </KKbd>
               切换到下一个标签页
             </li>
             <li class="py-1">
-              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>W</HKbd>
+              <KKbd>
+                {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
+              </KKbd>
+              <KKbd>
+                W
+              </KKbd>
               关闭当前标签页
             </li>
             <li class="py-1">
-              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>1~9</HKbd>
+              <KKbd>
+                {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
+              </KKbd>
+              <KKbd>
+                1~9
+              </KKbd>
               切换到第 n 个标签页
             </li>
             <li class="py-1">
-              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>0</HKbd>
+              <KKbd>
+                {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
+              </KKbd>
+              <KKbd>
+                0
+              </KKbd>
               切换到最后一个标签页
             </li>
           </ul>
@@ -93,18 +129,26 @@ onMounted(() => {
           </h2>
           <ul class="list-none ps-4 text-sm">
             <li class="py-1">
-              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>↑</HKbd>
+              <KKbd>
+                {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
+              </KKbd>
+              <KKbd>
+                ↑
+              </KKbd>
               最大化
             </li>
             <li class="py-1">
-              <HKbd>{{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}</HKbd>
-              <HKbd>↓</HKbd>
+              <KKbd>
+                {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
+              </KKbd>
+              <KKbd>
+                ↓
+              </KKbd>
               退出最大化
             </li>
           </ul>
         </div>
       </div>
     </div>
-  </HDialog>
+  </KModal>
 </template>

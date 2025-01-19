@@ -6,7 +6,7 @@ import PermissionExample from './modules/permission.example'
 const menu: Menu.recordMainRaw[] = [
   {
     meta: {
-      title: '演示',
+      title: 'route.demo',
       icon: 'uim:box',
     },
     children: [

@@ -1,12 +1,12 @@
 import type { Menu, Route } from '#/global'
 import type { RouteRecordRaw } from 'vue-router'
+// import apiApp from '@/api/modules/app'
+import menu from '@/menu'
 import { resolveRoutePath } from '@/utils'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'es-toolkit'
 import useRouteStore from './route'
 import useSettingsStore from './settings'
 import useUserStore from './user'
-// import apiApp from '@/api/modules/app'
-import menu from '@/menu'
 
 const useMenuStore = defineStore(
   // 唯一ID
@@ -119,6 +119,23 @@ const useMenuStore = defineStore(
         retnPath = resolveRoutePath(rootPath, menu.path)
       }
       return retnPath
+    }
+    // 次导航是否有且只有一个可访问的菜单
+    const sidebarMenusHasOnlyMenu = computed(() => {
+      return isSidebarMenusHasOnlyMenu(sidebarMenus.value)
+    })
+    function isSidebarMenusHasOnlyMenu(menus: Menu.recordRaw[]) {
+      let count = 0
+      let isOnly = true
+      menus.forEach((menu) => {
+        if (menu.meta?.menu !== false) {
+          count++
+        }
+        if (menu.children) {
+          isOnly = isSidebarMenusHasOnlyMenu(menu.children)
+        }
+      })
+      return count <= 1 && isOnly
     }
     // 默认展开的导航路径
     const defaultOpenedPaths = computed(() => {
@@ -236,6 +253,7 @@ const useMenuStore = defineStore(
       allMenus,
       sidebarMenus,
       sidebarMenusFirstDeepestPath,
+      sidebarMenusHasOnlyMenu,
       defaultOpenedPaths,
       alwaysOpenedPaths,
       generateMenusAtFront,

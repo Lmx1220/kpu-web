@@ -1,0 +1,16 @@
+{
+  "accountLogin": "账号密码登录",
+  "qrcodeLogin": "扫码登录",
+  "intro": "请重新登录",
+  "subIntro": "您的登录状态已过期",
+  "wechatQrcode": "请使用微信扫码登录",
+  "form": {
+    "account": "用户名",
+    "password": "密码",
+    "login": "登录"
+  },
+  "rules": {
+    "account": "请输入用户名",
+    "password": "请输入密码"
+  }
+}

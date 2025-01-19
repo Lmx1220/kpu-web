@@ -278,9 +278,10 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     opt || {},
   ))
 }
+
 const request = createAxios(
   {
-    baseURL: (import.meta.env.DEV && import.meta.env.VITE_OPEN_PROXY === 'true') ? '/proxy/' : import.meta.env.VITE_APP_API_BASEURL,
+    baseURL: (import.meta.env.DEV && import.meta.env.VITE_OPEN_PROXY) ? '/proxy/' : import.meta.env.VITE_APP_API_BASEURL,
   },
 )
 export default request

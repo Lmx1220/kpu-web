@@ -81,7 +81,7 @@ function onTransitionEnd() {
       <i
         v-for="index in 4"
         :key="index"
-        class="absolute block size-4 origin-[50%_50%] scale-75 rounded-full bg-ui-primary opacity-30"
+        class="absolute block size-4 origin-[50%_50%] scale-75 rounded-full bg-primary opacity-30"
       />
     </span>
 

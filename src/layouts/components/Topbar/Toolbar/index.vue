@@ -15,7 +15,7 @@ const settingsStore = useSettingsStore()
     <div class="left-side h-full flex items-center of-hidden pe-16 ps-2">
       <LeftSide />
     </div>
-    <div v-if="['side', 'single', 'only-side'].includes(settingsStore.settings.menu.mode) || settingsStore.mode === 'mobile'" class="h-full flex items-center justify-end px-2">
+    <div v-if="['side', 'single', 'only-side', 'side-panel'].includes(settingsStore.settings.menu.mode) || settingsStore.mode === 'mobile'" class="h-full flex items-center justify-end px-2">
       <RightSide />
     </div>
   </div>
@@ -24,7 +24,7 @@ const settingsStore = useSettingsStore()
 <style scoped>
 .toolbar-container {
   height: var(--g-toolbar-height);
-  background-color: var(--g-container-bg);
+  background-color: var(--g-toolbar-bg);
   transition: background-color 0.3s;
 
   .left-side {

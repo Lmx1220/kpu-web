@@ -10,7 +10,7 @@ export default defineFakeRoute([
         code: 1,
         data: [{
           meta: {
-            title: '演示',
+            title: 'route.demo',
             icon: 'uim:box',
           },
           children: [
@@ -175,7 +175,7 @@ export default defineFakeRoute([
       status: 1,
       data: [{
         meta: {
-          title: '演示',
+          title: 'route.demo',
           icon: 'uim:box',
         },
         children: [{

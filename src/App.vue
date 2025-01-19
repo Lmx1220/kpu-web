@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import CheckUpdates from '@/layouts/components/CheckUpdates/index.vue'
 import useSettingsStore from '@/store/modules/settings'
-import eventBus from '@/utils/eventBus'
 
 import { useTitle as usePageTitle } from '@vueuse/core'
-import hotkeys from 'hotkeys-js'
-import Provider from './ui-provider/index.vue'
+import Provider from './ui/provider/index.vue'
 
 const route = useRoute()
 const settingsStore = useSettingsStore()
@@ -45,9 +43,6 @@ onMounted(() => {
   window.addEventListener('resize', () => {
     settingsStore.setMode(document.documentElement.clientWidth)
   })
-  hotkeys('alt+i', () => {
-    eventBus.emit('global-system-info-toggle')
-  })
 })
 </script>
 
@@ -55,9 +50,11 @@ onMounted(() => {
   <Provider>
     <RouterView v-slot="{ Component }">
       <component :is="Component" v-if="isAuth" />
-      <NotAllowed v-else />
+      <KNotAllowed v-else />
     </RouterView>
-    <SystemInfo />
-    <CheckUpdates v-if="settingsStore.settings.app.enableAutoUpdate" />
+    <KToast />
+    <KNotification />
+    <KSystemInfo />
+    <CheckUpdates />
   </Provider>
 </template>

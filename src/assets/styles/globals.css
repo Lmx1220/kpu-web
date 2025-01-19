@@ -29,14 +29,19 @@
   /* 标签页最大最小宽度，两个宽度为同一数值时，则为固定宽度，反之将宽度设置为 unset 则为自适应 */
   --g-tabbar-tab-max-width: 150px;
   --g-tabbar-tab-min-width: 150px;
+
+  /* 滚动条颜色 */
+  --scrollbar-color: 240 5.9% 90%;
+}
+
+:root.dark {
+  --scrollbar-color: 240 3.7% 15.9%;
 }
 
 /* 明暗模式 CSS 变量 */
 /* stylelint-disable-next-line no-duplicate-selectors */
 :root {
   color-scheme: light;
-
-  --g-box-shadow-color: rgb(0 0 0 / 12%);
 
   &::view-transition-old(root),
   &::view-transition-new(root) {
@@ -87,6 +92,13 @@
   background-color: transparent;
 }
 
+* {
+  scrollbar-color: hsl(var(--scrollbar-color)) transparent;
+  scrollbar-width: thin;
+  border-color: hsl(var(--border));
+  outline: unset;
+}
+
 html,
 body {
   height: 100%;
@@ -95,21 +107,26 @@ body {
 body {
   box-sizing: border-box;
   margin: 0;
-  font-family: Lato, "PingFang SC", "Microsoft YaHei", sans-serif;
-  background-color: var(--g-container-bg);
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
   -webkit-tap-highlight-color: transparent;
-
-  &.overflow-hidden {
-    overflow: hidden;
-  }
-}
-
-* {
-  box-sizing: inherit;
 }
 
 #app {
   height: 100%;
+}
+
+textarea {
+  font-family: inherit;
+}
+
+.layout-dragging * {
+  transition: none !important;
+}
+
+.medium-zoom-overlay,
+.medium-zoom-image {
+  z-index: 3000;
 }
 
 /* 右侧内容区针对fixed元素，有横向铺满的需求，可在fixed元素上设置 [data-fixed-calc-width] */
@@ -140,11 +157,6 @@ body {
       transform: translateX(50%) !important;
     }
   }
-}
-
-/* textarea 字体跟随系统 */
-textarea {
-  font-family: inherit;
 }
 
 /* Overrides Floating Vue */

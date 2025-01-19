@@ -202,9 +202,9 @@ function handleFocusOutside(e: Event) {
               <!--              <HTooltip trigger-class="pb-1" :text="titleTooltip"> -->
               <!--                <SvgIcon name="i-ri:search-line" /> -->
               <!--              </HTooltip> -->
-              <HTooltip class="size-5 inline-flex cursor-pointer pb-1 text-dark-900/80 hover:text-dark-900" :text="titleTooltip">
+              <KTooltip class="size-5 inline-flex cursor-pointer pb-1 text-dark-900/80 hover:text-dark-900" :text="titleTooltip">
                 <SvgIcon name="i-lucide:circle-help" />
-              </HTooltip>
+              </KTooltip>
             </slot>
           </slot>
         </DialogTitle>
@@ -268,8 +268,8 @@ function handleFocusOutside(e: Event) {
         class="absolute right-10 top-3 size-6 flex-center rounded-full bg-transparent px-1 text-lg text-zinc-950/80 opacity-70 transition-opacity hidden disabled:pointer-events-none sm:block hover:bg-zinc-100 hover:text-zinc-900 hover:opacity-100 focus:outline-none"
         @click="handleFullscreen"
       >
-        <svg-icon v-if="fullscreen" name="i-lucide:shrink" class="size-3.5!" />
-        <svg-icon v-else name="i-lucide:expand" class="size-3.5!" />
+        <SvgIcon v-if="fullscreen" name="i-lucide:shrink" class="size-3.5!" />
+        <SvgIcon v-else name="i-lucide:expand" class="size-3.5!" />
       </div>
 
       <DialogFooter
@@ -281,7 +281,7 @@ function handleFocusOutside(e: Event) {
       >
         <slot name="prepend-footer" />
         <slot name="footer">
-          <HButton
+          <KButton
             v-if="showCancelButton"
             class="bg-transparent"
             variant="ghost"
@@ -290,8 +290,8 @@ function handleFocusOutside(e: Event) {
             <slot name="cancelText">
               {{ cancelText || $t('common.cancelText') }}
             </slot>
-          </HButton>
-          <HButton
+          </KButton>
+          <KButton
             v-if="showConfirmButton"
             :loading="confirmLoading"
             @click="() => modalApi?.onConfirm()"
@@ -299,7 +299,7 @@ function handleFocusOutside(e: Event) {
             <slot name="confirmText">
               {{ confirmText || $t('common.okText') }}
             </slot>
-          </HButton>
+          </KButton>
         </slot>
         <slot name="append-footer" />
       </DialogFooter>

@@ -1,10 +1,11 @@
 import type { LocaleType } from '#/config'
 import type { Settings } from '#/global'
 import type { RouteLocationNormalized, RouteMeta } from 'vue-router'
-import { defaultsDeep } from 'lodash-es'
 // import { getLocales } from '@/locales'
 import settingsDefault from '@/settings'
+import { merge } from '@/utils/object.ts'
 import storage from '@/utils/storage.ts'
+import { cloneDeep } from 'es-toolkit'
 
 const useSettingsStore = defineStore(
   // 唯一ID
@@ -28,6 +29,7 @@ const useSettingsStore = defineStore(
       () => settings.value.app.colorScheme,
       () => settings.value.app.lightTheme,
       () => settings.value.app.darkTheme,
+      () => settings.value.app.themeSync,
     ], updateTheme, {
       immediate: true,
     })
@@ -41,13 +43,26 @@ const useSettingsStore = defineStore(
         case 'light':
           document.documentElement.classList.remove('dark')
           document.body.setAttribute('data-theme', settings.value.app.lightTheme)
+          if (settings.value.app.themeSync) {
+            settings.value.app.darkTheme = settings.value.app.lightTheme
+          }
           break
         case 'dark':
           document.documentElement.classList.add('dark')
           document.body.setAttribute('data-theme', settings.value.app.darkTheme)
+          if (settings.value.app.themeSync) {
+            settings.value.app.lightTheme = settings.value.app.darkTheme
+          }
           break
       }
     }
+
+    watch(() => settings.value.app.radius, (val) => {
+      document.documentElement.style.removeProperty('--radius')
+      document.documentElement.style.setProperty('--radius', `${val}rem`)
+    }, {
+      immediate: true,
+    })
 
     watch([
       () => settings.value.app.enableMournMode,
@@ -210,6 +225,10 @@ const useSettingsStore = defineStore(
     function setDefaultLang(lang: LocaleType) {
       settings.value.app.defaultLang = lang
     }
+    // const { changeLocale } = useLocale()
+    // watch(() => settings.value.app.defaultLang, async (lang: LocaleType) => {
+    //   await changeLocale(lang)
+    // })
 
     // 设置主题颜色模式
     function setColorScheme(color: Required<Settings.app>['colorScheme']) {
@@ -225,7 +244,7 @@ const useSettingsStore = defineStore(
 
     // 更新应用配置
     function updateSettings(data: Settings.all, fromBase = false) {
-      settings.value = defaultsDeep(data, fromBase ? settingsDefault : settings.value)
+      settings.value = merge(data, fromBase ? cloneDeep(settingsDefault) : settings.value)
     }
 
     return {

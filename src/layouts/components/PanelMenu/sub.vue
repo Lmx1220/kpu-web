@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-vue'
 import type { SubMenuProps } from './types'
 import { useTimeoutFn } from '@vueuse/core'
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
 import Item from './item.vue'
 import { rootMenuInjectionKey } from './types'
 
@@ -18,8 +16,8 @@ const props = withDefaults(
 )
 
 const index = props.menu.path ?? JSON.stringify(props.menu)
-const itemRef = shallowRef()
-const subMenuRef = shallowRef<OverlayScrollbarsComponentRef>()
+const itemRef = useTemplateRef('itemRef')
+const subMenuRef = useTemplateRef('subMenuRef')
 const rootMenu = inject(rootMenuInjectionKey)!
 
 const opened = computed(() => {
@@ -88,28 +86,32 @@ function handleMouseenter() {
       if (hasChildren.value) {
         rootMenu.openMenu(index, props.uniqueKey)
         nextTick(() => {
-          const el = itemRef.value.ref
+          const el = itemRef.value?.ref
+          const subMenuEl = subMenuRef.value?.$el
+          if (!el || !subMenuEl) {
+            return
+          }
           let top = 0
           let left = 0
           if (rootMenu.props.mode === 'vertical' || props.level !== 0) {
             top = el.getBoundingClientRect().top + el.scrollTop
             left = (rootMenu.props.direction === 'ltr' ? el.getBoundingClientRect().left : document.documentElement.clientWidth - el.getBoundingClientRect().right) + el.getBoundingClientRect().width
-            if (top + subMenuRef.value!.getElement()!.offsetHeight > window.innerHeight) {
-              top = window.innerHeight - subMenuRef.value!.getElement()!.offsetHeight
+            if (top + subMenuEl.offsetHeight > window.innerHeight) {
+              top = window.innerHeight - subMenuEl.offsetHeight
             }
           }
           else {
             top = el.getBoundingClientRect().top + el.getBoundingClientRect().height
             left = rootMenu.props.direction === 'ltr' ? el.getBoundingClientRect().left : document.documentElement.clientWidth - el.getBoundingClientRect().right
-            if (top + subMenuRef.value!.getElement()!.offsetHeight > window.innerHeight) {
-              subMenuRef.value!.getElement()!.style.height = `${window.innerHeight - top}px`
+            if (top + subMenuEl.offsetHeight > window.innerHeight) {
+              subMenuEl.style.height = `${window.innerHeight - top}px`
             }
           }
-          if (left + subMenuRef.value!.getElement()!.offsetWidth > document.documentElement.clientWidth) {
+          if (left + subMenuEl.offsetWidth > document.documentElement.clientWidth) {
             left = (rootMenu.props.direction === 'ltr' ? el.getBoundingClientRect().left : document.documentElement.clientWidth - el.getBoundingClientRect().right) - el.getBoundingClientRect().width
           }
-          subMenuRef.value!.getElement()!.style.top = `${top}px`
-          subMenuRef.value!.getElement()!.style.insetInlineStart = `${left}px`
+          subMenuEl.style.top = `${top}px`
+          subMenuEl.style.insetInlineStart = `${left}px`
         })
       }
       else {
@@ -146,19 +148,15 @@ function handleMouseenters() {
   <Teleport v-if="hasChildren" to="body" :disabled="level !== 0">
     <template v-if="level === 0">
       <Transition v-bind="transitionClass" v-on="transitionEvent">
-        <OverlayScrollbarsComponent
-          v-if="opened" ref="subMenuRef" :options="{ scrollbars: { visibility: 'hidden' } }" defer
-          class="sub-menu fixed z-3000 bg-[var(--g-sub-sidebar-bg)] px-1 shadow-xl ring-1 ring-stone-2 dark-ring-stone-8"
-          :class="{
-            'rounded-lg': rootMenu.props.rounded,
-          }"
+        <KScrollArea
+          v-show="opened" ref="subMenuRef" mask class="sub-menu z-3000 w-150 border rounded-lg bg-[var(--g-sub-sidebar-bg)] shadow-xl fixed! 2xl:w-200"
           @mouseenter="handleMouseenters"
           @mouseleave="handleMouseleave"
         >
-          <div class="columns-3 p-4 2xl:columns-4">
+          <div class="columns-3 p-2 px-3 2xl:columns-4">
             <div
               v-for="item in menu.children" :key="item.path ?? JSON.stringify(item)"
-              class="w-[200px] break-inside-avoid"
+              class="w-full break-inside-avoid"
             >
               <SubMenu
                 v-if="item.meta?.menu !== false"
@@ -167,7 +165,7 @@ function handleMouseenters() {
               />
             </div>
           </div>
-        </OverlayScrollbarsComponent>
+        </KScrollArea>
       </Transition>
     </template>
     <template v-else>

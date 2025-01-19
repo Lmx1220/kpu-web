@@ -14,9 +14,9 @@ function handleClick() {
 </script>
 
 <template>
-  <span class="flex-center cursor-pointer px-2 py-1" :class="{ animation: isAnimating }" @click="handleClick" @animationend="isAnimating = false">
-    <SvgIcon name="i-iconoir:refresh-double" />
-  </span>
+  <KButton variant="ghost" size="icon" @click="handleClick" @animationend="isAnimating = false">
+    <SvgIcon name="i-iconoir:refresh-double" :size="16" />
+  </KButton>
 </template>
 
 <style scoped>
