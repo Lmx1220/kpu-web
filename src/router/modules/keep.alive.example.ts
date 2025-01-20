@@ -10,7 +10,7 @@ const routes: RouteRecordRaw = {
   redirect: '/keep_alive_example/page',
   name: 'keepAliveExample',
   meta: {
-    title: '页面缓存',
+    title: 'route.keepAlive.root',
     icon: 'i-cil:window-restore',
   },
   children: [
@@ -19,7 +19,7 @@ const routes: RouteRecordRaw = {
       name: 'keepAliveExamplePage',
       component: () => import('@/views/keep_alive_example/page.vue'),
       meta: {
-        title: '页面缓存',
+        title: 'route.keepAlive.page',
         breadcrumb: false,
       },
     },
@@ -28,7 +28,7 @@ const routes: RouteRecordRaw = {
       name: 'keepAliveExampleDetail',
       component: () => import('@/views/keep_alive_example/detail.vue'),
       meta: {
-        title: '平级路由',
+        title: 'route.keepAlive.detail',
         menu: false,
         activeMenu: '/keep_alive_example/page',
       },
@@ -37,7 +37,7 @@ const routes: RouteRecordRaw = {
       path: 'nested',
       redirect: '/keep_alive_example/nested/detail',
       meta: {
-        title: '嵌套路由',
+        title: 'route.keepAlive.nested',
         menu: false,
       },
       children: [
@@ -46,7 +46,7 @@ const routes: RouteRecordRaw = {
           name: 'keepAliveExampleNestedDetail',
           component: () => import('@/views/keep_alive_example/detail.vue'),
           meta: {
-            title: '嵌套路由',
+            title: 'route.keepAlive.nested',
             activeMenu: '/keep_alive_example/page',
           },
         },
@@ -57,7 +57,7 @@ const routes: RouteRecordRaw = {
       name: 'keepAliveExampleNested1',
       component: () => import('@/views/keep_alive_example/nested/nested.vue'),
       meta: {
-        title: '路由多级缓存1',
+        title: 'route.keepAlive.nested1.root',
       },
       children: [
         {
@@ -65,7 +65,7 @@ const routes: RouteRecordRaw = {
           name: 'keepAliveExampleNested2',
           component: () => import('@/views/keep_alive_example/nested/nested/nested.vue'),
           meta: {
-            title: '路由多级缓存1-1',
+            title: 'route.keepAlive.nested1.nested2.root',
           },
           children: [
             {
@@ -73,7 +73,7 @@ const routes: RouteRecordRaw = {
               name: 'keepAliveExampleNestedIndex',
               component: () => import('@/views/keep_alive_example/nested/nested/nested/index.vue'),
               meta: {
-                title: '路由多级缓存1-1-1',
+                title: 'route.keepAlive.nested1.nested2.index',
                 cache: true,
               },
             },

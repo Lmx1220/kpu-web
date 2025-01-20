@@ -111,15 +111,17 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
   width: var(--g-main-sidebar-width);
   color: var(--g-main-sidebar-menu-color);
   background-color: var(--g-main-sidebar-bg);
-  box-shadow: 1px 0 hsl(var(--border)),-1px 0 hsl(var(--border));
+  box-shadow: 1px 0 hsl(var(--border)), -1px 0 hsl(var(--border));
   transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 
   .sidebar-logo {
     background-color: var(--g-main-sidebar-bg);
     transition: background-color 0.3s;
   }
+
   .menu {
     flex: 1;
+
     .menu-active {
       &-arrow {
         .item-container::before,
@@ -131,8 +133,8 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
           width: 0;
           height: 0;
           content: "";
-          border-block:5px solid transparent;
-          border-inline-end:5px solid var(--g-main-sidebar-bg);
+          border-block: 5px solid transparent;
+          border-inline-end: 5px solid var(--g-main-sidebar-bg);
           opacity: 0;
           transition: all 0.3s;
           transform: translateY(-50%);
@@ -160,7 +162,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
           box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
           opacity: 0;
           transition: all 0.3s;
-          transform: translateY(-50%)
+          transform: translateY(-50%);
         }
 
         .item-container.active::before,
@@ -184,7 +186,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
           border-radius: 50%;
           box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
           opacity: 0;
-          transition: all .3s;
+          transition: all 0.3s;
           transform: translateY(-50%);
         }
 
@@ -195,9 +197,10 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
         }
       }
     }
+
     :deep(.menu-item) {
       .menu-item-container {
-        padding-block:8px;
+        padding-block: 8px;
         color: var(--g-main-sidebar-menu-color);
 
         &:hover {
@@ -208,22 +211,22 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
         .menu-item-container-icon {
           font-size: 20px !important;
         }
+
         .badge {
           position: absolute;
           inset-inline-end: 0;
-          top: .5rem;
+          top: 0.5rem;
           display: inline-flex;
           transform: scale(1);
         }
       }
 
       &.active .menu-item-container {
-        color: var(--g-main-sidebar-menu-active-color)!important;
-        background-color: var(--g-main-sidebar-menu-active-bg)!important;
+        color: var(--g-main-sidebar-menu-active-color) !important;
+        background-color: var(--g-main-sidebar-menu-active-bg) !important;
       }
     }
   }
-
 }
 
 /* 主侧边栏动画 */

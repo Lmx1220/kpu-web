@@ -71,6 +71,7 @@
     "text": "文字标记"
   },
   "tabbar": "标签栏",
+  "menuQuery": "带参导航",
   "component": {
     "root": "组件",
     "basic": "基础组件",

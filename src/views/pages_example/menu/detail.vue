@@ -36,15 +36,15 @@ function goBack() {
 
 <template>
   <div>
-    <page-header :title="route.name === 'routerName' ? '新增' : '编辑'">
+    <KPageHeader :title="route.name === 'routerName' ? '新增' : '编辑'">
       <el-button size="default" round @click="goBack">
         <template #icon>
           <SvgIcon name="ep:arrow-left" />
         </template>
         返回
       </el-button>
-    </page-header>
-    <page-main>
+    </KPageHeader>
+    <k-page-main>
       <el-row>
         <el-col :md="24" :lg="16">
           <DetailForm
@@ -53,14 +53,14 @@ function goBack() {
           />
         </el-col>
       </el-row>
-    </page-main>
-    <fixed-action-bar>
+    </k-page-main>
+    <k-fixed-action-bar>
       <el-button type="primary" size="large" @click="onSubmit">
         提交
       </el-button>
       <el-button size="large" @click="onCancel">
         取消
       </el-button>
-    </fixed-action-bar>
+    </k-fixed-action-bar>
   </div>
 </template>

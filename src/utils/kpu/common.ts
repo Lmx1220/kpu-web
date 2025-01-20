@@ -3,7 +3,7 @@ import type { AxiosResponse } from 'axios'
 import { asyncFindDictList, asyncFindEnumList } from '@/api/modules/common/general'
 import componentSetting, { SORT_FIELD } from '@/settings/componentSetting'
 import { isArray, isFunction, isString } from '@/utils/is'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 
 const PAGE_PARAMS = Object.values(componentSetting.table.fetchSetting)
 
@@ -95,7 +95,7 @@ export function downloadFile(response: AxiosResponse<Blob>) {
     reader.onload = (e) => {
       if (e.target?.readyState === 2) {
         const data = JSON.parse(e.target?.result as string)
-        Message.warning(data.msg)
+        toast.warning(data.msg)
       }
     }
     reader.readAsText(res)

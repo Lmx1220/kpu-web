@@ -7,7 +7,7 @@ import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessu
 import hotkeys from 'hotkeys-js'
 import { sample, shuffle } from 'lodash-es'
 import { useI18n } from 'vue-i18n'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 
 defineOptions({
   name: 'Lock',
@@ -95,8 +95,7 @@ async function handleUnLock() {
     await _handleUnLock()
   }
   else {
-    Message.error('请输入正确的密码', {
-      zIndex: 2001,
+    toast.error('请输入正确的密码', {
     })
   }
   // })

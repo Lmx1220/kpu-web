@@ -78,7 +78,3 @@ defineExpose({ start, reset })
     {{ value }}
   </span>
 </template>
-
-<style scoped>
-
-</style>

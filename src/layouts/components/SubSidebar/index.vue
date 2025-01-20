@@ -95,6 +95,7 @@ watch(() => menuStore.actived, (val, oldVal) => {
       }"
     >
       <KButton
+        v-show="!isCollapse"
         variant="secondary"
         size="icon"
         class="h-8 w-8"
@@ -126,7 +127,7 @@ watch(() => menuStore.actived, (val, oldVal) => {
   flex-direction: column;
   width: var(--g-sub-sidebar-width);
   background-color: var(--g-sub-sidebar-bg);
-  box-shadow: -1px 0 hsl(var(--border)),1px 0 hsl(var(--border));
+  box-shadow: -1px 0 hsl(var(--border)), 1px 0 hsl(var(--border));
   transition: background-color 0.3s, inset-inline-start 0.3s, width 0.3s, box-shadow 0.3s;
 
   &.is-collapse {
@@ -144,7 +145,7 @@ watch(() => menuStore.actived, (val, oldVal) => {
   }
 
   &.shadow-side {
-    box-shadow: 10px 0 10px -10px hsl(var(--border)),-10px 0 10px -10px hsl(var(--border))
+    box-shadow: 10px 0 10px -10px hsl(var(--border)), -10px 0 10px -10px hsl(var(--border));
   }
 
   .sidebar-logo {

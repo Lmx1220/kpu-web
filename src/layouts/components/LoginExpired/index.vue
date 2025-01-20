@@ -25,7 +25,3 @@ function onAfterLogin() {
     <LoginAgainForm @on-after-login="onAfterLogin" />
   </KModal>
 </template>
-
-<style scoped>
-
-</style>

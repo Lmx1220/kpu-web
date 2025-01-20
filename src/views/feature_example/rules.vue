@@ -497,15 +497,15 @@ function open(url: string) {
 
 <template>
   <div>
-    <PageHeader title="常用正则" content="正则来源于 Github 上 any-rule 项目">
+    <KPageHeader title="常用正则" content="正则来源于 Github 上 any-rule 项目">
       <ElButton @click="open('https://github.com/any86/any-rule')">
         <template #icon>
           <SvgIcon name="i-ep:link" />
         </template>
         访问 any-rule
       </ElButton>
-    </PageHeader>
-    <PageMain v-for="(item, index) in rules" :key="index" :title="item.title">
+    </KPageHeader>
+    <KPageMain v-for="(item, index) in rules" :key="index" :title="item.title">
       <div class="rule">
         {{ item.rule }}
       </div>
@@ -515,7 +515,7 @@ function open(url: string) {
       <ElButton @click="test(index)">
         测试
       </ElButton>
-    </PageMain>
+    </KPageMain>
     <ElDialog v-model="dialog.visible" :title="rules[dialog.index].title" width="500px">
       <ElForm :model="dialog.form" :rules="dialog.formRules">
         <ElFormItem prop="test">

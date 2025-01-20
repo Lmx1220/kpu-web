@@ -25,7 +25,7 @@ const activedTabId = computed(() => tabbar.getId())
 
 const dropdownTabContainerRef = ref()
 
-const searchInputRef = ref()
+// const searchInputRef = useTemplateRef('searchInputRef')
 
 const isDragging = ref(false)
 const isNavSearch = ref(false)
@@ -105,7 +105,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
           <div class="flex-center-between gap-2 p-4">
             <template v-if="isNavSearch">
               <KInput
-                ref="searchInputRef" :placeholder="t('searchPlaceholder')"
+                :placeholder="t('searchPlaceholder')"
                 class="h-8 w-0 flex-1 border border-input rounded-md bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none"
               />
               <KButton variant="outline" size="icon" class="h-8 w-8" @click="isNavSearch = false">
@@ -254,16 +254,15 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
       inset-inline-end: 0.5rem;
       top: 50%;
       z-index: 10;
-      width: 1.25rem;
-      height: 1.25rem;
       display: flex;
       align-items: center;
       justify-content: center;
-
-      border-radius: 9999px;
+      width: 1.25rem;
+      height: 1.25rem;
       font-size: 0.75rem;
       line-height: 1rem;
       color: var(--g-tabbar-tab-color);
+      border-radius: 9999px;
       opacity: 0;
 
       &:hover {

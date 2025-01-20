@@ -12,8 +12,8 @@ function cleared() {
 
 <template>
   <div>
-    <PageHeader title="文字标记" content="搭配 Pinia 可实现动态设置。请控制文字展示长度，避免导航标记覆盖导航标题" />
-    <PageMain>
+    <KPageHeader title="文字标记" content="搭配 Pinia 可实现动态设置。请控制文字展示长度，避免导航标记覆盖导航标题" />
+    <KPageMain>
       <div>
         当前 badge 值：'{{ menuBadgeStore.text }}'
       </div>
@@ -23,6 +23,6 @@ function cleared() {
       <ElButton @click="cleared">
         清空
       </ElButton>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>

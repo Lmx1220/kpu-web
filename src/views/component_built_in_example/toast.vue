@@ -53,7 +53,7 @@ function showToast(type?: 'success' | 'error' | 'info' | 'warning' | 'loading1' 
 
 <template>
   <div>
-    <KPageHeader title="轻提示" description="KToast" />
+    <KPageHeader title="" description="KToast" />
     <KPageMain>
       <div class="flex gap-4">
         <KButton @click="showToast()">

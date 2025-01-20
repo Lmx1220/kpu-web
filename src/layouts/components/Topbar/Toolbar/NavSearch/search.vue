@@ -27,7 +27,7 @@ interface listTypes {
   path: string
   icon?: string
   title?: string | (() => string)
-  i18n?: string
+  // i18n?: string
   link?: string
   breadcrumb: {
     title?: string | (() => string)
@@ -129,20 +129,20 @@ function getSourceListByMenus(arr: Menu.recordRaw[], basePath?: string, icon?: s
       if (item.children && hasChildren(item)) {
         breadcrumbTemp.push({
           title: item.meta?.title,
-          i18n: item.meta?.i18n,
+          // i18n: item.meta?.i18n,
         })
         getSourceListByMenus(item.children, resolveRoutePath(basePath, item.path), item.meta?.icon ?? icon, breadcrumbTemp)
       }
       else {
         breadcrumbTemp.push({
           title: item.meta?.title,
-          i18n: item.meta?.i18n,
+          // i18n: item.meta?.i18n,
         })
         sourceList.value.push({
           path: resolveRoutePath(basePath, item.path),
           icon: item.meta?.icon ?? icon,
           title: item.meta?.title,
-          i18n: item.meta?.i18n,
+          // i18n: item.meta?.i18n,
           link: item.meta?.link,
           breadcrumb: breadcrumbTemp,
         })

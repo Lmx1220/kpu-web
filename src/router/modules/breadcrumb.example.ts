@@ -10,7 +10,7 @@ const routes: RouteRecordRaw = {
   redirect: '/breadcrumb_example/list1',
   name: 'breadcrumbExample',
   meta: {
-    title: '面包屑导航',
+    title: 'route.breadcrumb.root',
     icon: 'i-ic:twotone-double-arrow',
   },
   children: [
@@ -19,7 +19,7 @@ const routes: RouteRecordRaw = {
       name: 'breadcrumbExampleList1',
       component: () => import('@/views/breadcrumb_example/list1.vue'),
       meta: {
-        title: '列表1（平级模式）',
+        title: 'route.breadcrumb.list1',
       },
     },
     {
@@ -27,7 +27,7 @@ const routes: RouteRecordRaw = {
       name: 'breadcrumbExampleDetail1',
       component: () => import('@/views/breadcrumb_example/detail1.vue'),
       meta: {
-        title: '详情1',
+        title: 'route.breadcrumb.detail1',
         menu: false,
         activeMenu: '/breadcrumb_example/list1',
       },
@@ -37,14 +37,14 @@ const routes: RouteRecordRaw = {
       name: 'breadcrumbExampleList2',
       redirect: '/breadcrumb_example/list2',
       meta: {
-        title: '列表2（层级模式）',
+        title: 'route.breadcrumb.list2',
       },
       children: [
         {
           path: '',
           component: () => import('@/views/breadcrumb_example/list2.vue'),
           meta: {
-            title: '列表2（层级模式）',
+            title: 'route.breadcrumb.list2',
             menu: false,
             breadcrumb: false,
           },
@@ -54,7 +54,7 @@ const routes: RouteRecordRaw = {
           name: 'breadcrumbExampleDetail2',
           component: () => import('@/views/breadcrumb_example/detail2.vue'),
           meta: {
-            title: '详情2',
+            title: 'route.breadcrumb.detail2',
             menu: false,
             activeMenu: '/breadcrumb_example/list2',
           },

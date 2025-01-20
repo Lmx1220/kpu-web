@@ -40,7 +40,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
       <component :is="useSlots('header-start')" />
       <Logo class="title" />
       <component :is="useSlots('header-after-logo')" />
-      <KScrollArea horizontal :scrollbar="false" mask gradient-color="var(--g-header-bg)" class="menu-container h-full flex-1">
+      <KScrollArea :scrollbar="false" mask horizontal gradient-color="var(--g-header-bg)" class="menu-container h-full flex-1">
         <!-- 顶部模式 -->
         <div
           v-if="settingsStore.settings.menu.mode === 'head'" class="menu h-full flex of-hidden transition-all"
@@ -127,7 +127,7 @@ header {
   margin: 0 auto;
   color: var(--g-header-color);
   background-color: var(--g-header-bg);
-  box-shadow: -1px 0 hsl(var(--border)),1px 0 hsl(var(--border)),0 1px hsl(var(--border));
+  box-shadow: -1px 0 hsl(var(--border)), 1px 0 hsl(var(--border)), 0 1px hsl(var(--border));
   transition: background-color 0.3s;
 
   .header-container {
@@ -152,7 +152,7 @@ header {
       .logo {
         width: initial;
         max-width: initial;
-        height: min(70%,50px);
+        height: min(70%, 50px);
       }
 
       span {
@@ -178,7 +178,7 @@ header {
             border-bottom: 5px solid var(--g-header-bg);
             border-left: 5px solid transparent;
             opacity: 0;
-            transition: all .3s;
+            transition: all 0.3s;
             transform: translate(-50%);
           }
 
@@ -203,7 +203,7 @@ header {
             border-radius: 2px;
             box-shadow: 0 0 0 1px var(--g-header-bg);
             opacity: 0;
-            transition: all .3s;
+            transition: all 0.3s;
             transform: translate(-50%);
           }
 
@@ -228,7 +228,7 @@ header {
             border-radius: 50%;
             box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
             opacity: 0;
-            transition: all .3s;
+            transition: all 0.3s;
             transform: translate(-50%);
           }
 
@@ -256,10 +256,11 @@ header {
             .menu-item-container-icon {
               font-size: 20px !important;
             }
-            .badge{
+
+            .badge {
               position: absolute;
               inset-inline-end: 0;
-              top: .5rem;
+              top: 0.5rem;
               display: inline-flex;
               transform: scale(1);
             }

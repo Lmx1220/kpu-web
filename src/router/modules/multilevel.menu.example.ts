@@ -10,7 +10,7 @@ const routes: RouteRecordRaw = {
   redirect: '/multilevel_menu_example/page',
   name: 'multilevelMenuExample',
   meta: {
-    title: '多级导航',
+    title: 'route.multimenu.root',
     icon: 'i-heroicons-solid:menu-alt-3',
   },
   children: [
@@ -19,7 +19,7 @@ const routes: RouteRecordRaw = {
       name: 'multilevelMenuExample1',
       component: () => import('@/views/multilevel_menu_example/page.vue'),
       meta: {
-        title: '导航1',
+        title: 'route.multimenu.page',
       },
     },
     {
@@ -27,7 +27,7 @@ const routes: RouteRecordRaw = {
       name: 'multilevelMenuExample2',
       redirect: '/multilevel_menu_example/level2/page',
       meta: {
-        title: '导航2',
+        title: 'route.multimenu.level2.root',
       },
       children: [
         {
@@ -35,7 +35,7 @@ const routes: RouteRecordRaw = {
           name: 'multilevelMenuExample2-1',
           component: () => import('@/views/multilevel_menu_example/level2/page.vue'),
           meta: {
-            title: '导航2-1',
+            title: 'route.multimenu.level2.page',
           },
         },
         {
@@ -43,7 +43,7 @@ const routes: RouteRecordRaw = {
           name: 'multilevelMenuExample2-2',
           redirect: '/multilevel_menu_example/level2/level3/page1',
           meta: {
-            title: '导航2-2',
+            title: 'route.multimenu.level2.level3.root',
           },
           children: [
             {
@@ -51,7 +51,7 @@ const routes: RouteRecordRaw = {
               name: 'multilevelMenuExample2-2-1',
               component: () => import('@/views/multilevel_menu_example/level2/level3/page1.vue'),
               meta: {
-                title: '导航2-2-1',
+                title: 'route.multimenu.level2.level3.page1',
               },
             },
             {
@@ -59,7 +59,7 @@ const routes: RouteRecordRaw = {
               name: 'multilevelMenuExample2-2-2',
               component: () => import('@/views/multilevel_menu_example/level2/level3/page2.vue'),
               meta: {
-                title: '导航2-2-2',
+                title: 'route.multimenu.level2.level3.page2',
               },
             },
           ],

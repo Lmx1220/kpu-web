@@ -206,9 +206,6 @@ importers:
       vue-json-pretty:
         specifier: ^2.4.0
         version: 2.4.0(vue@3.5.13(typescript@5.7.3))
-      vue-m-message:
-        specifier: ^4.0.2
-        version: 4.0.2
       vue-router:
         specifier: ^4.5.0
         version: 4.5.0(vue@3.5.13(typescript@5.7.3))
@@ -224,6 +221,9 @@ importers:
       vxe-table:
         specifier: ^4.10.5
         version: 4.10.5(vue@3.5.13(typescript@5.7.3))
+      watermark-js-plus:
+        specifier: ^1.5.7
+        version: 1.5.7
       xe-utils:
         specifier: ^3.7.0
         version: 3.7.0
@@ -7625,9 +7625,6 @@ packages:
     peerDependencies:
       vue: '>=3.0.0'
 
-  vue-m-message@4.0.2:
-    resolution: {integrity: sha512-6rTKtIzj2vXyyY6YIcSHDmJNz4R1HuxATgr8gf0c+DjcknwCkmfBggKNDIgshnCyqgL70TWsVrgcqQzl4xsYfQ==}
-
   vue-resize@2.0.0-alpha.1:
     resolution: {integrity: sha512-7+iqOueLU7uc9NrMfrzbG8hwMqchfVfSzpVlCMeJQe4pyibqyoifDNbKTZvwxZKDvGkB+PdFeKvnGZMoEb8esg==}
     peerDependencies:
@@ -7677,6 +7674,10 @@ packages:
 
   w3c-keyname@2.2.8:
     resolution: {integrity: sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ==}
+
+  watermark-js-plus@1.5.7:
+    resolution: {integrity: sha512-KaQEUnvBX5em2hBeuKcpAASpV+sO1j8NbXY7FL7jb0w1TCKmMSyn8nkj2e+KeleuQ1iwyXHEMFdSWXDIQsACYQ==}
+    engines: {node: '>=20.0.0'}
 
   wcwidth@1.0.1:
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}
@@ -16426,8 +16427,6 @@ snapshots:
     dependencies:
       vue: 3.5.13(typescript@5.7.3)
 
-  vue-m-message@4.0.2: {}
-
   vue-resize@2.0.0-alpha.1(vue@3.5.13(typescript@5.7.3)):
     dependencies:
       vue: 3.5.13(typescript@5.7.3)
@@ -16483,6 +16482,8 @@ snapshots:
       - vue
 
   w3c-keyname@2.2.8: {}
+
+  watermark-js-plus@1.5.7: {}
 
   wcwidth@1.0.1:
     dependencies:

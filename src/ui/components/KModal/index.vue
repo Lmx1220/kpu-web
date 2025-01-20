@@ -152,9 +152,9 @@ function handleAnimationEnd() {
       :overlay-blur="props.overlayBlur"
       :maximize="isMaximize"
       :maximizable="props.maximizable"
-      :class="cn('left-0 right-0 top-0 md:top-[5vh] flex flex-col p-0 gap-0 mx-auto h-[calc-size(auto,size)] min-h-full md:min-h-auto max-h-full md:max-h-[90vh] translate-x-0 translate-y-0 data-[state=closed]:slide-out-to-left-0! data-[state=closed]:slide-out-to-top-1/5! data-[state=open]:slide-in-from-left-0! data-[state=open]:slide-in-from-top-1/5!', props.class, {
+      :class="cn('left-0 right-0 top-0 md:top-[5vh] flex flex-col p-0 gap-0 mx-auto h-[calc-size(auto,size)] min-h-full md:min-h-auto max-h-full md:max-h-[90vh] translate-x-0 translate-y-0', props.class, {
         'md:top-0 size-full max-w-full max-h-full md:max-h-full': isMaximize,
-        'md:top-1/2 md:-translate-y-1/2': props.alignCenter,
+        'md:top-1/2 md:-translate-y-1/2!': props.alignCenter,
         'duration-0': isDragging,
       })"
       @close-auto-focus="handleFocusOutside"

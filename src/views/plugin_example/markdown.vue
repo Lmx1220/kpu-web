@@ -32,7 +32,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <PageHeader title="Markdown 编辑器">
+    <KPageHeader title="Markdown 编辑器">
       <template #content>
         <p style="margin-bottom: 0;">
           安装命令：<ElTag>pnpm add bytemd @bytemd/vue-next @bytemd/plugin-gfm</ElTag>
@@ -44,11 +44,11 @@ function open(url: string) {
         </template>
         访问 bytemd
       </ElButton>
-    </PageHeader>
-    <PageMain>
+    </KPageHeader>
+    <KPageMain>
       <Editor :value="content" :plugins="plugins" :locale="zhHans" @change="handleChange" />
       <Viewer :value="content" />
-    </PageMain>
+    </KPageMain>
   </div>
 </template>
 

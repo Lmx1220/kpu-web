@@ -59,7 +59,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <PageHeader title="二维码">
+    <KPageHeader title="二维码">
       <template #content>
         <p style="margin-bottom: 0;">
           安装命令：<ElTag>pnpm add qrcode</ElTag> <ElTag>pnpm add @types/qrcode -D</ElTag>
@@ -71,27 +71,27 @@ function open(url: string) {
         </template>
         访问 node-qrcode
       </ElButton>
-    </PageHeader>
+    </KPageHeader>
     <ElRow :gutter="20" style="margin: 0 10px;">
       <ElCol :sm="6">
-        <PageMain title="渲染成 img 标签" style="margin: 0;">
+        <KPageMain title="渲染成 img 标签" style="margin: 0;">
           <img :src="url1">
-        </PageMain>
+        </KPageMain>
       </ElCol>
       <ElCol :sm="6">
-        <PageMain title="渲染成 canvas 标签" style="margin: 0;">
+        <KPageMain title="渲染成 canvas 标签" style="margin: 0;">
           <canvas ref="canvasRef" />
-        </PageMain>
+        </KPageMain>
       </ElCol>
       <ElCol :sm="6">
-        <PageMain title="自定义颜色" style="margin: 0;">
+        <KPageMain title="自定义颜色" style="margin: 0;">
           <img :src="url2">
-        </PageMain>
+        </KPageMain>
       </ElCol>
       <ElCol :sm="6">
-        <PageMain title="指定宽度" style="margin: 0;">
+        <KPageMain title="指定宽度" style="margin: 0;">
           <img :src="url3">
-        </PageMain>
+        </KPageMain>
       </ElCol>
     </ElRow>
   </div>

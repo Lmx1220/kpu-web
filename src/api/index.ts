@@ -11,7 +11,7 @@ import { deepMerge, setObjToUrlParams } from '@/utils'
 import { isEmpty, isNull, isString, isUnDef } from '@/utils/is'
 import axios from 'axios'
 import { clone } from 'lodash-es'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 import HttpRequest from './request'
 
 /**
@@ -56,11 +56,21 @@ const transform: AxiosTransform = {
         // createSuccessModal({ title: t('sys.api.successTip'), content: successMsg })
         // ElMessageBox({ title: t('sys.api.successTip'), message: successMsg, type: 'success' })
         // #TODO 单窗口提示 现在不是
-        Message({ title: t('sys.api.errorTip'), message: successMsg })
+        const tips = toast.info(t('sys.api.successTip'), {
+          description: successMsg,
+          position: 'top-center',
+          duration: Infinity,
+          action: {
+            label: '知道了',
+            onClick: () => toast.dismiss(tips),
+          },
+        })
       }
       else if (options.successMessageMode === 'message') {
         // createMessage.success(successMsg)
-        Message.success(successMsg)
+        toast.success(successMsg, {
+          position: 'top-center',
+        })
       }
       return result
     }
@@ -88,11 +98,21 @@ const transform: AxiosTransform = {
 
       // ElMessageBox({ title: t('sys.api.errorTip'), message: timeoutMsg, type: 'error' })
       // #TODO 单窗口提示 现在不是
-      Message({ title: t('sys.api.errorTip'), message: timeoutMsg })
+      const tips = toast.error(t('sys.api.errorTip'), {
+        description: timeoutMsg,
+        position: 'top-center',
+        duration: Infinity,
+        action: {
+          label: '知道了',
+          onClick: () => toast.dismiss(tips),
+        },
+      })
     }
     else if (options.errorMessageMode === 'message') {
       // createMessage.error(timeoutMsg)
-      Message.error(timeoutMsg)
+      toast.error(timeoutMsg, {
+        position: 'top-center',
+      })
     }
 
     throw new Error(timeoutMsg || t('sys.api.apiRequestFailed'))
@@ -206,10 +226,20 @@ const transform: AxiosTransform = {
           // createErrorModal({ title: t('sys.api.errorTip'), content: errMessage })
           // ElMessageBox({ title: t('sys.api.errorTip'), message: errMessage, type: 'error' })
           // #TODO 单窗口提示 现在不是
-          Message({ title: t('sys.api.errorTip'), message: errMessage })
+          const tips = toast.error(t('sys.api.errorTip'), {
+            description: errMessage,
+            position: 'top-center',
+            duration: Infinity,
+            action: {
+              label: '知道了',
+              onClick: () => toast.dismiss(tips),
+            },
+          })
         }
         else if (errorMessageMode === 'message') {
-          Message.error(errMessage)
+          toast.error(errMessage, {
+            position: 'top-center',
+          })
         }
         return Promise.reject(error)
       }

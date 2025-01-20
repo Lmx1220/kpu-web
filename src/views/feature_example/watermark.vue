@@ -19,7 +19,7 @@ const type = computed({
 // 更新水印
 function updateWatermark() {
   watermarkStore.update({
-    text: `${dayjs().format('YYYY-MM-DD HH:mm:ss')}`,
+    content: dayjs().format('YYYY-MM-DD HH:mm:ss'),
   })
 }
 // 重置水印
@@ -30,8 +30,8 @@ function resetWatermark() {
 
 <template>
   <div>
-    <PageHeader title="页面水印" content="在某些场景下，不希望用户将系统里的信息随意截图并转发，这时可开启页面水印，以减少这种情况发生" />
-    <PageMain title="可在 /src/store/modules/watermark.ts 文件里定制水印文案内容">
+    <KPageHeader title="页面水印" content="在某些场景下，不希望用户将系统里的信息随意截图并转发，这时可开启页面水印，以减少这种情况发生" />
+    <KPageMain title="可在 /src/store/modules/watermark.ts 文件里定制水印文案内容">
       <ElSpace>
         <ElRadioGroup v-model="type">
           <ElRadioButton :value="true">
@@ -48,6 +48,6 @@ function resetWatermark() {
           重置水印
         </ElButton>
       </ElSpace>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>

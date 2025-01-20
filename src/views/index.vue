@@ -7,8 +7,8 @@ meta:
 
 <script setup lang="ts">
 import { useVbenDrawer, useVbenModal } from '@/ui-kit'
-import AutoHeightDemo from './auto-height-demo.vue'
 import AutoHeightDemo2 from './auto-height-demo2.vue'
+import AutoHeightDemo from './auto-height-demo.vue'
 
 defineOptions({
   name: 'Home',

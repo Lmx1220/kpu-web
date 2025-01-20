@@ -6,7 +6,7 @@ import { getTwoObjectDiff } from '@/utils'
 import eventBus from '@/utils/eventBus'
 import { useClipboard } from '@vueuse/core'
 import Sortable from 'sortablejs'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 import themes from '../../../../themes'
 
 defineOptions({
@@ -66,8 +66,8 @@ const { copy, copied, isSupported } = useClipboard()
 
 watch(copied, (val) => {
   if (val) {
-    Message.success('复制成功，请粘贴到 src/settings.ts 文件中！', {
-      zIndex: 2000,
+    toast.success('复制成功，请粘贴到 src/settings.ts 文件中！', {
+      position: 'top-center',
     })
   }
 })
@@ -705,7 +705,7 @@ function handleCopy() {
     --uno: w-full h-12 cursor-pointer flex place-self-center items-center justify-center  rounded-2 ring-1 ring-border  transition;
 
     &.active {
-      --uno: ring-2 ring-primary ;
+      --uno: ring-2 ring-primary;
 
       .content {
         --uno: rotate-0;

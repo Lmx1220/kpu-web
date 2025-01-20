@@ -41,7 +41,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <PageHeader title="VueHooks Plus">
+    <KPageHeader title="VueHooks Plus">
       <template #content>
         <p>提供基础和高级的 hook ，高性能逻辑的抽象封装，满足大量场景，更多 API 和例子请查看 VueHooks Plus 官网。</p>
         <p style="margin-bottom: 0;">
@@ -54,8 +54,8 @@ function open(url: string) {
         </template>
         访问 VueHooks Plus
       </ElButton>
-    </PageHeader>
-    <PageMain title="轮询">
+    </KPageHeader>
+    <KPageMain title="轮询">
       <div class="mb-4">
         Data：<span>{{ loading ? 'loading' : data }}</span>
       </div>
@@ -73,6 +73,6 @@ function open(url: string) {
           Stop
         </el-button>
       </div>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>

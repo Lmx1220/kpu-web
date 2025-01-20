@@ -62,7 +62,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <PageHeader title="vxe-table">
+    <KPageHeader title="vxe-table">
       <template #content>
         <p>Element Plus 自带的 el-table 组件大部分时候只能满足简单需求的使用，如果对表格有更加复杂场景需求下的使用，推荐使用 vxe-table 。</p>
         <p style="margin-bottom: 0;">
@@ -75,8 +75,8 @@ function open(url: string) {
         </template>
         访问 vxe-table
       </ElButton>
-    </PageHeader>
-    <PageMain>
+    </KPageHeader>
+    <KPageMain>
       <vxe-button @click="insertEvent">
         新增
       </vxe-button>
@@ -96,6 +96,6 @@ function open(url: string) {
         <vxe-column title="component.upload.fileName" field="name" min-width="140" :edit-render="{ name: 'ElInput' }" />
         <vxe-column title="输入框" field="nickname" width="200" :edit-render="{ name: 'ElInput' }" />
       </vxe-table>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>

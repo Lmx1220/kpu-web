@@ -11,13 +11,13 @@ function resetCustomTitle() {
 
 <template>
   <div>
-    <PageMain>
+    <KPageMain>
       <ElButton @click="setCustomTitle">
         标题设置为「 测试标题 」
       </ElButton>
       <ElButton @click="resetCustomTitle">
         标题重置
       </ElButton>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>

@@ -66,9 +66,9 @@ watch(scrollTop, (val, oldVal) => {
   flex-direction: column;
   width: calc(100% - var(--scrollbar-width, 0px));
   box-shadow: 0 1px hsl(var(--border));
-  transition: transform 0.3s,box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
 
-  &:before {
+  &::before {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -77,7 +77,7 @@ watch(scrollTop, (val, oldVal) => {
     height: 50px;
     pointer-events: none;
     content: "";
-    background-image: linear-gradient(0deg,transparent,var(--g-main-area-bg));
+    background-image: linear-gradient(0deg, transparent, var(--g-main-area-bg));
     box-shadow: 0 -1px hsl(var(--border));
     opacity: 0;
     transition: opacity 0.3s;
@@ -88,13 +88,16 @@ watch(scrollTop, (val, oldVal) => {
   &.topbar-sticky {
     position: fixed;
 
-    [data-app-width-mode=center] &,[data-app-width-mode=center-max-width] & {
-      width: 100%
+    [data-app-width-mode="center"] &,
+[data-app-width-mode="center-max-width"] & {
+      width: 100%;
     }
   }
-  &.mask:before {
+
+  &.mask::before {
     opacity: 1;
   }
+
   &.topbar-sticky.hide {
     transform: translateY(-100%);
   }

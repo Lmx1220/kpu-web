@@ -1,6 +1,6 @@
 import type { ErrorMessageMode } from '#/axios'
 import useUserStore from '@/store/modules/user'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 
 /**
  * @description: 校验网络请求状态码
@@ -17,35 +17,35 @@ export function checkStatus(status: number, msg: string, errorMessageMode: Error
       errMessage = `${msg}`
       break
     case 401:
-      Message.error('登录失效！请您重新登录')
+      toast.error('登录失效！请您重新登录', { position: 'top-center' })
       userStore.logout()
       break
     case 403:
-      Message.error('当前账号无权限访问！')
+      toast.error('当前账号无权限访问！', { position: 'top-center' })
       break
     case 404:
-      Message.error('你所访问的资源不存在！')
+      toast.error('你所访问的资源不存在！', { position: 'top-center' })
       break
     case 405:
-      Message.error('请求方式错误！请您稍后重试')
+      toast.error('请求方式错误！请您稍后重试', { position: 'top-center' })
       break
     case 408:
-      Message.error('请求超时！请您稍后重试')
+      toast.error('请求超时！请您稍后重试', { position: 'top-center' })
       break
     case 500:
-      Message.error('服务异常！')
+      toast.error('服务异常！', { position: 'top-center' })
       break
     case 502:
-      Message.error('网关错误！')
+      toast.error('网关错误！', { position: 'top-center' })
       break
     case 503:
-      Message.error('服务不可用！')
+      toast.error('服务不可用！', { position: 'top-center' })
       break
     case 504:
-      Message.error('网关超时！')
+      toast.error('网关超时！', { position: 'top-center' })
       break
     default:
-      Message.error('请求失败！')
+      toast.error('请求失败！', { position: 'top-center' })
   }
   if (errMessage) {
     if (errorMessageMode === 'modal') {
@@ -55,14 +55,19 @@ export function checkStatus(status: number, msg: string, errorMessageMode: Error
       //   type: 'error',
       // })
       // #TODO 单窗口提示 现在不是
-      Message({ title: t('sys.api.errorTip'), type: 'error', message: errMessage })
+      const tips = toast.error(t('sys.api.successTiperrorTip'), {
+        description: errMessage,
+        position: 'top-center',
+        duration: Infinity,
+        action: {
+          label: '知道了',
+          onClick: () => toast.dismiss(tips),
+        },
+      })
     }
     else if (errorMessageMode === 'message') {
-      Message({
-        message: errMessage,
-        type: 'error',
-        // key: `global_error_message_status_${status}`,
-        // grouping: true,
+      toast.error(errMessage, {
+        position: 'top-center',
       })
     }
   }

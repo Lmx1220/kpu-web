@@ -34,7 +34,7 @@
   --scrollbar-color: 240 5.9% 90%;
 }
 
-:root.dark {
+&.dark {
   --scrollbar-color: 240 3.7% 15.9%;
 }
 
@@ -124,6 +124,7 @@ textarea {
   transition: none !important;
 }
 
+/* medium-zoom */
 .medium-zoom-overlay,
 .medium-zoom-image {
   z-index: 3000;
@@ -187,12 +188,6 @@ textarea {
 .v-popper--theme-tooltip.v-popper--shown,
 .v-popper--theme-tooltip.v-popper--shown * {
   transition: none !important;
-}
-
-/* medium-zoom */
-.medium-zoom-overlay,
-.medium-zoom-image {
-  z-index: 3000;
 }
 
 /* 后续添加 */

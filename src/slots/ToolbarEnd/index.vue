@@ -21,7 +21,7 @@ const isProfileShow = ref(false)
         { label: t('app.preferences'), icon: 'i-mdi:account', handle: () => isProfileShow = true },
       ],
       [
-        { label: t('app.hotkeys'), icon: 'i-mdi:keyboard', handle: () => eventBus.emit('global-hotkeys-intro-toggle'), hide: settingsStore.mode !== 'pc' },
+        { label: t('app.hotkeys.title'), icon: 'i-mdi:keyboard', handle: () => eventBus.emit('global-hotkeys-intro-toggle'), hide: settingsStore.mode !== 'pc' },
       ],
       [
         { label: t('app.logout'), icon: 'i-mdi:logout', handle: () => userStore.logout(settingsStore.settings.home.fullPath) },

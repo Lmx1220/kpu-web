@@ -60,7 +60,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <PageHeader title="打印">
+    <KPageHeader title="打印">
       <template #content>
         <p style="margin-bottom: 0;">
           安装命令：<ElTag>pnpm add print-js</ElTag>
@@ -72,8 +72,8 @@ function open(url: string) {
         </template>
         访问 print.js
       </ElButton>
-    </PageHeader>
-    <PageMain title="打印JSON">
+    </KPageHeader>
+    <KPageMain title="打印JSON">
       <ElTable :data="tableData" stripe border :style="{ width: '100%' }">
         <ElTableColumn prop="date" label="日期" width="180" />
         <ElTableColumn prop="name" label="姓名" width="180" />
@@ -82,11 +82,11 @@ function open(url: string) {
       <ElButton @click="print('json')">
         打印
       </ElButton>
-    </PageMain>
-    <PageMain title="打印图片">
+    </KPageMain>
+    <KPageMain title="打印图片">
       <ElButton @click="print('image')">
         打印
       </ElButton>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>

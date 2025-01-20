@@ -4,23 +4,23 @@
 
 <template>
   <div>
-    <PageHeader title="自定义字体" content="自定义字体需要下载字体文件，不建议在非英文环境中使用" footer="以下为框架预设字体" />
-    <PageMain title="Digital 7">
+    <KPageHeader title="自定义字体" content="自定义字体需要下载字体文件，不建议在非英文环境中使用" footer="以下为框架预设字体" />
+    <KPageMain title="Digital 7">
       <p class="digital-7">
         admin
       </p>
       <p class="digital-7">
         1234567890,.
       </p>
-    </PageMain>
-    <PageMain title="Digital 7（等宽）">
+    </KPageMain>
+    <KPageMain title="Digital 7（等宽）">
       <p class="digital-7_mono">
         admin
       </p>
       <p class="digital-7_mono">
         1234567890,.
       </p>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>
 

@@ -82,7 +82,7 @@ onMounted(() => {
     font-size: 12px;
     color: #fff;
     white-space: nowrap;
-    background: rgba(0,0,0,.7);
+    background: rgb(0 0 0 / 70%);
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useSettingsStore from '@/store/modules/settings'
 import { useClipboard } from '@vueuse/core'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 
 defineOptions({
   name: 'LinkView',
@@ -12,8 +12,8 @@ const settingsStore = useSettingsStore()
 
 const { copy, copied } = useClipboard()
 watch(copied, (val) => {
-  val && Message.success('复制成功', {
-    zIndex: 2000,
+  val && toast.success('复制成功', {
+
   })
 })
 

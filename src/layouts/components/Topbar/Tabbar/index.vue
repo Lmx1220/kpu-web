@@ -8,7 +8,7 @@ import { useMagicKeys } from '@vueuse/core'
 import hotkeys from 'hotkeys-js'
 import Sortable from 'sortablejs'
 import { useI18n } from 'vue-i18n'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 import MoreAction from './moreAction.vue'
 
 defineOptions({
@@ -33,62 +33,61 @@ const { generateI18nTitle } = useMenu()
 const activedTabId = computed(() => tabbar.getId())
 const isShowMoreAction = computed(() => tabbarStore.list.length > 1 && (tabbar.checkCloseOtherSide() || tabbar.checkCloseLeftSide() || tabbar.checkCloseRightSide()))
 
-const tabsRef = ref()
-const tabContainerRef = ref()
-const tabRef = shallowRef<HTMLElement[]>([])
-onBeforeUpdate(() => {
-  tabRef.value = []
-})
+const tabsRef = useTemplateRef('tabsRef')
+const tabContainerRef = useTemplateRef('tabContainerRef')
+const tabRef = useTemplateRef<HTMLElement[]>('tabRef')
+// onBeforeUpdate(() => {
+//   tabRef.value = []
+// })
 
 const activePseudoTabStart = computed(() => {
   const index = tabbarStore.list.findIndex(item => item.tabId === activedTabId.value)
-  if (settingsStore.settings.app.direction === 'ltr') {
-    return `${tabRef.value.find(item => Number.parseInt(item.dataset.index!) === index)?.offsetLeft || 0}px`
-  }
-  else {
-    return `${tabsRef.value.offsetWidth - (tabRef.value.find(item => Number.parseInt(item.dataset.index!) === index)?.getBoundingClientRect().right || 0)}px`
-  }
+  const offsetLeft = tabRef.value?.find(item => item.dataset.index && Number.parseInt(item.dataset.index) === index)?.offsetLeft
+  return `${offsetLeft || 0}px`
 })
 const activePseudoTabWidth = computed(() => {
   const index = tabbarStore.list.findIndex(item => item.tabId === activedTabId.value)
-  return `${tabRef.value.find(item => Number.parseInt(item.dataset.index!) === index)?.offsetWidth || 0}px`
+  const offsetWidth = tabRef.value?.find(item => item.dataset.index && Number.parseInt(item.dataset.index) === index)?.offsetWidth
+  return `${offsetWidth || 0}px`
 })
 
 const isDragging = ref(false)
 let tabSortable: Sortable
 onMounted(() => {
-  tabSortable = new Sortable(tabContainerRef.value.$el, {
-    animation: 300,
-    delay: 400,
-    delayOnTouchOnly: true,
-    ghostClass: 'tab-ghost',
-    draggable: '.tab',
-    handle: '.drag-handle',
-    onStart: () => {
-      isDragging.value = true
-    },
-    onEnd: () => {
-      isDragging.value = false
-    },
-    onMove: (evt) => {
-      const dragged = evt.dragged
-      const related = evt.related
+  if (tabContainerRef.value) {
+    tabSortable = new Sortable(tabContainerRef.value.$el, {
+      animation: 300,
+      delay: 400,
+      delayOnTouchOnly: true,
+      ghostClass: 'tab-ghost',
+      draggable: '.tab',
+      handle: '.drag-handle',
+      onStart: () => {
+        isDragging.value = true
+      },
+      onEnd: () => {
+        isDragging.value = false
+      },
+      onMove: (evt) => {
+        const dragged = evt.dragged
+        const related = evt.related
 
-      if (dragged.classList.contains('pinned')) {
-        // 如果拖拽的元素是固定的，只允许拖到其他固定元素上
-        return related.classList.contains('pinned')
-      }
-      else {
-        // 如果拖拽的元素是可移动的，不允许拖到固定元素上
-        return !related.classList.contains('pinned')
-      }
-    },
-    onUpdate: (e) => {
-      if (e.newIndex !== undefined && e.oldIndex !== undefined) {
-        tabbarStore.sort(e.newIndex, e.oldIndex)
-      }
-    },
-  })
+        if (dragged.classList.contains('pinned')) {
+          // 如果拖拽的元素是固定的，只允许拖到其他固定元素上
+          return related.classList.contains('pinned')
+        }
+        else {
+          // 如果拖拽的元素是可移动的，不允许拖到固定元素上
+          return !related.classList.contains('pinned')
+        }
+      },
+      onUpdate: (e) => {
+        if (e.newIndex !== undefined && e.oldIndex !== undefined) {
+          tabbarStore.sort(e.newIndex, e.oldIndex)
+        }
+      },
+    })
+  }
 })
 watch([
   () => settingsStore.mode,
@@ -106,7 +105,7 @@ watch(() => route, (val) => {
     tabbarStore.add(val).then(() => {
       const index = tabbarStore.list.findIndex(item => item.tabId === activedTabId.value)
       if (index !== -1) {
-        scrollTo(tabRef.value[index].offsetLeft)
+        tabRef.value && tabsRef.value?.scrollTo(tabRef.value[index].offsetLeft - tabsRef.value.ref?.$el.clientWidth * 0.4)
         tabbarScrollTip()
       }
     })
@@ -117,13 +116,16 @@ watch(() => route, (val) => {
 })
 
 function tabbarScrollTip() {
-  if (tabContainerRef.value.$el.clientWidth > tabsRef.value.clientWidth && !storage.local.has('tabbarScrollTip')) {
+  if (tabContainerRef.value?.$el.clientWidth > (tabsRef.value?.ref?.$el.clientWidth ?? 0) && localStorage.getItem('tabbarScrollTip') === undefined) {
     storage.local.set('tabbarScrollTip', '')
-    Message.info('标签栏数量超过展示区域范围，可以将鼠标移到标签栏上，通过鼠标滚轮滑动浏览', {
-      title: '温馨提示',
-      duration: 5000,
-      closable: true,
-      zIndex: 2000,
+    const tips = toast.info('温馨提示', {
+      description: '标签栏数量超过展示区域范围，可以将鼠标移到标签栏上，通过鼠标滚轮滑动浏览',
+      position: 'top-center',
+      duration: Infinity,
+      action: {
+        label: '知道了',
+        onClick: () => toast.dismiss(tips),
+      },
     })
   }
 }
@@ -131,20 +133,16 @@ function tabbarScrollTip() {
 function tabbarMaximizeTip() {
   if (!storage.local.has('tabbarMaximizeTip')) {
     storage.local.set('tabbarMaximizeTip', '')
-    Message.info('可以通过双击标签栏进行最大化操作', {
-      title: '温馨提示',
-      duration: 5000,
-      closable: true,
-      zIndex: 2000,
+    const tips = toast.info('温馨提示', {
+      description: '可以通过双击标签栏进行最大化操作',
+      position: 'top-center',
+      duration: Infinity,
+      action: {
+        label: '知道了',
+        onClick: () => toast.dismiss(tips),
+      },
     })
   }
-}
-
-function scrollTo(offsetLeft: number) {
-  tabsRef.value.scrollTo({
-    left: offsetLeft - 50,
-    behavior: 'smooth',
-  })
 }
 
 function onTabbarDblclick(routeItem: Tabbar.recordRaw) {
@@ -418,12 +416,12 @@ onUnmounted(() => {
 
         &::after {
           position: absolute;
-          inset-inline-start: v-bind(activePseudoTabStart);
           bottom: 0;
+          left: v-bind(activePseudoTabStart);
           z-index: 10;
           width: v-bind(activePseudoTabWidth);
           content: "";
-          transition: width 0.3s, inset-inline-start 0.3s;
+          transition: width 0.3s, left 0.3s;
         }
 
         &:not(.dragging) {
@@ -566,6 +564,7 @@ onUnmounted(() => {
 
             .action-icon {
               --uno: transition;
+
               position: absolute;
               inset-inline-end: 0.5em;
               top: 50%;
@@ -582,7 +581,6 @@ onUnmounted(() => {
 
               &:hover {
                 --uno: b bg-secondary;
-
               }
             }
 
@@ -590,8 +588,8 @@ onUnmounted(() => {
               --uno: b -translate-y-1/2 bg-secondary;
 
               position: absolute;
-              top: 50%;
               inset-inline-end: 0.5rem;
+              top: 50%;
               z-index: 10;
               display: flex;
               align-items: center;
@@ -607,11 +605,8 @@ onUnmounted(() => {
 
             .drag-handle {
               position: absolute;
-              top: 0;
-              right: 0;
-              bottom: 0;
-              left: 0;
-              z-index: 9
+              inset: 0;
+              z-index: 9;
             }
           }
         }
@@ -662,13 +657,12 @@ onUnmounted(() => {
 
               &::before {
                 left: -10px;
-                mask-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 100c55.228 0 100-44.772 100-100v100H0z' fill='%23F8EAE7'/%3E%3C/svg%3E")
-
+                mask-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 100c55.228 0 100-44.772 100-100v100H0z' fill='%23F8EAE7'/%3E%3C/svg%3E");
               }
 
               &::after {
                 right: -10px;
-                mask-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M100 100C44.772 100 0 55.228 0 0v100h100z' fill='%23F8EAE7'/%3E%3C/svg%3E")
+                mask-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M100 100C44.772 100 0 55.228 0 0v100h100z' fill='%23F8EAE7'/%3E%3C/svg%3E");
               }
             }
 
@@ -676,7 +670,7 @@ onUnmounted(() => {
               .tab-background {
                 &::before,
                 &::after {
-                  background-color: var(--g-tabbar-tab-active-bg)
+                  background-color: var(--g-tabbar-tab-active-bg);
                 }
               }
             }
@@ -750,6 +744,7 @@ onUnmounted(() => {
     }
   }
 }
+
 /* 标签栏动画 */
 .tabs {
   .tabbar-move,

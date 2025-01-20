@@ -93,7 +93,3 @@ const onSubmit = form.handleSubmit((values) => {
     </div>
   </div>
 </template>
-
-<style scoped>
-
-</style>

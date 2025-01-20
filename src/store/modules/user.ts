@@ -116,14 +116,14 @@ const useUserStore = defineStore(
     // 修改密码
     async function editPassword(data: {
       password: string
-      newpassword: string
+      newPassword: string
     }) {
       await api.post({
         url: '/member/edit/password',
         data: {
           account: account.value,
           password: data.password,
-          newpassword: data.newpassword,
+          newpassword: data.newPassword,
         },
       })
     }

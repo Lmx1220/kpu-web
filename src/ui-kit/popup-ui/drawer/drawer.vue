@@ -184,7 +184,7 @@ function handleFocusOutside(e: Event) {
           <SheetClose
             v-if="closable"
             as-child
-            class="text-foreground/80 data-[state=open]:text-muted-foreground hover:text-accent-foreground h-6 w-6 flex-center rounded-full b-none bg-transparent px-1 text-lg opacity-70 transition-opacity disabled:pointer-events-none data-[state=open]:bg-zinc-100 hover:bg-zinc-100 hover:opacity-100 focus:outline-none"
+            class="h-6 w-6 flex-center rounded-full b-none bg-transparent px-1 text-lg text-foreground/80 opacity-70 transition-opacity disabled:pointer-events-none data-[state=open]:bg-zinc-100 hover:bg-zinc-100 data-[state=open]:text-muted-foreground hover:text-accent-foreground hover:opacity-100 focus:outline-none"
           >
             <!--            <VbenIconButton> -->
             <SvgIcon name="i-carbon:close" cursor-pointer class="text-4" />

@@ -17,6 +17,7 @@ import LayoutContainerExample from './modules/layout.container.example.ts'
 
 import MenuBadgeExample from './modules/menu.badge.example.ts'
 import MenuIconExample from './modules/menu.icon.example.ts'
+import MenuQueryExample from './modules/menu.query.example.ts'
 import MockExample from './modules/mock.example.ts'
 // import LinkExample from './modules/link.example'
 // import SystemExample from './modules/system.example'
@@ -113,6 +114,7 @@ const asyncRoutes: Route.recordMainRaw[] = [
       KeepAliveExample,
       AlwaysOpenedExample,
       MenuIconExample,
+      MenuQueryExample,
       MenuBadgeExample,
       TabExample,
       ComponentExample,

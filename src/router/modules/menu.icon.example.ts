@@ -10,7 +10,7 @@ const routes: RouteRecordRaw = {
   component: Layout,
   name: 'menuIconExample',
   meta: {
-    title: '导航图标激活',
+    title: 'route.menuIcon.root',
     icon: 'i-ri:check-fill',
     badge: 'PRO',
   },
@@ -20,7 +20,7 @@ const routes: RouteRecordRaw = {
       name: 'menuIconExampleChild',
       component: () => import('@/views/menu_icon_example/child.vue'),
       meta: {
-        title: '子级图标激活',
+        title: 'route.menuIcon.child',
         icon: 'i-twemoji:face-without-mouth',
         activeIcon: 'i-twemoji:grinning-face-with-big-eyes',
       },
@@ -29,7 +29,7 @@ const routes: RouteRecordRaw = {
       path: 'parent',
       name: 'menuIconExampleParent',
       meta: {
-        title: '父级图标激活',
+        title: 'route.menuIcon.parent.root',
         icon: 'i-twemoji:face-without-mouth',
         activeIcon: 'i-twemoji:grinning-face-with-big-eyes',
       },
@@ -39,7 +39,7 @@ const routes: RouteRecordRaw = {
           name: 'menuIconExampleParentIndex',
           component: () => import('@/views/menu_icon_example/parent.vue'),
           meta: {
-            title: '测试页面',
+            title: 'route.menuIcon.parent.index',
           },
         },
       ],

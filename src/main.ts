@@ -24,7 +24,6 @@ import '@/utils/baidu'
 import '@/utils/system.copyright'
 
 import 'floating-vue/dist/style.css'
-import 'vue-m-message/dist/style.css'
 
 import 'vxe-table/lib/style.css'
 

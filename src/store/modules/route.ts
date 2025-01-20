@@ -24,7 +24,6 @@ const useRouteStore = defineStore(
         route.children = flatAsyncRoutesRecursive(route.children, [{
           path: route.path,
           title: route.meta?.title,
-          i18n: route.meta?.i18n,
           icon: route.meta?.icon,
           activeIcon: route.meta?.activeIcon,
           hide: !route.meta?.breadcrumb && route.meta?.breadcrumb === false,
@@ -41,7 +40,6 @@ const useRouteStore = defineStore(
           tmpBreadcrumb.push({
             path: childrenBaseUrl,
             title: route.meta?.title,
-            i18n: route.meta?.i18n,
             icon: route.meta?.icon,
             activeIcon: route.meta?.activeIcon,
             hide: !route.meta?.breadcrumb && route.meta?.breadcrumb === false,
@@ -77,7 +75,6 @@ const useRouteStore = defineStore(
           tmpBreadcrumb.push({
             path: tmpRoute.path,
             title: tmpRoute.meta?.title,
-            i18n: tmpRoute.meta?.i18n,
             icon: tmpRoute.meta?.icon,
             activeIcon: tmpRoute.meta?.activeIcon,
             hide: !tmpRoute.meta?.breadcrumb && tmpRoute.meta?.breadcrumb === false,
@@ -182,7 +179,7 @@ const useRouteStore = defineStore(
           }
           if (route.meta?.i18n) {
             isUsedDeprecatedAttributeI18n = true
-            route.meta.title = route.meta.i18n
+            route.meta.title = route.meta.i18n as string
             delete route.meta.sidebar
           }
           if (route.children) {

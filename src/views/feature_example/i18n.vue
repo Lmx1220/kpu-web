@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { LocaleType } from '#/config'
 import { useLocale } from '@/locales/useLocale.ts'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 
 const { t } = useI18n()
 const currentPage = ref(1)
@@ -37,19 +37,20 @@ function setI18n(lang: LocaleType) {
         world: 'Hello World !',
       },
     })
-
-    Message.success('载入成功，你可以切换语言查看效果')
+    toast.success('载入成功，你可以切换语言查看效果', {
+      position: 'top-center',
+    })
   }
 }
 </script>
 
 <template>
   <div>
-    <PageHeader title="国际化" content="除了支持全局多语言切换，还支持 Vue 单文件模式语言切换，你可以尝试在这个页面点击右上角的语言切换试试" />
-    <PageMain title="Element 组件">
+    <KPageHeader title="国际化" content="除了支持全局多语言切换，还支持 Vue 单文件模式语言切换，你可以尝试在这个页面点击右上角的语言切换试试" />
+    <KPageMain title="Element 组件">
       <ElPagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[100, 200, 300, 400]" layout="total, sizes, prev, pager, next, jumper" :total="400" @size-change="() => {}" @current-change="() => {}" />
-    </PageMain>
-    <PageMain title="表单验证(待优化)">
+    </KPageMain>
+    <KPageMain title="表单验证(待优化)">
       <ElForm v-model="data" :rules="rulesData" label-width="100px">
         <ElFormItem :label="t('form.name')" prop="name">
           <ElInput v-model="data.name" />
@@ -58,8 +59,8 @@ function setI18n(lang: LocaleType) {
           <ElInput v-model="data.age" />
         </ElFormItem>
       </ElForm>
-    </PageMain>
-    <PageMain title="延迟加载">
+    </KPageMain>
+    <KPageMain title="延迟加载">
       <ElButton @click="setI18n('zh-cn')">
         载入中文
       </ElButton>
@@ -67,6 +68,6 @@ function setI18n(lang: LocaleType) {
         载入英文
       </ElButton>
       <p>{{ t('hello.world') }}</p>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>

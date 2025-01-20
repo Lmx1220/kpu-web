@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import EditPasswordForm from '@/components/AccountForm/EditPasswordForm.vue'
+import EditPasswordForm from './EditPasswordForm.vue'
 
 const active = ref(0)
 const tabs = ref([
@@ -30,7 +30,7 @@ const tabs = ref([
       <div v-if="active === 0">
         请开发者自行扩展
       </div>
-      <!--      <EditPasswordForm v-if="active === 1" /> -->
+      <EditPasswordForm v-if="active === 1" />
     </div>
   </div>
 </template>

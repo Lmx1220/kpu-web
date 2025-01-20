@@ -460,7 +460,6 @@ declare namespace Settings {
 declare module 'vue-router' {
   interface RouteMeta {
     title?: string | (() => string)
-    i18n?: string
     icon?: string
     activeIcon?: string
     defaultOpened?: boolean
@@ -479,6 +478,7 @@ declare module 'vue-router' {
     cache?: boolean | string | string[]
     noCache?: string | string[]
     badge?: boolean | string | number | (() => boolean | string | number)
+    badgeVariant?: 'default' | 'secondary' | 'destructive' | (() => 'default' | 'secondary' | 'destructive')
     newWindow?: boolean
     iframe?: string
     link?: string
@@ -486,6 +486,7 @@ declare module 'vue-router' {
     paddingBottom?: string
     whiteList?: boolean
     breadcrumbNeste?: Route.breadcrumb[]
+    query?: Record<string, any>
   }
 }
 
@@ -493,7 +494,6 @@ declare namespace Route {
   interface recordMainRaw {
     meta?: {
       title?: string | (() => string)
-      i18n?: string
       icon?: string
       activeIcon?: string
       auth?: string | string[]
@@ -501,13 +501,15 @@ declare namespace Route {
         name: string
         value: string
       }[]
+      badge?: boolean | string | number | (() => boolean | string | number)
+      badgeVariant?: 'default' | 'secondary' | 'destructive' | (() => 'default' | 'secondary' | 'destructive')
+      query?: Record<string, any>
     }
     children: RouteRecordRaw[]
   }
   interface breadcrumb {
     path: string
     title?: string | (() => string)
-    i18n?: string
     icon?: string
     activeIcon?: string
     hide: boolean
@@ -520,7 +522,6 @@ declare namespace Menu {
     path?: string
     meta?: {
       title?: string | (() => string)
-      i18n?: string
       icon?: string
       activeIcon?: string
       defaultOpened?: boolean
@@ -531,6 +532,7 @@ declare namespace Menu {
       badgeVariant?: 'default' | 'secondary' | 'destructive' | (() => 'default' | 'secondary' | 'destructive')
       newWindow?: boolean
       link?: string
+      query?: Record<string, any>
     }
     children?: recordRaw[]
   }
@@ -538,10 +540,11 @@ declare namespace Menu {
   interface recordMainRaw {
     meta?: {
       title?: string | (() => string)
-      i18n?: string
       icon?: string
       activeIcon?: string
       auth?: string | string[]
+      badge?: boolean | string | number | (() => boolean | string | number)
+      badgeVariant?: 'default' | 'secondary' | 'destructive' | (() => 'default' | 'secondary' | 'destructive')
     }
     children: recordRaw[]
   }
@@ -554,7 +557,6 @@ declare namespace Tabbar {
     routeName?: RouteRecordName | null
     activeMenu?: string
     title?: string | (() => string)
-    i18n?: string
     iframe?: string
     icon?: string
     activeIcon?: string
@@ -572,7 +574,6 @@ declare namespace Favorites {
   interface recordRaw {
     fullPath: string
     title?: string | (() => string)
-    i18n?: string
     icon?: string
   }
 }

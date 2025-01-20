@@ -37,7 +37,6 @@ const useTabbarStore = defineStore(
               title: typeof route.meta.title === 'function' ? route.meta.title() : route.meta.title,
               activeIcon: route.meta.activeIcon,
               name: route.name ? [String(route.name)] : [],
-              i18n: route.meta.i18n,
               customTitleList: [],
               isPin: false,
               isPermanent: true,
@@ -57,7 +56,6 @@ const useTabbarStore = defineStore(
                 routeName: route.name,
                 activeMenu: route.meta.activeMenu,
                 title: typeof route.meta.title === 'function' ? route.meta.title() : route.meta.title,
-                i18n: route.meta.i18n,
                 iframe: route.meta.iframe,
                 name: route.name ? [String(route.name)] : [],
                 customTitleList: [],
@@ -76,7 +74,6 @@ const useTabbarStore = defineStore(
               routeName: items.name,
               activeMenu: items.meta.activeMenu,
               title: typeof items.meta.title === 'function' ? items.meta.title() : items.meta.title,
-              i18n: items.meta.i18n,
               iframe: items.meta.iframe,
               name: items.name ? [String(items.name)] : [],
               customTitleList: [],
@@ -109,7 +106,6 @@ const useTabbarStore = defineStore(
             tabbar.routeName = route.name
             tabbar.activeMenu = meta?.activeMenu
             tabbar.title = typeof meta?.title === 'function' ? meta.title() : meta?.title
-            tabbar.i18n = meta?.i18n
             tabbar.iframe = meta?.iframe
             tabbar.icon = meta?.icon || meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon
             tabbar.activeIcon = meta?.activeIcon || meta?.breadcrumbNeste?.findLast(item => item.activeIcon)?.activeIcon
@@ -121,7 +117,6 @@ const useTabbarStore = defineStore(
               routeName: route.name,
               activeMenu: meta?.activeMenu,
               title: typeof meta?.title === 'function' ? meta.title() : meta?.title,
-              i18n: meta?.i18n,
               iframe: meta?.iframe,
               icon: meta?.icon || meta?.breadcrumbNeste?.findLast(item => item.icon)?.icon,
               activeIcon: meta?.activeIcon || meta?.breadcrumbNeste?.findLast(item => item.activeIcon)?.activeIcon,

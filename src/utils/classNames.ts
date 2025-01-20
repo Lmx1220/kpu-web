@@ -64,7 +64,7 @@ export const namespaceContextKey: InjectionKey<Ref<string | undefined>> = Symbol
 export function useGetDerivedNamespace(namespaceOverrides?: Ref<string | undefined>) {
   const derivedNamespace
     = namespaceOverrides
-    || (getCurrentInstance() ? inject(namespaceContextKey, ref(defaultNamespace)) : ref(defaultNamespace))
+      || (getCurrentInstance() ? inject(namespaceContextKey, ref(defaultNamespace)) : ref(defaultNamespace))
   const namespace = computed(() => {
     return unref(derivedNamespace) || defaultNamespace
   })

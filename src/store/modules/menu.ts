@@ -34,10 +34,11 @@ const useMenuStore = defineStore(
             const menuItem: Menu.recordMainRaw = {
               meta: {
                 title: item?.meta?.title,
-                i18n: item?.meta?.i18n,
                 icon: item?.meta?.icon,
                 activeIcon: item?.meta?.activeIcon,
                 auth: item?.meta?.auth,
+                badge: item?.meta?.badge,
+                badgeVariant: item?.meta?.badgeVariant,
               },
               children: [],
             }
@@ -55,7 +56,6 @@ const useMenuStore = defineStore(
           path: resolveRoutePath(basePath, item.path),
           meta: {
             title: item?.meta?.title,
-            i18n: item?.meta?.i18n,
             icon: item?.meta?.icon,
             activeIcon: item?.meta?.activeIcon,
             defaultOpened: item?.meta?.defaultOpened,
@@ -63,8 +63,10 @@ const useMenuStore = defineStore(
             auth: item?.meta?.auth,
             menu: item?.meta?.menu,
             badge: item?.meta?.badge,
+            badgeVariant: item?.meta?.badgeVariant,
             newWindow: item?.meta?.newWindow,
             link: item?.meta?.link,
+            query: item?.meta?.query,
           },
         }
         if (item.children) {

@@ -25,10 +25,10 @@ function reset() {
 }
 
 function onStarted() {
-  console.log('开始')
+  console.warn('开始')
 }
 function onFinished() {
-  console.log('结束')
+  console.warn('结束')
 }
 </script>
 

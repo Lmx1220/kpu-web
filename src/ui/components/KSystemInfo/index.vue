@@ -1,39 +1,43 @@
 <script setup lang="ts">
-import eventBus from '@/utils/eventBus'
+import hotkeys from 'hotkeys-js'
+
+defineOptions({
+  name: 'KSystemInfo',
+})
 
 const isShow = ref(false)
 
 const { pkg, lastBuildTime } = __SYSTEM_INFO__
 
 onMounted(() => {
-  eventBus.on('global-system-info-toggle', () => {
-    isShow.value = !isShow.value
+  hotkeys('command+i, ctrl+i', () => {
+    isShow.value = true
   })
 })
 </script>
 
 <template>
-  <HSlideover v-model="isShow" title="系统信息">
-    <div class="px-4">
-      <h2 class="m-0 text-lg font-bold">
-        版本号
-      </h2>
-      <div class="my-4 text-center text-lg font-sans">
+  <KDrawer v-model="isShow" title="系统信息" :footer="false">
+    <div v-if="pkg.version">
+      <KDivider>
+        系统信息
+      </KDivider>
+      <div class="text-center text-lg font-bold font-sans">
         {{ pkg.version }}
       </div>
     </div>
-    <div class="px-4">
-      <h2 class="m-0 text-lg font-bold">
+    <div>
+      <KDivider>
         最后编译时间
-      </h2>
-      <div class="my-4 text-center text-lg font-sans">
+      </KDivider>
+      <div class="text-center text-lg font-bold font-sans">
         {{ lastBuildTime }}
       </div>
     </div>
-    <div class="px-4">
-      <h2 class="m-0 text-lg font-bold">
+    <div>
+      <KDivider>
         生产环境依赖
-      </h2>
+      </KDivider>
       <ul class="list-none pl-0 text-sm">
         <li v-for="(val, key) in (pkg.dependencies as object)" :key="key" class="flex items-center justify-between rounded px-2 py-1.5 hover-bg-stone-1 dark-hover-bg-stone-9">
           <div class="font-bold">
@@ -46,9 +50,9 @@ onMounted(() => {
       </ul>
     </div>
     <div class="px-4">
-      <h2 class="m-0 text-lg font-bold">
+      <KDivider>
         开发环境依赖
-      </h2>
+      </KDivider>
       <ul class="list-none pl-0 text-sm">
         <li v-for="(val, key) in (pkg.devDependencies as object)" :key="key" class="flex items-center justify-between rounded px-2 py-1.5 hover-bg-stone-1 dark-hover-bg-stone-9">
           <div class="font-bold">
@@ -60,5 +64,5 @@ onMounted(() => {
         </li>
       </ul>
     </div>
-  </HSlideover>
+  </KDrawer>
 </template>

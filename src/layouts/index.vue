@@ -292,7 +292,6 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING
     .topbar-container {
       display: none;
     }
-
   }
 }
 
@@ -310,7 +309,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING
     z-index: 1010;
     display: flex;
     width: calc(var(--g-main-sidebar-actual-width) + var(--g-sub-sidebar-actual-width));
-    box-shadow: -1px 0 hsl(var(--border)),1px 0 hsl(var(--border));
+    box-shadow: -1px 0 hsl(var(--border)), 1px 0 hsl(var(--border));
     transition: width 0.3s, transform 0.3s, box-shadow 0.3s, top 0.3s;
 
     &:has(> .main-sidebar-container.main-sidebar-enter-active),
@@ -318,6 +317,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING
       overflow: hidden;
     }
   }
+
   .main-sidebar-container:not(.main-sidebar-leave-active) + .sub-sidebar-container {
     inset-inline-start: var(--g-main-sidebar-width);
   }
@@ -326,8 +326,9 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING
     display: flex;
     flex-direction: column;
     min-height: 100%;
-    margin-inline-start:calc(var(--g-main-sidebar-actual-width) + var(--g-sub-sidebar-actual-width));background-color: var(--g-main-area-bg);
-    box-shadow: -1px 0 hsl(var(--border)),1px 0 hsl(var(--border));
+    margin-inline-start: calc(var(--g-main-sidebar-actual-width) + var(--g-sub-sidebar-actual-width));
+    background-color: var(--g-main-area-bg);
+    box-shadow: -1px 0 hsl(var(--border)), 1px 0 hsl(var(--border));
     transition: margin-inline-start 0.3s, background-color 0.3s, box-shadow 0.3s;
 
     .main {
@@ -340,10 +341,6 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING
       .exit-main-page-maximize {
         --uno: bg-primary text-primary-foreground;
 
-        opacity: .5;
-        transition-property: opacity;
-        transition-timing-function: cubic-bezier(.4,0,.2,1);
-        transition-duration: .15s;
         position: fixed;
         top: -40px;
         right: -40px;
@@ -352,6 +349,11 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING
         height: 80px;
         cursor: pointer;
         border-radius: 50%;
+        opacity: 0.5;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 0.15s;
+        transition-property: opacity;
+
         &:hover {
           opacity: 1;
         }
@@ -383,11 +385,12 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING
 
   [dir="ltr"] & {
     border-top-left-radius: calc(var(--radius) - 2px);
-    border-bottom-left-radius: calc(var(--radius) - 2px)
+    border-bottom-left-radius: calc(var(--radius) - 2px);
   }
+
   [dir="rtl"] & {
     border-top-right-radius: calc(var(--radius) - 2px);
-    border-bottom-right-radius: calc(var(--radius) - 2px)
+    border-bottom-right-radius: calc(var(--radius) - 2px);
   }
 
   .icon {

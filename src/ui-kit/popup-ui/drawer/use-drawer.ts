@@ -8,8 +8,8 @@ import { useStore } from '@/utils/shared/store'
 
 import { defineComponent, h, inject, nextTick, provide, reactive } from 'vue'
 
-import VbenDrawer from './drawer.vue'
 import { DrawerApi } from './drawer-api'
+import VbenDrawer from './drawer.vue'
 
 const USER_DRAWER_INJECT_KEY = Symbol('VBEN_DRAWER_INJECT')
 

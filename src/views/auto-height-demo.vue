@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useVbenModal } from '@/ui-kit'
 import { ref } from 'vue'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 
 const list = ref<number[]>([])
 
@@ -11,8 +11,8 @@ const [Modal, modalApi] = useVbenModal({
     modalApi.close()
   },
   onConfirm() {
-    Message.info('onConfirm', {
-      zIndex: 2001,
+    toast.info('onConfirm', {
+      position: 'top-center',
     })
     // console.log('onConfirm')
   },

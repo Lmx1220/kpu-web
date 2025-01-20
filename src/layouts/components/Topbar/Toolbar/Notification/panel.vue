@@ -108,7 +108,6 @@ const activeName = ref('message')
 
 <style scoped>
 .list {
-
   .item {
     --uno: flex cursor-pointer items-start gap-3 rounded-lg p-3 transition-background-color hover-bg-muted;
 

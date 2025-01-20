@@ -7,7 +7,7 @@ meta:
 import type { CurrencyInputOptions } from 'vue-currency-input'
 import { createReusableTemplate, useClipboard } from '@vueuse/core'
 import { useCurrencyInput } from 'vue-currency-input'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 import Alert from './components/alert.vue'
 
 const Option = createReusableTemplate<{
@@ -118,8 +118,8 @@ const { copy, copied, isSupported } = useClipboard()
 
 watch(copied, (val) => {
   if (val) {
-    Message.success('复制成功', {
-      zIndex: 2000,
+    toast.success('复制成功', {
+      position: 'top-center',
     })
   }
 })
@@ -148,7 +148,7 @@ function open(url: string) {
       </section>
     </Option.define>
     <Alert />
-    <PageHeader title="货币格式输入">
+    <KPageHeader title="货币格式输入">
       <template #content>
         <p style="margin-bottom: 0;">
           安装命令：<ElTag>pnpm add vue-currency-input</ElTag>
@@ -160,16 +160,16 @@ function open(url: string) {
         </template>
         访问 vue-currency-input
       </ElButton>
-    </PageHeader>
-    <PageMain>
+    </KPageHeader>
+    <KPageMain>
       <div class="grid items-center gap-y-4 md-grid-cols-2 md-gap-x-8">
         <el-input ref="inputRef" v-model="formattedValue" />
         <div>
           数值：<code class="ml-2">{{ numberValue != null ? numberValue : 'null' }}</code>
         </div>
       </div>
-    </PageMain>
-    <PageMain title="选项">
+    </KPageMain>
+    <KPageMain title="选项">
       <template #title>
         <div class="flex items-center justify-between">
           选项
@@ -258,6 +258,6 @@ function open(url: string) {
           </Option.reuse>
         </div>
       </div>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>

@@ -153,7 +153,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <PageHeader title="G2plot">
+    <KPageHeader title="G2plot">
       <template #content>
         <p>由于 G2 的高度可定置化，导致不同开发者开发出来的图表效果有的好看，有的不好看，G2Plot 解决了这一问题，由官方制定了一套标准设计规范，开发者可以专注于数据，而不用关心最终呈现，当然缺点也很明显，就是自定义上不如 G2 ，所以如果你有更复杂的需求，推荐还是使用 G2 去自行实现。</p>
         <p style="margin-bottom: 0;">
@@ -174,29 +174,29 @@ function open(url: string) {
           访问 G2plot
         </ElButton>
       </ElButtonGroup>
-    </PageHeader>
+    </KPageHeader>
     <ElRow :gutter="20" style="margin: -10px 10px;">
       <ElCol :md="12">
-        <PageMain title="柱状图" style="margin: 10px 0;">
+        <KPageMain title="柱状图" style="margin: 10px 0;">
           <div id="chart1" style="width: 100%; height: 400px;" />
-        </PageMain>
+        </KPageMain>
       </ElCol>
       <ElCol :md="12">
-        <PageMain title="折线图" style="margin: 10px 0;">
+        <KPageMain title="折线图" style="margin: 10px 0;">
           <div id="chart2" style="width: 100%; height: 400px;" />
-        </PageMain>
+        </KPageMain>
       </ElCol>
     </ElRow>
     <ElRow :gutter="20" style="margin: 0 10px;">
       <ElCol :md="12">
-        <PageMain title="饼图" style="margin: 10px 0;">
+        <KPageMain title="饼图" style="margin: 10px 0;">
           <div id="chart3" style="width: 100%; height: 400px;" />
-        </PageMain>
+        </KPageMain>
       </ElCol>
       <ElCol :md="12">
-        <PageMain title="雷达图" style="margin: 10px 0;">
+        <KPageMain title="雷达图" style="margin: 10px 0;">
           <div id="chart4" style="width: 100%; height: 400px;" />
-        </PageMain>
+        </KPageMain>
       </ElCol>
     </ElRow>
   </div>

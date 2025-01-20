@@ -2,7 +2,7 @@
 import useUserStore from '@/store/modules/user'
 import storage from '@/utils/storage'
 import Sortable from 'sortablejs'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 
 defineOptions({
   name: 'StorageBox',
@@ -55,8 +55,8 @@ function onAdd() {
     dialog.value.name = ''
   }
   else {
-    Message.warning('名称不能为空', {
-      zIndex: 2000,
+    toast.warning('名称不能为空', {
+      position: 'top-center',
     })
   }
 }
@@ -146,7 +146,3 @@ watch(() => containerRef.value, (val) => {
     <KInput v-model="dialog.name" class="w-full!" />
   </KModal>
 </template>
-
-<style scoped>
-
-</style>

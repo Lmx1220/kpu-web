@@ -2,8 +2,8 @@ import type { ExtendedModalApi, ModalApiOptions, ModalProps } from './modal'
 
 import { useStore } from '@/utils/shared/store'
 import { defineComponent, h, inject, nextTick, provide, reactive } from 'vue'
-import VbenModal from './modal.vue'
 import { ModalApi } from './modal-api'
+import VbenModal from './modal.vue'
 
 const USER_MODAL_INJECT_KEY = Symbol('VBEN_MODAL_INJECT')
 

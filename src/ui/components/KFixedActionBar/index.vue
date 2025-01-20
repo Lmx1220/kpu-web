@@ -40,13 +40,13 @@ function onScroll() {
 </script>
 
 <template>
-  <KSmartFixedBlock position="bottom">
+  <FaSmartFixedBlock position="bottom">
     <div ref="actionBarRef">
       <div class="fixed-action-bar bottom-0 z-4 border-t bg-background p-5 text-center transition" :class="{ mask: !isBottom }">
         <slot />
       </div>
     </div>
-  </KSmartFixedBlock>
+  </FaSmartFixedBlock>
 </template>
 
 <style scoped>

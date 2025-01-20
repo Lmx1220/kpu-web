@@ -48,7 +48,7 @@ const rules = ref<FormRules>({
 function onSubmit() {
   formRef.value && formRef.value.validate((valid) => {
     if (valid) {
-      userStore.editPassword(form.value).then(() => {
+      userStore.editPassword({ password: form.value.password, newPassword: form.value.newpassword }).then(() => {
         ElMessage({
           type: 'success',
           message: '模拟修改成功，请重新登录',

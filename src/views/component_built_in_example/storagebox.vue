@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 
 defineOptions({
   name: 'StorageBox',
@@ -14,7 +14,7 @@ const search = ref({
   check2: false,
 })
 function E() {
-  Message.info('模拟触发搜索')
+  toast.info('模拟触发搜索')
 }
 function takeOut(val: any) {
   search.value = val

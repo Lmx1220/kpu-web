@@ -9,7 +9,7 @@ defineOptions({
 const route = useRoute()
 const router = useRouter()
 const favoritesStore = useFavoritesStore()
-
+const { t } = useI18n()
 const { generateI18nTitle } = useMenu()
 
 const favoritesContainerRef = ref()
@@ -36,11 +36,11 @@ watch(() => favoritesContainerRef.value, (val) => {
   <div class="favorites-container w-80">
     <div class="flex items-center justify-between px-4 py-3">
       <div class="text-sm font-bold">
-        我的收藏夹
+        {{ t('app.favorites.title') }}
       </div>
       <template v-if="favoritesStore.canAdd(route.fullPath)">
-        <SvgIcon v-if="!favoritesStore.isAdd(route.fullPath)" class="cursor-pointer text-xl" name="i-mdi:star-plus-outline" title="添加到收藏夹" @click="favoritesStore.add(route)" />
-        <SvgIcon v-else class="cursor-pointer text-xl" name="i-mdi:star-remove" title="从收藏夹删除" @click="favoritesStore.remove(route.fullPath)" />
+        <SvgIcon v-if="!favoritesStore.isAdd(route.fullPath)" class="cursor-pointer text-xl" name="i-mdi:star-plus-outline" :title="t('app.favorites.add')" @click="favoritesStore.add(route)" />
+        <SvgIcon v-else class="cursor-pointer text-xl" name="i-mdi:star-remove" :title="t('app.favorites.remove')" @click="favoritesStore.remove(route.fullPath)" />
       </template>
     </div>
     <KScrollArea class="max-h-220px">
@@ -61,12 +61,12 @@ watch(() => favoritesContainerRef.value, (val) => {
       <div v-else class="flex-col-center py-6 text-secondary-foreground">
         <SvgIcon name="i-tabler:mood-empty" :size="40" />
         <p class="m-2 text-base">
-          收藏夹是空的
+          {{ t('app.favorites.empty') }}
         </p>
         <p v-show="favoritesStore.canAdd(route.fullPath)" class="m-0 flex-center text-sm op-75">
-          点击右上角
+          {{ t('app.favorites.addToFavorites') }}
           <SvgIcon name="i-mdi:star-plus-outline" :size="20" class="mx-1 text-secondary-foreground" />
-          将当前页面添加到收藏夹
+          {{ t('app.favorites.addCurrentPage') }}
         </p>
       </div>
     </KScrollArea>

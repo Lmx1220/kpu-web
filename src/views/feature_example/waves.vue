@@ -22,7 +22,7 @@ function toWave(url: string) {
         访问 v-wave
       </ElButton>
     </pageheader>
-    <PageMain>
+    <KPageMain>
       <ElButton v-wave>
         默认按钮
       </ElButton>
@@ -61,6 +61,6 @@ function toWave(url: string) {
           </template>
         </ElInput>
       </div>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>

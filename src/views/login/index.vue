@@ -136,9 +136,9 @@ const formRef = ref()
   z-index: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(closest-side,hsl(var(--border) / 10%) 30%,hsl(var(--primary) / 20%) 30%,hsl(var(--border) / 30%) 50%) no-repeat,radial-gradient(closest-side,hsl(var(--border) / 10%) 30%,hsl(var(--primary) / 20%) 30%,hsl(var(--border) / 30%) 50%) no-repeat;
+  background: radial-gradient(closest-side, hsl(var(--border) / 10%) 30%, hsl(var(--primary) / 20%) 30%, hsl(var(--border) / 30%) 50%) no-repeat, radial-gradient(closest-side, hsl(var(--border) / 10%) 30%, hsl(var(--primary) / 20%) 30%, hsl(var(--border) / 30%) 50%) no-repeat;
   filter: blur(100px);
-  background-position: 100% 100%,0% 0%;
+  background-position: 100% 100%, 0% 0%;
   background-size: 200vw 200vh;
 }
 
@@ -184,6 +184,7 @@ const formRef = ref()
   [data-mode="pc"] & {
     &.center {
       --uno: shadow-md rounded-md;
+
       top: 50%;
       left: 50%;
       transform: translate(-50%) translateY(-50%);
@@ -207,8 +208,9 @@ const formRef = ref()
           transform: translate(-50%) translateY(-50%);
         }
       }
+
       .login-form {
-        margin: 0 5vw
+        margin: 0 5vw;
       }
     }
 
@@ -223,17 +225,20 @@ const formRef = ref()
     position: relative;
     width: 450px;
     overflow: hidden;
+
     &::before {
       position: absolute;
       width: 100%;
       height: 100%;
       content: "";
-      background: radial-gradient(closest-side,hsl(var(--border) / 10%) 30%,hsl(var(--primary) / 20%) 30%,hsl(var(--border) / 30%) 50%) no-repeat,
-                  radial-gradient(closest-side,hsl(var(--border) / 10%) 30%,hsl(var(--primary) / 20%) 30%,hsl(var(--border) / 30%) 50%) no-repeat;
+      background:
+        radial-gradient(closest-side, hsl(var(--border) / 10%) 30%, hsl(var(--primary) / 20%) 30%, hsl(var(--border) / 30%) 50%) no-repeat,
+        radial-gradient(closest-side, hsl(var(--border) / 10%) 30%, hsl(var(--primary) / 20%) 30%, hsl(var(--border) / 30%) 50%) no-repeat;
       filter: blur(100px);
-      background-position: 100% 100%,0% 0%;
-      background-size: 200vw 200vh
+      background-position: 100% 100%, 0% 0%;
+      background-size: 200vw 200vh;
     }
+
     .banner {
       position: absolute;
       top: 50%;

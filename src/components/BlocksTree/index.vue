@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<Props>(), {
   treeProps: () => ({}),
 })
 const emits = defineEmits<{
-  'node-click': [
+  nodeClick: [
     e: Event,
     data: Record<string, any>,
     nodeContext: Record<string, any>,
@@ -77,7 +77,7 @@ const labelClassNameItem = reactive([{
     <VueBlocksTree
       :collapsable="collapsable" :data="data" :horizontal="horizontal" :label-class-name="labelClassName"
       :props="treeProp"
-      @node-click="(e: Event, data: Record<string, any>, nodeContext: Record<string, any>) => emits('node-click', e, data, nodeContext)"
+      @node-click="(e: Event, data: Record<string, any>, nodeContext: Record<string, any>) => emits('nodeClick', e, data, nodeContext)"
     />
   </div>
 </template>

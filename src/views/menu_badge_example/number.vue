@@ -12,8 +12,8 @@ function sub() {
 
 <template>
   <div>
-    <PageHeader title="数字标记" content="搭配 Pinia 可实现动态设置。请控制数字展示长度，避免导航标记覆盖导航标题，为 0 时则隐藏" />
-    <PageMain>
+    <KPageHeader title="数字标记" content="搭配 Pinia 可实现动态设置。请控制数字展示长度，避免导航标记覆盖导航标题，为 0 时则隐藏" />
+    <KPageMain>
       <div>
         当前 number 值：{{ menuBadgeStore.number }}
       </div>
@@ -27,6 +27,6 @@ function sub() {
         <SvgIcon name="i-ep:minus" />
         1
       </ElButton>
-    </PageMain>
+    </KPageMain>
   </div>
 </template>

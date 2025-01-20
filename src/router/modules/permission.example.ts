@@ -10,7 +10,7 @@ const routes: RouteRecordRaw = {
   redirect: '/permission_example/index',
   name: 'permissionExample',
   meta: {
-    title: '权限验证',
+    title: 'route.permission',
     icon: 'i-ri:shield-keyhole-line',
   },
   children: [
@@ -19,7 +19,7 @@ const routes: RouteRecordRaw = {
       name: 'permissionExampleIndex',
       component: () => import('@/views/permission_example/index.vue'),
       meta: {
-        title: '权限验证',
+        title: 'route.permission',
         menu: false,
         breadcrumb: false,
         activeMenu: '/permission_example',

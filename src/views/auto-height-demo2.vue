@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useVbenDrawer } from '@/ui-kit'
 import { ref } from 'vue'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 
 const list = ref<number[]>([])
 
@@ -10,8 +10,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
     drawerApi.close()
   },
   onConfirm() {
-    Message.info('onConfirm', {
-      zIndex: 2001,
+    toast.info('onConfirm', {
+      position: 'top-center',
     })
     // console.log('onConfirm')
   },

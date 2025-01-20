@@ -410,7 +410,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <PageHeader title="VChart">
+    <KPageHeader title="VChart">
       <template #content>
         <p style="margin-bottom: 0;">
           安装命令：<ElTag>pnpm add @visactor/vchart</ElTag>
@@ -422,29 +422,29 @@ function open(url: string) {
         </template>
         访问 VChart
       </ElButton>
-    </PageHeader>
+    </KPageHeader>
     <ElRow :gutter="20" style="margin: -10px 10px;">
       <ElCol :md="12">
-        <PageMain title="柱状图" style="margin: 10px 0;">
+        <KPageMain title="柱状图" style="margin: 10px 0;">
           <div ref="chart1Ref" class="h-[400px] w-full" />
-        </PageMain>
+        </KPageMain>
       </ElCol>
       <ElCol :md="12">
-        <PageMain title="折线图" style="margin: 10px 0;">
+        <KPageMain title="折线图" style="margin: 10px 0;">
           <div ref="chart2Ref" style="width: 100%; height: 400px;" />
-        </PageMain>
+        </KPageMain>
       </ElCol>
     </ElRow>
     <ElRow :gutter="20" style="margin: 0 10px;">
       <ElCol :md="12">
-        <PageMain title="饼图" style="margin: 10px 0;">
+        <KPageMain title="饼图" style="margin: 10px 0;">
           <div ref="chart3Ref" style="width: 100%; height: 400px;" />
-        </PageMain>
+        </KPageMain>
       </ElCol>
       <ElCol :md="12">
-        <PageMain title="雷达图" style="margin: 10px 0;">
+        <KPageMain title="雷达图" style="margin: 10px 0;">
           <div ref="chart4Ref" style="width: 100%; height: 400px;" />
-        </PageMain>
+        </KPageMain>
       </ElCol>
     </ElRow>
   </div>

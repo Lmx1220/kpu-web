@@ -93,11 +93,13 @@ const enabledRightSide = computed(() => {
   .right-side,
   .main {
     --container-padding: 15px;
+
     height: 100%;
     padding: var(--container-padding);
   }
 
-  .left-side, .right-side {
+  .left-side,
+ .right-side {
     flex: none;
     overflow: auto;
   }

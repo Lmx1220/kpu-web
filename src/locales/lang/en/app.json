@@ -9,7 +9,7 @@
   "password": "password",
   "profile": "Profile",
   "preferences": "Preferences",
-  "hotkeys": "Hotkeys Introduction",
+
   "currentAccount": "Current Login Account",
   "sendCaptcha": "send captcha",
   "route": {
@@ -38,5 +38,39 @@
     "closeOtherSide": "Close Otherside Tabs",
     "closeLeftSide": "Close Leftside Tabs",
     "closeRightSide": "Close Rightside Tabs"
+  },
+  "favorites": {
+    "title": "My Favorites",
+    "add": "Add to Favorites",
+    "remove": "Remove from Favorites",
+    "empty": "Favorites is empty",
+    "addToFavorites": "Click the upper right corner",
+    "addCurrentPage": "Add the current page to Favorites"
+  },
+  "hotkeys": {
+    "title": "Hotkeys Introduction",
+    "global": {
+      "root": "Global",
+      "system": "View system information",
+      "search": "Activate navigation search",
+      "lock": "Lock screen"
+    },
+    "nav": {
+      "root": "Main navigation",
+      "next": "Activate next main navigation"
+    },
+    "tabbar": {
+      "root": "Tabbar",
+      "prev": "Switch to previous tab",
+      "next": "Switch to next tab",
+      "close": "Close current tab",
+      "n": "Switch to nth tab",
+      "last": "Switch to last tab"
+    },
+    "page": {
+      "root": "Page",
+      "maximizing": "Maximize",
+      "exit": "Exit maximize"
+    }
   }
 }

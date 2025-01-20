@@ -3,7 +3,7 @@ import type { ConstraintInfo, FieldValidatorDesc } from './model/formValidateMod
 import defHttp from '@/api'
 import dateUtil from '@/utils/dayjs'
 // import type { VxeTableDefines, VxeTablePropTypes } from 'vxe-table'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 
 export enum RuleType {
   append,
@@ -374,7 +374,7 @@ export async function getValidateRules(Api: AxiosRequestConfig, customRules?: Pa
     formValidateApi.url = `/form/validator${formValidateApi.url}`
     try {
       if (!formValidateApi.url) {
-        Message.error('ServicePrefixEnum枚举类未正确配置！')
+        toast.error('ServicePrefixEnum枚举类未正确配置！', { position: 'top-center' })
         return resolve([])
       }
 
@@ -418,7 +418,9 @@ export async function getValidateRuleObj(Api: AxiosRequestConfig, customRules?: 
     formValidateApi.url = `/form/validator${Api.url}`
     try {
       if (!formValidateApi.url) {
-        Message.error('ServicePrefixEnum枚举类未正确配置！')
+        toast.error('ServicePrefixEnum枚举类未正确配置！', {
+          position: 'top-center',
+        })
         return resolve({})
       }
 

@@ -1,7 +1,7 @@
 import type { RouteLocationRaw } from 'vue-router'
 import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar'
-import Message from 'vue-m-message'
+import { toast } from 'vue-sonner'
 
 export default function useTabbar() {
   const route = useRoute()
@@ -36,33 +36,21 @@ export default function useTabbar() {
   }
 
   function closeById(tabId = getId()) {
-    const activedTabId = getId()
-    if (tabbarStore.list.some(item => item.tabId === tabId)) {
-      if (tabbarStore.list.length > 1) {
-        // 如果关闭的标签正好是当前路由
-        if (tabId === activedTabId) {
-          const index = tabbarStore.list.findIndex(item => item.tabId === tabId)
-          if (index < tabbarStore.list.length - 1) {
-            close(tabbarStore.list[index + 1].fullPath)
-          }
-          else {
-            close(tabbarStore.list[index - 1].fullPath)
-          }
+    if (checkClose(tabId, false)) {
+      const activedTabId = getId()
+      // 如果关闭的标签正好是当前路由
+      if (tabId === activedTabId) {
+        const index = tabbarStore.list.findIndex(item => item.tabId === tabId)
+        if (index < tabbarStore.list.length - 1) {
+          close(tabbarStore.list[index + 1].fullPath)
         }
         else {
-          tabbarStore.remove(tabId)
+          close(tabbarStore.list[index - 1].fullPath)
         }
       }
       else {
-        Message.error('当前只有一个标签页，已阻止关闭', {
-          zIndex: 2000,
-        })
+        tabbarStore.remove(tabId)
       }
-    }
-    else {
-      Message.error('关闭的页面不存在', {
-        zIndex: 2000,
-      })
     }
   }
 
@@ -109,6 +97,26 @@ export default function useTabbar() {
       }
     }
     tabbarStore.removeRightSide(tabId)
+  }
+  /**
+   * 校验指定标签是否可关闭
+   */
+  function checkClose(tabId = getId(), checkOnly = true) {
+    let flag = true
+    const index = tabbarStore.list.findIndex(item => item.tabId === tabId)
+    if (index < 0) {
+      flag = false
+      !checkOnly && toast.warning('关闭的标签页不存在', {
+        position: 'top-center',
+      })
+    }
+    else if (tabbarStore.list.length <= 1) {
+      flag = false
+      !checkOnly && toast.warning('当前只有一个标签页，不可关闭', {
+        position: 'top-center',
+      })
+    }
+    return flag
   }
 
   /**
@@ -163,6 +171,7 @@ export default function useTabbar() {
     closeOtherSide,
     closeLeftSide,
     closeRightSide,
+    checkClose,
     checkCloseOtherSide,
     checkCloseLeftSide,
     checkCloseRightSide,
