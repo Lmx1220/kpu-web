@@ -1,0 +1,9 @@
+
+/**
+ * 由 admin 提供技术支持
+ * Powered by admin
+ * 代码仓库
+ * Github https://github.com/Lmx1220/kpu-web
+ */
+    
+import{_ as d}from"./index.vue_vue_type_script_setup_true_lang-CrH7osH_.js";import{_}from"./index.vue_vue_type_script_setup_true_lang-DhwDqiuf.js";import{d as h,u as f,o as g,h as x,w as l,j as m,f as p,_ as w,p as S}from"./index-putfknEa.js";function v(r){function e(){if(!document.startViewTransition||window.matchMedia("(prefers-reduced-motion: reduce)").matches){r();return}return document.startViewTransition(async()=>{await Promise.resolve(r())})}return{startViewTransition:e}}const C=h({name:"ColorScheme",__name:"index",setup(r){const e=f();function u(s){var i;const{startViewTransition:t}=v(()=>{e.currentColorScheme&&e.setColorScheme(e.currentColorScheme==="dark"?"light":"dark")});(i=t())==null||i.ready.then(()=>{const o=s.clientX,n=s.clientY,c=Math.hypot(Math.max(o,innerWidth-o),Math.max(n,innerHeight-n)),a=[`circle(0px at ${o}px ${n}px)`,`circle(${c}px at ${o}px ${n}px)`];document.documentElement.animate({clipPath:e.settings.app.colorScheme!=="dark"?a:a.reverse()},{duration:300,easing:"ease-out",pseudoElement:e.settings.app.colorScheme!=="dark"?"::view-transition-new(root)":"::view-transition-old(root)"})})}return(s,t)=>{const i=w,o=S,n=_,c=d;return g(),x(c,{class:"min-w-auto flex-center cursor-pointer px-2 py-1"},{panel:l(()=>[m(n,{modelValue:p(e).settings.app.colorScheme,"onUpdate:modelValue":t[0]||(t[0]=a=>p(e).settings.app.colorScheme=a),list:[{icon:"i-ri:sun-line",label:"",value:"light"},{icon:"i-ri:moon-line",label:"",value:"dark"},{icon:"i-codicon:color-mode",label:"",value:""}],class:"h-full"},null,8,["modelValue"])]),default:l(()=>[m(o,{variant:"ghost",size:"icon",onClick:u},{default:l(()=>[m(i,{name:{light:"i-ri:sun-line",dark:"i-ri:moon-line","":"i-codicon:color-mode"}[p(e).settings.app.colorScheme],size:16},null,8,["name"])]),_:1})]),_:1})}}});export{C as _};

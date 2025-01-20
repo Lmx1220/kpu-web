@@ -1,0 +1,9 @@
+
+/**
+ * 由 admin 提供技术支持
+ * Powered by admin
+ * 代码仓库
+ * Github https://github.com/Lmx1220/kpu-web
+ */
+    
+import{_ as f}from"./index.vue_vue_type_script_setup_true_lang-BYjOVmS1.js";import{d as m,o as g,b as k,j as t,w as n,e as $,x as e,aN as d,p as v,Q as a}from"./index-putfknEa.js";import{_ as C}from"./index.vue_vue_type_script_setup_true_lang-CjtEiaWg.js";const K={class:"flex gap-4"},x=m({__name:"toast",setup(w){function i(l){if(l)if(l==="loading1")d.promise(()=>new Promise(o=>{setTimeout(o,2e3)}),{loading:"加载中",success:()=>"加载成功",error:()=>"加载失败",position:"top-right",duration:3e3});else if(l==="loading2"){const o=d.loading("加载中",{position:"top-right",duration:1/0});setTimeout(()=>{d.dismiss(o),d("Kpu-admin 杰出的管理系统框架",{description:"开箱即用，提供舒适开发体验",position:"top-right",duration:3e3})},2e3)}else d[l]("Kpu-admin 杰出的管理系统框架",{description:"开箱即用，提供舒适开发体验",position:"top-right",duration:3e3});else d("Kpu-admin 杰出的管理系统框架",{description:"开箱即用，提供舒适开发体验",position:"top-right",duration:3e3})}return(l,o)=>{const p=C,s=v,u=f;return g(),k("div",null,[t(p,{title:"",description:"KToast"}),t(u,null,{default:n(()=>[$("div",K,[t(s,{onClick:o[0]||(o[0]=r=>i())},{default:n(()=>o[7]||(o[7]=[e(" 默认 ")])),_:1}),t(s,{onClick:o[1]||(o[1]=r=>i("success"))},{default:n(()=>o[8]||(o[8]=[e(" 成功 ")])),_:1}),t(s,{onClick:o[2]||(o[2]=r=>i("error"))},{default:n(()=>o[9]||(o[9]=[e(" 错误 ")])),_:1}),t(s,{onClick:o[3]||(o[3]=r=>i("info"))},{default:n(()=>o[10]||(o[10]=[e(" 信息 ")])),_:1}),t(s,{onClick:o[4]||(o[4]=r=>i("warning"))},{default:n(()=>o[11]||(o[11]=[e(" 警告 ")])),_:1}),t(s,{onClick:o[5]||(o[5]=r=>i("loading1"))},{default:n(()=>o[12]||(o[12]=[e(" 加载中 1 ")])),_:1}),t(s,{onClick:o[6]||(o[6]=r=>i("loading2"))},{default:n(()=>o[13]||(o[13]=[e(" 加载中 2 ")])),_:1})])]),_:1})])}}});typeof a=="function"&&a(x);export{x as default};
