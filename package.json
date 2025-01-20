@@ -163,7 +163,6 @@
     "vite-plugin-env-parse": "^1.0.15",
     "vite-plugin-fake-server": "^2.2.0",
     "vite-plugin-pages": "^0.32.4",
-    "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-vue-devtools": "^7.7.0",
     "vite-plugin-vue-meta-layouts": "^0.5.1",
     "vue-tsc": "^2.2.0"

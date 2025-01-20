@@ -1,4 +1,3 @@
-import path from 'node:path'
 import process from 'node:process'
 import vueLegacy from '@vitejs/plugin-legacy'
 import vue from '@vitejs/plugin-vue'
@@ -18,7 +17,6 @@ import { compression } from 'vite-plugin-compression2'
 import { envParse, parseLoadedEnv } from 'vite-plugin-env-parse'
 import { vitePluginFakeServer } from 'vite-plugin-fake-server'
 import Pages from 'vite-plugin-pages'
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import Layouts from 'vite-plugin-vue-meta-layouts'
 
@@ -66,13 +64,6 @@ export default function createVitePlugins(mode: string, isBuild = false) {
     }),
 
     Unocss(),
-
-    // https://github.com/vbenjs/vite-plugin-svg-icons
-    createSvgIconsPlugin({
-      iconDirs: [path.resolve(process.cwd(), 'src/assets/icons/')],
-      symbolId: 'icon-[dir]-[name]',
-      svgoOptions: isBuild,
-    }),
 
     // https://github.com/condorheroblog/vite-plugin-fake-server
     vitePluginFakeServer({

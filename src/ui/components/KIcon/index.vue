@@ -63,9 +63,7 @@ const style = computed(() => {
   <i class="relative size-[1em] flex-inline items-center justify-center fill-current leading-[1em]" :style="style">
     <i v-if="outputType === 'unocss'" class="size-inherit shrink-0" :class="name" />
     <Icon v-else-if="outputType === 'iconify'" :icon="name" />
-    <svg v-else-if="outputType === 'svg'" class="size-inherit shrink-0" aria-hidden="true">
-      <use :xlink:href="`#icon-${name}`" />
-    </svg>
+    <Icon v-else-if="outputType === 'svg'" :icon="`svg:${name}`" class="size-inherit shrink-0" aria-hidden="true" />
     <UseImage v-else-if="outputType === 'img'" :src="name" class="size-inherit shrink-0">
       <template #loading>
         <i class="i-line-md:loading-loop size-inherit" />

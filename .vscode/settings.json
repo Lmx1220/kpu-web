@@ -36,5 +36,6 @@
   "i18n-ally.indent": 2,
   "i18n-ally.keepFulfilled": true,
   "i18n-ally.editor.preferEditor": true,
+  "cSpell.enabled": false,
   "typescript.tsdk": "node_modules/typescript/lib"
 }

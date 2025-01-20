@@ -31,7 +31,7 @@ import 'vxe-pc-ui/lib/style.css'
 import '@vxe-ui/plugin-render-element/dist/style.css'
 
 // 加载svg图标
-import 'virtual:svg-icons-register'
+import './assets/svg'
 import 'virtual:uno.css'
 import '@unocss/reset/tailwind-compat.css'
 // 全局样式

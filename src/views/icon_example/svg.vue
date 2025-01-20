@@ -42,7 +42,7 @@ const rotate = ref(0)
       <p>使用方法：</p>
       <ol>
         <li>上 <a href="https://www.iconfont.cn/" target="_blank">Iconfont</a> 下载需要的 svg 图标</li>
-        <li>将 svg 文件放入 ./src/assets/icons 目录下，文件名即为 name</li>
+        <li>将 svg 文件放入 ./src/assets/svg/icons 目录下，文件名即为 name</li>
       </ol>
     </KPageMain>
   </div>

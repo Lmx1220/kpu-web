@@ -22,27 +22,11 @@ interface ImportMetaEnv {
    */
   readonly VITE_APP_DISABLE_DEVTOOL: boolean
   /**
-   * 是否在打包时启用 Mock
+   * 是否开启代理
    */
-  readonly VITE_BUILD_MOCK: boolean
+  readonly VITE_OPEN_PROXY: boolean
   /**
-   * 是否在打包时生成 sourcemap
+   * 是否开启开发者工具
    */
-  readonly VITE_BUILD_SOURCEMAP: boolean
-  /**
-   * 是否在打包时删除 console 代码
-   */
-  readonly VITE_BUILD_DROP_CONSOLE: boolean
-  /**
-   * 是否在打包时开启压缩，支持 gzip 和 brotli
-   */
-  readonly VITE_BUILD_COMPRESS: string
-  /**
-   * 是否在打包后生成存档，支持 zip 和 tar
-   */
-  readonly VITE_BUILD_ARCHIVE: string
-  /**
-   * 是否在打包时候生成PWA
-   */
-  readonly VITE_BUILD_PWA: boolean
+  readonly VITE_OPEN_DEVTOOLS: boolean
 }
