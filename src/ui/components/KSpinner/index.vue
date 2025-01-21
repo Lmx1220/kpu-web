@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { cn } from '@/utils/classNames.ts'
+import { cn } from '@/utils'
+
 import { ref, watch } from 'vue'
 
 interface Props {
@@ -9,24 +10,18 @@ interface Props {
    * @en_US Minimum loading time
    */
   minLoadingTime?: number
-
   /**
    * @zh_CN loading状态开启
    */
   spinning?: boolean
-  /**
-   * @zh_CN 文字
-   */
-  text?: string
 }
 
 defineOptions({
-  name: 'VbenLoading',
+  name: 'KSpinner',
 })
 
 const props = withDefaults(defineProps<Props>(), {
   minLoadingTime: 50,
-  text: '',
 })
 // const startTime = ref(0);
 const showSpinner = ref(false)
@@ -68,7 +63,7 @@ function onTransitionEnd() {
   <div
     :class="
       cn(
-        'z-100  bg-stone-2/75 dark-bg-stone-8/75 pointer-events-none absolute left-0 top-0 flex size-full flex-col items-center justify-center transition-all duration-500',
+        'flex-center z-100 bg-overlay-content absolute left-0 top-0 size-full backdrop-blur-sm transition-all duration-500',
         {
           'invisible opacity-0': !showSpinner,
         },
@@ -77,62 +72,65 @@ function onTransitionEnd() {
     "
     @transitionend="onTransitionEnd"
   >
-    <span class="dot relative inline-block size-9 text-3xl">
-      <i
-        v-for="index in 4"
-        :key="index"
-        class="absolute block size-4 origin-[50%_50%] scale-75 rounded-full bg-primary opacity-30"
-      />
-    </span>
-
-    <div v-if="text" class="mt-4 text-xs">
-      {{ text }}
-    </div>
+    <div
+      :class="{ paused: !renderSpinner }"
+      class="loader relative size-12 after:absolute before:absolute after:left-0 after:top-0 before:left-0 before:top-[60px] after:h-full after:w-full before:h-[5px] before:w-12 after:rounded before:rounded-[50%] after:bg-primary before:bg-primary/50 after:content-[''] before:content-['']"
+    />
   </div>
 </template>
 
 <style scoped>
-.dot {
-  transform: rotate(45deg);
-  animation: rotate-ani 1.2s infinite linear;
-}
+.paused {
+  &::before {
+    animation-play-state: paused !important;
+  }
 
-.dot i {
-  animation: spin-move-ani 1s infinite linear alternate;
-}
-
-.dot i:nth-child(1) {
-  top: 0;
-  left: 0;
-}
-
-.dot i:nth-child(2) {
-  top: 0;
-  right: 0;
-  animation-delay: 0.4s;
-}
-
-.dot i:nth-child(3) {
-  right: 0;
-  bottom: 0;
-  animation-delay: 0.8s;
-}
-
-.dot i:nth-child(4) {
-  bottom: 0;
-  left: 0;
-  animation-delay: 1.2s;
-}
-
-@keyframes rotate-ani {
-  to {
-    transform: rotate(405deg);
+  &::after {
+    animation-play-state: paused !important;
   }
 }
 
-@keyframes spin-move-ani {
-  to {
-    opacity: 1;
+.loader {
+  &::before {
+    animation: loader-shadow-ani 0.5s linear infinite;
+  }
+
+  &::after {
+    animation: loader-jump-ani 0.5s linear infinite;
+  }
+}
+
+@keyframes loader-jump-ani {
+  15% {
+    border-bottom-right-radius: 3px;
+  }
+
+  25% {
+    transform: translateY(9px) rotate(22.5deg);
+  }
+
+  50% {
+    border-bottom-right-radius: 40px;
+    transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+  }
+
+  75% {
+    transform: translateY(9px) rotate(67.5deg);
+  }
+
+  100% {
+    transform: translateY(0) rotate(90deg);
+  }
+}
+
+@keyframes loader-shadow-ani {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+
+  50% {
+    transform: scale(1.2, 1);
   }
 }
 </style>

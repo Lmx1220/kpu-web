@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PaginationEllipsisProps } from 'radix-vue'
 
-import { cn } from '@/utils/classNames.ts'
+import { cn } from '@/utils'
 
 import { MoreHorizontal } from 'lucide-vue-next'
 import { PaginationEllipsis } from 'radix-vue'

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { useVbenModal } from '@/ui-kit'
+import { useKpuModal } from '@/ui/components/KModal/use-modal.ts'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
 
 const list = ref<number[]>([])
 
-const [Modal, modalApi] = useVbenModal({
+const [Modal, modalApi] = useKpuModal({
   // draggable: true,
   onCancel() {
     modalApi.close()

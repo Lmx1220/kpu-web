@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PaginationNextProps } from 'radix-vue'
-import { cn } from '@/utils/classNames.ts'
+import { cn } from '@/utils'
 
 import { ChevronRight } from 'lucide-vue-next'
 

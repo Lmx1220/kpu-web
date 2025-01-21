@@ -12,11 +12,12 @@ export let i18n: ReturnType<typeof createI18n>
 async function createI18nOptions(): Promise<I18nOptions> {
   const settingsStore = useSettingsStore()
   const userStore = useUserStore()
-
+  console.warn('i8n语音：')
   let locale = settingsStore.settings.app.defaultLang
   if (settingsStore.settings.userPreferences.enable && userStore.isLogin) {
     await userStore.getPreferences()
     locale = userStore.preferences.app.defaultLang
+    console.warn('远程加载用户语音：', locale)
   }
 
   if (!locale) {

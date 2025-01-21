@@ -1,6 +1,16 @@
-<script setup lang="ts">
-import type { ModalEmits, ModalProps } from '.'
-import { cn } from '@/utils/classNames.ts'
+<script lang="ts" setup>
+import type { ExtendedModalApi, ModalProps } from './modal'
+
+import { ELEMENT_ID_MAIN_CONTENT } from '@/enums/globals'
+
+import HelpTooltip from '@/ui/components/KTooltip/help-tooltip.vue'
+import { cn } from '@/utils'
+import { globalShareState } from '@/utils/global-state'
+import { Expand, Shrink } from 'lucide-vue-next'
+import { VisuallyHidden } from 'radix-vue'
+import { computed, nextTick, provide, ref, useId, watch } from 'vue'
+
+import KButton from '../KButton/index.vue'
 import {
   Dialog,
   DialogContent,
@@ -11,210 +21,310 @@ import {
 } from './dialog'
 import { useDraggable } from './use-draggable'
 
-defineOptions({
-  name: 'KModal',
+interface Props extends ModalProps {
+  modalApi?: ExtendedModalApi
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  appendToMain: false,
+  modalApi: undefined,
 })
 
-const props = withDefaults(
-  defineProps<ModalProps>(),
-  {
-    modelValue: false,
-    loading: false,
-    closable: true,
-    maximize: false,
-    maximizable: false,
-    draggable: false,
-    center: false,
-    border: true,
-    alignCenter: false,
-    overlay: true,
-    overlayBlur: false,
-    showConfirmButton: true,
-    showCancelButton: false,
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    confirmButtonDisabled: false,
-    confirmButtonLoading: false,
-    header: true,
-    footer: true,
-    closeOnClickOverlay: true,
-    closeOnPressEscape: true,
+const components = globalShareState.getComponents()
+
+const contentRef = ref()
+const wrapperRef = ref<HTMLElement>()
+const dialogRef = ref()
+const headerRef = ref()
+const footerRef = ref()
+
+// defineExpose({
+//   areaRef: wrapperRef,
+// })
+
+const id = useId()
+
+provide('DISMISSABLE_MODAL_ID', id)
+
+const { t } = useI18n()
+const { isMobile } = useIsMobile()
+const state = props.modalApi?.useStore?.()
+
+const {
+  appendToMain,
+  bordered,
+  cancelText,
+  centered,
+  class: modalClass,
+  closable,
+  closeOnClickModal,
+  closeOnPressEscape,
+  confirmDisabled,
+  confirmLoading,
+  confirmText,
+  contentClass,
+  description,
+  draggable,
+  footer: showFooter,
+  footerClass,
+  fullscreen,
+  fullscreenButton,
+  header,
+  headerClass,
+  loading: showLoading,
+  modal,
+  openAutoFocus,
+  overlayBlur,
+  showCancelButton,
+  showConfirmButton,
+  submitting,
+  title,
+  titleTooltip,
+  zIndex,
+} = usePriorityValues(props, state)
+
+const shouldFullscreen = computed(
+  // () => (fullscreen.value && header.value) || isMobile.value,
+  () => (fullscreen.value) || isMobile.value,
+)
+
+const shouldDraggable = computed(
+  () => draggable.value && !shouldFullscreen.value && header.value,
+)
+
+const { dragging, transform } = useDraggable(
+  dialogRef,
+  headerRef,
+  shouldDraggable,
+)
+
+watch(
+  () => state?.value?.isOpen,
+  async (v) => {
+    if (v) {
+      await nextTick()
+      if (!contentRef.value) {
+        return
+      }
+      const innerContentRef = contentRef.value.getContentRef()
+      dialogRef.value = innerContentRef.$el
+      // reopen modal reassign value
+      const { offsetX, offsetY } = transform
+      dialogRef.value.style.transform = `translate(${offsetX}px, ${offsetY}px)`
+    }
   },
 )
 
-const emits = defineEmits<ModalEmits>()
-
-const slots = defineSlots<{
-  header?: () => VNode
-  default?: () => VNode
-  footer?: () => VNode
-}>()
-
-const dialogContentRef = useTemplateRef('dialogContentRef')
-const dialogHeaderRef = ref()
-const dialogAreaRef = useTemplateRef('dialogAreaRef')
-const dialogRef = ref()
-
-defineExpose({
-  areaRef: dialogAreaRef,
-})
-
-const isOpen = ref(props.modelValue)
-const isMaximize = ref(props.maximize)
-
-watch(() => props.modelValue, (newValue) => {
-  isOpen.value = newValue
-})
-
-const { isDragging, transform } = useDraggable(
-  dialogRef,
-  dialogHeaderRef,
-  computed(() => props.draggable && props.header && !isMaximize.value),
+watch(
+  () => [showLoading.value, submitting.value],
+  ([l, s]) => {
+    if ((s || l) && wrapperRef.value) {
+      wrapperRef.value.scrollTo({
+        // behavior: 'smooth',
+        top: 0,
+      })
+    }
+  },
 )
-function setTransform() {
-  if (isMaximize.value) {
-    dialogRef.value.style.transform = 'none'
+
+function handleFullscreen() {
+  props.modalApi?.setState((prev) => {
+    // if (prev.fullscreen) {
+    //   resetPosition();
+    // }
+    return { ...prev, fullscreen: !fullscreen.value }
+  })
+}
+function interactOutside(e: Event) {
+  if (!closeOnClickModal.value || submitting.value) {
+    e.preventDefault()
+    e.stopPropagation()
   }
-  else {
-    dialogRef.value.style.transform = `translate(${transform.offsetX}px, ${transform.offsetY}px)`
+}
+function escapeKeyDown(e: KeyboardEvent) {
+  if (!closeOnPressEscape.value || submitting.value) {
+    e.preventDefault()
   }
 }
 
-watch(isOpen, (val) => {
-  if (val) {
-    nextTick(() => {
-      if (dialogContentRef.value) {
-        dialogRef.value = dialogContentRef.value.el?.$el
-        setTransform()
-      }
-    })
-  }
-})
-
-function updateOpen(value: boolean) {
-  isOpen.value = value
-  emits('update:modelValue', value)
-  if (value) {
-    emits('open')
-  }
-  else {
-    emits('close')
+function handerOpenAutoFocus(e: Event) {
+  if (!openAutoFocus.value) {
+    e?.preventDefault()
   }
 }
 
-function onConfirm() {
-  updateOpen(false)
-  emits('confirm')
-}
-
-function onCancel() {
-  updateOpen(false)
-  emits('cancel')
+// pointer-down-outside
+function pointerDownOutside(e: Event) {
+  const target = e.target as HTMLElement
+  const isDismissableModal = target?.dataset.dismissableModal
+  if (
+    !closeOnClickModal.value
+    || isDismissableModal !== id
+    || submitting.value
+  ) {
+    e.preventDefault()
+    e.stopPropagation()
+  }
 }
 
 function handleFocusOutside(e: Event) {
   e.preventDefault()
   e.stopPropagation()
 }
-
-function handleClickOutside(e: Event) {
-  if (!props.closeOnClickOverlay) {
-    e.preventDefault()
-  }
-}
-
-function handleEscapeKeyDown(e: KeyboardEvent) {
-  if (!props.closeOnPressEscape) {
-    e.preventDefault()
-  }
-}
-
-function handleMaximize(val: boolean) {
-  isMaximize.value = val
-  setTransform()
-}
-
-function handleAnimationEnd() {
-  if (isOpen.value) {
-    emits('opened')
-  }
-  else {
-    emits('closed')
-  }
-}
+const getAppendTo = computed(() => {
+  return appendToMain.value ? `#${ELEMENT_ID_MAIN_CONTENT}` : undefined
+})
 </script>
 
 <template>
-  <Dialog :modal="props.overlay" :open="isOpen" @update:open="updateOpen">
+  <Dialog
+    :modal="false"
+    :open="state?.isOpen"
+    @update:open="() => (!submitting ? modalApi?.close() : undefined)"
+  >
     <DialogContent
-      ref="dialogContentRef"
-      :closable="props.closable"
-      :overlay-blur="props.overlayBlur"
-      :maximize="isMaximize"
-      :maximizable="props.maximizable"
-      :class="cn('left-0 right-0 top-0 md:top-[5vh] flex flex-col p-0 gap-0 mx-auto h-[calc-size(auto,size)] min-h-full md:min-h-auto max-h-full md:max-h-[90vh] translate-x-0 translate-y-0', props.class, {
-        'md:top-0 size-full max-w-full max-h-full md:max-h-full': isMaximize,
-        'md:top-1/2 md:-translate-y-1/2!': props.alignCenter,
-        'duration-0': isDragging,
-      })"
+      ref="contentRef"
+      :append-to="getAppendTo"
+      :class="
+        cn(
+          'left-0 right-0 top-[10vh] mx-auto flex max-h-[80%] w-[520px] flex-col p-0 sm:rounded-lg',
+          modalClass,
+          {
+            'border-border border': bordered,
+            'shadow-3xl': !bordered,
+            'left-0 top-0 size-full max-h-full !translate-x-0 !translate-y-0':
+              shouldFullscreen,
+            'top-1/2 !-translate-y-1/2': centered && !shouldFullscreen,
+            'duration-300': !dragging,
+          },
+        )
+      "
+      :modal="modal"
+      :open="state?.isOpen"
+      :show-close="submitting ? false : closable"
+      :z-index="zIndex"
+      :overlay-blur="overlayBlur"
+      close-class="top-3"
       @close-auto-focus="handleFocusOutside"
+      @closed="() => modalApi?.onClosed()"
+      @escape-key-down="escapeKeyDown"
       @focus-outside="handleFocusOutside"
-      @pointer-down-outside="handleClickOutside"
-      @interact-outside="handleClickOutside"
-      @escape-key-down="handleEscapeKeyDown"
-      @toggle-maximize="handleMaximize"
-      @animation-end="handleAnimationEnd"
+      @interact-outside="interactOutside"
+      @open-auto-focus="handerOpenAutoFocus"
+      @opened="() => modalApi?.onOpened()"
+      @pointer-down-outside="pointerDownOutside"
     >
       <DialogHeader
-        v-if="header" ref="dialogHeaderRef" :class="cn('p-4', props.headerClass, {
-          'cursor-move select-none': props.draggable,
-          'border-b': props.border,
-        })"
+        ref="headerRef"
+        :class="
+          cn(
+            'px-5 py-4',
+            {
+              'border-b': bordered,
+              'hidden': !header,
+              'cursor-move select-none': shouldDraggable,
+            },
+            headerClass,
+          )
+        "
       >
         <slot name="header">
-          <DialogTitle class="flex-center gap-x-2 md:justify-start" :class="{ 'md:justify-center': props.center }">
-            <KIcon
-              v-if="props.icon" :name="{
-                info: 'i-ant-design:info-circle-filled',
-                success: 'i-ant-design:check-circle-filled',
-                warning: 'i-ant-design:exclamation-circle-filled',
-                error: 'i-ant-design:close-circle-filled',
-              }[props.icon]" :size="24" :class="{
-                'text-blue-600 dark:text-blue-400': props.icon === 'info',
-                'text-green-600 dark:text-green-400': props.icon === 'success',
-                'text-yellow-600 dark:text-yellow-400': props.icon === 'warning',
-                'text-red-600 dark:text-red-400': props.icon === 'error',
-              }"
-            />
-            {{ title }}
+          <DialogTitle v-if="title" class="text-left">
+            <slot name="title">
+              {{ title }}
+
+              <slot v-if="titleTooltip" name="titleTooltip">
+                <HelpTooltip trigger-class="pb-1">
+                  {{ titleTooltip }}
+                  <template #trigger>
+                    sss
+                  </template>
+                </HelpTooltip>
+              </slot>
+            </slot>
           </DialogTitle>
-          <DialogDescription v-if="!!description" :class="{ 'text-center': props.center }">
-            {{ description }}
+          <DialogDescription v-if="description">
+            <slot name="description">
+              {{ description }}
+            </slot>
           </DialogDescription>
+          <VisuallyHidden v-if="!title || !description">
+            <DialogTitle v-if="!title" />
+            <DialogDescription v-if="!description" />
+          </VisuallyHidden>
         </slot>
       </DialogHeader>
-      <KScrollArea v-if="!!slots.default" ref="dialogAreaRef" class="flex-1">
-        <div :class="cn('min-h-40 p-4', props.contentClass)">
-          <slot />
-        </div>
-        <div v-show="props.loading" class="absolute inset-0 z-1000 size-full flex-center bg-popover/75">
+      <div
+        ref="wrapperRef"
+        :class="
+          cn('relative min-h-40 flex-1 overflow-y-auto p-3', contentClass, {
+            'overflow-hidden': showLoading || submitting,
+          })
+        "
+      >
+        <!--        <KLoading -->
+        <!--          v-if="showLoading || submitting" -->
+        <!--          class="size-full h-auto min-h-full" -->
+        <!--          spinning -->
+        <!--        /> -->
+        <div
+          v-if="showLoading || submitting"
+          class="absolute inset-0 z-1000 size-full flex-center bg-popover/75"
+        >
           <KIcon name="i-line-md:loading-twotone-loop" :size="36" />
         </div>
-      </KScrollArea>
-      <DialogFooter
-        v-if="footer" :class="cn('p-2 gap-y-2', props.footerClass, {
-          'md:justify-center': props.center,
-          'border-t': props.border,
-        })"
+        <slot />
+      </div>
+
+      <KIconButton
+        v-if="fullscreenButton"
+        class="absolute right-10 top-3 size-6 flex-center rounded-sm px-1 text-lg text-foreground/80 opacity-70 transition-opacity hidden disabled:pointer-events-none sm:block hover:bg-accent hover:text-accent-foreground hover:opacity-100 focus:outline-none"
+        @click="handleFullscreen"
       >
+        <Shrink v-if="fullscreen" class="size-3.5" />
+        <Expand v-else class="size-3.5" />
+      </KIconButton>
+
+      <DialogFooter
+        v-if="showFooter"
+        ref="footerRef"
+        :class="
+          cn(
+            'flex-row items-center justify-end p-2',
+            {
+              'border-t': bordered,
+            },
+            footerClass,
+          )
+        "
+      >
+        <slot name="prepend-footer" />
         <slot name="footer">
-          <KButton v-if="showCancelButton" variant="outline" @click="onCancel">
-            {{ cancelButtonText }}
-          </KButton>
-          <KButton v-if="showConfirmButton" @click="onConfirm">
-            {{ confirmButtonText }}
-          </KButton>
+          <component
+            :is="components.DefaultButton || KButton"
+            v-if="showCancelButton"
+            variant="ghost"
+            :disabled="submitting"
+            @click="() => modalApi?.onCancel()"
+          >
+            <slot name="cancelText">
+              {{ cancelText || t('cancel') }}
+            </slot>
+          </component>
+
+          <component
+            :is="components.PrimaryButton || KButton"
+            v-if="showConfirmButton"
+            :disabled="confirmDisabled"
+            :loading="confirmLoading || submitting"
+            @click="() => modalApi?.onConfirm()"
+          >
+            <slot name="confirmText">
+              {{ confirmText || t('confirm') }}
+            </slot>
+          </component>
         </slot>
+        <slot name="append-footer" />
       </DialogFooter>
     </DialogContent>
   </Dialog>

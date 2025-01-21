@@ -6,8 +6,5 @@ const id = inject('DISMISSABLE_MODAL_ID')
 </script>
 
 <template>
-  <div
-    :data-dismissable-modal="id"
-    class="bg-overlay fixed inset-0 z-[2000]"
-  />
+  <div :data-dismissable-modal="id" class="bg-overlay z-popup inset-0 bg-black/50" />
 </template>

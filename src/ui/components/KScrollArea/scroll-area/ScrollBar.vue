@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@/utils/classNames.ts'
+import { cn } from '@/utils'
 import { ScrollAreaScrollbar, type ScrollAreaScrollbarProps, ScrollAreaThumb } from 'radix-vue'
 import { computed, type HTMLAttributes } from 'vue'
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@/utils/classNames.ts'
+import { cn } from '@/utils'
 import { useElementSize, useScroll } from '@vueuse/core'
 import { ScrollArea, ScrollBar } from './scroll-area'
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useSettingsStore from '@/store/modules/settings'
 import useUserStore from '@/store/modules/user'
+import { useKpuModal } from '@/ui/components/KModal/use-modal.ts'
 import eventBus from '@/utils/eventBus'
 import Profile from './profile.vue'
 
@@ -10,7 +11,9 @@ const settingsStore = useSettingsStore()
 const userStore = useUserStore()
 const { generateI18nTitle } = useMenu()
 const { t } = useI18n()
-const isProfileShow = ref(false)
+// const isProfileShow = ref(false)
+const [KModal, modalApi] = useKpuModal({
+})
 </script>
 
 <template>
@@ -18,7 +21,7 @@ const isProfileShow = ref(false)
     align="end" :items="[
       [
         { label: generateI18nTitle(settingsStore.settings.home.title), icon: 'i-mdi:home', handle: () => router.push({ path: settingsStore.settings.home.fullPath }), hide: !settingsStore.settings.home.enable },
-        { label: t('app.preferences'), icon: 'i-mdi:account', handle: () => isProfileShow = true },
+        { label: t('app.preferences'), icon: 'i-mdi:account', handle: () => modalApi.open() },
       ],
       [
         { label: t('app.hotkeys.title'), icon: 'i-mdi:keyboard', handle: () => eventBus.emit('global-hotkeys-intro-toggle'), hide: settingsStore.mode !== 'pc' },
@@ -56,7 +59,7 @@ const isProfileShow = ref(false)
       </template>
     </KButton>
   </KDropdown>
-  <KModal v-model="isProfileShow" align-center :header="false" :footer="false" :close-on-click-overlay="false" :close-on-press-escape="false" class="h-500px min-w-600px overflow-hidden" content-class="min-h-full p-0 flex">
+  <KModal align-center :closable="false" :fullscreen-button="false" :header="false" :footer="false" :close-on-click-overlay="false" :close-on-press-escape="false" class="h-500px min-w-600px overflow-hidden" content-class="min-h-full p-0 flex">
     <Profile />
   </KModal>
 </template>

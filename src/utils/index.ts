@@ -2,6 +2,7 @@ import { isArray, isObject } from '@/utils/is'
 import { intersectionWith, isEqual, mergeWith, unionWith } from 'lodash-es'
 import path from 'path-browserify'
 
+export * from './cn'
 export function resolveRoutePath(basePath?: string, routePath?: string) {
   return basePath ? path.resolve(basePath, routePath ?? '') : routePath ?? ''
 }

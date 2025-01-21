@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { cn } from '@/utils/classNames.ts'
+import { cn } from '@/utils'
 import { ToastRoot, type ToastRootEmits, useForwardPropsEmits } from 'radix-vue'
 import { computed } from 'vue'
 import { type ToastProps, toastVariants } from '.'

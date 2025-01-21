@@ -1,24 +1,25 @@
 <script setup lang="ts">
 import useSettingsStore from '@/store/modules/settings'
+import { useKpuModal } from '@/ui/components/KModal/use-modal.ts'
 import eventBus from '@/utils/eventBus'
 
 defineOptions({
   name: 'HotkeysIntro',
 })
 const { t } = useI18n()
-const isShow = ref(false)
-
+const [KModal, modalApi] = useKpuModal({
+})
 const settingsStore = useSettingsStore()
 
 onMounted(() => {
   eventBus.on('global-hotkeys-intro-toggle', () => {
-    isShow.value = !isShow.value
+    modalApi.open()
   })
 })
 </script>
 
 <template>
-  <KModal v-model="isShow" :title="t('app.hotkeys.title')" :footer="false">
+  <KModal :title="t('app.hotkeys.title')" :footer="false">
     <div class="px-4">
       <div class="grid gap-2 sm-grid-cols-2">
         <div>

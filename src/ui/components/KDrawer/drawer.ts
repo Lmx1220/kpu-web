@@ -1,23 +1,32 @@
+import type { ClassType } from '#/global'
+
 import type { Component, Ref } from 'vue'
+import type { DrawerApi } from './drawer-api'
 
-import type { ModalApi } from './modal-api'
+export type DrawerPlacement = 'bottom' | 'left' | 'right' | 'top'
 
-export interface ModalProps {
+export type CloseIconPlacement = 'left' | 'right'
+
+export interface DrawerProps {
+  /**
+   * 是否挂载到内容区域
+   * @default false
+   */
+  appendToMain?: boolean
   /**
    * 取消按钮文字
    */
   cancelText?: string
+  class?: ClassType
   /**
-   * 是否居中
-   * @default false
-   */
-  centered?: boolean
-  class?: string
-  /**
-   * 是否显示右上角的关闭按钮
+   * 是否显示关闭按钮
    * @default true
    */
   closable?: boolean
+  /**
+   * 关闭按钮的位置
+   */
+  closeIconPlacement?: CloseIconPlacement
   /**
    * 点击弹窗遮罩是否关闭弹窗
    * @default true
@@ -43,37 +52,29 @@ export interface ModalProps {
    */
   description?: string
   /**
-   * 是否可拖拽
-   * @default false
-   */
-  draggable?: boolean
-  /**
    * 是否显示底部
    * @default true
    */
   footer?: boolean
-  footerClass?: string
   /**
-   * 是否全屏
-   * @default false
+   * 弹窗底部样式
    */
-  fullscreen?: boolean
-  /**
-   * 是否显示全屏按钮
-   * @default true
-   */
-  fullscreenButton?: boolean
+  footerClass?: ClassType
   /**
    * 是否显示顶栏
    * @default true
    */
   header?: boolean
-  headerClass?: string
+  /**
+   * 弹窗头部样式
+   */
+  headerClass?: ClassType
   /**
    * 弹窗是否显示
    * @default false
    */
   loading?: boolean
+
   /**
    * 是否显示遮罩
    * @default true
@@ -83,6 +84,16 @@ export interface ModalProps {
    * 是否自动聚焦
    */
   openAutoFocus?: boolean
+  /**
+   * 弹窗遮罩模糊效果
+   */
+  overlayBlur?: number
+
+  /**
+   * 抽屉位置
+   * @default right
+   */
+  placement?: DrawerPlacement
   /**
    * 是否显示取消按钮
    * @default true
@@ -101,9 +112,13 @@ export interface ModalProps {
    * 弹窗标题提示
    */
   titleTooltip?: string
+  /**
+   * 抽屉层级
+   */
+  zIndex?: number
 }
 
-export interface ModalState extends ModalProps {
+export interface DrawerState extends DrawerProps {
   /** 弹窗打开状态 */
   isOpen?: boolean
   /**
@@ -112,17 +127,21 @@ export interface ModalState extends ModalProps {
   sharedData?: Record<string, any>
 }
 
-export type ExtendedModalApi = {
-  useStore: <T = NoInfer<ModalState>>(
-    selector?: (state: NoInfer<ModalState>) => T,
+export type ExtendedDrawerApi = DrawerApi & {
+  useStore: <T = NoInfer<DrawerState>>(
+    selector?: (state: NoInfer<DrawerState>) => T,
   ) => Readonly<Ref<T>>
-} & ModalApi
+}
 
-export interface ModalApiOptions extends ModalState {
+export interface DrawerApiOptions extends DrawerState {
   /**
-   * 独立的弹窗组件
+   * 独立的抽屉组件
    */
   connectedComponent?: Component
+  /**
+   * 在关闭时销毁抽屉。仅在使用 connectedComponent 时有效
+   */
+  destroyOnClose?: boolean
   /**
    * 关闭前的回调，返回 false 可以阻止关闭
    * @returns
@@ -133,6 +152,11 @@ export interface ModalApiOptions extends ModalState {
    */
   onCancel?: () => void
   /**
+   * 弹窗关闭动画结束的回调
+   * @returns
+   */
+  onClosed?: () => void
+  /**
    * 点击确定按钮的回调
    */
   onConfirm?: () => void
@@ -142,4 +166,9 @@ export interface ModalApiOptions extends ModalState {
    * @returns
    */
   onOpenChange?: (isOpen: boolean) => void
+  /**
+   * 弹窗打开动画结束的回调
+   * @returns
+   */
+  onOpened?: () => void
 }

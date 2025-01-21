@@ -17,11 +17,8 @@
   },
   "search": {
     "text": "Search",
-    "type": {
-      "menu": "Search menus",
-      "tab": "Search tabs"
-    },
     "input": "Support title, URL fuzzy query",
+    "welcome": "Enter the navigation you want to search",
     "empty": "Not found",
     "up_down": "Choice",
     "enter": "Enter",

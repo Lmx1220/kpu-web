@@ -153,7 +153,7 @@ function onDel(row: any) {
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
     <KPageHeader title="标准模块">
-      <template #content>
+      <template #description>
         <p>标准模块即包含 CRUD (增查改删) 操作的基础模块，开发者可通过 <ElTag>pnpm run new</ElTag> 命令快速生成一个标准模块，并在此基础上完善业务模块所需要的功能。</p>
         <p>
           同时，标准模块还提供了两个优秀的特性：

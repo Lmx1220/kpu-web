@@ -6,8 +6,5 @@ const id = inject('DISMISSABLE_DRAWER_ID')
 </script>
 
 <template>
-  <div
-    :data-dismissable-drawer="id"
-    class="bg-overlay fixed inset-0 z-[1000]"
-  />
+  <div :data-dismissable-drawer="id" class="z-popup bg-overlay inset-0" />
 </template>

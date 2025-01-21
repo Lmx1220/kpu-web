@@ -1,13 +1,29 @@
 import type { ExtendedModalApi, ModalApiOptions, ModalProps } from './modal'
 
 import { useStore } from '@/utils/shared/store'
-import { defineComponent, h, inject, nextTick, provide, reactive } from 'vue'
+
+import {
+  defineComponent,
+  h,
+  inject,
+  nextTick,
+  provide,
+  reactive,
+  ref,
+} from 'vue'
+
+import KpuModal from './index.vue'
 import { ModalApi } from './modal-api'
-import VbenModal from './modal.vue'
 
-const USER_MODAL_INJECT_KEY = Symbol('VBEN_MODAL_INJECT')
+const USER_MODAL_INJECT_KEY = Symbol('KPU_MODAL_INJECT')
 
-export function useVbenModal<TParentModalProps extends ModalProps = ModalProps>(
+const DEFAULT_MODAL_PROPS: Partial<ModalProps> = {}
+
+export function setDefaultModalProps(props: Partial<ModalProps>) {
+  Object.assign(DEFAULT_MODAL_PROPS, props)
+}
+
+export function useKpuModal<TParentModalProps extends ModalProps = ModalProps>(
   options: ModalApiOptions = {},
 ) {
   // Modal一般会抽离出来，所以如果有传入 connectedComponent，则表示为外部调用，与内部组件进行连接
@@ -16,6 +32,7 @@ export function useVbenModal<TParentModalProps extends ModalProps = ModalProps>(
   const { connectedComponent } = options
   if (connectedComponent) {
     const extendedApi = reactive({})
+    const isModalReady = ref(true)
     const Modal = defineComponent(
       (props: TParentModalProps, { attrs, slots }) => {
         provide(USER_MODAL_INJECT_KEY, {
@@ -25,6 +42,11 @@ export function useVbenModal<TParentModalProps extends ModalProps = ModalProps>(
             Object.setPrototypeOf(extendedApi, api)
           },
           options,
+          async reCreateModal() {
+            isModalReady.value = false
+            await nextTick()
+            isModalReady.value = true
+          },
         })
         checkProps(extendedApi as ExtendedModalApi, {
           ...props,
@@ -33,7 +55,7 @@ export function useVbenModal<TParentModalProps extends ModalProps = ModalProps>(
         })
         return () =>
           h(
-            connectedComponent,
+            isModalReady.value ? connectedComponent : 'div',
             {
               ...props,
               ...attrs,
@@ -43,7 +65,7 @@ export function useVbenModal<TParentModalProps extends ModalProps = ModalProps>(
       },
       {
         inheritAttrs: false,
-        name: 'VbenParentModal',
+        name: 'KpuParentModal',
       },
     )
     return [Modal, extendedApi as ExtendedModalApi] as const
@@ -52,6 +74,7 @@ export function useVbenModal<TParentModalProps extends ModalProps = ModalProps>(
   const injectData = inject<any>(USER_MODAL_INJECT_KEY, {})
 
   const mergedOptions = {
+    ...DEFAULT_MODAL_PROPS,
     ...injectData.options,
     ...options,
   } as ModalApiOptions
@@ -59,6 +82,15 @@ export function useVbenModal<TParentModalProps extends ModalProps = ModalProps>(
   mergedOptions.onOpenChange = (isOpen: boolean) => {
     options.onOpenChange?.(isOpen)
     injectData.options?.onOpenChange?.(isOpen)
+  }
+
+  const onClosed = mergedOptions.onClosed
+
+  mergedOptions.onClosed = () => {
+    onClosed?.()
+    if (mergedOptions.destroyOnClose) {
+      injectData.reCreateModal?.()
+    }
   }
   const api = new ModalApi(mergedOptions)
 
@@ -72,7 +104,7 @@ export function useVbenModal<TParentModalProps extends ModalProps = ModalProps>(
     (props: ModalProps, { attrs, slots }) => {
       return () =>
         h(
-          VbenModal,
+          KpuModal,
           {
             ...props,
             ...attrs,
@@ -83,7 +115,7 @@ export function useVbenModal<TParentModalProps extends ModalProps = ModalProps>(
     },
     {
       inheritAttrs: false,
-      name: 'VbenModal',
+      name: 'KpuModal',
     },
   )
   injectData.extendApi?.(extendedApi)
@@ -108,7 +140,7 @@ async function checkProps(api: ExtendedModalApi, attrs: Record<string, any>) {
     if (stateKeys.has(attr) && !['class'].includes(attr)) {
       // connectedComponent存在时，不要传入Modal的props，会造成复杂度提升，如果你需要修改Modal的props，请使用 useModal 或者api
       console.warn(
-        `[Vben Modal]: When 'connectedComponent' exists, do not set props or slots '${attr}', which will increase complexity. If you need to modify the props of Modal, please use useVbenModal or api.`,
+        `[Kpu Modal]: When 'connectedComponent' exists, do not set props or slots '${attr}', which will increase complexity. If you need to modify the props of Modal, please use useKpuModal or api.`,
       )
     }
   }

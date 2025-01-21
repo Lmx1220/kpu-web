@@ -1,10 +1,4 @@
-import { type ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
 import { isArray, isObject, isString } from './is.ts'
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
 
 function classNames(...args: any[]): string {
   const classes = []

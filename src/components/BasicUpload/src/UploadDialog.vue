@@ -5,7 +5,6 @@ import type { FileItem } from '@/components/BasicUpload/src/types'
 
 import type { UploadRawFile } from 'element-plus'
 import { UploadResultStatus } from '@/components/BasicUpload/src/types'
-import { useVbenModal } from '@/ui-kit'
 import { buildUUID } from '@/utils/uuid'
 import { ElMessage } from 'element-plus'
 import { isFunction } from 'lodash-es'
@@ -37,7 +36,7 @@ const {
   maxNumber,
   maxSize,
 } = toRefs(props)
-const [BaseDialog, modalApi] = useVbenModal({
+const [BaseDialog, modalApi] = useKpuModal({
   // draggable: true,
   onCancel() {
     modalApi.close()

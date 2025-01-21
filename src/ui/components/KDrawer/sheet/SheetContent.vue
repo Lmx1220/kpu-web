@@ -1,63 +1,109 @@
 <script setup lang="ts">
-import { cn } from '@/utils/classNames.ts'
-import { X } from 'lucide-vue-next'
-import {
-  DialogClose,
-  DialogContent,
-  type DialogContentEmits,
-  type DialogContentProps,
-  DialogOverlay,
-  DialogPortal,
-  useForwardPropsEmits,
-} from 'radix-vue'
-import { computed, type HTMLAttributes } from 'vue'
-import { type SheetVariants, sheetVariants } from '.'
+import type { DialogContentEmits, DialogContentProps } from 'radix-vue'
+
+import type { SheetVariants } from './sheet'
+
+import { cn } from '@/utils'
+
+import { DialogContent, DialogPortal, useForwardPropsEmits } from 'radix-vue'
+
+import { computed, ref } from 'vue'
+
+import { sheetVariants } from './sheet'
+import SheetOverlay from './SheetOverlay.vue'
 
 interface SheetContentProps extends DialogContentProps {
-  class?: HTMLAttributes['class']
+  appendTo?: HTMLElement | string
+  class?: any
+  modal?: boolean
+  open?: boolean
+  overlayBlur?: number
   side?: SheetVariants['side']
-  closable?: boolean
-  overlayBlur?: boolean
+  zIndex?: number
 }
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps<SheetContentProps>()
+const props = withDefaults(defineProps<SheetContentProps>(), {
+  appendTo: 'body',
+  zIndex: 2000,
+})
 
-const emits = defineEmits<DialogContentEmits & {
-  animationEnd: []
-}>()
+const emits = defineEmits<
+  DialogContentEmits & { close: [], closed: [], opened: [] }
+>()
 
 const delegatedProps = computed(() => {
-  const { class: _, side, ...delegated } = props
+  const {
+    class: _,
+    modal: _modal,
+    open: _open,
+    side: _side,
+    ...delegated
+  } = props
 
   return delegated
 })
 
+function isAppendToBody() {
+  return (
+    props.appendTo === 'body'
+    || props.appendTo === document.body
+    || !props.appendTo
+  )
+}
+
+const position = computed(() => {
+  return isAppendToBody() ? 'fixed' : 'absolute'
+})
+
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const contentRef = ref<InstanceType<typeof DialogContent> | null>(null)
+function onAnimationEnd(event: AnimationEvent) {
+  // 只有在 contentRef 的动画结束时才触发 opened/closed 事件
+  if (event.target === contentRef.value?.$el) {
+    if (props.open) {
+      emits('opened')
+    }
+    else {
+      emits('closed')
+    }
+  }
+}
 </script>
 
 <template>
-  <DialogPortal>
-    <DialogOverlay
-      :class="cn('fixed inset-0 z-2000 data-[state=closed]:animate-out data-[state=open]:animate-in bg-black/50 data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0', {
-        'backdrop-blur-sm': props.overlayBlur,
-      })"
-    />
+  <DialogPortal :to="appendTo">
+    <Transition name="fade">
+      <SheetOverlay
+        v-if="open && modal"
+        :style="{
+          ...(zIndex ? { zIndex } : {}),
+          position,
+          backdropFilter:
+            overlayBlur && overlayBlur > 0 ? `blur(${overlayBlur}px)` : 'none',
+        }"
+      />
+    </Transition>
     <DialogContent
-      :class="cn(sheetVariants({ side }), props.class)"
+      ref="contentRef"
+      :class="cn('z-popup', sheetVariants({ side }), props.class)"
+      :style="{
+        ...(zIndex ? { zIndex } : {}),
+        position,
+      }"
       v-bind="{ ...forwarded, ...$attrs }"
-      @animationend="emits('animationEnd')"
+      @animationend="onAnimationEnd"
     >
       <slot />
-      <DialogClose
-        v-if="closable"
-        class="absolute right-4 top-4 rounded-sm bg-transparent opacity-70 ring-offset-background transition-opacity disabled:pointer-events-none data-[state=open]:bg-secondary hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
+
+      <!-- <DialogClose
+        class="data-[state=open]:bg-secondary absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none"
       >
-        <X class="h-4 w-4 text-muted-foreground" />
-      </DialogClose>
+        <Cross2Icon class="h-5 w-" />
+      </DialogClose> -->
     </DialogContent>
   </DialogPortal>
 </template>

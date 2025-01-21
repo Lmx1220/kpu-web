@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { IntervalHandle } from '@/hooks/utils.ts'
 import useSettingsStore from '@/store/modules/settings.ts'
-import { useVbenModal } from '@/ui-kit'
+import { useKpuModal } from '@/ui/components/KModal/use-modal.ts'
 
 interface Props {
   // 轮训时间，分钟
@@ -22,7 +22,7 @@ const currentVersionTag = ref('')
 const lastVersionTag = ref('')
 const timer = ref<IntervalHandle>()
 
-const [UpdateNoticeModal, modalApi] = useVbenModal({
+const [UpdateNoticeModal, modalApi] = useKpuModal({
   closable: false,
   closeOnPressEscape: false,
   closeOnClickModal: false,

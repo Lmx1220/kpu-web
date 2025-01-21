@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PaginationFirstProps } from 'radix-vue'
 
-import { cn } from '@/utils/classNames.ts'
+import { cn } from '@/utils'
 
 import { ChevronsLeft } from 'lucide-vue-next'
 import { PaginationFirst } from 'radix-vue'

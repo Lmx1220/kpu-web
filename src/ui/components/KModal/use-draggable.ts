@@ -1,36 +1,43 @@
 /**
- * fork: https://github.com/element-plus/element-plus/blob/dev/packages/hooks/use-draggable/index.ts
- * reference: https://github.com/vbenjs/vue-vben-admin/blob/main/packages/%40core/ui-kit/popup-ui/src/modal/use-modal-draggable.ts
+ * @copy https://github.com/element-plus/element-plus/blob/dev/packages/hooks/use-draggable/index.ts
+ * 调整部分细节
  */
 
 import type { ComputedRef, Ref } from 'vue'
 import { unrefElement } from '@vueuse/core'
 
+import { onBeforeUnmount, onMounted, reactive, ref, watchEffect } from 'vue'
+
 export function useDraggable(
   targetRef: Ref<HTMLElement | undefined>,
   dragRef: Ref<HTMLElement | undefined>,
   draggable: ComputedRef<boolean>,
-  overflow?: ComputedRef<boolean>,
 ) {
-  const isDragging = ref(false)
   const transform = reactive({
     offsetX: 0,
     offsetY: 0,
   })
 
+  const dragging = ref(false)
+
   const onMousedown = (e: MouseEvent) => {
     const downX = e.clientX
     const downY = e.clientY
-    const { offsetX, offsetY } = transform
 
-    const targetRect = targetRef.value!.getBoundingClientRect()
+    if (!targetRef.value) {
+      return
+    }
+
+    const targetRect = targetRef.value.getBoundingClientRect()
+
+    const { offsetX, offsetY } = transform
     const targetLeft = targetRect.left
     const targetTop = targetRect.top
     const targetWidth = targetRect.width
     const targetHeight = targetRect.height
-
-    const clientWidth = document.documentElement.clientWidth
-    const clientHeight = document.documentElement.clientHeight
+    const docElement = document.documentElement
+    const clientWidth = docElement.clientWidth
+    const clientHeight = docElement.clientHeight
 
     const minLeft = -targetLeft + offsetX
     const minTop = -targetTop + offsetY
@@ -41,22 +48,20 @@ export function useDraggable(
       let moveX = offsetX + e.clientX - downX
       let moveY = offsetY + e.clientY - downY
 
-      if (!overflow?.value) {
-        moveX = Math.min(Math.max(moveX, minLeft), maxLeft)
-        moveY = Math.min(Math.max(moveY, minTop), maxTop)
-      }
+      moveX = Math.min(Math.max(moveX, minLeft), maxLeft)
+      moveY = Math.min(Math.max(moveY, minTop), maxTop)
 
       transform.offsetX = moveX
       transform.offsetY = moveY
 
       if (targetRef.value) {
-        isDragging.value = true
         targetRef.value.style.transform = `translate(${moveX}px, ${moveY}px)`
+        dragging.value = true
       }
     }
 
     const onMouseup = () => {
-      isDragging.value = false
+      dragging.value = false
       document.removeEventListener('mousemove', onMousemove)
       document.removeEventListener('mouseup', onMouseup)
     }
@@ -66,24 +71,26 @@ export function useDraggable(
   }
 
   const onDraggable = () => {
-    const dragRefElement = unrefElement(dragRef)
-    if (dragRefElement && targetRef.value) {
-      dragRefElement.addEventListener('mousedown', onMousedown)
+    const dragDom = unrefElement(dragRef)
+    if (dragDom && targetRef.value) {
+      dragDom.addEventListener('mousedown', onMousedown)
     }
   }
 
   const offDraggable = () => {
-    const dragRefElement = unrefElement(dragRef)
-    if (dragRefElement && targetRef.value) {
-      dragRefElement.removeEventListener('mousedown', onMousedown)
+    const dragDom = unrefElement(dragRef)
+    if (dragDom && targetRef.value) {
+      dragDom.removeEventListener('mousedown', onMousedown)
     }
   }
 
   const resetPosition = () => {
     transform.offsetX = 0
     transform.offsetY = 0
-    if (targetRef.value) {
-      targetRef.value.style.transform = 'none'
+
+    const target = unrefElement(targetRef)
+    if (target) {
+      target.style.transform = 'none'
     }
   }
 
@@ -103,8 +110,8 @@ export function useDraggable(
   })
 
   return {
-    isDragging,
-    transform,
+    dragging,
     resetPosition,
+    transform,
   }
 }

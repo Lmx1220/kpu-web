@@ -1,79 +1,123 @@
 <script setup lang="ts">
-import { cn } from '@/utils/classNames.ts'
-import { Maximize, Minimize, X } from 'lucide-vue-next'
+import type { ClassType } from '#/global'
+
+import type { DialogContentEmits, DialogContentProps } from 'radix-vue'
+
+import { cn } from '@/utils'
+
+import { X } from 'lucide-vue-next'
 import {
   DialogClose,
   DialogContent,
-  type DialogContentEmits,
-  type DialogContentProps,
-  DialogOverlay,
   DialogPortal,
   useForwardPropsEmits,
 } from 'radix-vue'
-import { computed, type HTMLAttributes } from 'vue'
 
-const props = defineProps<DialogContentProps & {
-  class?: HTMLAttributes['class']
-  maximize?: boolean
-  maximizable?: boolean
-  closable?: boolean
-  overlayBlur?: boolean
-}>()
-const emits = defineEmits<DialogContentEmits & {
-  toggleMaximize: [val: boolean]
-  animationEnd: []
-}>()
+import { computed, ref } from 'vue'
+import DialogOverlay from './DialogOverlay.vue'
+
+const props = withDefaults(
+  defineProps<
+    DialogContentProps & {
+      appendTo?: HTMLElement | string
+      class?: ClassType
+      closeClass?: ClassType
+      modal?: boolean
+      open?: boolean
+      overlayBlur?: number
+      showClose?: boolean
+      zIndex?: number
+    }
+  >(),
+  { appendTo: 'body', showClose: true, zIndex: 2000 },
+)
+const emits = defineEmits<
+  DialogContentEmits & { close: [], closed: [], opened: [] }
+>()
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+  const {
+    class: _,
+    modal: _modal,
+    open: _open,
+    showClose: __,
+    ...delegated
+  } = props
 
   return delegated
 })
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
-
-function handleMaximize() {
-  emits('toggleMaximize', !props.maximize)
+function isAppendToBody() {
+  return (
+    props.appendTo === 'body'
+    || props.appendTo === document.body
+    || !props.appendTo
+  )
 }
 
-const dialogContentRef = useTemplateRef('dialogContentRef')
+const position = computed(() => {
+  return isAppendToBody() ? 'fixed' : 'absolute'
+})
 
+const forwarded = useForwardPropsEmits(delegatedProps, emits)
+
+const contentRef = ref<InstanceType<typeof DialogContent> | null>(null)
+function onAnimationEnd(event: AnimationEvent) {
+  // 只有在 contentRef 的动画结束时才触发 opened/closed 事件
+  if (event.target === contentRef.value?.$el) {
+    if (props.open) {
+      emits('opened')
+    }
+    else {
+      emits('closed')
+    }
+  }
+}
 defineExpose({
-  el: dialogContentRef,
+  getContentRef: () => contentRef.value,
 })
 </script>
 
 <template>
-  <DialogPortal>
-    <DialogOverlay
-      :class="cn('fixed inset-0 z-2000 data-[state=closed]:animate-out data-[state=open]:animate-in bg-black/50 data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0', {
-        'backdrop-blur-sm': props.overlayBlur,
-      })"
-    />
+  <DialogPortal :to="appendTo">
+    <Transition name="fade">
+      <DialogOverlay
+        v-if="open && modal"
+        :style="{
+          ...(zIndex ? { zIndex } : {}),
+          position,
+          backdropFilter:
+            overlayBlur && overlayBlur > 0 ? `blur(${overlayBlur}px)` : 'none',
+        }"
+        @click="() => emits('close')"
+      />
+    </Transition>
     <DialogContent
-      ref="dialogContentRef"
+      ref="contentRef"
+      :style="{ ...(zIndex ? { zIndex } : {}), position }"
       v-bind="forwarded"
       :class="
         cn(
-          'fixed left-1/2 top-1/2 z-2000 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-0 data-[state=closed]:slide-out-to-top-1/5 data-[state=open]:slide-in-from-left-0 data-[state=open]:slide-in-from-top-1/5 sm:rounded-lg',
+          'z-popup  bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-top-[48%] w-full p-6 shadow-lg outline-none sm:rounded-xl',
           props.class,
-        )"
-      @animationend="emits('animationEnd')"
+        )
+      "
+      @animationend="onAnimationEnd"
     >
       <slot />
-      <div class="absolute inset-e-4 top-4 flex-center gap-2">
-        <button v-if="props.maximizable" class="rounded-sm bg-transparent opacity-70 ring-offset-background transition-opacity hidden disabled:pointer-events-none sm:inline-block data-[state=open]:bg-accent data-[state=open]:text-muted-foreground hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring" @click="handleMaximize">
-          <Maximize v-if="!props.maximize" class="h-4 w-4" />
-          <Minimize v-else class="h-4 w-4" />
-        </button>
-        <DialogClose
-          v-if="closable"
-          class="rounded-sm bg-transparent opacity-70 ring-offset-background transition-opacity disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
-        >
-          <X class="h-4 w-4" />
-          <span class="sr-only">Close</span>
-        </DialogClose>
-      </div>
+
+      <DialogClose
+        v-if="showClose"
+        :class="
+          cn(
+            'bg-transparent data-[state=open]:bg-accent data-[state=open]:text-muted-foreground hover:bg-accent hover:text-accent-foreground text-foreground/80 flex-center absolute right-3 top-3 h-6 w-6 rounded-sm px-1 text-lg opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none',
+            props.closeClass,
+          )
+        "
+        @click="() => emits('close')"
+      >
+        <X class="h-4 w-4" />
+      </DialogClose>
     </DialogContent>
   </DialogPortal>
 </template>

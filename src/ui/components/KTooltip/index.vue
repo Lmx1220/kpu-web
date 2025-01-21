@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TooltipContentProps, TooltipProviderProps } from 'radix-vue'
+import type { StyleValue } from 'vue'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip'
 
 defineOptions({
@@ -12,6 +13,8 @@ withDefaults(
     delay?: TooltipProviderProps['delayDuration']
     side?: TooltipContentProps['side']
     align?: TooltipContentProps['align']
+    contentClass?: Array<object | string> | object | string
+    contentStyle?: StyleValue
     disabled?: boolean
   }>(),
   {
@@ -24,10 +27,10 @@ withDefaults(
 <template>
   <TooltipProvider :delay-duration="delay" :disabled>
     <Tooltip>
-      <TooltipTrigger as-child>
+      <TooltipTrigger as-child tabindex="-1">
         <slot />
       </TooltipTrigger>
-      <TooltipContent :side :align class="z-10000 text-xs">
+      <TooltipContent :side :align :class="contentClass" :style="contentStyle" class="z-10000 text-xs">
         <slot name="content">
           <p>{{ text }}</p>
         </slot>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 import { downloadIds } from '@/api/modules/system/upload'
-import { useVbenModal } from '@/ui-kit'
 import { isArray } from '@/utils/is'
 import { downloadFile } from '@/utils/kpu/common.ts'
 
@@ -19,7 +18,7 @@ const emits = defineEmits<{
 }>()
 const { t } = useI18n()
 const fileListRef = ref<FileResultVO[]>([])
-const [BaseDialog, modalApi] = useVbenModal({
+const [BaseDialog, modalApi] = useKpuModal({
   // draggable: true,
   onCancel() {
     modalApi.close()

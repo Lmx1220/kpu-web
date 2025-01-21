@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { cn } from '@/utils/classNames.ts'
+import { cn } from '@/utils'
+
 import { Check } from 'lucide-vue-next'
 import {
   ContextMenuCheckboxItem,

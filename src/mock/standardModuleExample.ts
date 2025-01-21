@@ -1,14 +1,15 @@
-import Mock from 'mockjs'
+import { faker } from '@faker-js/faker'
+import { defineFakeRoute } from 'vite-plugin-fake-server/client'
 
 const AllList: any[] = []
 for (let i = 0; i < 50; i++) {
-  AllList.push(Mock.mock({
-    id: '@id',
-    title: '@ctitle(10, 20)',
-  }))
+  AllList.push({
+    id: i + 1,
+    title: faker.color.human(),
+  })
 }
 
-export default [
+export default defineFakeRoute([
   {
     url: '/mock/standardModuleExample/page',
     method: 'post',
@@ -20,7 +21,7 @@ export default [
         return title ? item.title.includes(title) : true
       })
       const pageList = list.filter((_item, index) => {
-        return index >= current && index < (current + size)
+        return index >= ~~current && index < (~~current + ~~size)
       })
       return {
         msg: '',
@@ -84,4 +85,4 @@ export default [
       }
     },
   },
-]
+])

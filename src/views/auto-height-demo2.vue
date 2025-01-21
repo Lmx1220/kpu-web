@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { useVbenDrawer } from '@/ui-kit'
+import { useKpuDrawer } from '@/ui/components/KDrawer/use-drawer.ts'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
 
 const list = ref<number[]>([])
 
-const [Drawer, drawerApi] = useVbenDrawer({
+const [Drawer, drawerApi] = useKpuDrawer({
   onCancel() {
     drawerApi.close()
   },

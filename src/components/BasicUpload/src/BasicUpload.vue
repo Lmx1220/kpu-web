@@ -2,7 +2,6 @@
 import type { PromiseFn } from '#/global'
 import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 
-import { useVbenModal } from '@/ui-kit'
 import { omit } from 'lodash-es'
 import { useAttrs } from 'vue'
 import UploadDialog from './UploadDialog.vue'
@@ -88,10 +87,10 @@ function handleDelete(record: Recordable<any>) {
 function handlePreviewDelete(url: any) {
   emits('previewDelete', url)
 }
-const [UploadDialogModal, uploadDialogModalApi] = useVbenModal({
+const [UploadDialogModal, uploadDialogModalApi] = useKpuModal({
   connectedComponent: UploadDialog,
 })
-const [UploadPreviewDialoglModal, uploadPreviewDialoglApi] = useVbenModal({
+const [UploadPreviewDialoglModal, uploadPreviewDialoglApi] = useKpuModal({
   connectedComponent: UploadPreviewDialogl,
 })
 // const [registerUploadDialog, { openDialog: openUploadDialog }] = useDialog()

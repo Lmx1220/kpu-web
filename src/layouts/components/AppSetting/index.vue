@@ -2,6 +2,7 @@
 import settingsDefault from '@/settings.default'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
+import { useKpuDrawer } from '@/ui/components/KDrawer/use-drawer.ts'
 import { getTwoObjectDiff } from '@/utils'
 import eventBus from '@/utils/eventBus'
 import { useClipboard } from '@vueuse/core'
@@ -17,8 +18,6 @@ const route = useRoute()
 
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
-
-const isShow = ref(false)
 
 const themeList = computed(() => {
   return Object.keys(themes).map((key) => {
@@ -55,10 +54,12 @@ watch(() => toolbarLayoutRef.value, (val) => {
     })
   }
 })
-
+const [KDrawer, drawerApi] = useKpuDrawer({
+  // zIndex: 2000,
+})
 onMounted(() => {
   eventBus.on('global-app-setting-toggle', () => {
-    isShow.value = !isShow.value
+    drawerApi.open()
   })
 })
 
@@ -78,7 +79,7 @@ function handleCopy() {
 </script>
 
 <template>
-  <KDrawer v-model="isShow" title="应用配置" description="在生产环境中应关闭该模块" :footer="isSupported">
+  <KDrawer title="应用配置" :closable="false" description="在生产环境中应关闭该模块" :footer="isSupported">
     <div class="rounded-2 bg-rose/20 px-4 py-2 text-sm/6 c-rose">
       <p class="my-1">
         应用配置可实时预览效果，但只是临时生效，要想真正应用于项目，可以点击下方的「复制配置」按钮，并将配置粘贴到 src/settings.ts 文件中。
