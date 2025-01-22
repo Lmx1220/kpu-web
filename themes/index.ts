@@ -1,7 +1,7 @@
 export default {
   default: {
     light: {
-      // shadcn
+    // shadcn
       '--background': '0 0% 100%',
       '--foreground': '240 10% 3.9%',
       '--card': '0 0% 100%',
@@ -40,8 +40,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--primary-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--accent-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--accent))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--accent-foreground))',
@@ -59,7 +57,7 @@ export default {
       '--g-toolbar-bg': 'hsl(var(--background))',
     },
     dark: {
-      // shadcn
+    // shadcn
       '--background': '240 10% 3.9%',
       '--foreground': '0 0% 98%',
       '--card': '240 10% 3.9%',
@@ -98,8 +96,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--accent-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--muted-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--muted))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--muted-foreground))',
@@ -119,7 +115,7 @@ export default {
   },
   blue: {
     light: {
-      // shadcn
+    // shadcn
       '--background': '0 0% 100%',
       '--foreground': '222.2 84% 4.9%',
       '--card': '0 0% 100%',
@@ -158,8 +154,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--primary-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--accent-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--accent))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--accent-foreground))',
@@ -177,7 +171,7 @@ export default {
       '--g-toolbar-bg': 'hsl(var(--background))',
     },
     dark: {
-      // shadcn
+    // shadcn
       '--background': '222.2 84% 4.9%',
       '--foreground': '210 40% 98%',
       '--card': '222.2 84% 4.9%',
@@ -216,8 +210,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--accent-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--muted-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--muted))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--muted-foreground))',
@@ -237,7 +229,7 @@ export default {
   },
   green: {
     light: {
-      // shadcn
+    // shadcn
       '--background': '0 0% 100%',
       '--foreground': '240 10% 3.9%',
       '--card': '0 0% 100%',
@@ -276,8 +268,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--primary-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--accent-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--accent))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--accent-foreground))',
@@ -295,7 +285,7 @@ export default {
       '--g-toolbar-bg': 'hsl(var(--background))',
     },
     dark: {
-      // shadcn
+    // shadcn
       '--background': '20 14.3% 4.1%',
       '--foreground': '0 0% 95%',
       '--popover': '0 0% 9%',
@@ -334,8 +324,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--accent-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--muted-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--muted))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--muted-foreground))',
@@ -355,7 +343,7 @@ export default {
   },
   orange: {
     light: {
-      // shadcn
+    // shadcn
       '--background': '0 0% 100%',
       '--foreground': '20 14.3% 4.1%',
       '--card': '0 0% 100%',
@@ -394,8 +382,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--primary-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--accent-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--accent))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--accent-foreground))',
@@ -413,7 +399,7 @@ export default {
       '--g-toolbar-bg': 'hsl(var(--background))',
     },
     dark: {
-      // shadcn
+    // shadcn
       '--background': '20 14.3% 4.1%',
       '--foreground': '60 9.1% 97.8%',
       '--card': '20 14.3% 4.1%',
@@ -452,8 +438,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--accent-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--muted-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--muted))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--muted-foreground))',
@@ -473,7 +457,7 @@ export default {
   },
   rose: {
     light: {
-      // shadcn
+    // shadcn
       '--background': '0 0% 100%',
       '--foreground': '240 10% 3.9%',
       '--card': '0 0% 100%',
@@ -512,8 +496,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--primary-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--accent-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--accent))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--accent-foreground))',
@@ -531,7 +513,7 @@ export default {
       '--g-toolbar-bg': 'hsl(var(--background))',
     },
     dark: {
-      // shadcn
+    // shadcn
       '--background': '20 14.3% 4.1%',
       '--foreground': '0 0% 95%',
       '--popover': '0 0% 9%',
@@ -570,8 +552,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--accent-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--muted-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--muted))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--muted-foreground))',
@@ -591,7 +571,7 @@ export default {
   },
   red: {
     light: {
-      // shadcn
+    // shadcn
       '--background': '0 0% 100%',
       '--foreground': '0 0% 3.9%',
       '--card': '0 0% 100%',
@@ -630,8 +610,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--primary-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--accent-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--accent))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--accent-foreground))',
@@ -649,7 +627,7 @@ export default {
       '--g-toolbar-bg': 'hsl(var(--background))',
     },
     dark: {
-      // shadcn
+    // shadcn
       '--background': '0 0% 3.9%',
       '--foreground': '0 0% 98%',
       '--card': '0 0% 3.9%',
@@ -688,8 +666,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--accent-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--muted-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--muted))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--muted-foreground))',
@@ -709,7 +685,7 @@ export default {
   },
   yellow: {
     light: {
-      // shadcn
+    // shadcn
       '--background': '0 0% 100%',
       '--foreground': '20 14.3% 4.1%',
       '--card': '0 0% 100%',
@@ -748,8 +724,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--primary-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--accent-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--accent))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--accent-foreground))',
@@ -767,7 +741,7 @@ export default {
       '--g-toolbar-bg': 'hsl(var(--background))',
     },
     dark: {
-      // shadcn
+    // shadcn
       '--background': '20 14.3% 4.1%',
       '--foreground': '60 9.1% 97.8%',
       '--card': '20 14.3% 4.1%',
@@ -806,8 +780,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--accent-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--muted-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--muted))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--muted-foreground))',
@@ -827,7 +799,7 @@ export default {
   },
   violet: {
     light: {
-      // shadcn
+    // shadcn
       '--background': '0 0% 100%',
       '--foreground': '224 71.4% 4.1%',
       '--card': '0 0% 100%',
@@ -866,8 +838,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--primary-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--accent-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--accent))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--accent-foreground))',
@@ -885,7 +855,7 @@ export default {
       '--g-toolbar-bg': 'hsl(var(--background))',
     },
     dark: {
-      // shadcn
+    // shadcn
       '--background': '224 71.4% 4.1%',
       '--foreground': '210 20% 98%',
       '--card': '224 71.4% 4.1%',
@@ -924,8 +894,6 @@ export default {
       '--g-main-sidebar-menu-active-color': 'hsl(var(--accent-foreground))',
       // 次导航
       '--g-sub-sidebar-bg': 'hsl(var(--background))',
-      '--g-sub-sidebar-logo-bg': 'hsl(var(--primary))',
-      '--g-sub-sidebar-logo-color': 'hsl(var(--primary-foreground))',
       '--g-sub-sidebar-menu-color': 'hsl(var(--muted-foreground))',
       '--g-sub-sidebar-menu-hover-bg': 'hsl(var(--muted))',
       '--g-sub-sidebar-menu-hover-color': 'hsl(var(--muted-foreground))',
@@ -943,4 +911,5 @@ export default {
       '--g-toolbar-bg': 'hsl(var(--background))',
     },
   },
+
 }

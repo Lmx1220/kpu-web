@@ -63,8 +63,8 @@ watch(() => menuStore.actived, (val, oldVal) => {
   >
     <component :is="useSlots('sub-sidebar-top')" />
     <Logo
-      :show-logo="settingsStore.settings.menu.mode === 'single'" class="sidebar-logo" :class="{
-        'sidebar-logo-bg': settingsStore.settings.menu.mode === 'single',
+      v-if="['side', 'single'].includes(settingsStore.settings.menu.mode)" :show-logo="settingsStore.settings.menu.mode === 'single'" class="sidebar-logo" :class="{
+        single: settingsStore.settings.menu.mode === 'single',
       }"
     />
     <component :is="useSlots('sub-sidebar-after-logo')" />
@@ -134,7 +134,7 @@ watch(() => menuStore.actived, (val, oldVal) => {
     width: var(--g-sub-sidebar-collapse-width);
 
     .sidebar-logo {
-      &:not(.sidebar-logo-bg) {
+      &:not(.single) {
         display: none;
       }
 
@@ -146,19 +146,6 @@ watch(() => menuStore.actived, (val, oldVal) => {
 
   &.shadow-side {
     box-shadow: 10px 0 10px -10px hsl(var(--border)), -10px 0 10px -10px hsl(var(--border));
-  }
-
-  .sidebar-logo {
-    background-color: var(--g-sub-sidebar-bg);
-    transition: background-color 0.3s;
-
-    &.sidebar-logo-bg {
-      background-color: var(--g-sub-sidebar-logo-bg);
-
-      :deep(span) {
-        color: var(--g-sub-sidebar-logo-color);
-      }
-    }
   }
 
   .menu {
