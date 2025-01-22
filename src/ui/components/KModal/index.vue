@@ -30,6 +30,12 @@ const props = withDefaults(defineProps<Props>(), {
   modalApi: undefined,
 })
 
+const slots = defineSlots<{
+  header?: () => VNode
+  default?: () => VNode
+  footer?: () => VNode
+}>()
+
 const components = globalShareState.getComponents()
 
 const contentRef = ref()
@@ -228,6 +234,10 @@ const getAppendTo = computed(() => {
           )
         "
       >
+        <VisuallyHidden v-if="!!slots.header">
+          <DialogTitle />
+          <DialogDescription />
+        </VisuallyHidden>
         <slot name="header">
           <DialogTitle v-if="title" class="text-left">
             <slot name="title">
