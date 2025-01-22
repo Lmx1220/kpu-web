@@ -17,7 +17,7 @@ import {
 } from 'vue'
 
 import { DrawerApi } from './drawer-api'
-import KpuDrawer from './index.vue'
+import KpuDrawer from './drawer.vue'
 
 const USER_DRAWER_INJECT_KEY = Symbol('KPU_DRAWER_INJECT')
 

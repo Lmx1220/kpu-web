@@ -91,7 +91,7 @@ defineExpose({
               'w-full': level === 0 && rootMenu.props.showCollapseName && rootMenu.props.mode === 'vertical',
             }" :style="indentStyle"
           >
-            <SvgIcon
+            <KIcon
               v-if="icon" :name="icon" :size="16" class="menu-item-container-icon"
             />
             <span

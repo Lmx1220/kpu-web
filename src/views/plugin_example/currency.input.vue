@@ -156,7 +156,7 @@ function open(url: string) {
       </template>
       <ElButton @click="open('https://github.com/dm4t2/vue-currency-input')">
         <template #icon>
-          <SvgIcon name="i-ep:link" />
+          <KIcon name="i-ep:link" />
         </template>
         访问 vue-currency-input
       </ElButton>

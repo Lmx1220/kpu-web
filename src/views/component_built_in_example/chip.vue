@@ -26,7 +26,7 @@ function close() {
         </KChip>
         <KChip>
           <ElAvatar size="small" class="-ml-1.5">
-            <SvgIcon name="i-ep:user-filled" />
+            <KIcon name="i-ep:user-filled" />
           </ElAvatar>
           头像图标
         </KChip>

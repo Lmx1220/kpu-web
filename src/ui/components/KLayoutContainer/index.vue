@@ -49,7 +49,7 @@ const enabledRightSide = computed(() => {
         v-if="enabledLeftSide && !hideLeftSideToggle"
         class="group left-side-icon absolute top-1/2 z-1 h-6 w-6 flex-center cursor-pointer border-l border-t rounded-1/2 bg-background -left-3 -rotate-45"
       >
-        <SvgIcon
+        <KIcon
           :name="leftSideVisiable ? 'i-ep:caret-left' : 'i-ep:caret-right'"
           class="rotate-45 op-30 transition-opacity group-hover-op-100"
           @click="leftSideVisiable = !leftSideVisiable"
@@ -59,7 +59,7 @@ const enabledRightSide = computed(() => {
         v-if="enabledRightSide && !hideRightSideToggle"
         class="group right-side-icon absolute top-1/2 z-1 h-6 w-6 flex-center cursor-pointer border-b border-r rounded-1/2 bg-background -right-3 -rotate-45"
       >
-        <SvgIcon
+        <KIcon
           :name="rightSideVisiable ? 'i-ep:caret-right' : 'i-ep:caret-left'"
           class="rotate-45 op-30 transition-opacity group-hover-op-100"
           @click="rightSideVisiable = !rightSideVisiable"
@@ -99,7 +99,7 @@ const enabledRightSide = computed(() => {
   }
 
   .left-side,
- .right-side {
+  .right-side {
     flex: none;
     overflow: auto;
   }

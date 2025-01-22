@@ -15,7 +15,7 @@ function toWave(url: string) {
     <PageHeader title="水波纹" content="更多设置请查看文档">
       <ElButton v-wave @click="toWave('https://github.com/justintaddei/v-wave')">
         <template #icon>
-          <SvgIcon
+          <KIcon
             name="i-ep:link"
           />
         </template>
@@ -53,7 +53,7 @@ function toWave(url: string) {
       <div w-50>
         <ElInput v-wave>
           <template #append>
-            <SvgIcon
+            <KIcon
 
               name="ep:search"
               class="cursor-pointer"

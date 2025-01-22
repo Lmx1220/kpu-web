@@ -172,14 +172,14 @@ function handleCopy() {
       <div class="app-width-mode">
         <KTooltip text="自适应" :delay="500">
           <div class="mode mode-adaption" :class="{ active: settingsStore.settings.layout.widthMode === 'adaption' }" @click="settingsStore.settings.layout.widthMode = 'adaption'">
-            <SvgIcon name="i-ep:back" class="left" />
-            <SvgIcon name="i-ep:right" class="right" />
+            <KIcon name="i-ep:back" class="left" />
+            <KIcon name="i-ep:right" class="right" />
           </div>
         </KTooltip>
         <KTooltip text="自适应 (有最小宽度)" :delay="500">
           <div class="mode mode-adaption-min-width" :class="{ active: settingsStore.settings.layout.widthMode === 'adaption-min-width' }" @click="settingsStore.settings.layout.widthMode = 'adaption-min-width'">
-            <SvgIcon name="i-ep:back" class="left" />
-            <SvgIcon name="i-ep:right" class="right" />
+            <KIcon name="i-ep:back" class="left" />
+            <KIcon name="i-ep:right" class="right" />
           </div>
         </KTooltip>
         <KTooltip text="定宽居中" :delay="500">
@@ -187,8 +187,8 @@ function handleCopy() {
         </KTooltip>
         <KTooltip text="定宽居中 (有最大宽度)" :delay="500">
           <div class="mode mode-center-max-width" :class="{ active: settingsStore.settings.layout.widthMode === 'center-max-width' }" @click="settingsStore.settings.layout.widthMode = 'center-max-width'">
-            <SvgIcon name="i-ep:back" class="left" />
-            <SvgIcon name="i-ep:right" class="right" />
+            <KIcon name="i-ep:back" class="left" />
+            <KIcon name="i-ep:right" class="right" />
           </div>
         </KTooltip>
       </div>
@@ -222,7 +222,7 @@ function handleCopy() {
         <div class="label">
           主导航点击模式
           <KTooltip text="智能选择会判断次导航是否只有且只有一个可访问的菜单进行切换或跳转操作">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <div class="flex-center-start gap-1">
@@ -246,7 +246,7 @@ function handleCopy() {
       <!--        <div class="label"> -->
       <!--          次导航自动隐藏 -->
       <!--          <KTooltip text="切换主导航时，如果次导航里只有一个导航时，则自动隐藏"> -->
-      <!--            <SvgIcon name="i-ri:question-line" /> -->
+      <!--            <KIcon name="i-ri:question-line" /> -->
       <!--          </KTooltip> -->
       <!--        </div> -->
       <!--        <KSwitch v-model="settingsStore.settings.menu.subMenuOnlyOneHide" :disabled="['single', 'only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" /> -->
@@ -255,7 +255,7 @@ function handleCopy() {
         <div class="label">
           次导航保持展开一个
           <KTooltip text="次导航只保持单个菜单的展开">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.menu.subMenuUniqueOpened" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
@@ -270,7 +270,7 @@ function handleCopy() {
         <div class="label">
           次导航是否自动收起
           <KTooltip text="次导航收起时，鼠标悬停会临时展开">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.menu.subMenuAutoCollapse" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
@@ -296,7 +296,7 @@ function handleCopy() {
             size="icon" class="h-7 w-7"
             :disabled="settingsStore.settings.menu.mode === 'single'" @click="settingsStore.settings.menu.style = (item.value as any)"
           >
-            <SvgIcon :name="item.icon" />
+            <KIcon :name="item.icon" />
           </KButton>
         </div>
       </div>
@@ -329,7 +329,7 @@ function handleCopy() {
         <div class="label">
           展示切换
           <KTooltip text="切换标签栏和工具栏的展示顺序">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.topbar.switchTabbarAndToolbar" />
@@ -410,7 +410,7 @@ function handleCopy() {
         <div class="label">
           是否启用记忆功能
           <KTooltip text="非固定和非常驻的标签页将在本次会话窗口中始终存在，刷新浏览器或重新登录时不会丢失">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.tabbar.enableMemory" :disabled="!settingsStore.settings.tabbar.enable" />
@@ -428,7 +428,7 @@ function handleCopy() {
         <div class="label">
           收藏夹
           <KTooltip text="可将常用导航添加进收藏夹，方便快读访问">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.toolbar.favorites" />
@@ -443,7 +443,7 @@ function handleCopy() {
         <div class="label">
           导航搜索
           <KTooltip text="对导航进行快捷搜索">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.toolbar.navSearch" />
@@ -452,7 +452,7 @@ function handleCopy() {
         <div class="label">
           通知中心
           <KTooltip text="该功能具体业务功能需自行开发，框架仅提供示例模版">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.toolbar.notification" />
@@ -479,7 +479,7 @@ function handleCopy() {
         <div class="label">
           页面刷新
           <KTooltip text="使用框架内提供的刷新功能进行页面刷新">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.toolbar.pageReload" />
@@ -488,7 +488,7 @@ function handleCopy() {
         <div class="label">
           颜色主题
           <KTooltip text="可切换明亮/暗黑模式">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.toolbar.colorScheme" />
@@ -501,15 +501,15 @@ function handleCopy() {
             'pointer-events-none w-0 op-0 p-0! no-drag': tool !== '->' && !settingsStore.settings.toolbar[tool],
           }"
         >
-          <SvgIcon v-if="tool === 'favorites'" name="i-uiw:star-off" />
-          <SvgIcon v-if="tool === 'breadcrumb'" name="i-ic:twotone-double-arrow" :rotate="settingsStore.settings.app.direction === 'rtl' ? 180 : 0" />
-          <SvgIcon v-if="tool === 'navSearch'" name="i-ri:search-line" />
-          <SvgIcon v-if="tool === 'notification'" name="i-ri:notification-3-line" />
-          <SvgIcon v-if="tool === 'lock'" name="i-ri:lock-line" />
-          <SvgIcon v-if="tool === 'i18n'" name="i-ri:translate" />
-          <SvgIcon v-if="tool === 'fullscreen'" name="i-ri:fullscreen-line" />
-          <SvgIcon v-if="tool === 'pageReload'" name="i-iconoir:refresh-double" />
-          <SvgIcon v-if="tool === 'colorScheme'" name="i-ri:sun-line" />
+          <KIcon v-if="tool === 'favorites'" name="i-uiw:star-off" />
+          <KIcon v-if="tool === 'breadcrumb'" name="i-ic:twotone-double-arrow" :rotate="settingsStore.settings.app.direction === 'rtl' ? 180 : 0" />
+          <KIcon v-if="tool === 'navSearch'" name="i-ri:search-line" />
+          <KIcon v-if="tool === 'notification'" name="i-ri:notification-3-line" />
+          <KIcon v-if="tool === 'lock'" name="i-ri:lock-line" />
+          <KIcon v-if="tool === 'i18n'" name="i-ri:translate" />
+          <KIcon v-if="tool === 'fullscreen'" name="i-ri:fullscreen-line" />
+          <KIcon v-if="tool === 'pageReload'" name="i-iconoir:refresh-double" />
+          <KIcon v-if="tool === 'colorScheme'" name="i-ri:sun-line" />
           <span v-if="tool === '->'" class="pointer-events-none text-sm">布局调整</span>
         </span>
       </div>
@@ -596,7 +596,7 @@ function handleCopy() {
         <div class="label">
           是否启用
           <KTooltip text="该功能开启时，登录成功默认进入主页，反之则默认进入导航栏里第一个导航页面">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.home.enable" />
@@ -605,7 +605,7 @@ function handleCopy() {
         <div class="label">
           主页名称
           <KTooltip text="开启国际化时，该设置无效">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KInput v-model="settingsStore.settings.home.title" :disabled="settingsStore.settings.toolbar.i18n" />
@@ -623,7 +623,7 @@ function handleCopy() {
         <div class="label">
           载入进度条
           <KTooltip text="该功能开启时，跳转路由会看到页面顶部有进度条">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.app.enableProgress" />
@@ -632,7 +632,7 @@ function handleCopy() {
         <div class="label">
           哀悼模式
           <KTooltip text="该功能开启时，整站会变为灰色">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.app.enableMournMode" />
@@ -647,7 +647,7 @@ function handleCopy() {
         <div class="label">
           动态标题
           <KTooltip text="该功能开启时，页面标题会显示当前路由标题，格式为“页面标题 - 网站名称”；关闭时则显示网站名称，网站名称在项目根目录下 .env.* 文件里配置">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KSwitch v-model="settingsStore.settings.app.enableDynamicTitle" />
@@ -662,7 +662,7 @@ function handleCopy() {
         <div class="label">
           Storage 前缀
           <KTooltip text="localStorage 和 sessionStorage 的字段前缀">
-            <SvgIcon name="i-ri:question-line" />
+            <KIcon name="i-ri:question-line" />
           </KTooltip>
         </div>
         <KInput v-model="settingsStore.settings.app.storagePrefix" />
@@ -691,7 +691,7 @@ function handleCopy() {
     </div>
     <template #footer>
       <KButton class="w-full" @click="handleCopy">
-        <SvgIcon name="i-ep:document-copy" />
+        <KIcon name="i-ep:document-copy" />
         复制配置
       </KButton>
     </template>

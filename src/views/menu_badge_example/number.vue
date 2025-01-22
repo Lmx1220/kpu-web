@@ -19,12 +19,12 @@ function sub() {
       </div>
       <ElButton @click="add">
         <template #icon>
-          <SvgIcon name="i-ep:plus" />
+          <KIcon name="i-ep:plus" />
         </template>
         1
       </ElButton>
       <ElButton @click="sub">
-        <SvgIcon name="i-ep:minus" />
+        <KIcon name="i-ep:minus" />
         1
       </ElButton>
     </KPageMain>

@@ -98,7 +98,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
   <div>
     <KPopover align="end" class="min-w-auto p-0">
       <KButton variant="outline" size="icon" class="h-7 w-7">
-        <SvgIcon name="i-ep:caret-bottom" />
+        <KIcon name="i-ep:caret-bottom" />
       </KButton>
       <template #panel>
         <div class="max-h-[320px] w-[200px] flex flex-col">
@@ -109,7 +109,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
                 class="h-8 w-0 flex-1 border border-input rounded-md bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none"
               />
               <KButton variant="outline" size="icon" class="h-8 w-8" @click="isNavSearch = false">
-                <SvgIcon name="i-ri:close-fill" :size="16" />
+                <KIcon name="i-ri:close-fill" :size="16" />
               </KButton>
             </template>
             <template v-else>
@@ -118,7 +118,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
                   v-if="settingsStore.settings.toolbar.navSearch" variant="secondary" size="icon" class="h-8 w-8"
                   @click="isNavSearch = true"
                 >
-                  <SvgIcon name="i-ri:search-line" />
+                  <KIcon name="i-ri:search-line" />
                 </KButton>
               </KTooltip>
               <KTooltip :text="t('app.tabbar.closeOtherSide')">
@@ -126,7 +126,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
                   variant="secondary" size="icon" class="h-8 w-8" :disabled="!tabbar.checkCloseOtherSide()"
                   @click="actionCommand('other-side')"
                 >
-                  <SvgIcon name="i-ri:close-fill" />
+                  <KIcon name="i-ri:close-fill" />
                 </KButton>
               </KTooltip>
               <KTooltip :text="t('app.tabbar.closeLeftSide')">
@@ -134,7 +134,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
                   variant="secondary" size="icon" class="h-8 w-8" :disabled="!tabbar.checkCloseLeftSide()"
                   @click="actionCommand('left-side')"
                 >
-                  <SvgIcon name="i-ph:arrow-line-left" />
+                  <KIcon name="i-ph:arrow-line-left" />
                 </KButton>
               </KTooltip>
               <KTooltip :text="t('app.tabbar.closeRightSide')">
@@ -142,7 +142,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
                   variant="secondary" size="icon" class="h-8 w-8" :disabled="!tabbar.checkCloseRightSide()"
                   @click="actionCommand('right-side')"
                 >
-                  <SvgIcon name="i-ph:arrow-line-right" />
+                  <KIcon name="i-ph:arrow-line-right" />
                 </KButton>
               </KTooltip>
             </template>
@@ -164,7 +164,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
                   :title="element.customTitleList.find(item => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title)"
                   @click="router.push(element.fullPath)"
                 >
-                  <SvgIcon
+                  <KIcon
                     v-if="settingsStore.settings.tabbar.enableIcon && iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
                     :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)!"
                   />
@@ -172,11 +172,11 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
                     element.customTitleList.find(item => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title)
                   }}
                 </div>
-                <SvgIcon
+                <KIcon
                   v-if="!element.isPermanent && element.isPin" name="i-ri:pushpin-2-fill" class="action-icon"
                   @click.stop="tabbarStore.unPin(element.tabId)"
                 />
-                <SvgIcon
+                <KIcon
                   v-else-if="!element.isPermanent && tabbarStore.list.length > 1" name="ri:close-fill"
                   class="action-icon" @click.stop="tabbar.closeById(element.tabId)"
                 />

@@ -13,6 +13,6 @@ const { isFullscreen, toggle } = useFullscreen()
 
 <template>
   <KButton v-if="settingsStore.mode === 'pc'" variant="ghost" size="icon" @click="toggle">
-    <SvgIcon :name="isFullscreen ? 'i-ri:fullscreen-exit-line' : 'i-ri:fullscreen-line'" :size="16" />
+    <KIcon :name="isFullscreen ? 'i-ri:fullscreen-exit-line' : 'i-ri:fullscreen-line'" :size="16" />
   </KButton>
 </template>

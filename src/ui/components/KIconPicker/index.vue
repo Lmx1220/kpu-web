@@ -91,7 +91,7 @@ function handleTabChange(prefix: string) {
           'is-disabled': attrs.disabled === true,
         }" @click="dialogVisible = true"
       >
-        <SvgIcon
+        <KIcon
           :name="value !== '' && value != null ? value : 'i-whh:googleplusold'" :size="16"
           :class="{ 'opacity-20': value === '' }"
         />
@@ -121,16 +121,16 @@ function handleTabChange(prefix: string) {
           </div>
           <div class="grid grid-cols-7 grid-rows-7 my-2 w-full flex-1 place-items-center gap-1">
             <KButton class="h-12 w-12" size="icon" variant="outline" @click="removeIcon">
-              <SvgIcon name="i-ep:delete" :size="24" class="opacity-20" />
+              <KIcon name="i-ep:delete" :size="24" class="opacity-20" />
             </KButton>
             <KButton
               v-for="(icon, index) in currentIconList" :key="index" variant="ghost" size="icon" class="h-12 w-12 [&_svg]:size-inherit"
               @click="chooseIcon(`${activeName}:${icon}`)"
             >
-              <SvgIcon :name="`${activeName}:${icon}`" :size="24" />
+              <KIcon :name="`${activeName}:${icon}`" :size="24" />
             </KButton>
             <!--            <div class="list-icon-preview-item" :class="previewIcon && previewIconPosition"> -->
-            <!--              <SvgIcon :name="previewIcon" :size="108" /> -->
+            <!--              <KIcon :name="previewIcon" :size="108" /> -->
             <!--            </div> -->
           </div>
           <KPagination

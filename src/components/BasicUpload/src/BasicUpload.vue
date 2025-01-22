@@ -111,7 +111,7 @@ const [UploadPreviewDialoglModal, uploadPreviewDialoglApi] = useKpuModal({
           </template>
         </template>
         <ElButton @click="uploadPreviewDialoglApi.open()">
-          <SvgIcon name="bi:eye" />
+          <KIcon name="bi:eye" />
           <template v-if="fileList.length && showPreviewNumber">
             {{ fileList.length }}
           </template>

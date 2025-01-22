@@ -39,7 +39,7 @@ function showInfo(iconName: string) {
     <KPageMain v-for="(icon, key) in icons" :key="key" :title="icon.info.name">
       <div class="flex-center-start gap-2">
         <KButton v-for="(item, index) in icon.info.samples" :key="index" variant="outline" size="icon" @click="showInfo(`${icon.prefix}:${item}`)">
-          <SvgIcon :name="`${icon.prefix}:${item}`" :size="18" />
+          <KIcon :name="`${icon.prefix}:${item}`" :size="18" />
         </KButton>
       </div>
     </KPageMain>
@@ -47,7 +47,7 @@ function showInfo(iconName: string) {
       <ElRow type="flex">
         <ElCol style="max-width: 100px;">
           <div class="icon-box">
-            <SvgIcon :name="dialog.iconName" />
+            <KIcon :name="dialog.iconName" />
           </div>
         </ElCol>
         <ElCol style="flex: 1;">
@@ -71,7 +71,7 @@ function showInfo(iconName: string) {
         </ElDivider>
         <ElButton>
           <template #icon>
-            <SvgIcon :name="dialog.iconName" />
+            <KIcon :name="dialog.iconName" />
           </template>
           Icon 按钮
         </ElButton>

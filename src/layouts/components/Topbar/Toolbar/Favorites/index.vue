@@ -9,7 +9,7 @@ defineOptions({
 <template>
   <KPopover class="p-0">
     <KButton variant="ghost" size="icon" class="animation">
-      <SvgIcon name="i-uiw:star-off" :size="16" />
+      <KIcon name="i-uiw:star-off" :size="16" />
     </KButton>
     <template #panel>
       <Panel />

@@ -39,7 +39,7 @@ function goBack() {
     <KPageHeader :title="route.name === 'routerName' ? '新增' : '编辑'">
       <el-button size="default" round @click="goBack">
         <template #icon>
-          <SvgIcon name="ep:arrow-left" />
+          <KIcon name="ep:arrow-left" />
         </template>
         返回
       </el-button>

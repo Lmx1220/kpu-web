@@ -13,13 +13,13 @@ const rotate = ref(0)
     <KPageHeader title="SVG Icon" content="可以使用自定义的 SVG 图标" />
     <KPageMain>
       <p>单色 SVG Icon</p>
-      <SvgIcon name="example-emotion-line" :size="48" :flip="flip" :rotate="rotate" />
-      <SvgIcon name="example-emotion-laugh-line" :size="48" :flip="flip" :rotate="rotate" />
-      <SvgIcon name="example-emotion-unhappy-line" :size="48" :flip="flip" :rotate="rotate" />
+      <KIcon name="example-emotion-line" :size="48" :flip="flip" :rotate="rotate" />
+      <KIcon name="example-emotion-laugh-line" :size="48" :flip="flip" :rotate="rotate" />
+      <KIcon name="example-emotion-unhappy-line" :size="48" :flip="flip" :rotate="rotate" />
       <p>彩色 SVG Icon</p>
-      <SvgIcon name="example-crown" :size="48" :flip="flip" :rotate="rotate" />
-      <SvgIcon name="example-star" :size="48" :flip="flip" :rotate="rotate" />
-      <SvgIcon name="example-vip" :size="48" :flip="flip" :rotate="rotate" />
+      <KIcon name="example-crown" :size="48" :flip="flip" :rotate="rotate" />
+      <KIcon name="example-star" :size="48" :flip="flip" :rotate="rotate" />
+      <KIcon name="example-vip" :size="48" :flip="flip" :rotate="rotate" />
       <div>
         <p>翻转：</p>
         <ElRadioGroup v-model="flip">

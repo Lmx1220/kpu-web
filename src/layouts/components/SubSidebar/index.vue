@@ -101,7 +101,7 @@ watch(() => menuStore.actived, (val, oldVal) => {
         class="h-8 w-8"
         @click="settingsStore.toggleSidebarAutoCollapse()"
       >
-        <SvgIcon :name="settingsStore.settings.menu.subMenuAutoCollapse ? 'i-lucide:pin-off' : 'i-lucide:pin'" :size="16" />
+        <KIcon :name="settingsStore.settings.menu.subMenuAutoCollapse ? 'i-lucide:pin-off' : 'i-lucide:pin'" :size="16" />
       </KButton>
       <KButton
         variant="secondary"
@@ -110,7 +110,7 @@ watch(() => menuStore.actived, (val, oldVal) => {
         :class="{ '-rotate-z-180': settingsStore.settings.menu.subMenuCollapse }"
         @click="settingsStore.toggleSidebarCollapse()"
       >
-        <SvgIcon name="toolbar-collapse" :size="16" />
+        <KIcon name="toolbar-collapse" :size="16" />
       </KButton>
     </div>
     <component :is="useSlots('sub-sidebar-bottom')" />

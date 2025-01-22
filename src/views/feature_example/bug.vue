@@ -34,7 +34,7 @@ function to(url: string) {
     <KPageHeader title="错误日志" content="错误日志通过 Vue 提供的全局错误钩子 errorHandler 进行拦截，如果需要上报给后端，需自行实现">
       <ElButton @click="to('https://cn.vuejs.org/api/application.html#app-config-errorhandler')">
         <template #icon>
-          <SvgIcon
+          <KIcon
             name="i-ep:link"
           />
         </template>

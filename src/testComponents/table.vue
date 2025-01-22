@@ -258,7 +258,7 @@
 <!--        <ElTableColumn label="列描述" prop="comment" min-width="200" show-overflow-tooltip>-->
 <!--          <template #header="{ column }">-->
 <!--            <i class="align-middle required-icon" />-->
-<!--            <SvgIcon class="align-middle mr-1" name="ep:edit" />-->
+<!--            <KIcon class="align-middle mr-1" name="ep:edit" />-->
 <!--            <span>  {{ column.label }}</span>-->
 <!--          </template>-->
 <!--          <template #default="{ row, $index }">-->
@@ -280,7 +280,7 @@
 <!--        <ElTableColumn align="center" fixed="right" label="操作" width="90">-->
 <!--          <template #default="{ row }">-->
 <!--            <ElButton plain size="small" title="删除" type="danger" @click.stop="onDel(row)">-->
-<!--              <SvgIcon name="ep:delete" />-->
+<!--              <KIcon name="ep:delete" />-->
 <!--            </ElButton>-->
 <!--          </template>-->
 <!--        </ElTableColumn>-->

@@ -28,7 +28,6 @@ declare module 'vue' {
     KContextMenu: typeof import('./../ui/components/KContextMenu/index.vue')['default']
     KCountTo: typeof import('./../ui/components/KCountTo/index.vue')['default']
     KDivider: typeof import('./../ui/components/KDivider/index.vue')['default']
-    KDrawer: typeof import('./../ui/components/KDrawer/index.vue')['default']
     KDropdown: typeof import('./../ui/components/KDropdown/index.vue')['default']
     KFixedActionBar: typeof import('./../ui/components/KFixedActionBar/index.vue')['default']
     KIcon: typeof import('./../ui/components/KIcon/index.vue')['default']
@@ -38,7 +37,6 @@ declare module 'vue' {
     KKbd: typeof import('./../ui/components/KKbd/index.vue')['default']
     KLayoutContainer: typeof import('./../ui/components/KLayoutContainer/index.vue')['default']
     KLoading: typeof import('./../ui/components/KLoading/index.vue')['default']
-    KModal: typeof import('./../ui/components/KModal/index.vue')['default']
     KNotAllowed: typeof import('./../ui/components/KNotAllowed/index.vue')['default']
     KNotification: typeof import('./../ui/components/KNotification/index.vue')['default']
     KPageHeader: typeof import('./../ui/components/KPageHeader/index.vue')['default']
@@ -64,7 +62,6 @@ declare module 'vue' {
     PcasCascader: typeof import('./../components/PcasCascader/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SvgIcon: typeof import('./../components/SvgIcon/index.vue')['default']
     Vue3Cron: typeof import('./../components/vue3Cron/index.vue')['default']
   }
 }

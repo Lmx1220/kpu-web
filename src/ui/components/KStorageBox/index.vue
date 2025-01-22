@@ -111,7 +111,7 @@ watch(() => containerRef.value, (val) => {
 <template>
   <KPopover class="p-0">
     <slot v-if="slots.default" />
-    <SvgIcon v-else name="i-ep:message-box" :size="16" />
+    <KIcon v-else name="i-ep:message-box" :size="16" />
 
     <template #panel>
       <div class="w-80">
@@ -119,7 +119,7 @@ watch(() => containerRef.value, (val) => {
           <div class="text-sm font-bold">
             {{ title }}
           </div>
-          <SvgIcon name="i-ep:plus" class="cursor-pointer text-base" @click="dialog.visible = true" />
+          <KIcon name="i-ep:plus" class="cursor-pointer text-base" @click="dialog.visible = true" />
         </div>
         <KScrollArea :scrollbar="false" mask class="max-h-200px">
           <div v-if="list.length > 0" ref="containerRef" class="flex flex-col gap-2 px-4 pb-4">
@@ -128,12 +128,12 @@ watch(() => containerRef.value, (val) => {
                 {{ item.title }}
               </div>
               <div class="absolute right-2 h-5 w-5 rounded-full text-secondary-foreground hidden group-hover:flex-center hover:bg-secondary hover:ring-1">
-                <SvgIcon name="i-ep:delete" :size="14" @click.stop="onRemove(index)" />
+                <KIcon name="i-ep:delete" :size="14" @click.stop="onRemove(index)" />
               </div>
             </div>
           </div>
           <div v-else class="flex-col-center py-6 text-secondary-foreground">
-            <SvgIcon name="i-tabler:mood-empty" :size="40" />
+            <KIcon name="i-tabler:mood-empty" :size="40" />
             <p m-2 text-base>
               空空如也
             </p>

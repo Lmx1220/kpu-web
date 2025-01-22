@@ -27,7 +27,7 @@ const activeName = ref('message')
     <template v-if="activeName === 'message'">
       <KScrollArea :scrollbar="false" mask class="list max-h-300px">
         <div class="item">
-          <SvgIcon name="i-ri:mail-fill" />
+          <KIcon name="i-ri:mail-fill" />
           <div class="info">
             <div class="title">
               你收到了 8 份日报
@@ -38,7 +38,7 @@ const activeName = ref('message')
           </div>
         </div>
         <div class="item">
-          <SvgIcon name="i-ri:service-fill" class="service" />
+          <KIcon name="i-ri:service-fill" class="service" />
           <div class="info">
             <div class="title">
               你收到了 3 位同事的好友申请，请及时处理
@@ -49,7 +49,7 @@ const activeName = ref('message')
           </div>
         </div>
         <div class="item">
-          <SvgIcon name="i-ri:file-edit-fill" class="file-edit" />
+          <KIcon name="i-ri:file-edit-fill" class="file-edit" />
           <div class="info">
             <div class="title">
               你有 3 份合同待审批
@@ -60,7 +60,7 @@ const activeName = ref('message')
           </div>
         </div>
         <div class="item">
-          <SvgIcon name="i-ri:mail-fill" />
+          <KIcon name="i-ri:mail-fill" />
           <div class="info">
             <div class="title">
               你收到了 8 份日报
@@ -71,7 +71,7 @@ const activeName = ref('message')
           </div>
         </div>
         <div class="item">
-          <SvgIcon name="i-ri:service-fill" class="service" />
+          <KIcon name="i-ri:service-fill" class="service" />
           <div class="info">
             <div class="title">
               你收到了 3 位同事的好友申请，请及时处理
@@ -91,7 +91,7 @@ const activeName = ref('message')
     <template v-if="activeName === 'todo'">
       <KScrollArea :scrollbar="false" mask class="list max-h-300px">
         <div class="flex flex-col items-center py-6 text-stone-5">
-          <SvgIcon name="i-tabler:mood-smile" :size="40" />
+          <KIcon name="i-tabler:mood-smile" :size="40" />
           <p m-2 text-base>
             没有新待办
           </p>

@@ -65,13 +65,13 @@ const layout = computed({
         <h2>模式选择</h2>
         <el-radio-group v-model="layout" size="large">
           <el-radio-button value="three">
-            <SvgIcon name="i-bi:layout-three-columns" />
+            <KIcon name="i-bi:layout-three-columns" />
           </el-radio-button>
           <el-radio-button value="left">
-            <SvgIcon name="i-bi:layout-sidebar" />
+            <KIcon name="i-bi:layout-sidebar" />
           </el-radio-button>
           <el-radio-button value="right">
-            <SvgIcon name="i-bi:layout-sidebar-reverse" />
+            <KIcon name="i-bi:layout-sidebar-reverse" />
           </el-radio-button>
         </el-radio-group>
         <h2>示例页面</h2>

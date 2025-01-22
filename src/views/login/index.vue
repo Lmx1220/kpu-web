@@ -60,7 +60,7 @@ const formRef = ref()
       ]"
     >
       <KButton variant="ghost" size="icon" class="h-9 w-9">
-        <SvgIcon
+        <KIcon
           :name="{
             left: 'i-icon-park-outline:left-bar',
             center: 'i-icon-park-outline:square',
@@ -88,7 +88,7 @@ const formRef = ref()
         </div>
       </template>
       <KButton variant="ghost" size="icon" class="h-9 w-9">
-        <SvgIcon name="i-mdi:circle" class="text-primary" />
+        <KIcon name="i-mdi:circle" class="text-primary" />
       </KButton>
     </KPopover>
     <ColorScheme v-if="settingsStore.settings.toolbar.colorScheme" class="rounded-full hover-bg-[var(--g-bg)]" />

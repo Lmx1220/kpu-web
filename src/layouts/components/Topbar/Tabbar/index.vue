@@ -308,7 +308,7 @@ onUnmounted(() => {
     <component :is="useSlots('tabbar-start')" />
     <div class="tabbar-container">
       <KScrollArea
-        ref="tabsRef" :scrollbar="false" mask horizontal gradient-color="var(--g-tabbar-bg)" class="tabs"
+        ref="tabsRef" :scrollbar="false" horizontal mask gradient-color="var(--g-tabbar-bg)" class="tabs"
         :class="{
           'tabs-ontop': settingsStore.settings.topbar.switchTabbarAndToolbar,
           [`tabs-${settingsStore.settings.tabbar.style}`]: settingsStore.settings.tabbar.style !== '',
@@ -337,7 +337,7 @@ onUnmounted(() => {
                 <KTooltip :delay="1000" side="bottom">
                   <div class="tab-content">
                     <div :key="element.tabId" class="title">
-                      <SvgIcon
+                      <KIcon
                         v-if="settingsStore.settings.tabbar.enableIcon && iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
                         :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)!" class="icon"
                       />
@@ -346,13 +346,13 @@ onUnmounted(() => {
                       }}
                     </div>
                     <div v-if="!element.isPermanent && element.isPin" class="action-icon">
-                      <SvgIcon name="i-ri:pushpin-2-fill" @click.stop="tabbarStore.unPin(element.tabId)" @dblclick.stop />
+                      <KIcon name="i-ri:pushpin-2-fill" @click.stop="tabbarStore.unPin(element.tabId)" @dblclick.stop />
                     </div>
                     <div
                       v-else-if="!element.isPermanent && tabbarStore.list.length > 1" class="action-icon"
                       @click.stop="tabbar.closeById(element.tabId)" @dblclick.stop
                     >
-                      <SvgIcon name="i-ri:close-fill" />
+                      <KIcon name="i-ri:close-fill" />
                     </div>
                     <div v-show="keys.alt && index < 9" class="hotkey-number">
                       {{ index + 1 }}

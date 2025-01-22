@@ -89,7 +89,7 @@ watch(scrollTop, (val, oldVal) => {
     position: fixed;
 
     [data-app-width-mode="center"] &,
-[data-app-width-mode="center-max-width"] & {
+    [data-app-width-mode="center-max-width"] & {
       width: 100%;
     }
   }

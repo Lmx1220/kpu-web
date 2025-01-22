@@ -39,7 +39,7 @@ watch(() => route.fullPath, (val) => {
         <iframe v-show="route.fullPath === item.path" ref="iframeRef" :data-path="item.path" :src="item.src" frameborder="0" class="h-full w-full flex-1" />
       </Transition>
       <div v-show="item.isLoading" class="absolute left-0 top-0 h-full w-full flex-center bg-stone-2/75 dark-bg-stone-8/75">
-        <SvgIcon name="i-line-md:loading-twotone-loop" :size="36" />
+        <KIcon name="i-line-md:loading-twotone-loop" :size="36" />
       </div>
     </div>
   </div>

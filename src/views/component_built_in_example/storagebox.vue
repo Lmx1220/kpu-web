@@ -83,7 +83,7 @@ function takeOut(val: any) {
             <ElSpace>
               <ElButton type="primary" @click="E">
                 <template #icon>
-                  <SvgIcon name="i-ep:search" />
+                  <KIcon name="i-ep:search" />
                 </template>
                 筛选
               </ElButton>

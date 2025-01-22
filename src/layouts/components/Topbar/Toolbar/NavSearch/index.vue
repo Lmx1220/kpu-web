@@ -17,7 +17,7 @@ const { t } = useI18n()
 
 <template>
   <KButton :variant="settingsStore.mode === 'pc' ? 'outline' : 'ghost'" :size="settingsStore.mode === 'pc' ? undefined : 'icon'" :class="{ 'mx-2 pe-1.5 ps-2': settingsStore.mode === 'pc' }" @click="() => modalApi.open()">
-    <SvgIcon name="i-ri:search-line" :size="16" />
+    <KIcon name="i-ri:search-line" :size="16" />
     <template v-if="settingsStore.mode === 'pc'">
       <span class="text-sm text-muted-foreground/60 transition group-hover-text-muted-foreground">{{ t('app.search.text') }}</span>
       <KKbd v-if="settingsStore.settings.navSearch.enableHotkeys">

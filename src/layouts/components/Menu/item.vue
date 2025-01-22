@@ -95,7 +95,7 @@ defineExpose({
               'w-full': rootMenu.isMenuPopup && level === 0 && rootMenu.props.showCollapseName && rootMenu.props.mode === 'vertical',
             }" :style="indentStyle"
           >
-            <SvgIcon
+            <KIcon
               v-if="icon" :name="icon" :size="18" class="menu-item-container-icon" :class="{
                 'transition-transform group-hover-scale-120': rootMenu.isMenuPopup || !alwaysExpand,
               }"

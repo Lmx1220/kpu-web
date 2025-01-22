@@ -18,7 +18,7 @@ watch(getLocale, (newVal, oldVal) => {
 <template>
   <I18nSelector :class="{ animation: isAnimating }" @animationend="isAnimating = false">
     <KButton variant="ghost" size="icon">
-      <SvgIcon name="i-ri:translate" :size="16" />
+      <KIcon name="i-ri:translate" :size="16" />
     </KButton>
   </I18nSelector>
 </template>

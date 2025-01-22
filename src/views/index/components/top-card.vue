@@ -53,12 +53,12 @@ withDefaults(
       />
     </p>
     <div v-if="icon" class="right-icon">
-      <SvgIcon :name="icon" />
+      <KIcon :name="icon" />
     </div>
 
     <div class="bottom">
       自上周以来
-      <SvgIcon name="ri:arrow-up-line" />
+      <KIcon name="ri:arrow-up-line" />
       <span>{{ percentage }}</span>
     </div>
     <slot v-if="$slots.chart" name="chart" />

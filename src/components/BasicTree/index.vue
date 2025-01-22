@@ -339,12 +339,12 @@ defineExpose({
       <div class="cursor-pointe flex flex-1 items-center">
         <ElInput v-if="search" v-model="filterText" class="ml-5 mr-1 w-full" :placeholder="t('common.searchText')">
           <template #append>
-            <SvgIcon name="i-ep:search" />
+            <KIcon name="i-ep:search" />
           </template>
         </ElInput>
         <slot name="toolbar">
           <ElDropdown v-if="toolbar" class="inline" @command="handleCommand">
-            <SvgIcon :size="26" class="ml-1 mr-1" name="i-ant-design:more-outlined" />
+            <KIcon :size="26" class="ml-1 mr-1" name="i-ant-design:more-outlined" />
             <template #dropdown>
               <ElDropdownMenu>
                 <ElDropdownItem v-if="toolbarStrictly" command="checkAll">
@@ -388,7 +388,7 @@ defineExpose({
             >
               <slot name="title" :data="data">
                 <span class="h-6 flex flex-items-center lh-6">
-                  <SvgIcon v-if="data.icon" :name="data.icon" class="mr-1" />
+                  <KIcon v-if="data.icon" :name="data.icon" class="mr-1" />
                   <span>{{ getFieldNames.label ? data[getFieldNames.label] : node.label }}</span>
                 </span>
               </slot>

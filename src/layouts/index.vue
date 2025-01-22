@@ -185,7 +185,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING
           <Topbar />
           <div class="main">
             <div v-show="settingsStore.mainPageMaximizeStatus" class="exit-main-page-maximize" @click="settingsStore.setMainPageMaximize()">
-              <SvgIcon name="i-ri:logout-box-line" />
+              <KIcon name="i-ri:logout-box-line" />
             </div>
             <RouterView v-slot="{ Component, route }">
               <Transition :name="settingsStore.settings.mainPage.enableTransition ? settingsStore.settings.mainPage.transitionMode : ''" mode="out-in">
@@ -207,7 +207,7 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING
     <HotkeysIntro />
     <template v-if="enableAppSetting">
       <div class="app-setting" @click="eventBus.emit('global-app-setting-toggle')">
-        <SvgIcon name="i-uiw:setting-o" class="icon" />
+        <KIcon name="i-uiw:setting-o" class="icon" />
       </div>
       <AppSetting />
     </template>

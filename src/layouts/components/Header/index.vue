@@ -62,7 +62,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
                 }" :title="generateI18nTitle(item.meta?.title)" @click="switchTo(index)"
               >
                 <div class="inline-flex flex-1 items-center justify-center gap-1">
-                  <SvgIcon
+                  <KIcon
                     v-if="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)"
                     :name="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)!"
                     class="menu-item-container-icon transition-transform group-hover-scale-120"

@@ -141,7 +141,7 @@ onUnmounted(() => {
 <template>
   <div>
     <KButton variant="ghost" size="icon" @click="handleLock">
-      <SvgIcon name="i-ri:lock-line" :size="16" />
+      <KIcon name="i-ri:lock-line" :size="16" />
     </KButton>
     <KModal :fullscreen="true" :header="false" :footer="false" :close-on-press-escape="false" :close-on-click-modal="false" :closable="false" :fullscreen-button="false" class="lock-drawer border-none">
       <div class="screen-lock">
@@ -154,7 +154,7 @@ onUnmounted(() => {
         <div class="screen-lock-content">
           <div class="screen-lock-content-title">
             <img width="180px" :src="userStore.avatar" alt="">
-            <SvgIcon name="i-ri:lock-2-line" class="i-ri:lock-2-line" />
+            <KIcon name="i-ri:lock-2-line" class="i-ri:lock-2-line" />
             {{ t(title) }} {{ t('屏幕已锁定') }}
           </div>
           <div class="screen-lock-content-form">
@@ -175,7 +175,7 @@ onUnmounted(() => {
                   type="primary"
                   @click="handleUnLock"
                 >
-                  <SvgIcon
+                  <KIcon
                     name="i-ri:rotate-lock-2-line"
                     class="i-ri:rotate-lock-2-line"
                   />

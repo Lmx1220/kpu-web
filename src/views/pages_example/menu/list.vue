@@ -211,13 +211,13 @@ function onDel(row: any) {
             <ElFormItem>
               <ElButton type="primary" @click="getDataList()">
                 <template #icon>
-                  <SvgIcon name="i-ep:search" />
+                  <KIcon name="i-ep:search" />
                 </template>
                 筛选
               </ElButton>
               <ElButton link @click="toggle">
                 <template #icon>
-                  <SvgIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                  <KIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
                 </template>
                 {{ fold ? '展开' : '收起' }}
               </ElButton>
@@ -229,7 +229,7 @@ function onDel(row: any) {
       <ElSpace>
         <ElButton type="primary" @click="onAdd()">
           <template #icon>
-            <SvgIcon name="ep:plus" />
+            <KIcon name="ep:plus" />
           </template>
           {{ t('common.title.addRoot') }}
         </ElButton>

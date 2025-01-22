@@ -41,21 +41,21 @@ function todoMinus() {
     <PageHeader title="通知中心" content="本页面仅模拟右上角通知数变化，具体业务逻辑请到 /src/store/modules/notification.ts 文件中编写" />
     <PageMain title="消息">
       <HButton @click="messagePlus">
-        <SvgIcon name="i-ep:plus" />
+        <KIcon name="i-ep:plus" />
         1
       </HButton>
       <HButton ml-2 @click="messageMinus">
-        <SvgIcon name="i-ep:minus" />
+        <KIcon name="i-ep:minus" />
         1
       </HButton>
     </PageMain>
     <PageMain title="待办">
       <HButton @click="todoPlus">
-        <SvgIcon name="i-ep:plus" />
+        <KIcon name="i-ep:plus" />
         1
       </HButton>
       <HButton ml-2 @click="todoMinus">
-        <SvgIcon name="i-ep:minus" />
+        <KIcon name="i-ep:minus" />
         1
       </HButton>
     </PageMain>

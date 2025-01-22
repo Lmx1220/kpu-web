@@ -14,15 +14,15 @@ const toggle = ref(false)
     <div class="flex flex-col flex-wrap gap-4 px-4 lg-flex-row">
       <KPageMain title="Badge">
         <KBadge :value="true">
-          <SvgIcon name="i-ri:notification-3-line" />
+          <KIcon name="i-ri:notification-3-line" />
         </KBadge>
 
         <KBadge :value="99">
-          <SvgIcon name="i-ri:notification-3-line" />
+          <KIcon name="i-ri:notification-3-line" />
         </KBadge>
 
         <KBadge value="噢">
-          <SvgIcon name="i-ri:notification-3-line" />
+          <KIcon name="i-ri:notification-3-line" />
         </KBadge>
       </KPageMain>
       <KPageMain title="Button">
@@ -60,7 +60,7 @@ const toggle = ref(false)
         <KPopover>
           <div class="flex-center">
             下拉面板
-            <SvgIcon name="i-ep:caret-bottom" />
+            <KIcon name="i-ep:caret-bottom" />
           </div>
           <template #panel>
             <div class="h-30 w-60 flex items-center justify-center">
@@ -84,7 +84,7 @@ const toggle = ref(false)
         >
           <div class="flex-center">
             下拉菜单
-            <SvgIcon name="i-ep:caret-bottom" />
+            <KIcon name="i-ep:caret-bottom" />
           </div>
         </KDropdown>
       </KPageMain>
@@ -128,7 +128,7 @@ const toggle = ref(false)
       </KPageMain>
       <PageMain title="Tooltip">
         <HTooltip text="注意噢！">
-          <SvgIcon name="i-ri:question-line" />
+          <KIcon name="i-ri:question-line" />
         </HTooltip>
       </PageMain>
     </div>

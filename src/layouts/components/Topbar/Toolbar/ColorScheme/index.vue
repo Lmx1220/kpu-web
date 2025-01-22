@@ -39,7 +39,7 @@ function toggleColorScheme(event: MouseEvent) {
 <template>
   <KPopover class="min-w-auto flex-center cursor-pointer px-2 py-1">
     <KButton variant="ghost" size="icon" @click="toggleColorScheme">
-      <SvgIcon
+      <KIcon
         :name="{
           'light': 'i-ri:sun-line',
           'dark': 'i-ri:moon-line',

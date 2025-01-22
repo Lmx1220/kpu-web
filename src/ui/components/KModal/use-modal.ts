@@ -12,8 +12,8 @@ import {
   ref,
 } from 'vue'
 
-import KpuModal from './index.vue'
 import { ModalApi } from './modal-api'
+import KpuModal from './modal.vue'
 
 const USER_MODAL_INJECT_KEY = Symbol('KPU_MODAL_INJECT')
 

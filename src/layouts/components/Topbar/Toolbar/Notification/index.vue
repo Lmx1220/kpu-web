@@ -15,7 +15,7 @@ notificationStore.init()
   <KPopover class="p-0">
     <KButton variant="ghost" size="icon" class="animation">
       <KBadge :value="notificationStore.total > 9 ? true : notificationStore.total">
-        <SvgIcon name="i-ri:notification-3-line" :size="16" class="icon" />
+        <KIcon name="i-ri:notification-3-line" :size="16" class="icon" />
       </KBadge>
     </KButton>
     <template #panel>

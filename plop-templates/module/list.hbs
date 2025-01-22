@@ -224,7 +224,7 @@ function onDel(row?: any) {
             <el-form-item>
               <el-button type="primary" @click="currentChange()">
                 <template #icon>
-                  <SvgIcon name="ep:search"/>
+                  <KIcon name="ep:search"/>
                 </template>
                 筛选
               </el-button>
@@ -233,7 +233,7 @@ function onDel(row?: any) {
               </el-button>
               <el-button type="primary" link @click="data.searchFold = !fold">
                 <template #icon>
-                  <SvgIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'"/>
+                  <KIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'"/>
                 </template>
                 \{{ fold ? '展开' : '收起' }}
               </el-button>
@@ -245,13 +245,13 @@ function onDel(row?: any) {
       <el-space wrap>
         <el-button type="primary" size="default" @click="onCreate">
           <template #icon>
-            <SvgIcon name="ep:plus"/>
+            <KIcon name="ep:plus"/>
           </template>
           新增
         </el-button>
         <el-button size="default" :disabled="!data.batch.selectionDataList.length" type="danger" @click="onDel()">
           <template #icon>
-            <SvgIcon name="ep:delete"/>
+            <KIcon name="ep:delete"/>
           </template>
           删除
         </el-button>

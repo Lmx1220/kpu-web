@@ -15,7 +15,7 @@ function handleClick() {
 
 <template>
   <KButton variant="ghost" size="icon" @click="handleClick" @animationend="isAnimating = false">
-    <SvgIcon name="i-iconoir:refresh-double" :size="16" />
+    <KIcon name="i-iconoir:refresh-double" :size="16" />
   </KButton>
 </template>
 

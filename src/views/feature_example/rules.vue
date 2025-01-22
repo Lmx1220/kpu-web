@@ -500,7 +500,7 @@ function open(url: string) {
     <KPageHeader title="常用正则" content="正则来源于 Github 上 any-rule 项目">
       <ElButton @click="open('https://github.com/any86/any-rule')">
         <template #icon>
-          <SvgIcon name="i-ep:link" />
+          <KIcon name="i-ep:link" />
         </template>
         访问 any-rule
       </ElButton>

@@ -41,7 +41,7 @@ function openAutoHeightDrawer() {
     <kPageMain class="kpu-j-vxe-table">
       <el-button @click="openAutoHeightModal">
         打开Modal
-        <SvgIcon name="i-mdi:draw" />
+        <KIcon name="i-mdi:draw" />
       </el-button>
       <el-button @click="openAutoHeightDrawer">
         打开Drawer
