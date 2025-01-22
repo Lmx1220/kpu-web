@@ -1,23 +1,26 @@
 <script setup lang="ts">
+import { useKpuDrawer } from '@/ui/components/KDrawer'
 import hotkeys from 'hotkeys-js'
 
 defineOptions({
   name: 'KSystemInfo',
 })
 
-const isShow = ref(false)
+// const isShow = ref(false)
 
 const { pkg, lastBuildTime } = __SYSTEM_INFO__
-
+const [KDrawer, drawerApi] = useKpuDrawer({
+  // zIndex: 2000,
+})
 onMounted(() => {
   hotkeys('command+i, ctrl+i', () => {
-    isShow.value = true
+    drawerApi.open()
   })
 })
 </script>
 
 <template>
-  <KDrawer v-model="isShow" title="系统信息" :footer="false">
+  <KDrawer title="系统信息" :closable="false" :footer="false">
     <div v-if="pkg.version">
       <KDivider>
         系统信息

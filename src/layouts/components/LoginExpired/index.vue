@@ -1,15 +1,21 @@
 <script setup lang="ts">
+import { useKpuModal } from '@/ui/components/KModal/use-modal.ts'
 import eventBus from '@/utils/eventBus'
 import LoginAgainForm from './LoginAgainForm.vue'
 
+const [KModal, modalApi] = useKpuModal({
+  closable: false,
+  closeOnPressEscape: false,
+  closeOnClickModal: false,
+})
 const open = ref(false)
 onMounted(() => {
   eventBus.on('global-login-again-visible', () => {
-    open.value = true
+    modalApi.open()
   })
 })
 function onAfterLogin() {
-  open.value = false
+  modalApi.close()
 }
 </script>
 
