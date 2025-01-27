@@ -1,19 +1,19 @@
-import axios from 'axios'
-import type { AxiosInstance, AxiosResponse } from 'axios'
-import { clone } from 'lodash-es'
-import Message from 'vue-m-message'
-import { Base64 } from 'js-base64'
-import HttpRequest from './request'
-import useUserStore from '@/store/modules/user'
-import { AxiosRetry } from '@/api/helper/axiosRetry'
-import { checkStatus } from '@/api/helper/checkStatus'
-import { joinTimestamp } from '@/api/helper/joinTimestamp'
-import { formatRequestDate } from '@/api/helper/formatRequestDate'
-import { isEmpty, isNull, isString, isUnDef } from '@/util/is'
 import type { RequestOptions, Result } from '#/axios'
 import type { AxiosTransform, CreateAxiosOptions } from '@/api/request/axiosTransform'
+import type { AxiosInstance, AxiosResponse } from 'axios'
+import { AxiosRetry } from '@/api/helper/axiosRetry'
+import { checkStatus } from '@/api/helper/checkStatus'
+import { formatRequestDate } from '@/api/helper/formatRequestDate'
+import { joinTimestamp } from '@/api/helper/joinTimestamp'
 import { ContentTypeEnum, RequestEnum, ResultEnum } from '@/enums/httpEnum'
+import useUserStore from '@/store/modules/user'
 import { deepMerge, setObjToUrlParams } from '@/util'
+import { isEmpty, isNull, isString, isUnDef } from '@/util/is'
+import axios from 'axios'
+import { Base64 } from 'js-base64'
+import { clone } from 'lodash-es'
+import Message from 'vue-m-message'
+import HttpRequest from './request'
 
 /**
  * @description: 数据处理，方便区分多种处理方式
@@ -168,8 +168,8 @@ const transform: AxiosTransform = {
         : token
     }
     // 添加客户端信息
-    const clientId = 'kpu_web_pro'
-    const clientSecret = 'kpu_web_pro_secret';
+    const clientId = 'kpu_web'
+    const clientSecret = 'kpu_web_secret';
 
     (config as Recordable).headers.Authorization = `${Base64.encode(
       `${clientId}:${clientSecret}`,
@@ -243,7 +243,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     {
       // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
       // authentication schemes，e.g: Bearer
-      authenticationScheme: 'Bearer ',
+      authenticationScheme: '',
       // authenticationScheme: '',
       timeout: 10 * 1000 * 60, // 10 * 1000 * 60 = 10分钟
       headers: {

@@ -62,39 +62,41 @@ const name = [{
     title: '管理员管理',
     i18n: 'route.general.manager.root'
   },
-  children: [{
-    path: '',
-    name: 'pagesExampleGeneralManagerList',
-    meta: {
-      title: '管理员列表',
-      i18n: 'route.general.manager.list',
-      menu: false,
-      breadcrumb: false,
-      cache: ['pagesExampleGeneralManagerCreate', 'pagesExampleGeneralManagerEdit']
-    }
-  }, {
-    path: 'detail',
-    name: 'pagesExampleGeneralManagerCreate',
-    meta: {
-      title: '新增管理员',
-      i18n: 'route.general.manager.create',
-      menu: false,
-      activeMenu: '/pages_example/general/manager',
-      cache: true,
-      noCache: 'pagesExampleGeneralManagerList'
-    }
-  }, {
-    path: 'detail/:id',
-    name: 'pagesExampleGeneralManagerEdit',
-    meta: {
-      title: '编辑管理员',
-      i18n: 'route.general.manager.edit',
-      menu: false,
-      activeMenu: '/pages_example/general/manager',
-      cache: true,
-      noCache: 'pagesExampleGeneralManagerList'
-    }
-  }]
+  children: [
+    {
+      path: '',
+      name: 'pagesExampleGeneralManagerList',
+      meta: {
+        title: '管理员列表',
+        i18n: 'route.general.manager.list',
+        menu: false,
+        breadcrumb: false,
+        cache: ['pagesExampleGeneralManagerCreate', 'pagesExampleGeneralManagerEdit']
+      }
+    },
+    {
+      path: 'detail',
+      name: 'pagesExampleGeneralManagerCreate',
+      meta: {
+        title: '新增管理员',
+        i18n: 'route.general.manager.create',
+        menu: false,
+        activeMenu: '/pages_example/general/manager',
+        cache: true,
+        noCache: 'pagesExampleGeneralManagerList'
+      }
+    }, {
+      path: 'detail/:id',
+      name: 'pagesExampleGeneralManagerEdit',
+      meta: {
+        title: '编辑管理员',
+        i18n: 'route.general.manager.edit',
+        menu: false,
+        activeMenu: '/pages_example/general/manager',
+        cache: true,
+        noCache: 'pagesExampleGeneralManagerList'
+      }
+    }]
 }, {
   path: 'menu',
   name: 'pagesExampleGeneralMenu',

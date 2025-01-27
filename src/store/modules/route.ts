@@ -235,7 +235,7 @@ const useRouteStore = defineStore(
       try {
         const res = await api.get<any>({
           url: '/anyone/visible/resource',
-          params: { type: 'KPU_WEB_PRO_FANTASTIC' },
+          params: { type: 'KPU_WEB_FANTASTIC' },
         // noLoading: true,
         })
         // 设置 routes 数据
