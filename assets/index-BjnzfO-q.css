@@ -1,0 +1,9 @@
+
+/**
+ * 由 admin 提供技术支持
+ * Powered by admin
+ * 代码仓库
+ * Github https://github.com/Lmx1220/kpu-web
+ */
+    
+.smart-fixed-block[data-v-d38c2aa0]{position:fixed;inset-inline:50% 0;z-index:1000;width:calc(100% - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));padding-right:var(--scrollbar-width, 0);transition:width .3s,max-width .3s,transform .3s;transform:translate(-50%) translate(calc(var(--g-main-sidebar-actual-width) / 2)) translate(calc(var(--g-sub-sidebar-actual-width) / 2))}.smart-fixed-block.top[data-v-d38c2aa0]{top:var(--g-header-actual-height)}.smart-fixed-block.bottom[data-v-d38c2aa0]{bottom:0}[data-mode=mobile] .smart-fixed-block[data-v-d38c2aa0]{width:100%!important;transform:translate(-50%)!important}
