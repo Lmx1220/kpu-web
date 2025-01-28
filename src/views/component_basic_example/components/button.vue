@@ -64,32 +64,32 @@
     <ElRow>
       <ElButton circle>
         <template #icon>
-          <KIcon name="i-ep:search" />
+          <KpuIcon name="i-ep:search" />
         </template>
       </ElButton>
       <ElButton type="primary" circle>
         <template #icon>
-          <KIcon name="i-ep:edit" />
+          <KpuIcon name="i-ep:edit" />
         </template>
       </ElButton>
       <ElButton type="success" circle>
         <template #icon>
-          <KIcon name="i-ep:check" />
+          <KpuIcon name="i-ep:check" />
         </template>
       </ElButton>
       <ElButton type="info" circle>
         <template #icon>
-          <KIcon name="i-ep:message" />
+          <KpuIcon name="i-ep:message" />
         </template>
       </ElButton>
       <ElButton type="warning" circle>
         <template #icon>
-          <KIcon name="i-ep:star" />
+          <KpuIcon name="i-ep:star" />
         </template>
       </ElButton>
       <ElButton type="danger" circle>
         <template #icon>
-          <KIcon name="i-ep:delete" />
+          <KpuIcon name="i-ep:delete" />
         </template>
       </ElButton>
     </ElRow>
@@ -162,56 +162,56 @@
     </ElDivider>
     <ElButton type="primary">
       <template #icon>
-        <KIcon name="i-ep:edit" />
+        <KpuIcon name="i-ep:edit" />
       </template>
     </ElButton>
     <ElButton type="primary">
       <template #icon>
-        <KIcon name="i-ep:share" />
+        <KpuIcon name="i-ep:share" />
       </template>
     </ElButton>
     <ElButton type="primary">
       <template #icon>
-        <KIcon name="i-ep:delete" />
+        <KpuIcon name="i-ep:delete" />
       </template>
     </ElButton>
     <ElButton type="primary">
       <template #icon>
-        <KIcon name="i-ep:search" />
+        <KpuIcon name="i-ep:search" />
       </template>
       搜索
     </ElButton>
     <ElButton type="primary">
       上传
-      <KIcon name="i-ep:upload" class="el-icon--right" />
+      <KpuIcon name="i-ep:upload" class="el-icon--right" />
     </ElButton>
     <ElDivider content-position="left">
       按钮组
     </ElDivider>
     <ElButtonGroup style="margin-right: 10px;">
       <ElButton type="primary">
-        <KIcon name="i-ep:arrow-left" class="el-icon--left" />
+        <KpuIcon name="i-ep:arrow-left" class="el-icon--left" />
         上一页
       </ElButton>
       <ElButton type="primary">
         下一页
-        <KIcon name="i-ep:arrow-right" class="el-icon--right" />
+        <KpuIcon name="i-ep:arrow-right" class="el-icon--right" />
       </ElButton>
     </ElButtonGroup>
     <ElButtonGroup>
       <ElButton type="primary">
         <template #icon>
-          <KIcon name="i-ep:edit" />
+          <KpuIcon name="i-ep:edit" />
         </template>
       </ElButton>
       <ElButton type="primary">
         <template #icon>
-          <KIcon name="i-ep:share" />
+          <KpuIcon name="i-ep:share" />
         </template>
       </ElButton>
       <ElButton type="primary">
         <template #icon>
-          <KIcon name="i-ep:delete" />
+          <KpuIcon name="i-ep:delete" />
         </template>
       </ElButton>
     </ElButtonGroup>

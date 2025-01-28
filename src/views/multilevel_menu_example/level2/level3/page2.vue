@@ -5,8 +5,8 @@ meta:
 
 <template>
   <div>
-    <KPageMain>
+    <KpuPageMain>
       多级导航2-2-2
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

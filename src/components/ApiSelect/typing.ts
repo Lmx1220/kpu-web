@@ -1,7 +1,8 @@
+import type { AnyFunction } from '#/index'
 import type { ElSelect } from 'element-plus'
 
 export interface ApiSelectProps {
-  api: PromiseFn
+  api: AnyFunction
   params?: any
   defaultValue?: string | number | boolean | undefined
   resultField?: string
@@ -9,7 +10,7 @@ export interface ApiSelectProps {
   valueField?: string
   showSearch?: boolean
   numberToString?: boolean
-  afterFetch?: Fn | null
+  afterFetch?: AnyFunction | null
   allData?: boolean
   filterOption?: (query: string, option: any) => boolean
   componentProps?: Omit<InstanceType<typeof ElSelect>['$props'], 'modelValue'>

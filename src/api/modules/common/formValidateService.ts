@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig } from 'axios'
 import type { ConstraintInfo, FieldValidatorDesc } from './model/formValidateModel'
-import defHttp from '@/api'
+import { requestClient } from '@/api'
 import dateUtil from '@/utils/dayjs'
 // import type { VxeTableDefines, VxeTablePropTypes } from 'vxe-table'
 import { toast } from 'vue-sonner'
@@ -383,7 +383,7 @@ export async function getValidateRules(Api: AxiosRequestConfig, customRules?: Pa
         return resolve(ruleMap.get(key))
       }
 
-      const res = await defHttp.request<FieldValidatorDesc[]>({ ...formValidateApi })
+      const res = await requestClient.request<FieldValidatorDesc[]>(formValidateApi.url, { method: formValidateApi.method })
       if (res) {
         const formSchemaRules = transformationRules(res)
         const map = enhanceCustomRules(formSchemaRules, customRules)
@@ -429,7 +429,7 @@ export async function getValidateRuleObj(Api: AxiosRequestConfig, customRules?: 
         return resolve(ruleObjMap.get(key))
       }
 
-      const res = await defHttp.request<FieldValidatorDesc[]>({ ...formValidateApi })
+      const res = await requestClient.request<FieldValidatorDesc[]>(formValidateApi.url, { method: formValidateApi.method })
       if (res) {
         const formSchemaRules = transformationRules(res)
         const map = enhanceCustomRules(formSchemaRules, customRules)

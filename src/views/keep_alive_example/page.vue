@@ -47,8 +47,8 @@ onBeforeRouteLeave((to, from) => {
 
 <template>
   <div>
-    <KPageHeader title="页面缓存" content="除了可以在路由里配置页面是否需要缓存外，你也可以不使用框架提供的方法，而是在页面里自行实现。" />
-    <KPageMain>
+    <KpuPageHeader title="页面缓存" content="除了可以在路由里配置页面是否需要缓存外，你也可以不使用框架提供的方法，而是在页面里自行实现。" />
+    <KpuPageMain>
       <div class="block">
         <ElSwitch v-model="openKeepAlive" active-text="开启缓存" inactive-text="关闭缓存" />
       </div>
@@ -63,7 +63,7 @@ onBeforeRouteLeave((to, from) => {
           进入下级路由页面
         </ElButton>
       </div>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>
 

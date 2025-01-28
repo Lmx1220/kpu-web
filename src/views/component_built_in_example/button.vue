@@ -8,31 +8,31 @@ enabled: false
 
 <template>
   <div>
-    <KPageHeader title="按钮" description="KButton" />
-    <KPageMain>
+    <KpuPageHeader title="按钮" description="KpuButton" />
+    <KpuPageMain>
       <div class="flex gap-4">
-        <KButton>
+        <KpuButton>
           按钮
-        </KButton>
-        <KButton variant="destructive">
+        </KpuButton>
+        <KpuButton variant="destructive">
           按钮
-        </KButton>
-        <KButton variant="outline">
+        </KpuButton>
+        <KpuButton variant="outline">
           按钮
-        </KButton>
-        <KButton variant="secondary">
+        </KpuButton>
+        <KpuButton variant="secondary">
           按钮
-        </KButton>
-        <KButton variant="ghost">
+        </KpuButton>
+        <KpuButton variant="ghost">
           按钮
-        </KButton>
-        <KButton variant="link">
+        </KpuButton>
+        <KpuButton variant="link">
           按钮
-        </KButton>
-        <KButton disabled>
+        </KpuButton>
+        <KpuButton disabled>
           按钮
-        </KButton>
+        </KpuButton>
       </div>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

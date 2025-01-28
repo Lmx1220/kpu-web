@@ -11,9 +11,9 @@ const total = ref(100)
 
 <template>
   <div>
-    <KPageHeader title="分页" description="KPagination" />
-    <KPageHeader>
-      <KPagination :page="page" :size="size" :total="total" @page-change="(cpage:number) => page = cpage" />
-    </KPageHeader>
+    <KpuPageHeader title="分页" description="KpuPageHeader" />
+    <KpuPageHeader>
+      <KpuPagination :page="page" :size="size" :total="total" @page-change="(cpage:number) => page = cpage" />
+    </KpuPageHeader>
   </div>
 </template>

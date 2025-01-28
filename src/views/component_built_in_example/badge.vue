@@ -8,25 +8,25 @@ enabled: false
 
 <template>
   <div>
-    <KPageHeader title="徽章" description="KBadge" />
-    <KPageMain>
+    <KpuPageHeader title="徽章" description="KpuBadge" />
+    <KpuPageMain>
       <div class="flex gap-8">
-        <KBadge :value="true">
-          <KIcon name="i-ri:notification-3-line" />
-        </KBadge>
-        <KBadge :value="99">
-          <KIcon name="i-ri:notification-3-line" />
-        </KBadge>
-        <KBadge value="噢">
-          <KIcon name="i-ri:notification-3-line" />
-        </KBadge>
-        <KBadge value="9" variant="secondary">
-          <KIcon name="i-ri:notification-3-line" />
-        </KBadge>
-        <KBadge value="9" variant="destructive">
-          <KIcon name="i-ri:notification-3-line" />
-        </KBadge>
+        <KpuBadge :value="true">
+          <KpuIcon name="i-ri:notification-3-line" />
+        </KpuBadge>
+        <KpuBadge :value="99">
+          <KpuIcon name="i-ri:notification-3-line" />
+        </KpuBadge>
+        <KpuBadge value="噢">
+          <KpuIcon name="i-ri:notification-3-line" />
+        </KpuBadge>
+        <KpuBadge value="9" variant="secondary">
+          <KpuIcon name="i-ri:notification-3-line" />
+        </KpuBadge>
+        <KpuBadge value="9" variant="destructive">
+          <KpuIcon name="i-ri:notification-3-line" />
+        </KpuBadge>
       </div>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

@@ -61,9 +61,9 @@ function handleBackToTop() {
 <template>
   <Teleport to="body">
     <Transition v-bind="transitionClass">
-      <KButton v-if="scrollTop >= 200" variant="outline" size="icon" class="fixed inset-b-4 z-1000 h-12 w-12 rounded-full transition-all -inset-e-9" :class="{ 'inset-e-3!': show }" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave" @click="handleBackToTop">
-        <KIcon name="i-icon-park-outline:to-top-one" :size="24" />
-      </KButton>
+      <KpuButton v-if="scrollTop >= 200" variant="outline" size="icon" class="fixed inset-b-4 z-1000 h-12 w-12 rounded-full transition-all -inset-e-9" :class="{ 'inset-e-3!': show }" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave" @click="handleBackToTop">
+        <KpuIcon name="i-icon-park-outline:to-top-one" :size="24" />
+      </KpuButton>
     </Transition>
   </Teleport>
 </template>

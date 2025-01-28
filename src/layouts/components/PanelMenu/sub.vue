@@ -148,7 +148,7 @@ function handleMouseenters() {
   <Teleport v-if="hasChildren" to="body" :disabled="level !== 0">
     <template v-if="level === 0">
       <Transition v-bind="transitionClass" v-on="transitionEvent">
-        <KScrollArea
+        <KpuScrollArea
           v-show="opened" ref="subMenuRef" mask class="sub-menu z-3000 w-150 border rounded-lg bg-[var(--g-sub-sidebar-bg)] shadow-xl fixed! 2xl:w-200"
           @mouseenter="handleMouseenters"
           @mouseleave="handleMouseleave"
@@ -165,7 +165,7 @@ function handleMouseenters() {
               />
             </div>
           </div>
-        </KScrollArea>
+        </KpuScrollArea>
       </Transition>
     </template>
     <template v-else>

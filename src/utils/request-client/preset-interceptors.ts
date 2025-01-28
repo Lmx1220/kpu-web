@@ -1,7 +1,7 @@
 import type { RequestClient } from './request-client'
 import type { MakeErrorMessageFn, ResponseInterceptorConfig } from './types'
+import { $t } from '@/locales/utils'
 import { isFunction } from '@/utils/is'
-
 import axios from 'axios'
 
 export function defaultResponseInterceptor({
@@ -19,7 +19,6 @@ export function defaultResponseInterceptor({
   return {
     fulfilled: (response) => {
       const { config, data: responseData, status } = response
-
       if (config.responseReturn === 'raw') {
         return response
       }
@@ -116,7 +115,7 @@ export function errorMessageResponseInterceptor(makeErrorMessage?: MakeErrorMess
       if (axios.isCancel(error)) {
         return Promise.reject(error)
       }
-      const { t: $t } = useI18n()
+
       const err: string = error?.toString?.() ?? ''
       let errMsg = ''
       if (err?.includes('Network Error')) {

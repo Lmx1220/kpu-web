@@ -1,32 +1,28 @@
 <script setup lang="ts">
 import type { LocaleType } from '@/types/config'
-import { getElementLocales, useLocale } from '@/locales/useLocale.ts'
+import { SUPPORT_LANGUAGES } from '@/constants'
+import { loadLocaleMessages } from '@/locales/utils.ts'
+import useSettingsStore from '@/store/modules/settings'
 
 defineOptions({
   name: 'I18nSelector',
 })
 
 // 切换语言工具
-// const { locale } = useI18n()
-const { changeLocale, getLocale } = useLocale()
-const locales = computed(() => getElementLocales())
+const settingsStore = useSettingsStore()
 
-const localesOptions = computed(() => Object.keys(locales.value).map(item => ({ label: locales.value[item].labelName, disabled: getLocale.value === item, handle: () => languageCommand(item) })))
-// 生成国际化标题
-// const i18nTitle = inject('i18nTitle')!
+const localesOptions = computed(() => SUPPORT_LANGUAGES.map(item => ({ label: item.label, disabled: settingsStore.settings.app.defaultLang === item.value, handle: () => languageCommand(item.value) })))
 
-async function languageCommand(lang: LocaleType | string) {
-  // 切换语言
-  await changeLocale(lang as LocaleType)
-  // 生成国际化标题
-  // i18nTitle('route.login', 'Login')
+async function languageCommand(lang: LocaleType) {
+  settingsStore.setDefaultLang(lang)
+  loadLocaleMessages(lang)
 }
 </script>
 
 <template>
-  <KDropdown
+  <KpuDropdown
     :items="[localesOptions]"
   >
     <slot />
-  </KDropdown>
+  </KpuDropdown>
 </template>

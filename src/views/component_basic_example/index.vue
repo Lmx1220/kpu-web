@@ -38,7 +38,7 @@ function open(url: string) {
 
 <template>
   <div>
-    <KPageHeader title="基础组件">
+    <KpuPageHeader title="基础组件">
       <template #content>
         <p>框架内置 Element Plus 组件库，本页仅展示部分组件，更多组件及使用说明请查看 Element Plus 官网</p>
         <p class="mb-0">
@@ -49,17 +49,17 @@ function open(url: string) {
       </template>
       <ElButton @click="open('https://element-plus.org/#/zh-CN')">
         <template #icon>
-          <KIcon name="i-ep:link" />
+          <KpuIcon name="i-ep:link" />
         </template>
         Element Plus 官网
       </ElButton>
-    </KPageHeader>
-    <KPageMain>
+    </KpuPageHeader>
+    <KpuPageMain>
       <ElTabs type="border-card">
         <ElTabPane v-for="(item, key) in components" :key="key" :label="key">
           <component :is="item" />
         </ElTabPane>
       </ElTabs>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

@@ -8,44 +8,44 @@ meta:
 
 <template>
   <div>
-    <KPageHeader title="趋势符号">
+    <KpuPageHeader title="趋势符号">
       <template #content>
         <p>Trend</p>
         <p style="margin-bottom: 0;">
           标记上升和下降趋势。通常用绿色代表“好”，红色代表“不好”，股票涨跌场景除外
         </p>
       </template>
-    </KPageHeader>
+    </KpuPageHeader>
     <ElRow :gutter="20" style="margin: 0 10px;">
       <ElCol :md="8">
-        <KPageMain title="基础用法" style="margin: 0;">
+        <KpuPageMain title="基础用法" style="margin: 0;">
           <p>
-            <KTrend value="12.3" />
+            <KpuTrend value="12.3" />
           </p>
           <p>
-            <KTrend value="12.3" type="down" />
+            <KpuTrend value="12.3" type="down" />
           </p>
-        </KPageMain>
+        </KpuPageMain>
       </ElCol>
       <ElCol :md="8">
-        <KPageMain title="颜色反转" style="margin: 0;">
+        <KpuPageMain title="颜色反转" style="margin: 0;">
           <p>
-            <KTrend value="12.3" reverse />
+            <KpuTrend value="12.3" reverse />
           </p>
           <p>
-            <KTrend value="12.3" type="down" reverse />
+            <KpuTrend value="12.3" type="down" reverse />
           </p>
-        </KPageMain>
+        </KpuPageMain>
       </ElCol>
       <ElCol :md="8">
-        <KPageMain title="前缀后缀" style="margin: 0;">
+        <KpuPageMain title="前缀后缀" style="margin: 0;">
           <p>
-            <KTrend value="12.3" prefix="$" />
+            <KpuTrend value="12.3" prefix="$" />
           </p>
           <p>
-            <KTrend value="12.3" suffix="%" />
+            <KpuTrend value="12.3" suffix="%" />
           </p>
-        </KPageMain>
+        </KpuPageMain>
       </ElCol>
     </ElRow>
   </div>

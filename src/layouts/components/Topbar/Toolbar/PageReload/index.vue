@@ -14,9 +14,9 @@ function handleClick() {
 </script>
 
 <template>
-  <KButton variant="ghost" size="icon" @click="handleClick" @animationend="isAnimating = false">
-    <KIcon name="i-iconoir:refresh-double" :size="16" />
-  </KButton>
+  <KpuButton variant="ghost" size="icon" @click="handleClick" @animationend="isAnimating = false">
+    <KpuIcon name="i-iconoir:refresh-double" :size="16" />
+  </KpuButton>
 </template>
 
 <style scoped>

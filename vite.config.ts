@@ -30,6 +30,14 @@ export default defineConfig(({ mode, command }) => {
           rewrite: path => path.replace(/\/proxy/, ''),
         },
       },
+      warmup: {
+        // 预热文件
+        clientFiles: [
+          './index.html',
+          './src/bootstrap.ts',
+          './src/{views,layouts,router,store,api,adapter}/*',
+        ],
+      },
     },
     // 构建选项 https://cn.vitejs.dev/config/build-options
     build: {

@@ -48,8 +48,8 @@ function permissionCheck2(permissions: string[]) {
 
 <template>
   <div>
-    <KPageHeader title="权限验证" />
-    <KPageMain>
+    <KpuPageHeader title="权限验证" />
+    <KpuPageMain>
       <div v-if="!settingsStore.settings.app.enablePermission">
         请到 seeting.js 里打开权限功能，再进入该页面查看演示
       </div>
@@ -144,6 +144,6 @@ function permissionCheck2(permissions: string[]) {
           </ElButtonGroup>
         </div>
       </div>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

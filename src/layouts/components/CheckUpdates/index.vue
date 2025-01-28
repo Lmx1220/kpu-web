@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { IntervalHandle } from '@/hooks/utils.ts'
+import type { IntervalHandle } from '#/index'
+import { useI18n } from '@/locales/utils'
 import useSettingsStore from '@/store/modules/settings.ts'
-import { useKpuModal } from '@/ui/components/KModal/use-modal.ts'
+import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 
 interface Props {
   // 轮训时间，分钟

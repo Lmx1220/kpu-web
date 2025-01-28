@@ -40,7 +40,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
       <component :is="useSlots('main-sidebar-top')" />
       <Logo :show-title="false" class="sidebar-logo" />
       <component :is="useSlots('main-sidebar-after-logo')" />
-      <KScrollArea :scrollbar="false" mask gradient-color="var(--g-main-sidebar-bg)" class="menu">
+      <KpuScrollArea :scrollbar="false" mask gradient-color="var(--g-main-sidebar-bg)" class="menu">
         <!-- 侧边栏模式（含主导航） -->
         <div
           v-if="settingsStore.settings.menu.mode === 'side' || settingsStore.mode === 'mobile' && settingsStore.settings.menu.mode !== 'single'"
@@ -62,7 +62,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
                 }" :title="generateI18nTitle(item.meta?.title)" @click="switchTo(index)"
               >
                 <div class="w-full inline-flex flex-1 flex-col items-center justify-center gap-1">
-                  <KIcon
+                  <KpuIcon
                     v-if="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)"
                     :name="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)!"
                     class="menu-item-container-icon transition-transform group-hover-scale-120"
@@ -96,7 +96,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
             [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
           }"
         />
-      </KScrollArea>
+      </KpuScrollArea>
       <component :is="useSlots('main-sidebar-bottom')" />
     </div>
   </Transition>

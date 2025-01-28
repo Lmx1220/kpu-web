@@ -4,9 +4,9 @@ meta:
 </route>
 
 <template>
-  <KPageMain>
+  <KpuPageMain>
     <RouterLink :to="{ name: 'breadcrumbExampleDetail2' }">
       查看详情页
     </RouterLink>
-  </KPageMain>
+  </KpuPageMain>
 </template>

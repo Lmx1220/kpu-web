@@ -9,15 +9,15 @@ const tabs = ref(1)
 
 <template>
   <div>
-    <KPageHeader title="可阅读时间" description="KTimeAgo" />
-    <KPageMain>
-      <KTimeAgo :datetime="new Date()" :tabs="tabs" />
-    </KPageMain>
-    <KPageMain title="距离 2020/10/17">
-      <KTimeAgo :datetime="new Date()" :tabs="tabs" />
-    </KPageMain>
-    <KPageMain title="显示秒，且更新间隔为1秒">
-      <KTimeAgo :datetime="new Date()" :tabs="tabs" />
-    </KPageMain>
+    <KpuPageHeader title="可阅读时间" description="KpuTimeAgo" />
+    <KpuPageMain>
+      <KpuTimeAgo :datetime="new Date()" :tabs="tabs" />
+    </KpuPageMain>
+    <KpuPageMain title="距离 2020/10/17">
+      <KpuTimeAgo :datetime="new Date()" :tabs="tabs" />
+    </KpuPageMain>
+    <KpuPageMain title="显示秒，且更新间隔为1秒">
+      <KpuTimeAgo :datetime="new Date()" :tabs="tabs" />
+    </KpuPageMain>
   </div>
 </template>

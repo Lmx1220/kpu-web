@@ -10,16 +10,16 @@ const rotate = ref(0)
 
 <template>
   <div>
-    <KPageHeader title="SVG Icon" content="可以使用自定义的 SVG 图标" />
-    <KPageMain>
+    <KpuPageHeader title="SVG Icon" content="可以使用自定义的 SVG 图标" />
+    <KpuPageMain>
       <p>单色 SVG Icon</p>
-      <KIcon name="example-emotion-line" :size="48" :flip="flip" :rotate="rotate" />
-      <KIcon name="example-emotion-laugh-line" :size="48" :flip="flip" :rotate="rotate" />
-      <KIcon name="example-emotion-unhappy-line" :size="48" :flip="flip" :rotate="rotate" />
+      <KpuIcon name="example-emotion-line" :size="48" :flip="flip" :rotate="rotate" />
+      <KpuIcon name="example-emotion-laugh-line" :size="48" :flip="flip" :rotate="rotate" />
+      <KpuIcon name="example-emotion-unhappy-line" :size="48" :flip="flip" :rotate="rotate" />
       <p>彩色 SVG Icon</p>
-      <KIcon name="example-crown" :size="48" :flip="flip" :rotate="rotate" />
-      <KIcon name="example-star" :size="48" :flip="flip" :rotate="rotate" />
-      <KIcon name="example-vip" :size="48" :flip="flip" :rotate="rotate" />
+      <KpuIcon name="example-crown" :size="48" :flip="flip" :rotate="rotate" />
+      <KpuIcon name="example-star" :size="48" :flip="flip" :rotate="rotate" />
+      <KpuIcon name="example-vip" :size="48" :flip="flip" :rotate="rotate" />
       <div>
         <p>翻转：</p>
         <ElRadioGroup v-model="flip">
@@ -44,6 +44,6 @@ const rotate = ref(0)
         <li>上 <a href="https://www.iconfont.cn/" target="_blank">Iconfont</a> 下载需要的 svg 图标</li>
         <li>将 svg 文件放入 ./src/assets/svg/icons 目录下，文件名即为 name</li>
       </ol>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

@@ -7,9 +7,9 @@ const router = useRouter()
 </script>
 
 <template>
-  <KPageMain>
-    <KButton @click="router.go(-1)">
+  <KpuPageMain>
+    <KpuButton @click="router.go(-1)">
       返回
-    </KButton>
-  </KPageMain>
+    </KpuButton>
+  </KpuPageMain>
 </template>

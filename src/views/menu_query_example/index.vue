@@ -4,9 +4,9 @@ const route = useRoute()
 
 <template>
   <div>
-    <KPageHeader title="带参导航" />
-    <KPageMain>
+    <KpuPageHeader title="带参导航" />
+    <KpuPageMain>
       {{ route.query }}
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

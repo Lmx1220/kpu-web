@@ -49,7 +49,7 @@ const apps = ref([{
 <template>
   <ElCard class="recommendation" :body-style="{ height: '100%' }">
     <template #header>
-      <KIcon name="ri:reserved-line" />
+      <KpuIcon name="ri:reserved-line" />
       经营建议
     </template>
     <ElRow :gutter="20">
@@ -58,7 +58,7 @@ const apps = ref([{
           <a :href="href" class="cursor-pointer no-underline">
             <div class="icon-panel h-17.5 p-2.5">
               <el-badge :value="item.value" class="item">
-                <KIcon :name="item.icon" />
+                <KpuIcon :name="item.icon" />
               </el-badge>
               <div class="icon-panel-title">
                 {{ item.title }}

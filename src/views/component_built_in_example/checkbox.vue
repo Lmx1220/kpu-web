@@ -9,14 +9,14 @@ const checked = ref(false)
 
 <template>
   <div>
-    <KPageHeader title="复选框" description="KCheckbox" />
-    <KPageMain>
+    <KpuPageHeader title="复选框" description="KCheckbox" />
+    <KpuPageMain>
       <div class="flex gap-4">
-        <KCheckbox v-model="checked">
+        <KpuCheckbox v-model="checked">
           复选框
-        </KCheckbox>
+        </KpuCheckbox>
         {{ checked }}
       </div>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

@@ -2,7 +2,7 @@
 import useBingStore from '@/store/modules/bing.ts'
 import useSettingsStore from '@/store/modules/settings.ts'
 import useUserStore from '@/store/modules/user.ts'
-import { useKpuModal } from '@/ui/components/KModal/use-modal.ts'
+import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 import storage from '@/utils/storage.ts'
 import hotkeys from 'hotkeys-js'
 import { sample, shuffle } from 'lodash-es'
@@ -41,7 +41,7 @@ const title = import.meta.env.VITE_APP_TITLE
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
 
-const [KModal, modalApi] = useKpuModal({
+const [KpuModal, modalApi] = useKpuModal({
   onOpenChange(val) {
     if (settingsStore.lock !== val) {
       settingsStore.lock = val
@@ -140,10 +140,10 @@ onUnmounted(() => {
 
 <template>
   <div>
-    <KButton variant="ghost" size="icon" @click="handleLock">
-      <KIcon name="i-ri:lock-line" :size="16" />
-    </KButton>
-    <KModal :fullscreen="true" :header="false" :footer="false" :close-on-press-escape="false" :close-on-click-modal="false" :closable="false" :fullscreen-button="false" class="lock-drawer border-none">
+    <KpuButton variant="ghost" size="icon" @click="handleLock">
+      <KpuIcon name="i-ri:lock-line" :size="16" />
+    </KpuButton>
+    <KpuModal :fullscreen="true" :header="false" :footer="false" :close-on-press-escape="false" :close-on-click-modal="false" :closable="false" :fullscreen-button="false" class="lock-drawer border-none">
       <div class="screen-lock">
         <div
           id="screen-lock-background"
@@ -154,7 +154,7 @@ onUnmounted(() => {
         <div class="screen-lock-content">
           <div class="screen-lock-content-title">
             <img width="180px" :src="userStore.avatar" alt="">
-            <KIcon name="i-ri:lock-2-line" class="i-ri:lock-2-line" />
+            <KpuIcon name="i-ri:lock-2-line" class="i-ri:lock-2-line" />
             {{ t(title) }} {{ t('屏幕已锁定') }}
           </div>
           <div class="screen-lock-content-form">
@@ -169,25 +169,25 @@ onUnmounted(() => {
                   type="password"
                   @keyup.enter="handleUnLock"
                 >
-                <KButton
+                <KpuButton
                   class="form-button"
                   native-type="submit"
                   type="primary"
                   @click="handleUnLock"
                 >
-                  <KIcon
+                  <KpuIcon
                     name="i-ri:rotate-lock-2-line"
                     class="i-ri:rotate-lock-2-line"
                   />
                   {{ t('解锁') }}
-                </KButton>
+                </KpuButton>
               </div>
             </div>
           </div>
           <span @click="randomBackground">{{ t('切换壁纸') }}</span>
         </div>
       </div>
-    </KModal>
+    </KpuModal>
   </div>
 </template>
 

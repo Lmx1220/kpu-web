@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { loadingHide, loadingShow } from '@/ui/components/KLoading/index.ts'
+import { loadingHide, loadingShow } from '@/ui/components/KpuLoading/index.ts'
 
 defineOptions({
   name: 'ComponentExampleLoading',
@@ -23,8 +23,8 @@ function opens() {
 
 <template>
   <div>
-    <KPageHeader title="加载遮罩" content="KLoading" />
-    <KPageMain>
+    <KpuPageHeader title="加载遮罩" content="KLoading" />
+    <KpuPageMain>
       <ElForm>
         <ElFormItem
           label="类型"
@@ -78,6 +78,6 @@ function opens() {
       <ElButton @click="opens">
         加载 Loading（演示控制在 2 秒后关闭）
       </ElButton>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

@@ -50,11 +50,11 @@ onMounted(() => {
   <Provider>
     <RouterView v-slot="{ Component }">
       <component :is="Component" v-if="isAuth" />
-      <KNotAllowed v-else />
+      <KpuNotAllowed v-else />
     </RouterView>
-    <KToast />
-    <KNotification />
-    <KSystemInfo />
+    <KpuToast />
+    <KpuNotification />
+    <KpuSystemInfo />
     <CheckUpdates />
   </Provider>
 </template>

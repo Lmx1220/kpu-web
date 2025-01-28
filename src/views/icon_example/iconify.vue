@@ -31,23 +31,23 @@ function showInfo(iconName: string) {
 
 <template>
   <div>
-    <KPageHeader title="Iconify">
+    <KpuPageHeader title="Iconify">
       <template #content>
         本框架支持使用 Iconify 的所有图标集，以下展示部分图标集。
       </template>
-    </KPageHeader>
-    <KPageMain v-for="(icon, key) in icons" :key="key" :title="icon.info.name">
+    </KpuPageHeader>
+    <KpuPageMain v-for="(icon, key) in icons" :key="key" :title="icon.info.name">
       <div class="flex-center-start gap-2">
         <KButton v-for="(item, index) in icon.info.samples" :key="index" variant="outline" size="icon" @click="showInfo(`${icon.prefix}:${item}`)">
-          <KIcon :name="`${icon.prefix}:${item}`" :size="18" />
+          <KpuIcon :name="`${icon.prefix}:${item}`" :size="18" />
         </KButton>
       </div>
-    </KPageMain>
+    </KpuPageMain>
     <ElDialog v-model="dialog.visible" :show-close="false" width="600px">
       <ElRow type="flex">
         <ElCol style="max-width: 100px;">
           <div class="icon-box">
-            <KIcon :name="dialog.iconName" />
+            <KpuIcon :name="dialog.iconName" />
           </div>
         </ElCol>
         <ElCol style="flex: 1;">
@@ -71,7 +71,7 @@ function showInfo(iconName: string) {
         </ElDivider>
         <ElButton>
           <template #icon>
-            <KIcon :name="dialog.iconName" />
+            <KpuIcon :name="dialog.iconName" />
           </template>
           Icon 按钮
         </ElButton>

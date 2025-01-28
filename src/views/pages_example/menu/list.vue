@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import crud from '@/api/modules/standardModuleExample.ts'
 import { ActionEnum } from '@/enums/commonEnum.ts'
+import { $t } from '@/locales'
 import useSettingsStore from '@/store/modules/settings.ts'
 import eventBus from '@/utils/eventBus.ts'
 import usePagination from '@/utils/usePagination.ts'
@@ -12,7 +13,7 @@ const router = useRouter()
 const tabbar = useTabbar()
 const settingsStore = useSettingsStore()
 const { pagination, getParams, onSizeChange, onCurrentChange } = usePagination()
-const { t } = useI18n()
+
 const data = ref(
   {
     loading: false,
@@ -24,7 +25,7 @@ const data = ref(
       type: undefined as any,
     },
     search: {
-      title: '',
+      productName: '',
       title2: '',
       title3: '',
       title4: '',
@@ -152,7 +153,7 @@ function onDel(row: any) {
 
 <template>
   <div :class="{ 'absolute-container': data.tableAutoHeight }">
-    <KPageHeader title="标准模块">
+    <KpuPageHeader title="标准模块">
       <template #description>
         <p>标准模块即包含 CRUD (增查改删) 操作的基础模块，开发者可通过 <ElTag>pnpm run new</ElTag> 命令快速生成一个标准模块，并在此基础上完善业务模块所需要的功能。</p>
         <p>
@@ -184,9 +185,9 @@ function onDel(row: any) {
           </el-radio-group>
         </p>
       </template>
-    </KPageHeader>
-    <KPageMain>
-      <KSearchBar class="relative" :show-toggle="false">
+    </KpuPageHeader>
+    <KpuPageMain>
+      <KpuSearchBar class="relative" :show-toggle="false">
         <template #default="{ fold, toggle }">
           <ElForm
             :model="data.search"
@@ -197,7 +198,7 @@ function onDel(row: any) {
             class="search-form"
           >
             <ElFormItem label="标题">
-              <ElInput v-model="data.search.title" placeholder="请输入标题，支持模糊查询" clearable />
+              <ElInput v-model="data.search.productName" placeholder="请输入标题，支持模糊查询" clearable />
             </ElFormItem>
             <ElFormItem v-show="fold" label="标题2">
               <ElInput v-model="data.search.title2" placeholder="请输入标题，支持模糊查询" clearable />
@@ -211,27 +212,27 @@ function onDel(row: any) {
             <ElFormItem>
               <ElButton type="primary" @click="getDataList()">
                 <template #icon>
-                  <KIcon name="i-ep:search" />
+                  <KpuIcon name="i-ep:search" />
                 </template>
                 筛选
               </ElButton>
               <ElButton link @click="toggle">
                 <template #icon>
-                  <KIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
+                  <KpuIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top'" />
                 </template>
                 {{ fold ? '展开' : '收起' }}
               </ElButton>
             </ElFormItem>
           </ElForm>
         </template>
-      </KSearchBar>
+      </KpuSearchBar>
       <ElDivider />
       <ElSpace>
         <ElButton type="primary" @click="onAdd()">
           <template #icon>
-            <KIcon name="ep:plus" />
+            <KpuIcon name="ep:plus" />
           </template>
-          {{ t('common.title.addRoot') }}
+          {{ $t('common.title.addRoot') }}
         </ElButton>
 
         <ElButton :disabled="!data.batch.selectionDataList.length">
@@ -252,7 +253,7 @@ function onDel(row: any) {
         stripe highlight-current-row border @selection-change="data.batch.selectionDataList = $event"
       >
         <el-table-column v-if="data.batch.enable" type="selection" align="center" fixed />
-        <ElTableColumn prop="title" :label="t('system.resource.title')" min-width="200" fixed="left" />
+        <ElTableColumn prop="productName" :label="$t('system.resource.title')" min-width="200" fixed="left" />
         <ElTableColumn
           align="center" fixed="right" label="操作" width="350"
         >
@@ -260,7 +261,7 @@ function onDel(row: any) {
             <ElButton link size="small" type="primary" @click="onEdit(scope.row)">
               编辑
             </ElButton>
-            <ElPopconfirm :title="t('common.tips.confirmDelete')" @confirm="onDel(scope.row)">
+            <ElPopconfirm :title="$t('common.tips.confirmDelete')" @confirm="onDel(scope.row)">
               <template #reference>
                 <ElButton link size="small" type="danger">
                   刪除
@@ -271,7 +272,7 @@ function onDel(row: any) {
         </ElTableColumn>
       </ElTable>
       <el-pagination :current-page="pagination.page" :total="pagination.total" :page-size="pagination.size" :page-sizes="pagination.sizes" :layout="pagination.layout" :hide-on-single-page="false" class="pagination" background @size-change="sizeChange" @current-change="currentChange" />
-    </KPageMain>
+    </KpuPageMain>
     <FormMode v-if="['dialog', 'drawer'].includes(data.formMode)" :id="data.formModeProps.id" v-model="data.formModeProps.visible" :type="data.formModeProps.type" :mode="data.formMode" @success="getDataList" />
   </div>
 </template>

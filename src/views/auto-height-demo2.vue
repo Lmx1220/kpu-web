@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useKpuDrawer } from '@/ui/components/KDrawer/use-drawer.ts'
+import { useKpuDrawer } from '@/ui/components/KpuDrawer/use-drawer.ts'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
 

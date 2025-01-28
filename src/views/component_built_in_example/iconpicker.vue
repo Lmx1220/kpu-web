@@ -9,27 +9,27 @@ const icon2 = ref('')
 
 <template>
   <div>
-    <KPageHeader title="图标选择器" content="KIconPicker" />
-    <KPageMain>
+    <KpuPageHeader title="图标选择器" content="KpuIconPicker" />
+    <KpuPageMain>
       <div mb4>
-        <KIconPicker v-model="icon" />
+        <KpuIconPicker v-model="icon" />
       </div>
       <div>
-        <KIconPicker v-model="icon1" />
+        <KpuIconPicker v-model="icon1" />
       </div>
-    </KPageMain>
-    <KPageMain title="尺寸">
-      <!--        <KIconPicker v-model="icon2" size="small" /> -->
-      <KIconPicker v-model="icon2">
+    </KpuPageMain>
+    <KpuPageMain title="尺寸">
+      <!--        <KpuIconPicker v-model="icon2" size="small" /> -->
+      <KpuIconPicker v-model="icon2">
         <template #default="{ icon: icon3 }">
           <div class="flex-center-start inline-flex cursor-pointer gap-2 border rounded-full px-3 py-1">
-            <KIcon v-if="icon" :name="icon3" />
+            <KpuIcon v-if="icon" :name="icon3" />
             <div v-else class="text-sm">
               {{ icon || '请选择图标' }}
             </div>
           </div>
         </template>
-      </KIconPicker>
-    </KPageMain>
+      </KpuIconPicker>
+    </KpuPageMain>
   </div>
 </template>

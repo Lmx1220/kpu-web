@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '@/locales/utils'
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from '@/ui/shadcn/ui/form'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
@@ -59,7 +60,7 @@ const onSubmit = form.handleSubmit((values) => {
       <FormField v-slot="{ componentField, errors }" name="account">
         <FormItem class="relative pb-6 space-y-0">
           <FormControl>
-            <KInput type="text" :placeholder="t('registerForm.form.account')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+            <KpuInput type="text" :placeholder="t('registerForm.form.account')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
           </FormControl>
           <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
             <FormMessage class="absolute bottom-1 text-xs" />
@@ -69,10 +70,10 @@ const onSubmit = form.handleSubmit((values) => {
       <FormField v-slot="{ componentField, value, errors }" name="password">
         <FormItem class="relative pb-6 space-y-0">
           <FormControl>
-            <KInput type="password" :placeholder="t('registerForm.form.password')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+            <KpuInput type="password" :placeholder="t('registerForm.form.password')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
           </FormControl>
           <FormDescription>
-            <KPasswordStrength :password="value" class="mt-2" />
+            <KpuPasswordStrength :password="value" class="mt-2" />
           </FormDescription>
           <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
             <FormMessage class="absolute bottom-1 text-xs" />
@@ -82,21 +83,21 @@ const onSubmit = form.handleSubmit((values) => {
       <FormField v-slot="{ componentField, errors }" name="checkPassword">
         <FormItem class="relative pb-6 space-y-0">
           <FormControl>
-            <KInput type="password" :placeholder="t('registerForm.form.checkPassword')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+            <KpuInput type="password" :placeholder="t('registerForm.form.checkPassword')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
           </FormControl>
           <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
             <FormMessage class="absolute bottom-1 text-xs" />
           </Transition>
         </FormItem>
       </FormField>
-      <KButton :loading="loading" size="lg" class="mt-4 w-full" type="submit">
+      <KpuButton :loading="loading" size="lg" class="mt-4 w-full" type="submit">
         {{ t('registerForm.form.register') }}
-      </KButton>
+      </KpuButton>
       <div class="mt-4 flex-center gap-2 text-sm">
         <span class="text-secondary-foreground op-50">  {{ t('registerForm.hasAccount') }}</span>
-        <KButton variant="link" class="h-auto p-0" @click="emits('onLogin', form.values.account)">
+        <KpuButton variant="link" class="h-auto p-0" @click="emits('onLogin', form.values.account)">
           {{ t('registerForm.login') }}
-        </KButton>
+        </KpuButton>
       </div>
     </form>
   </div>

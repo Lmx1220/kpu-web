@@ -1,3 +1,4 @@
+import { useI18n } from '@/locales/utils'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
 

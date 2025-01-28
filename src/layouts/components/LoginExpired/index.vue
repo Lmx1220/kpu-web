@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useKpuModal } from '@/ui/components/KModal/use-modal.ts'
+import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 import eventBus from '@/utils/eventBus'
 import LoginAgainForm from './LoginAgainForm.vue'
 
-const [KModal, modalApi] = useKpuModal({
+const [KpuModal, modalApi] = useKpuModal({
   closable: false,
   closeOnPressEscape: false,
   closeOnClickModal: false,
@@ -20,7 +20,7 @@ function onAfterLogin() {
 </script>
 
 <template>
-  <KModal
+  <KpuModal
     v-model="open"
     :header="false"
     :footer="false"
@@ -29,5 +29,5 @@ function onAfterLogin() {
     :close-on-press-escape="false"
   >
     <LoginAgainForm @on-after-login="onAfterLogin" />
-  </KModal>
+  </KpuModal>
 </template>

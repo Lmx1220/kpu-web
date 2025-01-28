@@ -12,16 +12,16 @@ notificationStore.init()
 </script>
 
 <template>
-  <KPopover class="p-0">
-    <KButton variant="ghost" size="icon" class="animation">
-      <KBadge :value="notificationStore.total > 9 ? true : notificationStore.total">
-        <KIcon name="i-ri:notification-3-line" :size="16" class="icon" />
-      </KBadge>
-    </KButton>
+  <KpuPopover class="p-0">
+    <KpuButton variant="ghost" size="icon" class="animation">
+      <KpuBadge :value="notificationStore.total > 99 ? true : notificationStore.total">
+        <KpuIcon name="i-ri:notification-3-line" :size="16" class="icon" />
+      </KpuBadge>
+    </KpuButton>
     <template #panel>
       <Panel />
     </template>
-  </KPopover>
+  </KpuPopover>
 </template>
 
 <style scoped>

@@ -200,7 +200,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <KPageHeader title="过渡动画" content="结合 <transition> 组件使用">
+    <KpuPageHeader title="过渡动画" content="结合 <transition> 组件使用">
       <template #content>
         <p style="margin-bottom: 0;">
           安装命令：<ElTag>pnpm add animate.css</ElTag>
@@ -208,12 +208,12 @@ function open(url: string) {
       </template>
       <ElButton @click="open('https://github.com/animate-css/animate.css')">
         <template #icon>
-          <KIcon name="i-ep:link" />
+          <KpuIcon name="i-ep:link" />
         </template>
         访问 animate.css
       </ElButton>
-    </KPageHeader>
-    <KPageMain>
+    </KpuPageHeader>
+    <KpuPageMain>
       <ElForm>
         <ElFormItem label="进入动画（显示）">
           <ElSelect v-model="animateIn" filterable>
@@ -238,7 +238,7 @@ function open(url: string) {
       <Transition :enter-active-class="`animate__animated ${animateIn}`" :leave-active-class="`animate__animated ${animateOut}`">
         <div v-if="flag" class="box" />
       </Transition>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '@/locales/utils'
 import useSettingsStore from '@/store/modules/settings.ts'
 import useUserStore from '@/store/modules/user'
 import { FormControl, FormField, FormItem, FormMessage } from '@/ui/shadcn/ui/form'
@@ -49,7 +50,7 @@ const onSubmit = form.handleSubmit((values) => {
       </p>
     </div>
     <div class="mb-4">
-      <KTabs
+      <KpuTabs
         v-model="type" :list="[
           { label: t('loginAgainFrom.accountLogin'), value: 'default' },
           { label: t('loginAgainFrom.qrcodeLogin'), value: 'qrcode' },
@@ -61,7 +62,7 @@ const onSubmit = form.handleSubmit((values) => {
         <FormField v-slot="{ componentField, errors }" name="account">
           <FormItem class="relative pb-6 space-y-0">
             <FormControl>
-              <KInput type="text" :placeholder="t('loginAgainFrom.form.account')" class="w-full" disabled :class="errors.length && 'border-destructive'" v-bind="componentField" />
+              <KpuInput type="text" :placeholder="t('loginAgainFrom.form.account')" class="w-full" disabled :class="errors.length && 'border-destructive'" v-bind="componentField" />
             </FormControl>
             <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
               <FormMessage class="absolute bottom-1 text-xs" />
@@ -71,16 +72,16 @@ const onSubmit = form.handleSubmit((values) => {
         <FormField v-slot="{ componentField, errors }" name="password">
           <FormItem class="relative pb-6 space-y-0">
             <FormControl>
-              <KInput type="password" :placeholder="t('loginAgainFrom.form.password')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+              <KpuInput type="password" :placeholder="t('loginAgainFrom.form.password')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
             </FormControl>
             <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
               <FormMessage class="absolute bottom-1 text-xs" />
             </Transition>
           </FormItem>
         </FormField>
-        <KButton :loading="loading" size="lg" class="w-full" type="submit">
+        <KpuButton :loading="loading" size="lg" class="w-full" type="submit">
           {{ t('loginAgainFrom.form.login') }}
-        </KButton>
+        </KpuButton>
       </form>
     </div>
     <div v-show="type === 'qrcode'">

@@ -5,19 +5,19 @@ meta:
 
 <template>
   <div>
-    <KPageHeader title="浮动面板" description="KPopover" />
-    <KPageMain>
-      <KPopover>
-        <KButton>
+    <KpuPageHeader title="浮动面板" description="KpuPopover" />
+    <KpuPageMain>
+      <KpuPopover>
+        <KpuButton>
           浮动面板
-          <KIcon name="i-ep:caret-bottom" />
-        </KButton>
+          <KpuIcon name="i-ep:caret-bottom" />
+        </KpuButton>
         <template #panel>
           <div class="h-30 w-60 flex items-center justify-center">
             面板内容
           </div>
         </template>
-      </KPopover>
-    </KPageMain>
+      </KpuPopover>
+    </KpuPageMain>
   </div>
 </template>

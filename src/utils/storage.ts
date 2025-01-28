@@ -1,22 +1,20 @@
-const settings = {
-  app: {
-    storagePrefix: 'app_',
-  },
-}
+import pinia from '@/store'
+import useSettingsStore from '@/store/modules/settings'
+
+const settingsStore = useSettingsStore(pinia)
 const storage = {
   local: {
     has: (key: string) => {
-      // eslint-disable-next-line no-prototype-builtins
-      return localStorage.hasOwnProperty(`${settings.app.storagePrefix}${key}`)
+      return Object.prototype.hasOwnProperty.call(localStorage, `${settingsStore.settings.app?.storagePrefix}${key}`)
     },
     get: (key: string) => {
-      return localStorage.getItem(`${settings.app.storagePrefix}${key}`)
+      return localStorage.getItem(`${settingsStore.settings.app?.storagePrefix}${key}`)
     },
     set: (key: string, value: string) => {
-      localStorage.setItem(`${settings.app.storagePrefix}${key}`, value)
+      localStorage.setItem(`${settingsStore.settings.app?.storagePrefix}${key}`, value)
     },
     remove: (key: string) => {
-      localStorage.removeItem(`${settings.app.storagePrefix}${key}`)
+      localStorage.removeItem(`${settingsStore.settings.app?.storagePrefix}${key}`)
     },
     clear: () => {
       localStorage.clear()
@@ -24,16 +22,16 @@ const storage = {
   },
   session: {
     has: (key: string) => {
-      return !!sessionStorage.getItem(`${settings.app.storagePrefix}${key}`)
+      return Object.prototype.hasOwnProperty.call(sessionStorage, `${settingsStore.settings.app?.storagePrefix}${key}`)
     },
     get: (key: string) => {
-      return sessionStorage.getItem(`${settings.app.storagePrefix}${key}`)
+      return sessionStorage.getItem(`${settingsStore.settings.app?.storagePrefix}${key}`)
     },
     set: (key: string, value: string) => {
-      sessionStorage.setItem(`${settings.app.storagePrefix}${key}`, value)
+      sessionStorage.setItem(`${settingsStore.settings.app?.storagePrefix}${key}`, value)
     },
     remove: (key: string) => {
-      sessionStorage.removeItem(`${settings.app.storagePrefix}${key}`)
+      sessionStorage.removeItem(`${settingsStore.settings.app?.storagePrefix}${key}`)
     },
     clear: () => {
       sessionStorage.clear()

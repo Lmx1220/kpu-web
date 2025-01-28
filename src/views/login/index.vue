@@ -36,7 +36,7 @@ const formRef = ref()
 <template>
   <div class="bg-banner" />
   <div class="absolute right-4 top-4 z-1 flex-center border rounded-lg bg-background p-1 text-base">
-    <KDropdown
+    <KpuDropdown
       v-if="settingsStore.mode === 'pc'" :items="[
         [{
           label: '左侧布局',
@@ -59,8 +59,8 @@ const formRef = ref()
         }],
       ]"
     >
-      <KButton variant="ghost" size="icon" class="h-9 w-9">
-        <KIcon
+      <KpuButton variant="ghost" size="icon" class="h-9 w-9">
+        <KpuIcon
           :name="{
             left: 'i-icon-park-outline:left-bar',
             center: 'i-icon-park-outline:square',
@@ -68,11 +68,11 @@ const formRef = ref()
           }[layout]"
           :size="16"
         />
-      </KButton>
-    </KDropdown>
+      </KpuButton>
+    </KpuDropdown>
 
     <I18n v-if="settingsStore.settings.toolbar.i18n" class="rounded-full hover-bg-[var(--g-bg)]" />
-    <KPopover class="min-w-auto p-0">
+    <KpuPopover class="min-w-auto p-0">
       <template #panel>
         <div class="grid grid-cols-3 w-28 gap-2 p-4">
           <div
@@ -87,10 +87,10 @@ const formRef = ref()
           </div>
         </div>
       </template>
-      <KButton variant="ghost" size="icon" class="h-9 w-9">
-        <KIcon name="i-mdi:circle" class="text-primary" />
-      </KButton>
-    </KPopover>
+      <KpuButton variant="ghost" size="icon" class="h-9 w-9">
+        <KpuIcon name="i-mdi:circle" class="text-primary" />
+      </KpuButton>
+    </KpuPopover>
     <ColorScheme v-if="settingsStore.settings.toolbar.colorScheme" class="rounded-full hover-bg-[var(--g-bg)]" />
   </div>
 

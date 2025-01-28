@@ -24,13 +24,13 @@ function takeOut(val: any) {
 
 <template>
   <div>
-    <KPageHeader title="储存箱" content="KStorageBox" />
-    <KPageMain title="你可以将页面中的数据（object/array）储存到该组件内，并在需要的时候取出来">
+    <KpuPageHeader title="储存箱" content="KStorageBox" />
+    <KpuPageMain title="你可以将页面中的数据（object/array）储存到该组件内，并在需要的时候取出来">
       <ElAlert show-icon title="该组件需要搭配业务场景使用。" :closable="false" />
-      <KStorageBox :data="data" name="box1" />
-    </KPageMain>
-    <kPageMain title="推荐场景：具有复杂筛选项的页面，并记录常用的筛选条件">
-      <KSearchBar :show-toggle="false">
+      <KpuStorageBox :data="data" name="box1" />
+    </KpuPageMain>
+    <KpuPageMain title="推荐场景：具有复杂筛选项的页面，并记录常用的筛选条件">
+      <KpuSearchBar :show-toggle="false">
         <ElForm :model="search" size="default" label-width="120px">
           <ElRow>
             <ElCol :span="24">
@@ -83,19 +83,19 @@ function takeOut(val: any) {
             <ElSpace>
               <ElButton type="primary" @click="E">
                 <template #icon>
-                  <KIcon name="i-ep:search" />
+                  <KpuIcon name="i-ep:search" />
                 </template>
                 筛选
               </ElButton>
-              <KStorageBox :data="search" name="box2" title="我的快捷筛选" @take-out="takeOut">
+              <KpuStorageBox :data="search" name="box2" title="我的快捷筛选" @take-out="takeOut">
                 <ElButton link>
                   保存当前筛选
                 </ElButton>
-              </KStorageBox>
+              </KpuStorageBox>
             </ElSpace>
           </ElFormItem>
         </ElForm>
-      </KSearchBar>
-    </kPageMain>
+      </KpuSearchBar>
+    </KpuPageMain>
   </div>
 </template>

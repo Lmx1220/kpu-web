@@ -1,5 +1,4 @@
-import type { Nullable } from '#/global'
-
+import type { Nullable } from '#/index'
 /**
  * @description: base64 to blob
  */

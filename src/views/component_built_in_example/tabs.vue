@@ -9,9 +9,9 @@ const tabs = ref(1)
 
 <template>
   <div>
-    <KPageHeader title="标签页" description="KTabs" />
-    <KPageMain>
-      <KTabs v-model="tabs" :list="[{ label: '标签1', value: 1 }, { label: '标签2', value: 2 }, { label: '标签3', value: 3 }]" class="w-80">
+    <KpuPageHeader title="标签页" description="KpuTabs" />
+    <KpuPageMain>
+      <KpuTabs v-model="tabs" :list="[{ label: '标签1', value: 1 }, { label: '标签2', value: 2 }, { label: '标签3', value: 3 }]" class="w-80">
         <template #1>
           <div class="flex-center">
             标签1
@@ -27,7 +27,7 @@ const tabs = ref(1)
             标签3
           </div>
         </template>
-      </KTabs>
-    </KPageMain>
+      </KpuTabs>
+    </KpuPageMain>
   </div>
 </template>

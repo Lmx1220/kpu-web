@@ -1,1 +1,1 @@
-import './load.js'
+export { default } from './load.ts'

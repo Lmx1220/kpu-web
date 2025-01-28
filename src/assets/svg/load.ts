@@ -1,6 +1,7 @@
 import type { IconifyIcon as IconifyIconStructure } from '@iconify/vue'
 import { addIcon } from '@iconify/vue'
 
+const idSet = new Set<string>()
 let loaded = false
 if (!loaded) {
   loadSvgIcons()
@@ -50,9 +51,11 @@ async function loadSvgIcons() {
       const start = key.lastIndexOf('/') + 1
       const end = key.lastIndexOf('.')
       const iconName = key.slice(start, end)
+      idSet.add(iconName)
       return addIcon(`svg:${iconName}`, {
         ...parseSvg(typeof body === 'object' ? body.default : body),
       })
     }),
   )
 }
+export default Array.from(idSet)

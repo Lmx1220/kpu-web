@@ -1,317 +1,118 @@
-import type { RequestOptions, Result } from '#/axios'
-import type { AxiosTransform, CreateAxiosOptions } from '@/api/request/axiosTransform'
-import type { AxiosInstance, AxiosResponse } from 'axios'
-import { AxiosRetry } from '@/api/helper/axiosRetry'
-import { checkStatus } from '@/api/helper/checkStatus'
-import { formatRequestDate } from '@/api/helper/formatRequestDate'
-import { joinTimestamp } from '@/api/helper/joinTimestamp'
-import { ContentTypeEnum, RequestEnum, ResultEnum } from '@/enums/httpEnum'
-import useUserStore from '@/store/modules/user'
-import { deepMerge, setObjToUrlParams } from '@/utils'
-import { isEmpty, isNull, isString, isUnDef } from '@/utils/is'
-import axios from 'axios'
-import { clone } from 'lodash-es'
-import { toast } from 'vue-sonner'
-import HttpRequest from './request'
-
 /**
- * @description: 数据处理，方便区分多种处理方式
+ * 该文件可自行根据业务逻辑进行调整
  */
-const transform: AxiosTransform = {
+
+import type { RequestClientOptions } from '@/utils/request-client'
+import { refreshTokenApi } from '@/api/modules/user.ts'
+import router from '@/router'
+import useSettingsStore from '@/store/modules/settings.ts'
+import useUserStore from '@/store/modules/user.ts'
+import { authenticateResponseInterceptor, defaultResponseInterceptor, errorMessageResponseInterceptor, RequestClient } from '@/utils/request-client'
+import { ElMessage } from 'element-plus'
+import { Base64 } from 'js-base64'
+
+const apiURL = (import.meta.env.DEV && import.meta.env.VITE_OPEN_PROXY) ? '/proxy/' : import.meta.env.VITE_APP_API_BASEURL
+
+function createRequestClient(baseURL: string, options?: RequestClientOptions) {
+  const client = new RequestClient({
+    ...options,
+    baseURL,
+  })
+
   /**
-   * @description: 处理响应数据。如果数据不是预期格式，可直接抛出错误
+   * 重新认证逻辑
    */
-  transformResponseHook: (res: AxiosResponse<Result>, options: RequestOptions) => {
-    const { t } = useI18n()
-    const { isTransformResponse, isReturnNativeResponse } = options
-    // 是否返回原生响应头 比如：需要获取响应头时使用该属性
-    if (isReturnNativeResponse) {
-      return res
-    }
-    // 不进行任何处理，直接返回
-    // 用于页面代码可能需要直接获取code，data，message这些信息时开启
-    if (!isTransformResponse) {
-      return res.data
-    }
-    // 错误的时候返回
-
-    const { data } = res
-    if (!data) {
-      // return '[HTTP] Request has no return value';
-      throw new Error(t('sys.api.apiRequestFailed'))
-    }
-    //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, data: result, msg } = data
-
-    // 这里逻辑可以根据项目进行修改
-    const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS
-    if (hasSuccess) {
-      let successMsg = msg
-
-      if (isNull(successMsg) || isUnDef(successMsg) || isEmpty(successMsg)) {
-        successMsg = t('sys.api.operationSuccess')
-      }
-
-      if (options.successMessageMode === 'modal') {
-        // createSuccessModal({ title: t('sys.api.successTip'), content: successMsg })
-        // ElMessageBox({ title: t('sys.api.successTip'), message: successMsg, type: 'success' })
-        // #TODO 单窗口提示 现在不是
-        const tips = toast.info(t('sys.api.successTip'), {
-          description: successMsg,
-          position: 'top-center',
-          duration: Infinity,
-          action: {
-            label: '知道了',
-            onClick: () => toast.dismiss(tips),
-          },
-        })
-      }
-      else if (options.successMessageMode === 'message') {
-        // createMessage.success(successMsg)
-        toast.success(successMsg, {
-          position: 'top-center',
-        })
-      }
-      return result
-    }
-
-    // 在此处根据自己项目的实际情况对不同的code执行不同的操作
-    // 如果不希望中断当前请求，请return数据，否则直接抛出异常即可
-    let timeoutMsg = ''
+  async function doReAuthenticate() {
+    console.warn('Access token or refresh token is invalid or expired. ')
     const userStore = useUserStore()
-
-    switch (code) {
-      case ResultEnum.TIMEOUT:
-        timeoutMsg = t('sys.api.timeoutMessage')
-        userStore.logout()
-        break
-      default:
-        if (msg) {
-          timeoutMsg = msg
-        }
-    }
-
-    // errorMessageMode='modal'的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
-    // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
-    if (options.errorMessageMode === 'modal') {
-      // createErrorModal({ title: t('sys.api.errorTip'), content: timeoutMsg })
-
-      // ElMessageBox({ title: t('sys.api.errorTip'), message: timeoutMsg, type: 'error' })
-      // #TODO 单窗口提示 现在不是
-      const tips = toast.error(t('sys.api.errorTip'), {
-        description: timeoutMsg,
-        position: 'top-center',
-        duration: Infinity,
-        action: {
-          label: '知道了',
-          onClick: () => toast.dismiss(tips),
-        },
-      })
-    }
-    else if (options.errorMessageMode === 'message') {
-      // createMessage.error(timeoutMsg)
-      toast.error(timeoutMsg, {
-        position: 'top-center',
-      })
-    }
-
-    throw new Error(timeoutMsg || t('sys.api.apiRequestFailed'))
-  },
-
-  // 请求之前处理config
-  beforeRequestHook: (config, options) => {
-    const { apiUrl, joinPrefix, joinParamsToUrl, formatDate, joinTime = true, urlPrefix } = options
-
-    if (joinPrefix) {
-      config.url = `${urlPrefix}${config.url}`
-    }
-
-    if (apiUrl && isString(apiUrl)) {
-      config.url = `${apiUrl}${config.url}`
-    }
-    const params = config.params || {}
-    const data = config.data || false
-    formatDate && data && !isString(data) && formatRequestDate(data)
-    if (config.method?.toUpperCase() === RequestEnum.GET) {
-      if (!isString(params)) {
-        // 给 get 请求加上时间戳参数，避免从缓存中拿数据。
-        config.params = Object.assign(params || {}, joinTimestamp(joinTime, false))
-      }
-      else {
-        // 兼容restful风格
-        config.url = `${config.url + (params.startsWith('?') ? params : `?${params}&`)}${joinTimestamp(joinTime, false)}`
-        config.params = undefined
-      }
+    userStore.token = ''
+    if (
+      // preferences.app.loginExpiredMode === 'modal' &&
+      userStore.isLogin
+    ) {
+      // accessStore.setLoginExpired(true)
     }
     else {
-      if (!isString(params)) {
-        formatDate && formatRequestDate(params)
-        if (
-          Reflect.has(config, 'data')
-          && config.data
-          && (Object.keys(config.data).length > 0 || config.data instanceof FormData)
-        ) {
-          config.data = data
-          config.params = params
-        }
-        else {
-          // 非GET请求如果没有提供data，则将params视为data
-          config.data = params
-          config.params = undefined
-        }
-        if (joinParamsToUrl) {
-          config.url = setObjToUrlParams(config.url as string, config.data)
-        }
-      }
-      else {
-        // 兼容restful风格
-        config.url = config.url + params
-        config.params = undefined
-      }
+      await userStore.logout()
     }
-    return config
-  },
+  }
 
   /**
-   * @description: 请求拦截器处理
+   * 刷新token逻辑
    */
-  requestInterceptors: (config, options) => {
-    // 请求之前处理config
+  async function doRefreshToken() {
     const userStore = useUserStore()
+    const resp = await refreshTokenApi()
+    const newToken = resp.data
+    userStore.token = newToken
+    return newToken
+  }
 
-    const token = userStore.token
-    if (userStore.isLogin && token && (config as Recordable)?.requestOptions?.withToken !== false) {
-      // jwt token
-      (config as Recordable).headers.token = options.authenticationScheme
-        ? `${options.authenticationScheme} ${token}`
-        : token
-    }
-    return config
-  },
+  function formatToken(token: null | string) {
+    return token ? `${token}` : null
+  }
 
-  /**
-   * @description: 响应拦截器处理
-   */
-  responseInterceptors: (res: AxiosResponse<any>) => {
-    return res
-  },
-
-  /**
-   * @description: 响应错误处理
-   */
-  responseInterceptorsCatch: (axiosInstance: AxiosInstance, error: any) => {
-    const { t } = useI18n()
-    // const errorLogStore = useErrorLogStoreWithOut()
-    // errorLogStore.addAjaxErrorInfo(error)
-    const { response, code, message, config } = error || {}
-    const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none'
-    const msg: string = response?.data?.msg ?? ''
-    const err: string = error?.toString?.() ?? ''
-    let errMessage = ''
-
-    if (axios.isCancel(error)) {
-      return Promise.reject(error)
-    }
-
-    try {
-      if (code === 'ECONNABORTED' && message.includes('timeout')) {
-        errMessage = t('sys.api.apiTimeoutMessage')
+  // 请求头处理
+  client.addRequestInterceptor({
+    fulfilled: async (config) => {
+      const userStore = useUserStore()
+      const settingsStore = useSettingsStore()
+      const token = userStore.token
+      if (userStore.isLogin && token && (config as Recordable)?.requestOptions?.withToken !== false) {
+        // jwt token
+        (config as Recordable).headers.Token = formatToken(token)
       }
-      if (err?.includes('Network Error')) {
-        errMessage = t('sys.api.networkExceptionMsg')
-      }
+      // 添加客户端信息
+      const clientId = 'kpu_web'
+      const clientSecret = 'kpu_web_secret';
 
-      if (errMessage) {
-        if (errorMessageMode === 'modal') {
-          // createErrorModal({ title: t('sys.api.errorTip'), content: errMessage })
-          // ElMessageBox({ title: t('sys.api.errorTip'), message: errMessage, type: 'error' })
-          // #TODO 单窗口提示 现在不是
-          const tips = toast.error(t('sys.api.errorTip'), {
-            description: errMessage,
-            position: 'top-center',
-            duration: Infinity,
-            action: {
-              label: '知道了',
-              onClick: () => toast.dismiss(tips),
-            },
-          })
-        }
-        else if (errorMessageMode === 'message') {
-          toast.error(errMessage, {
-            position: 'top-center',
-          })
-        }
-        return Promise.reject(error)
-      }
-    }
-    catch (error) {
-      throw new Error(error as unknown as string)
-    }
+      (config as Recordable).headers.Authorization = `${Base64.encode(
+        `${clientId}:${clientSecret}`,
+      )}`
+      config.headers.Path = router?.currentRoute?.value?.fullPath
+      config.headers['Accept-Language'] = settingsStore.settings.app.defaultLang
 
-    checkStatus(error?.response?.status, msg, errorMessageMode)
-
-    // 添加自动重试机制 保险起见 只针对GET请求
-    const retryRequest = new AxiosRetry()
-    const { isOpenRetry } = config.requestOptions.retryRequest
-    config.method?.toUpperCase() === RequestEnum.GET
-    && error?.response?.status !== 401
-    && isOpenRetry
-    && retryRequest.retry(axiosInstance, error)
-    return Promise.reject(error)
-  },
-}
-function createAxios(opt?: Partial<CreateAxiosOptions>) {
-  return new HttpRequest(deepMerge(
-    {
-      // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
-      // authentication schemes，e.g: Bearer
-      authenticationScheme: '',
-      // authenticationScheme: '1',
-      timeout: 10 * 1000 * 60, // 10 * 1000 * 60 = 10分钟
-      headers: {
-        'Content-Type': ContentTypeEnum.JSON,
-        'Authorization': 'a3B1X3dlYjprcHVfd2ViX3NlY3JldA',
-        'ApplicationId': '1',
-      },
-      transform: clone(transform),
-      // 配置项，下面的选项都可以在独立的接口请求中覆盖
-      requestOptions: {
-        // 默认将prefix 添加到url
-        joinPrefix: true,
-        // 是否返回原生响应头 比如：需要获取响应头时使用该属性
-        isReturnNativeResponse: false,
-        // 需要对返回数据进行处理
-        isTransformResponse: true,
-        // post请求的时候添加参数到url
-        joinParamsToUrl: false,
-        // 格式化提交参数时间
-        formatDate: true,
-        // 消息提示类型
-        errorMessageMode: 'message',
-        // 接口地址
-        apiUrl: '',
-        // 接口拼接地址
-        urlPrefix: '',
-        //  是否加入时间戳
-        joinTime: true,
-        // 忽略重复请求
-        ignoreCancelToken: true,
-        // 是否携带token
-        withToken: true,
-        retryRequest: {
-          isOpenRetry: false,
-          count: 4,
-          waitTime: 100,
-        },
-      },
+      return config
     },
-    opt || {},
-  ))
+  })
+  // 处理返回的响应数据格式
+  client.addResponseInterceptor(
+    defaultResponseInterceptor({
+      codeField: 'code',
+      dataField: 'data',
+      successCode: 0,
+    }),
+  )
+
+  // token过期的处理
+  client.addResponseInterceptor(
+    authenticateResponseInterceptor({
+      client,
+      doReAuthenticate,
+      doRefreshToken,
+      // enableRefreshToken: preferences.app.enableRefreshToken,
+      enableRefreshToken: true,
+      formatToken,
+    }),
+  )
+
+  // 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
+  client.addResponseInterceptor(
+    errorMessageResponseInterceptor((msg: string, error) => {
+      // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
+      // 当前mock接口返回的错误字段是 error 或者 message
+      const responseData = error?.response?.data ?? {}
+      const errorMessage = responseData?.error ?? responseData?.message ?? ''
+      // 如果没有错误信息，则会根据状态码进行提示
+      ElMessage.error(errorMessage || msg)
+    }),
+  )
+
+  return client
 }
 
-const request = createAxios(
-  {
-    baseURL: (import.meta.env.DEV && import.meta.env.VITE_OPEN_PROXY) ? '/proxy/' : import.meta.env.VITE_APP_API_BASEURL,
-  },
-)
-export default request
+export const requestClient = createRequestClient(apiURL, {
+  responseReturn: 'data',
+})
+
+export const baseRequestClient = new RequestClient({ baseURL: apiURL })

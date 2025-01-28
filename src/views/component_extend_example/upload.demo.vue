@@ -90,24 +90,24 @@ const tableData = [
 
 <template>
   <div>
-    <KPageHeader title="上传">
+    <KpuPageHeader title="上传">
       <template #content>
         <p>ImageUpload / ImagesUpload / FileUpload</p>
         <p style="margin-bottom: 0;">
           由于线上演示环境开启了 Mock ，会导致上传功能报错，请在本地运行并查看演示
         </p>
       </template>
-    </KPageHeader>
-    <KPageMain title="单图上传">
+    </KpuPageHeader>
+    <KpuPageMain title="单图上传">
       <ImageUpload v-model:url="image" action="https://console-mock.apipost.cn/app/mock/project/1f50f1da-5189-4282-d3c7-c133a514c5a8/upload/image" name="image" :width="250" :height="150" @on-success="handleSuccess1" />
-    </KPageMain>
-    <KPageMain title="多图上传（默认最多3张）">
+    </KpuPageMain>
+    <KpuPageMain title="多图上传（默认最多3张）">
       <ImagesUpload v-model="images" action="https://console-mock.apipost.cn/app/mock/project/1f50f1da-5189-4282-d3c7-c133a514c5a8/upload/image" name="image" @on-success="handleSuccess2" />
-    </KPageMain>
-    <KPageMain title="文件上传（默认最多3个）">
+    </KpuPageMain>
+    <KpuPageMain title="文件上传（默认最多3个）">
       <FileUpload :files="files" action="https://console-mock.apipost.cn/app/mock/project/1f50f1da-5189-4282-d3c7-c133a514c5a8/upload/file" @on-success="handleSuccess3" />
-    </KPageMain>
-    <KPageMain title="结合 el-table 使用">
+    </KpuPageMain>
+    <KpuPageMain title="结合 el-table 使用">
       <ElTable :data="tableData" style="width: 100%;">
         <ElTableColumn type="index" width="50" fixed="left" />
         <ElTableColumn label="单张图片">
@@ -121,6 +121,6 @@ const tableData = [
           </template>
         </ElTableColumn>
       </ElTable>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

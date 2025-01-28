@@ -56,7 +56,7 @@ const onSubmit = form.handleSubmit((values) => {
       <FormField v-slot="{ componentField, errors }" name="password">
         <FormItem class="relative pb-6 space-y-0">
           <FormControl>
-            <KInput type="password" placeholder="请输入原密码" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+            <KpuInput type="password" placeholder="请输入原密码" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
           </FormControl>
           <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
             <FormMessage class="absolute bottom-1 text-xs" />
@@ -66,7 +66,7 @@ const onSubmit = form.handleSubmit((values) => {
       <FormField v-slot="{ componentField, errors }" name="newPassword">
         <FormItem class="relative pb-6 space-y-0">
           <FormControl>
-            <KInput type="password" placeholder="请输入新密码" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+            <KpuInput type="password" placeholder="请输入新密码" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
           </FormControl>
           <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
             <FormMessage class="absolute bottom-1 text-xs" />
@@ -76,16 +76,16 @@ const onSubmit = form.handleSubmit((values) => {
       <FormField v-slot="{ componentField, errors }" name="checkPassword">
         <FormItem class="relative pb-6 space-y-0">
           <FormControl>
-            <KInput type="password" placeholder="请确认新密码" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+            <KpuInput type="password" placeholder="请确认新密码" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
           </FormControl>
           <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
             <FormMessage class="absolute bottom-1 text-xs" />
           </Transition>
         </FormItem>
       </FormField>
-      <KButton :loading="loading" size="lg" class="mt-8 w-full" type="submit">
+      <KpuButton :loading="loading" size="lg" class="mt-8 w-full" type="submit">
         保存
-      </KButton>
+      </KpuButton>
     </form>
   </div>
 </template>

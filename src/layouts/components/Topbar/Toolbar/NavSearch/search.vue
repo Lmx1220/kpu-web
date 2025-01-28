@@ -2,9 +2,10 @@
 import type { Menu } from '@/types/global'
 import Breadcrumb from '@/layouts/components/Breadcrumb/index.vue'
 import BreadcrumbItem from '@/layouts/components/Breadcrumb/item.vue'
+import { $t } from '@/locales/utils'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
-import { useKpuModal } from '@/ui/components/KModal/use-modal.ts'
+import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 import { resolveRoutePath } from '@/utils'
 import { cloneDeep } from 'es-toolkit'
 import hotkeys from 'hotkeys-js'
@@ -17,7 +18,6 @@ defineOptions({
 const router = useRouter()
 const settingsStore = useSettingsStore()
 const menuStore = useMenuStore()
-const { t } = useI18n()
 const { generateI18nTitle } = useMenu()
 
 interface listTypes {
@@ -34,7 +34,7 @@ interface listTypes {
 const searchInput = ref('')
 const sourceList = ref<listTypes[]>([])
 const actived = ref(-1)
-const [KModal, modalApi] = useKpuModal({
+const [KpuModal, modalApi] = useKpuModal({
   onOpenChange(val) {
     if (val) {
       searchInput.value = ''
@@ -208,15 +208,15 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
 </script>
 
 <template>
-  <KModal :footer="false" :closable="false" :fullscreen-button="false" border class="w-full lg-max-w-2xl" content-class="flex flex-col p-0 min-h-auto" header-class="p-0" footer-class="p-0">
+  <KpuModal :footer="false" :closable="false" :fullscreen-button="false" border class="w-full lg-max-w-2xl" content-class="flex flex-col p-0 min-h-auto" header-class="p-0" footer-class="p-0">
     <template #header>
       <div class="h-12 flex flex-shrink-0 items-center">
         <div class="h-full w-14 flex-center">
-          <KIcon name="i-ri:search-line" :size="18" class="text-foreground/30" />
+          <KpuIcon name="i-ri:search-line" :size="18" class="text-foreground/30" />
         </div>
-        <input v-model="searchInput" :placeholder="t('app.search.input')" class="h-full w-full border-0 rounded-md bg-transparent text-base text-foreground focus-outline-none placeholder-foreground/30" @keydown.esc="isShow = false" @keydown.up.prevent="keyUp" @keydown.down.prevent="keyDown" @keydown.enter.prevent="keyEnter">
+        <input v-model="searchInput" :placeholder="$t('app.search.input')" class="h-full w-full border-0 rounded-md bg-transparent text-base text-foreground focus-outline-none placeholder-foreground/30" @keydown.esc="isShow = false" @keydown.up.prevent="keyUp" @keydown.down.prevent="keyDown" @keydown.enter.prevent="keyEnter">
         <div v-if="settingsStore.mode === 'mobile'" class="h-full w-14 flex-center border-s">
-          <KIcon name="i-carbon:close" :size="18" @click="() => modalApi.close()" />
+          <KpuIcon name="i-carbon:close" :size="18" @click="() => modalApi.close()" />
         </div>
       </div>
     </template>
@@ -224,35 +224,35 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
       <div class="w-full flex justify-between px-4 py-3">
         <div class="flex gap-8">
           <div class="inline-flex items-center gap-1 text-xs">
-            <KKbd>
-              <KIcon name="i-ion:md-return-left" :size="14" />
-            </KKbd>
-            <span>{{ t('app.search.enter') }}</span>
+            <KpuKbd>
+              <KpuIcon name="i-ion:md-return-left" :size="14" />
+            </KpuKbd>
+            <span>{{ $t('app.search.enter') }}</span>
           </div>
           <div class="inline-flex items-center gap-1 text-xs">
-            <KKbd>
-              <KIcon name="i-ant-design:caret-up-filled" :size="14" />
-            </KKbd>
-            <KKbd>
-              <KIcon name="i-ant-design:caret-down-filled" :size="14" />
-            </KKbd>
-            <span>{{ t('app.search.up_down') }}</span>
+            <KpuKbd>
+              <KpuIcon name="i-ant-design:caret-up-filled" :size="14" />
+            </KpuKbd>
+            <KpuKbd>
+              <KpuIcon name="i-ant-design:caret-down-filled" :size="14" />
+            </KpuKbd>
+            <span>{{ $t('app.search.up_down') }}</span>
           </div>
         </div>
         <div v-if="settingsStore.settings.navSearch.enableHotkeys" class="inline-flex items-center gap-1 text-xs">
-          <KKbd>
+          <KpuKbd>
             ESC
-          </KKbd>
-          <span>{{ t('app.search.esc') }}</span>
+          </KpuKbd>
+          <span>{{ $t('app.search.esc') }}</span>
         </div>
       </div>
     </template>
-    <KScrollArea ref="dialogAreaRef" class="flex-1">
+    <KpuScrollArea ref="dialogAreaRef" class="flex-1">
       <div>
         <template v-if="resultList.length > 0">
           <div v-for="(item, index) in resultList" ref="searchResultItemRef" :key="item.path" class="p-4" :data-index="index" @click="pageJump(item.path, item.link)" @mouseover="actived = index">
             <a class="flex cursor-pointer items-center border rounded-lg" :class="{ '-mt-4': index !== 0, 'bg-accent': index === actived }">
-              <KIcon v-if="item.icon" :name="item.icon" :size="20" class="basis-16 transition" :class="{ 'scale-120 text-primary': index === actived }" />
+              <KpuIcon v-if="item.icon" :name="item.icon" :size="20" class="basis-16 transition" :class="{ 'scale-120 text-primary': index === actived }" />
               <div class="flex flex-1 flex-col gap-1 truncate border-s px-4 py-3">
                 <div class="truncate text-start text-base font-bold">{{ generateI18nTitle(item.title) }}</div>
                 <Breadcrumb v-if="item.breadcrumb.length" class="truncate">
@@ -266,21 +266,21 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
         </template>
         <template v-else-if="searchInput === ''">
           <div class="h-full flex-col-center py-6 text-secondary-foreground/50">
-            <KIcon name="i-tabler:mood-smile" :size="40" />
+            <KpuIcon name="i-tabler:mood-smile" :size="40" />
             <p class="m-2 text-base">
-              {{ t('app.search.welcome') }}
+              {{ $t('app.search.welcome') }}
             </p>
           </div>
         </template>
         <template v-else>
           <div class="h-full flex-col-center py-6 text-secondary-foreground/50">
-            <KIcon name="i-tabler:mood-empty" :size="40" />
+            <KpuIcon name="i-tabler:mood-empty" :size="40" />
             <p class="m-2 text-base">
-              {{ t('app.search.empty') }}
+              {{ $t('app.search.empty') }}
             </p>
           </div>
         </template>
       </div>
-    </KScrollArea>
-  </KModal>
+    </KpuScrollArea>
+  </KpuModal>
 </template>

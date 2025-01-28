@@ -42,24 +42,24 @@ function submitForm() {
 
 <template>
   <div>
-    <KPageHeader title="省市区街道联动" content="PcasCascader" />
-    <KPageMain title="多级联动">
+    <KpuPageHeader title="省市区街道联动" content="PcasCascader" />
+    <KpuPageMain title="多级联动">
       <p>省份/城市联动</p>
       <PcasCascader v-model="pcas1" type="pc" />
       <p>省份/城市/区县联动</p>
       <PcasCascader v-model="pcas2" />
       <p>省份/城市/区县/街道联动</p>
       <PcasCascader v-model="pcas3" type="pcas" />
-    </KPageMain>
-    <KPageMain title="数据格式化">
+    </KpuPageMain>
+    <KpuPageMain title="数据格式化">
       <p>{{ pcasCode }}</p>
       <PcasCascader v-model="pcasCode" />
       <p>{{ pcasName }}</p>
       <PcasCascader v-model="pcasName" format="name" />
       <p>{{ pcasBoth }}</p>
       <PcasCascader v-model="pcasBoth" format="both" />
-    </KPageMain>
-    <KPageMain title="表单验证">
+    </KpuPageMain>
+    <KpuPageMain title="表单验证">
       <ElForm ref="formRef" :model="ruleForm" :rules="rules">
         <ElFormItem label="地区" prop="pca">
           <PcasCascader v-model="ruleForm.pca" />
@@ -70,6 +70,6 @@ function submitForm() {
           </ElButton>
         </ElFormItem>
       </ElForm>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

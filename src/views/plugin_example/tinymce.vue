@@ -67,7 +67,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <KPageHeader title="TinyMCE 编辑器">
+    <KpuPageHeader title="TinyMCE 编辑器">
       <template #content>
         <p>
           安装命令：<ElTag>pnpm add tinymce @tinymce/tinymce-vue</ElTag>
@@ -82,15 +82,15 @@ function open(url: string) {
       </template>
       <ElButton @click="open('https://github.com/tinymce/tinymce')">
         <template #icon>
-          <KIcon name="i-ep:link" />
+          <KpuIcon name="i-ep:link" />
         </template>
         访问 TinyMCE
       </ElButton>
-    </KPageHeader>
-    <KPageMain>
+    </KpuPageHeader>
+    <KpuPageMain>
       <TinymceEditor v-model="content" :init="defaultSetting" />
       <div class="preview" v-html="content" />
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>
 

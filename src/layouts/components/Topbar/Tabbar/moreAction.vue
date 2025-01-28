@@ -96,58 +96,58 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
 
 <template>
   <div>
-    <KPopover align="end" class="min-w-auto p-0">
-      <KButton variant="outline" size="icon" class="h-7 w-7">
-        <KIcon name="i-ep:caret-bottom" />
-      </KButton>
+    <KpuPopover align="end" class="min-w-auto p-0">
+      <KpuButton variant="outline" size="icon" class="h-7 w-7">
+        <KpuIcon name="i-ep:caret-bottom" />
+      </KpuButton>
       <template #panel>
         <div class="max-h-[320px] w-[200px] flex flex-col">
           <div class="flex-center-between gap-2 p-4">
             <template v-if="isNavSearch">
-              <KInput
+              <KpuInput
                 :placeholder="t('searchPlaceholder')"
                 class="h-8 w-0 flex-1 border border-input rounded-md bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none"
               />
-              <KButton variant="outline" size="icon" class="h-8 w-8" @click="isNavSearch = false">
-                <KIcon name="i-ri:close-fill" :size="16" />
-              </KButton>
+              <KpuButton variant="outline" size="icon" class="h-8 w-8" @click="isNavSearch = false">
+                <KpuIcon name="i-ri:close-fill" :size="16" />
+              </KpuButton>
             </template>
             <template v-else>
-              <KTooltip :text="t('app.tabbar.searchTabs')">
-                <KButton
+              <KpuTooltip :text="t('app.tabbar.searchTabs')">
+                <KpuButton
                   v-if="settingsStore.settings.toolbar.navSearch" variant="secondary" size="icon" class="h-8 w-8"
                   @click="isNavSearch = true"
                 >
-                  <KIcon name="i-ri:search-line" />
-                </KButton>
-              </KTooltip>
-              <KTooltip :text="t('app.tabbar.closeOtherSide')">
-                <KButton
+                  <KpuIcon name="i-ri:search-line" />
+                </KpuButton>
+              </KpuTooltip>
+              <KpuTooltip :text="t('app.tabbar.closeOtherSide')">
+                <KpuButton
                   variant="secondary" size="icon" class="h-8 w-8" :disabled="!tabbar.checkCloseOtherSide()"
                   @click="actionCommand('other-side')"
                 >
-                  <KIcon name="i-ri:close-fill" />
-                </KButton>
-              </KTooltip>
-              <KTooltip :text="t('app.tabbar.closeLeftSide')">
-                <KButton
+                  <KpuIcon name="i-ri:close-fill" />
+                </KpuButton>
+              </KpuTooltip>
+              <KpuTooltip :text="t('app.tabbar.closeLeftSide')">
+                <KpuButton
                   variant="secondary" size="icon" class="h-8 w-8" :disabled="!tabbar.checkCloseLeftSide()"
                   @click="actionCommand('left-side')"
                 >
-                  <KIcon name="i-ph:arrow-line-left" />
-                </KButton>
-              </KTooltip>
-              <KTooltip :text="t('app.tabbar.closeRightSide')">
-                <KButton
+                  <KpuIcon name="i-ph:arrow-line-left" />
+                </KpuButton>
+              </KpuTooltip>
+              <KpuTooltip :text="t('app.tabbar.closeRightSide')">
+                <KpuButton
                   variant="secondary" size="icon" class="h-8 w-8" :disabled="!tabbar.checkCloseRightSide()"
                   @click="actionCommand('right-side')"
                 >
-                  <KIcon name="i-ph:arrow-line-right" />
-                </KButton>
-              </KTooltip>
+                  <KpuIcon name="i-ph:arrow-line-right" />
+                </KpuButton>
+              </KpuTooltip>
             </template>
           </div>
-          <KScrollArea :scrollbar="false" mask gradient-color="hsl(var(--popover))" class="mb-4 flex-1 -mt-2">
+          <KpuScrollArea :scrollbar="false" mask gradient-color="hsl(var(--popover))" class="mb-4 flex-1 -mt-2">
             <TransitionGroup
               ref="dropdownTabContainerRef" tag="div" class="tabs space-y-1"
               :class="{ dragging: isDragging }"
@@ -164,7 +164,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
                   :title="element.customTitleList.find(item => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title)"
                   @click="router.push(element.fullPath)"
                 >
-                  <KIcon
+                  <KpuIcon
                     v-if="settingsStore.settings.tabbar.enableIcon && iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
                     :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)!"
                   />
@@ -172,20 +172,20 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
                     element.customTitleList.find(item => item.fullPath === element.fullPath)?.title || generateI18nTitle(element.title)
                   }}
                 </div>
-                <KIcon
+                <KpuIcon
                   v-if="!element.isPermanent && element.isPin" name="i-ri:pushpin-2-fill" class="action-icon"
                   @click.stop="tabbarStore.unPin(element.tabId)"
                 />
-                <KIcon
+                <KpuIcon
                   v-else-if="!element.isPermanent && tabbarStore.list.length > 1" name="ri:close-fill"
                   class="action-icon" @click.stop="tabbar.closeById(element.tabId)"
                 />
               </div>
             </TransitionGroup>
-          </KScrollArea>
+          </KpuScrollArea>
         </div>
       </template>
-    </KPopover>
+    </KpuPopover>
   </div>
 </template>
 

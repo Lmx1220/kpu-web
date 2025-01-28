@@ -1,6 +1,6 @@
 import type { Route } from '#/global'
 import type { RouteRecordRaw } from 'vue-router'
-import api from '@/api'
+import { requestClient } from '@/api'
 import { systemRoutes } from '@/router/routes'
 import { resolveRoutePath } from '@/utils'
 import { cloneDeep } from 'es-toolkit'
@@ -224,9 +224,8 @@ const useRouteStore = defineStore(
     // 生成路由（后端获取）
     async function generateRoutesAtBack() {
       try {
-        const res = await api.get<any>({
-          url: '/anyone/visible/allRouter',
-        // noLoading: true,
+        const res = await requestClient.get<any>('/anyone/visible/allRouter', {
+          baseURL: '/mock/',
         })
         // 设置 routes 数据
         routesRaw.value = converDeprecatedAttribute(convertSingleRoutes(formatBackRoutes(res.data) as any))

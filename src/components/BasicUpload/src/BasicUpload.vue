@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { PromiseFn } from '#/global'
+import type { AnyFunction } from '#/index'
 import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 
 import { omit } from 'lodash-es'
@@ -17,7 +17,7 @@ export interface BasicProps {
   accept?: string[]
   multiple?: boolean
   uploadParams?: any
-  api: PromiseFn
+  api: AnyFunction
   name?: string
   filename?: string | null
 }
@@ -111,7 +111,7 @@ const [UploadPreviewDialoglModal, uploadPreviewDialoglApi] = useKpuModal({
           </template>
         </template>
         <ElButton @click="uploadPreviewDialoglApi.open()">
-          <KIcon name="bi:eye" />
+          <KpuIcon name="bi:eye" />
           <template v-if="fileList.length && showPreviewNumber">
             {{ fileList.length }}
           </template>

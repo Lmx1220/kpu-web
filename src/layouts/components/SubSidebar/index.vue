@@ -68,7 +68,7 @@ watch(() => menuStore.actived, (val, oldVal) => {
       }"
     />
     <component :is="useSlots('sub-sidebar-after-logo')" />
-    <KScrollArea :scrollbar="false" mask gradient-color="var(--g-sub-sidebar-bg)" class="flex-1">
+    <KpuScrollArea :scrollbar="false" mask gradient-color="var(--g-sub-sidebar-bg)" class="flex-1">
       <TransitionGroup :name="transitionName">
         <template v-for="(mainItem, mainIndex) in menuStore.allMenus" :key="mainIndex">
           <div v-show="mainIndex === menuStore.actived">
@@ -87,31 +87,31 @@ watch(() => menuStore.actived, (val, oldVal) => {
           </div>
         </template>
       </TransitionGroup>
-    </KScrollArea>
+    </KpuScrollArea>
     <div
       v-if="settingsStore.mode === 'pc' && settingsStore.settings.menu.enableSubMenuCollapseButton" class="relative flex items-center px-4 py-3" :class="{
         'justify-center': isCollapse,
         'justify-between': !isCollapse,
       }"
     >
-      <KButton
+      <KpuButton
         v-show="!isCollapse"
         variant="secondary"
         size="icon"
         class="h-8 w-8"
         @click="settingsStore.toggleSidebarAutoCollapse()"
       >
-        <KIcon :name="settingsStore.settings.menu.subMenuAutoCollapse ? 'i-lucide:pin-off' : 'i-lucide:pin'" :size="16" />
-      </KButton>
-      <KButton
+        <KpuIcon :name="settingsStore.settings.menu.subMenuAutoCollapse ? 'i-lucide:pin-off' : 'i-lucide:pin'" :size="16" />
+      </KpuButton>
+      <KpuButton
         variant="secondary"
         size="icon"
         class="h-8 w-8 transition"
         :class="{ '-rotate-z-180': settingsStore.settings.menu.subMenuCollapse }"
         @click="settingsStore.toggleSidebarCollapse()"
       >
-        <KIcon name="toolbar-collapse" :size="16" />
-      </KButton>
+        <KpuIcon name="toolbar-collapse" :size="16" />
+      </KpuButton>
     </div>
     <component :is="useSlots('sub-sidebar-bottom')" />
   </div>

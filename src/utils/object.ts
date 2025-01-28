@@ -1,13 +1,13 @@
 import { createDefu } from 'defu'
 
+export { createDefu as createMerge, defu as merge } from 'defu'
 /** 合并对象 */
-const merge = createDefu((obj, key, value) => {
-  if (Array.isArray(obj[key]) && Array.isArray(value)) {
-    obj[key] = value
+export const mergeWithArrayOverride = createDefu((originObj, key, updates) => {
+  if (Array.isArray(originObj[key]) && Array.isArray(updates)) {
+    originObj[key] = updates
     return true
   }
 })
-
 /** 合并对象，并移除不存在的属性 */
 const mergeWithoutUndefinedProps = createDefu((obj, key, value) => {
   if (obj[key] === undefined) {
@@ -49,6 +49,5 @@ function diffTwoObj(originalObj: Record<string, any>, diffObj: Record<string, an
 
 export {
   diffTwoObj,
-  merge,
   mergeWithoutUndefinedProps,
 }

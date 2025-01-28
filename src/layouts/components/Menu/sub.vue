@@ -207,7 +207,7 @@ function handleMouseleave() {
   />
   <Teleport v-if="hasChildren" to="body" :disabled="!rootMenu.isMenuPopup">
     <Transition v-bind="transitionClass" v-on="transitionEvent">
-      <KScrollArea
+      <KpuScrollArea
         v-if="opened" ref="subMenuRef" :scrollbar="false" :mask="rootMenu.isMenuPopup" class="sub-menu static rounded-lg"
         :class="{
           'bg-[var(--g-sub-sidebar-bg)]': rootMenu.isMenuPopup,
@@ -222,7 +222,7 @@ function handleMouseleave() {
             :menu="item" :level="level + 1"
           />
         </template>
-      </KScrollArea>
+      </KpuScrollArea>
     </Transition>
   </Teleport>
 </template>

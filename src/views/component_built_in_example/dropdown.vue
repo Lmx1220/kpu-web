@@ -5,9 +5,9 @@ meta:
 
 <template>
   <div>
-    <KPageHeader title="下拉菜单" description="KDropdown" />
-    <KPageMain>
-      <KDropdown
+    <KpuPageHeader title="下拉菜单" description="KpuDropdown" />
+    <KpuPageMain>
+      <KpuDropdown
         :items="[
           [
             { label: '菜单1-1' },
@@ -19,11 +19,11 @@ meta:
           ],
         ]"
       >
-        <KButton>
+        <KpuButton>
           下拉菜单
-          <KIcon name="i-ep:caret-bottom" />
-        </KButton>
-      </KDropdown>
-    </KPageMain>
+          <KpuIcon name="i-ep:caret-bottom" />
+        </KpuButton>
+      </KpuDropdown>
+    </KpuPageMain>
   </div>
 </template>

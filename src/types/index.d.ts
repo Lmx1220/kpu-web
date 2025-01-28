@@ -1,30 +1,12 @@
-declare interface Fn<T = any, R = T> {
-  (...arg: T[]): R
-}
+export type * from './config'
+export type * from './helper'
 
-declare interface PromiseFn<T = any, R = T> {
-  (...arg: T[]): Promise<R>
-}
+export type ClassType = Array<object | string> | object | string
 
-declare type RefType<T> = T | null
-
-declare type LabelValueOptions = {
+export type LabelValueOptions = {
   label: string
   value: any
   [key: string]: string | number | boolean
 }[]
 
-declare type TimeoutHandle = ReturnType<typeof setTimeout>
-declare type IntervalHandle = ReturnType<typeof setInterval>
-
-declare type EmitType = (event: string, ...args: any[]) => void
-
-declare type TargetContext = '_self' | '_blank'
-
-declare interface ComponentElRef<T extends HTMLElement = HTMLDivElement> {
-  $el: T
-}
-
-declare type ComponentRef<T extends HTMLElement = HTMLDivElement> = ComponentElRef<T> | null
-
-declare type ElRef<T extends HTMLElement = HTMLDivElement> = Nullable<T>
+export type TargetContext = '_self' | '_blank'

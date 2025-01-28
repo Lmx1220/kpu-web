@@ -27,21 +27,21 @@ function open() {
     <Transition :name="settingsStore.settings.mainPage.enableTransition ? settingsStore.settings.mainPage.transitionMode : ''" mode="out-in" appear>
       <PageMain :key="route.meta.link" class="flex flex-1 flex-col justify-center">
         <div class="flex flex-col items-center">
-          <KIcon name="i-icon-park-twotone:planet" :size="120" class="text-ui-primary/80" />
+          <KpuIcon name="i-icon-park-twotone:planet" :size="120" class="text-ui-primary/80" />
           <div class="my-2 text-xl text-dark dark-text-white">
             是否访问此链接
           </div>
           <div class="my-2 max-w-[300px] cursor-pointer text-center text-[14px] text-stone-5" @click="route.meta.link && copy(route.meta.link)">
-            <KTooltip text="复制链接">
+            <KpuTooltip text="复制链接">
               <div class="line-clamp-3">
                 {{ route.meta.link }}
               </div>
-            </KTooltip>
+            </KpuTooltip>
           </div>
-          <KButton class="my-4" @click="open">
-            <KIcon name="i-ri:external-link-fill" />
+          <KpuButton class="my-4" @click="open">
+            <KpuIcon name="i-ri:external-link-fill" />
             立即访问
-          </KButton>
+          </KpuButton>
         </div>
       </PageMain>
     </Transition>

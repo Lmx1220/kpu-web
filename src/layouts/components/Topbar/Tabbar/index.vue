@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Tabbar } from '#/global'
+import { $t } from '@/locales/utils'
 import { useSlots } from '@/slots'
 import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar'
@@ -7,8 +8,8 @@ import storage from '@/utils/storage'
 import { useMagicKeys } from '@vueuse/core'
 import hotkeys from 'hotkeys-js'
 import Sortable from 'sortablejs'
-import { useI18n } from 'vue-i18n'
 import { toast } from 'vue-sonner'
+
 import MoreAction from './moreAction.vue'
 
 defineOptions({
@@ -25,9 +26,6 @@ const tabbar = useTabbar()
 const mainPage = useMainPage()
 
 const keys = useMagicKeys({ reactive: true })
-
-const { t } = useI18n()
-
 const { generateI18nTitle } = useMenu()
 
 const activedTabId = computed(() => tabbar.getId())
@@ -169,13 +167,13 @@ function contextMenuItems(routeItem: Tabbar.recordRaw) {
   return [
     [
       {
-        label: t('app.tabbar.reload'),
+        label: $t('app.tabbar.reload'),
         icon: 'i-ri:refresh-line',
         disabled: routeItem.tabId !== activedTabId.value,
         handle: () => mainPage.reload(),
       },
       {
-        label: t('app.tabbar.close'),
+        label: $t('app.tabbar.close'),
         icon: 'i-ri:close-line',
         disabled: tabbarStore.list.length <= 1 || routeItem.isPin || routeItem.isPermanent,
         divided: true,
@@ -184,7 +182,7 @@ function contextMenuItems(routeItem: Tabbar.recordRaw) {
         },
       },
       {
-        label: routeItem.isPin ? t('app.tabbar.unpin') : t('app.tabbar.pin'),
+        label: routeItem.isPin ? $t('app.tabbar.unpin') : $t('app.tabbar.pin'),
         icon: routeItem.isPin ? 'i-lucide:pin-off' : 'i-lucide:pin',
         // 主页不允许被固定，因为如果固定主页且主页未启用，会导致登录时进入路由死循环状态
         disabled: routeItem.fullPath === settingsStore.settings.home.fullPath || routeItem.isPermanent,
@@ -198,7 +196,7 @@ function contextMenuItems(routeItem: Tabbar.recordRaw) {
         },
       },
       {
-        label: t('app.tabbar.maximize'),
+        label: $t('app.tabbar.maximize'),
         icon: 'i-ri:picture-in-picture-exit-line',
         handle: () => {
           if (routeItem.tabId !== activedTabId.value) {
@@ -209,7 +207,7 @@ function contextMenuItems(routeItem: Tabbar.recordRaw) {
         },
       },
       {
-        label: t('app.tabbar.newWindow'),
+        label: $t('app.tabbar.newWindow'),
         icon: 'i-ci:window',
         divided: true,
         handle: () => {
@@ -218,21 +216,21 @@ function contextMenuItems(routeItem: Tabbar.recordRaw) {
         },
       },
       {
-        label: t('app.tabbar.closeOtherSide'),
+        label: $t('app.tabbar.closeOtherSide'),
         disabled: !tabbar.checkCloseOtherSide(routeItem.tabId),
         handle: () => {
           tabbar.closeOtherSide(routeItem.tabId)
         },
       },
       {
-        label: t('app.tabbar.closeLeftSide'),
+        label: $t('app.tabbar.closeLeftSide'),
         disabled: !tabbar.checkCloseLeftSide(routeItem.tabId),
         handle: () => {
           tabbar.closeLeftSide(routeItem.tabId)
         },
       },
       {
-        label: t('app.tabbar.closeRightSide'),
+        label: $t('app.tabbar.closeRightSide'),
         disabled: !tabbar.checkCloseRightSide(routeItem.tabId),
         handle: () => {
           tabbar.closeRightSide(routeItem.tabId)
@@ -307,7 +305,7 @@ onUnmounted(() => {
   <div class="tabbar">
     <component :is="useSlots('tabbar-start')" />
     <div class="tabbar-container">
-      <KScrollArea
+      <KpuScrollArea
         ref="tabsRef" :scrollbar="false" horizontal mask gradient-color="var(--g-tabbar-bg)" class="tabs"
         :class="{
           'tabs-ontop': settingsStore.settings.topbar.switchTabbarAndToolbar,
@@ -330,14 +328,14 @@ onUnmounted(() => {
             @click="router.push(element.fullPath)"
             @dblclick="onTabbarDblclick(element)"
           >
-            <KContextMenu :items="contextMenuItems(element)">
+            <KpuContextMenu :items="contextMenuItems(element)">
               <div class="size-full">
                 <div class="tab-dividers" />
                 <div class="tab-background" />
-                <KTooltip :delay="1000" side="bottom">
+                <KpuTooltip :delay="1000" side="bottom">
                   <div class="tab-content">
                     <div :key="element.tabId" class="title">
-                      <KIcon
+                      <KpuIcon
                         v-if="settingsStore.settings.tabbar.enableIcon && iconName(element.tabId === activedTabId, element.icon, element.activeIcon)"
                         :name="iconName(element.tabId === activedTabId, element.icon, element.activeIcon)!" class="icon"
                       />
@@ -346,13 +344,13 @@ onUnmounted(() => {
                       }}
                     </div>
                     <div v-if="!element.isPermanent && element.isPin" class="action-icon">
-                      <KIcon name="i-ri:pushpin-2-fill" @click.stop="tabbarStore.unPin(element.tabId)" @dblclick.stop />
+                      <KpuIcon name="i-ri:pushpin-2-fill" @click.stop="tabbarStore.unPin(element.tabId)" @dblclick.stop />
                     </div>
                     <div
                       v-else-if="!element.isPermanent && tabbarStore.list.length > 1" class="action-icon"
                       @click.stop="tabbar.closeById(element.tabId)" @dblclick.stop
                     >
-                      <KIcon name="i-ri:close-fill" />
+                      <KpuIcon name="i-ri:close-fill" />
                     </div>
                     <div v-show="keys.alt && index < 9" class="hotkey-number">
                       {{ index + 1 }}
@@ -367,12 +365,12 @@ onUnmounted(() => {
                       {{ element.fullPath }}
                     </div>
                   </template>
-                </KTooltip>
+                </KpuTooltip>
               </div>
-            </KContextMenu>
+            </KpuContextMenu>
           </div>
         </TransitionGroup>
-      </KScrollArea>
+      </KpuScrollArea>
       <div class="absolute end-0 top-0 z-10 h-full w-50px flex-center">
         <MoreAction v-if="isShowMoreAction" />
       </div>

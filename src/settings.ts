@@ -1,4 +1,5 @@
-import type { RecursiveRequired, Settings } from '#/global'
+import type { Settings } from '#/global'
+import type { RecursiveRequired } from '#/index'
 import settingsDefault from '@/settings.default'
 import { merge } from '@/utils/object'
 import { cloneDeep } from 'es-toolkit'
@@ -54,8 +55,8 @@ const globalSettings: Settings.all = {
   copyright: {
     enable: true,
     dates: '2020-present',
-    company: 'Fantastic-admin',
-    website: 'https://fantastic-admin.hurui.me',
+    company: 'kpu-admin',
+    website: 'https://kpu-admin.kpu.me',
   },
 }
 export default merge(globalSettings, cloneDeep(settingsDefault)) as RecursiveRequired<Settings.all>

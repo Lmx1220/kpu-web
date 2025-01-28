@@ -1,6 +1,6 @@
 import type { AsyncResult, DelayResult } from '@/api/helper/timeDelayReq.ts'
 import type { CodeQueryVO, OptionsGetResultModel, SystemApiVO } from '@/api/modules/common/model/optionsModel.ts'
-import defHttp from '@/api'
+import { requestClient } from '@/api'
 import { TimeDelayReq } from '@/api/helper/timeDelayReq.ts'
 import { RequestEnum } from '@/enums/httpEnum'
 import { isString } from '@/utils/is.ts'
@@ -29,30 +29,29 @@ export const Api = {
 }
 
 export function findSystemApi(serviceProfix: string) {
-  return defHttp.request<Map<string, SystemApiVO[]>>({ ...Api.SystemApiScan(serviceProfix) })
+  return requestClient.get<Map<string, SystemApiVO[]>>(Api.SystemApiScan(serviceProfix).url)
 }
 
 /**
  * @description: Get 蜜桔
  */
 export function findEnumListByType(params: CodeQueryVO[] = []) {
-  return defHttp.request<OptionsGetResultModel>({ ...Api.FindEnumListByType, params })
+  return requestClient.post<OptionsGetResultModel>(Api.FindEnumListByType.url, params)
 }
 
 /**
  * @description: Get 字典
  */
 export function findCodeListByType(params: CodeQueryVO[] = []) {
-  return defHttp.request<OptionsGetResultModel>({
-    ...Api.FindCodeListByType,
-    params,
-  })
+  return requestClient.post<OptionsGetResultModel>(Api.FindCodeListByType.url, params)
 }
 export function findParams(params: string[] | string = []) {
   if (isString(params)) {
     params = [params]
   }
-  return defHttp.request<string>({ ...Api.Params, params })
+  return requestClient.get<string>(Api.Params.url, {
+    params,
+  })
 }
 
 const codeTimeDelayReq = new TimeDelayReq({

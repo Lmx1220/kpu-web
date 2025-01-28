@@ -1,9 +1,10 @@
+import type { AnyFunction } from '#/index'
 import type { DictEnum, EnumEnum } from '@/enums/commonEnum'
 import type { AxiosResponse } from 'axios'
 import { asyncFindDictList, asyncFindEnumList } from '@/api/modules/common/general'
-import componentSetting, { SORT_FIELD } from '@/settings/componentSetting'
 import { isArray, isFunction, isString } from '@/utils/is'
 import { toast } from 'vue-sonner'
+import componentSetting, { SORT_FIELD } from './componentSetting'
 
 const PAGE_PARAMS = Object.values(componentSetting.table.fetchSetting)
 
@@ -141,7 +142,7 @@ export function downloadFile(response: AxiosResponse<Blob>) {
  * @param func 条件回调
  * @param resultFunc 返回值回调
  */
-export function findNodeByFunction(list: any[], func: Fn, resultFunc: Fn) {
+export function findNodeByFunction(list: any[], func: AnyFunction, resultFunc: AnyFunction) {
   if (!isFunction(func)) {
     console.error('func 参数不是一个函数')
     return []

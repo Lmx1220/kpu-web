@@ -62,7 +62,7 @@ defineExpose({
     }"
   >
     <router-link v-slot="{ href, navigate }" custom :to="(uniqueKey.at(-1) ?? '') + (item.meta?.query ? `?${qs.stringify(item.meta?.query)}` : '')">
-      <KTooltip :disabled="!rootMenu.isMenuPopup || level !== 0 || subMenu" :text="generateI18nTitle(item.meta?.title)" :side="rootMenu.props.mode === 'vertical' ? 'right' : 'bottom'" class="h-full w-full">
+      <KpuTooltip :disabled="!rootMenu.isMenuPopup || level !== 0 || subMenu" :text="generateI18nTitle(item.meta?.title)" :side="rootMenu.props.mode === 'vertical' ? 'right' : 'bottom'" class="h-full w-full">
         <component
           :is="subMenu ? 'div' : 'a'" v-bind="{
             ...(!subMenu && {
@@ -95,7 +95,7 @@ defineExpose({
               'w-full': rootMenu.isMenuPopup && level === 0 && rootMenu.props.showCollapseName && rootMenu.props.mode === 'vertical',
             }" :style="indentStyle"
           >
-            <KIcon
+            <KpuIcon
               v-if="icon" :name="icon" :size="18" class="menu-item-container-icon" :class="{
                 'transition-transform group-hover-scale-120': rootMenu.isMenuPopup || !alwaysExpand,
               }"
@@ -110,7 +110,7 @@ defineExpose({
             >
               {{ generateI18nTitle(item.meta?.title) }}
             </span>
-            <KBadge
+            <KpuBadge
               v-if="item.meta?.badge && !(rootMenu.isMenuPopup && level === 0)"
               :value="typeof item.meta.badge === 'function' ? item.meta.badge() : item.meta.badge"
               :variant="typeof item.meta.badgeVariant == 'function' ? item.meta.badgeVariant() : item.meta.badgeVariant"
@@ -132,7 +132,7 @@ defineExpose({
             ]"
           />
         </component>
-      </KTooltip>
+      </KpuTooltip>
     </router-link>
   </div>
 </template>

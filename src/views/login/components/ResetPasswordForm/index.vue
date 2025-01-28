@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from '@/locales/utils'
 import { FormControl, FormField, FormItem, FormMessage } from '@/ui/shadcn/ui/form'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
@@ -64,7 +65,7 @@ function handleSendCaptcha() {
       <FormField v-slot="{ componentField, errors }" name="account">
         <FormItem class="relative pb-6 space-y-0">
           <FormControl>
-            <KInput type="text" :placeholder="t('resetPasswordForm.form.account')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+            <KpuInput type="text" :placeholder="t('resetPasswordForm.form.account')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
           </FormControl>
           <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
             <FormMessage class="absolute bottom-1 text-xs" />
@@ -75,34 +76,34 @@ function handleSendCaptcha() {
         <FormField v-slot="{ componentField, value, setValue }" name="captcha">
           <FormItem class="relative pb-6 space-y-0">
             <FormControl>
-              <KPinInput :model-value="value" :name="componentField.name" :length="6" class="border-destructive" @update:model-value="val => setValue(val)" />
+              <KpuPinInput :model-value="value" :name="componentField.name" :length="6" class="border-destructive" @update:model-value="val => setValue(val)" />
             </FormControl>
             <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
               <FormMessage class="absolute bottom-1 text-xs" />
             </Transition>
           </FormItem>
         </FormField>
-        <KButton variant="outline" size="lg" :disabled="countdown > 0" class="flex-1 px-4" @click="handleSendCaptcha">
+        <KpuButton variant="outline" size="lg" :disabled="countdown > 0" class="flex-1 px-4" @click="handleSendCaptcha">
           {{ countdown === 0 ? t('resetPasswordForm.form.sendCaptcha') : t('resetPasswordForm.form.captchaCountdown', { countdown }) }}
-        </KButton>
+        </KpuButton>
       </div>
       <FormField v-slot="{ componentField, errors }" name="newPassword">
         <FormItem class="relative pb-6 space-y-0">
           <FormControl>
-            <KInput type="password" :placeholder="t('resetPasswordForm.form.newPassword')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+            <KpuInput type="password" :placeholder="t('resetPasswordForm.form.newPassword')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
           </FormControl>
           <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
             <FormMessage class="absolute bottom-1 text-xs" />
           </Transition>
         </FormItem>
       </FormField>
-      <KButton :loading="loading" size="lg" class="mt-4 w-full" type="submit">
+      <KpuButton :loading="loading" size="lg" class="mt-4 w-full" type="submit">
         {{ t('resetPasswordForm.form.confirm') }}
-      </KButton>
+      </KpuButton>
       <div class="mt-4 flex-center gap-2 text-sm color-[var(--el-text-color-secondary)]">
-        <KButton variant="link" class="h-auto p-0" @click="emits('onLogin', form.values.account)">
+        <KpuButton variant="link" class="h-auto p-0" @click="emits('onLogin', form.values.account)">
           {{ t('resetPasswordForm.login') }}
-        </KButton>
+        </KpuButton>
       </div>
     </form>
   </div>

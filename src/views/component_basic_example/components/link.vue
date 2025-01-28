@@ -53,12 +53,12 @@
       图标
     </ElDivider>
     <ElLink>
-      <KIcon name="i-ep:edit" class="el-icon--left" />
+      <KpuIcon name="i-ep:edit" class="el-icon--left" />
       编辑
     </ElLink>
     <ElLink>
       查看
-      <KIcon name="i-ep:view" class="el-icon--right" />
+      <KpuIcon name="i-ep:view" class="el-icon--right" />
     </ElLink>
   </div>
 </template>

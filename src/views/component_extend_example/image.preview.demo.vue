@@ -34,14 +34,14 @@ const tableData = [
 
 <template>
   <div>
-    <KPageHeader title="图片预览" content="ImagePreview" />
-    <KPageMain>
+    <KpuPageHeader title="图片预览" content="ImagePreview" />
+    <KpuPageMain>
       <ImagePreview src="https://kpu-web.github.io/logo.png" :width="200" />
-    </KPageMain>
-    <KPageMain title="图片加载失败时">
+    </KpuPageMain>
+    <KpuPageMain title="图片加载失败时">
       <ImagePreview src="http://www.baidu.com" width="100px" height="100px" />
-    </KPageMain>
-    <KPageMain title="结合 el-table 使用">
+    </KpuPageMain>
+    <KpuPageMain title="结合 el-table 使用">
       <ElTable :data="tableData" style="width: 100%;">
         <ElTableColumn prop="date" label="日期" width="180" fixed="left" />
         <ElTableColumn prop="name" label="姓名" width="180" />
@@ -52,6 +52,6 @@ const tableData = [
           </template>
         </ElTableColumn>
       </ElTable>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

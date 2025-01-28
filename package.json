@@ -15,7 +15,7 @@
     "preview": "vite preview",
     "serve:test": "http-server ./dist-test -o",
     "serve": "http-server ./dist -o",
-    "svgo": "svgo -f src/assets/icons",
+    "svgo": "svgo -f src/assets/icons -r",
     "new": "plop",
     "generate:icons": "esno scripts/generate.icons.ts",
     "lint": "npm-run-all -s lint:tsc lint:eslint lint:stylelint",
@@ -42,7 +42,6 @@
     "@vueuse/components": "^12.4.0",
     "@vueuse/core": "^12.4.0",
     "@vueuse/integrations": "^12.4.0",
-    "@vxe-ui/plugin-render-element": "^4.0.7",
     "add": "^2.0.6",
     "animate.css": "^4.1.1",
     "axios": "^1.7.8",
@@ -98,10 +97,12 @@
     "vue-sonner": "^1.3.0",
     "vue3-blocks-tree": "^0.6.2",
     "vue3-count-to": "^1.1.2",
-    "vxe-table": "^4.10.5",
+    "vxe-pc-ui": "^4.3.67",
+    "vxe-table": "4.10.0",
     "watermark-js-plus": "^1.5.7",
     "xe-utils": "^3.7.0",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "zod-defaults": "^0.1.3"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.13.0",

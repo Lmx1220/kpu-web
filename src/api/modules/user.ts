@@ -1,21 +1,15 @@
-import defHttp from '@/api'
-import { baseRequestClient } from '@/api/requestClient.ts'
+import { requestClient } from '@/api'
 
 export function login(data: {
   account: string
   password: string
 }) {
-  return defHttp.post({
-    url: '/login',
-    data,
-    baseURL: '/mock/',
-  })
+  return requestClient.post('/login', data, { baseURL: '/mock/' })
 }
 
 // 获取收藏夹
 export function favorites() {
-  return defHttp.get({
-    url: '/user/favorites',
+  return requestClient.get('/user/favorites', {
     baseURL: '/mock/',
   })
 }
@@ -23,21 +17,16 @@ export function favorites() {
  * 刷新accessToken
  */
 export async function refreshTokenApi() {
-  return baseRequestClient.post<{
+  return requestClient.post<{
     data: string
     status: number
-  }>('/mock/auth/refresh', {
+  }>('/auth/refresh', {}, {
     withCredentials: true,
+    baseURL: '/mock/',
   })
 }
 
 // 修改收藏夹
 export function favoritesEdit(favorites: string) {
-  return defHttp.post({
-    url: '/user/favorites/edit',
-    data: {
-      favorites,
-    },
-    baseURL: '/mock/',
-  })
+  return requestClient.post('/user/favorites/edit', favorites, { baseURL: '/mock/' })
 }

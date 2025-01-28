@@ -135,7 +135,25 @@ const routes: RouteRecordRaw = {
         component: () => import('@/views/component_built_in_example/fixedactionbar.vue'),
         meta: {
           title: 'route.component.builtIn.fixedactionbar',
-          copyright: !1,
+          copyright: false,
+        },
+      },
+      {
+        path: 'uiForm',
+        name: 'componentExampleBuiltInUiForm',
+        component: () => import('@/views/component_built_in_example/form.vue'),
+        meta: {
+          title: 'route.component.builtIn.uiForm',
+          copyright: false,
+        },
+      },
+      {
+        path: 'vxeTableForm',
+        name: 'componentExampleBuiltInVxeTableForm',
+        component: () => import('@/views/component_built_in_example/vxe_table_form.vue'),
+        meta: {
+          title: 'route.component.builtIn.vxeTableForm',
+          copyright: false,
         },
       },
       {

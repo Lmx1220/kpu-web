@@ -5,12 +5,12 @@ meta:
 
 <template>
   <div>
-    <KPageHeader title="键盘" description="KKbd" />
-    <KPageMain>
+    <KpuPageHeader title="键盘" description="KpuKbd" />
+    <KpuPageMain>
       <div class="flex gap-4">
-        <KKbd>Ctrl</KKbd>
-        <KKbd>⌘ K</KKbd>
+        <KpuKbd>Ctrl</KpuKbd>
+        <KpuKbd>⌘ K</KpuKbd>
       </div>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

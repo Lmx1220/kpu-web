@@ -2,7 +2,7 @@
 import settingsDefault from '@/settings.default'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
-import { useKpuDrawer } from '@/ui/components/KDrawer/use-drawer.ts'
+import { useKpuDrawer } from '@/ui/components/KpuDrawer/use-drawer.ts'
 import { getTwoObjectDiff } from '@/utils'
 import eventBus from '@/utils/eventBus'
 import { useClipboard } from '@vueuse/core'
@@ -54,7 +54,7 @@ watch(() => toolbarLayoutRef.value, (val) => {
     })
   }
 })
-const [KDrawer, drawerApi] = useKpuDrawer({
+const [KpuDrawer, drawerApi] = useKpuDrawer({
   // zIndex: 2000,
 })
 onMounted(() => {
@@ -79,7 +79,7 @@ function handleCopy() {
 </script>
 
 <template>
-  <KDrawer title="应用配置" :closable="false" description="在生产环境中应关闭该模块" :footer="isSupported">
+  <KpuDrawer title="应用配置" :closable="false" description="在生产环境中应关闭该模块" :footer="isSupported">
     <div class="rounded-2 bg-rose/20 px-4 py-2 text-sm/6 c-rose">
       <p class="my-1">
         应用配置可实时预览效果，但只是临时生效，要想真正应用于项目，可以点击下方的「复制配置」按钮，并将配置粘贴到 src/settings.ts 文件中。
@@ -89,9 +89,9 @@ function handleCopy() {
       </p>
     </div>
     <div>
-      <KDivider>颜色主题风格</KDivider>
+      <KpuDivider>颜色主题风格</KpuDivider>
       <div class="flex items-center justify-center pb-4">
-        <KTabs
+        <KpuTabs
           v-model="settingsStore.settings.app.colorScheme"
           :list="[
             { icon: 'i-ri:sun-line', label: '明亮', value: 'light' },
@@ -111,7 +111,7 @@ function handleCopy() {
           圆角系数
         </div>
         <div class="flex-center-start gap-1">
-          <KButton
+          <KpuButton
             v-for="(item, index) in [
               { label: 0, value: 0 },
               { label: 0.25, value: 0.25 },
@@ -121,112 +121,112 @@ function handleCopy() {
             ]" :key="index" :variant="settingsStore.settings.app.radius === item.value ? 'default' : 'outline'" size="sm" class="w-12" @click="settingsStore.settings.app.radius = (item.value as any)"
           >
             {{ item.label }}
-          </KButton>
+          </KpuButton>
         </div>
       </div>
     </div>
     <div v-if="settingsStore.mode === 'pc'">
-      <KDivider>导航栏模式</KDivider>
+      <KpuDivider>导航栏模式</KpuDivider>
       <div class="menu-mode">
-        <KTooltip text="侧边栏模式 (含主导航)" :delay="500">
+        <KpuTooltip text="侧边栏模式 (含主导航)" :delay="500">
           <div class="mode mode-side" :class="{ active: settingsStore.settings.menu.mode === 'side' }" @click="settingsStore.settings.menu.mode = 'side'">
             <div class="mode-container" />
           </div>
-        </KTooltip>
-        <KTooltip text="顶部模式" :delay="500">
+        </KpuTooltip>
+        <KpuTooltip text="顶部模式" :delay="500">
           <div class="mode mode-head" :class="{ active: settingsStore.settings.menu.mode === 'head' }" @click="settingsStore.settings.menu.mode = 'head'">
             <div class="mode-container" />
           </div>
-        </KTooltip>
-        <KTooltip text="侧边栏模式 (不含主导航)" :delay="500">
+        </KpuTooltip>
+        <KpuTooltip text="侧边栏模式 (不含主导航)" :delay="500">
           <div class="mode mode-single" :class="{ active: settingsStore.settings.menu.mode === 'single' }" @click="settingsStore.settings.menu.mode = 'single'">
             <div class="mode-container" />
           </div>
-        </KTooltip>
+        </KpuTooltip>
       </div>
       <div class="menu-mode">
-        <KTooltip text="侧边栏精简模式" :delay="500">
+        <KpuTooltip text="侧边栏精简模式" :delay="500">
           <div class="mode mode-only-side" :class="{ active: settingsStore.settings.menu.mode === 'only-side' }" @click="settingsStore.settings.menu.mode = 'only-side'">
             <div class="mode-container" />
           </div>
-        </KTooltip>
-        <KTooltip text="顶部精简模式" :delay="500">
+        </KpuTooltip>
+        <KpuTooltip text="顶部精简模式" :delay="500">
           <div class="mode mode-only-head" :class="{ active: settingsStore.settings.menu.mode === 'only-head' }" @click="settingsStore.settings.menu.mode = 'only-head'">
             <div class="mode-container" />
           </div>
-        </KTooltip>
-        <KTooltip text="侧边栏面板模式" :delay="500">
+        </KpuTooltip>
+        <KpuTooltip text="侧边栏面板模式" :delay="500">
           <div class="mode mode-side-panel" :class="{ active: settingsStore.settings.menu.mode === 'side-panel' }" @click="settingsStore.settings.menu.mode = 'side-panel'">
             <div class="mode-container" />
           </div>
-        </KTooltip>
-        <KTooltip text="顶部面板模式" :delay="500">
+        </KpuTooltip>
+        <KpuTooltip text="顶部面板模式" :delay="500">
           <div class="mode mode-head-panel" :class="{ active: settingsStore.settings.menu.mode === 'head-panel' }" @click="settingsStore.settings.menu.mode = 'head-panel'">
             <div class="mode-container" />
           </div>
-        </KTooltip>
+        </KpuTooltip>
       </div>
     </div>
     <div v-if="settingsStore.mode === 'pc'">
-      <KDivider>页宽模式</KDivider>
+      <KpuDivider>页宽模式</KpuDivider>
       <div class="app-width-mode">
-        <KTooltip text="自适应" :delay="500">
+        <KpuTooltip text="自适应" :delay="500">
           <div class="mode mode-adaption" :class="{ active: settingsStore.settings.layout.widthMode === 'adaption' }" @click="settingsStore.settings.layout.widthMode = 'adaption'">
-            <KIcon name="i-ep:back" class="left" />
-            <KIcon name="i-ep:right" class="right" />
+            <KpuIcon name="i-ep:back" class="left" />
+            <KpuIcon name="i-ep:right" class="right" />
           </div>
-        </KTooltip>
-        <KTooltip text="自适应 (有最小宽度)" :delay="500">
+        </KpuTooltip>
+        <KpuTooltip text="自适应 (有最小宽度)" :delay="500">
           <div class="mode mode-adaption-min-width" :class="{ active: settingsStore.settings.layout.widthMode === 'adaption-min-width' }" @click="settingsStore.settings.layout.widthMode = 'adaption-min-width'">
-            <KIcon name="i-ep:back" class="left" />
-            <KIcon name="i-ep:right" class="right" />
+            <KpuIcon name="i-ep:back" class="left" />
+            <KpuIcon name="i-ep:right" class="right" />
           </div>
-        </KTooltip>
-        <KTooltip text="定宽居中" :delay="500">
+        </KpuTooltip>
+        <KpuTooltip text="定宽居中" :delay="500">
           <div class="mode mode-center" :class="{ active: settingsStore.settings.layout.widthMode === 'center' }" @click="settingsStore.settings.layout.widthMode = 'center'" />
-        </KTooltip>
-        <KTooltip text="定宽居中 (有最大宽度)" :delay="500">
+        </KpuTooltip>
+        <KpuTooltip text="定宽居中 (有最大宽度)" :delay="500">
           <div class="mode mode-center-max-width" :class="{ active: settingsStore.settings.layout.widthMode === 'center-max-width' }" @click="settingsStore.settings.layout.widthMode = 'center-max-width'">
-            <KIcon name="i-ep:back" class="left" />
-            <KIcon name="i-ep:right" class="right" />
+            <KpuIcon name="i-ep:back" class="left" />
+            <KpuIcon name="i-ep:right" class="right" />
           </div>
-        </KTooltip>
+        </KpuTooltip>
       </div>
     </div>
     <div>
-      <KDivider>页面切换动画</KDivider>
+      <KpuDivider>页面切换动画</KpuDivider>
       <div class="flex items-center justify-center pb-4">
-        <KSwitch v-model="settingsStore.settings.mainPage.enableTransition" />
+        <KpuSwitch v-model="settingsStore.settings.mainPage.enableTransition" />
       </div>
       <div v-if="settingsStore.settings.mainPage.enableTransition" class="transition-mode">
-        <KTooltip text="淡入淡出" :delay="500">
+        <KpuTooltip text="淡入淡出" :delay="500">
           <div class="mode mode-fade" :class="{ active: settingsStore.settings.mainPage.transitionMode === 'fade' }" @click="settingsStore.settings.mainPage.transitionMode = 'fade'" />
-        </KTooltip>
-        <KTooltip text="向左滑动" :delay="500">
+        </KpuTooltip>
+        <KpuTooltip text="向左滑动" :delay="500">
           <div class="mode mode-slide-left" :class="{ active: settingsStore.settings.mainPage.transitionMode === 'slide-left' }" @click="settingsStore.settings.mainPage.transitionMode = 'slide-left'" />
-        </KTooltip>
-        <KTooltip text="向右滑动" :delay="500">
+        </KpuTooltip>
+        <KpuTooltip text="向右滑动" :delay="500">
           <div class="mode mode-slide-right" :class="{ active: settingsStore.settings.mainPage.transitionMode === 'slide-right' }" @click="settingsStore.settings.mainPage.transitionMode = 'slide-right'" />
-        </KTooltip>
-        <KTooltip text="向上滑动" :delay="500">
+        </KpuTooltip>
+        <KpuTooltip text="向上滑动" :delay="500">
           <div class="mode mode-slide-top" :class="{ active: settingsStore.settings.mainPage.transitionMode === 'slide-top' }" @click="settingsStore.settings.mainPage.transitionMode = 'slide-top'" />
-        </KTooltip>
-        <KTooltip text="向下滑动" :delay="500">
+        </KpuTooltip>
+        <KpuTooltip text="向下滑动" :delay="500">
           <div class="mode mode-slide-bottom" :class="{ active: settingsStore.settings.mainPage.transitionMode === 'slide-bottom' }" @click="settingsStore.settings.mainPage.transitionMode = 'slide-bottom'" />
-        </KTooltip>
+        </KpuTooltip>
       </div>
     </div>
     <div>
-      <KDivider>导航栏</KDivider>
+      <KpuDivider>导航栏</KpuDivider>
       <div class="setting-item">
         <div class="label">
           主导航点击模式
-          <KTooltip text="智能选择会判断次导航是否只有且只有一个可访问的菜单进行切换或跳转操作">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="智能选择会判断次导航是否只有且只有一个可访问的菜单进行切换或跳转操作">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
         <div class="flex-center-start gap-1">
-          <KButton
+          <KpuButton
             v-for="(item, index) in [{
               label: '切换',
               value: 'switch',
@@ -239,54 +239,54 @@ function handleCopy() {
             }]" :key="index" :variant="settingsStore.settings.menu.mainMenuClickMode === item.value ? 'default' : 'outline'" size="sm" :disabled="['single', 'side', 'head'].includes(settingsStore.settings.menu.mode)" @click="settingsStore.settings.menu.mainMenuClickMode = (item.value as any)"
           >
             {{ item.label }}
-          </KButton>
+          </KpuButton>
         </div>
       </div>
       <!--      <div class="setting-item"> -->
       <!--        <div class="label"> -->
       <!--          次导航自动隐藏 -->
-      <!--          <KTooltip text="切换主导航时，如果次导航里只有一个导航时，则自动隐藏"> -->
-      <!--            <KIcon name="i-ri:question-line" /> -->
-      <!--          </KTooltip> -->
+      <!--          <KpuTooltip text="切换主导航时，如果次导航里只有一个导航时，则自动隐藏"> -->
+      <!--            <KpuIcon name="i-ri:question-line" /> -->
+      <!--          </KpuTooltip> -->
       <!--        </div> -->
-      <!--        <KSwitch v-model="settingsStore.settings.menu.subMenuOnlyOneHide" :disabled="['single', 'only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" /> -->
+      <!--        <KpuSwitch v-model="settingsStore.settings.menu.subMenuOnlyOneHide" :disabled="['single', 'only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" /> -->
       <!--      </div> -->
       <div class="setting-item">
         <div class="label">
           次导航保持展开一个
-          <KTooltip text="次导航只保持单个菜单的展开">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="次导航只保持单个菜单的展开">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.menu.subMenuUniqueOpened" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
+        <KpuSwitch v-model="settingsStore.settings.menu.subMenuUniqueOpened" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
       </div>
       <div class="setting-item">
         <div class="label">
           次导航是否收起
         </div>
-        <KSwitch v-model="settingsStore.settings.menu.subMenuCollapse" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
+        <KpuSwitch v-model="settingsStore.settings.menu.subMenuCollapse" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
       </div>
       <div class="setting-item">
         <div class="label">
           次导航是否自动收起
-          <KTooltip text="次导航收起时，鼠标悬停会临时展开">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="次导航收起时，鼠标悬停会临时展开">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.menu.subMenuAutoCollapse" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
+        <KpuSwitch v-model="settingsStore.settings.menu.subMenuAutoCollapse" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
       </div>
       <div v-if="settingsStore.mode === 'pc'" class="setting-item">
         <div class="label">
           显示次导航展开/收起按钮
         </div>
-        <KSwitch v-model="settingsStore.settings.menu.enableSubMenuCollapseButton" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
+        <KpuSwitch v-model="settingsStore.settings.menu.enableSubMenuCollapseButton" :disabled="['only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
       </div>
       <div class="setting-item">
         <div class="label">
           风格
         </div>
         <div class="flex-center-start gap-1">
-          <KButton
+          <KpuButton
             v-for="(item, index) in [
               { icon: 'i-jam:stop-sign', value: '' },
               { icon: ['head', 'only-head'].includes(settingsStore.settings.menu.mode) ? 'i-ep:caret-top' : 'i-ep:caret-left', value: 'arrow' },
@@ -296,25 +296,25 @@ function handleCopy() {
             size="icon" class="h-7 w-7"
             :disabled="settingsStore.settings.menu.mode === 'single'" @click="settingsStore.settings.menu.style = (item.value as any)"
           >
-            <KIcon :name="item.icon" />
-          </KButton>
+            <KpuIcon :name="item.icon" />
+          </KpuButton>
         </div>
       </div>
       <div class="setting-item">
         <div class="label">
           是否启用快捷键
         </div>
-        <KSwitch v-model="settingsStore.settings.menu.enableHotkeys" :disabled="['single', 'only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
+        <KpuSwitch v-model="settingsStore.settings.menu.enableHotkeys" :disabled="['single', 'only-side', 'only-head'].includes(settingsStore.settings.menu.mode)" />
       </div>
     </div>
     <div>
-      <KDivider>顶栏</KDivider>
+      <KpuDivider>顶栏</KpuDivider>
       <div class="setting-item">
         <div class="label">
           模式
         </div>
         <div class="flex-center-start gap-1">
-          <KButton
+          <KpuButton
             v-for="(item, index) in [
               { label: '静止', value: 'static' },
               { label: '固定', value: 'fixed' },
@@ -322,33 +322,33 @@ function handleCopy() {
             ]" :key="index" :variant="settingsStore.settings.topbar.mode === item.value ? 'default' : 'outline'" size="sm" @click="settingsStore.settings.topbar.mode = (item.value as any)"
           >
             {{ item.label }}
-          </KButton>
+          </KpuButton>
         </div>
       </div>
       <div class="setting-item">
         <div class="label">
           展示切换
-          <KTooltip text="切换标签栏和工具栏的展示顺序">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="切换标签栏和工具栏的展示顺序">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.topbar.switchTabbarAndToolbar" />
+        <KpuSwitch v-model="settingsStore.settings.topbar.switchTabbarAndToolbar" />
       </div>
     </div>
     <div>
-      <KDivider>标签栏</KDivider>
+      <KpuDivider>标签栏</KpuDivider>
       <div class="setting-item">
         <div class="label">
           是否启用
         </div>
-        <KSwitch v-model="settingsStore.settings.tabbar.enable" />
+        <KpuSwitch v-model="settingsStore.settings.tabbar.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           风格
         </div>
         <div class="flex-center-start gap-1">
-          <KButton
+          <KpuButton
             v-for="(item, index) in [
               { label: '默认', value: '' },
               { label: '时尚', value: 'fashion' },
@@ -357,20 +357,20 @@ function handleCopy() {
             ]" :key="index" :variant="settingsStore.settings.tabbar.style === item.value ? 'default' : 'outline'" size="sm" :disabled="!settingsStore.settings.tabbar.enable" @click="settingsStore.settings.tabbar.style = (item.value as any)"
           >
             {{ item.label }}
-          </KButton>
+          </KpuButton>
         </div>
       </div>
       <div class="setting-item">
         <div class="label">
           是否显示图标
         </div>
-        <KSwitch v-model="settingsStore.settings.tabbar.enableIcon" :disabled="!settingsStore.settings.tabbar.enable" />
+        <KpuSwitch v-model="settingsStore.settings.tabbar.enableIcon" :disabled="!settingsStore.settings.tabbar.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           标签页双击执行动作
         </div>
-        <KSelect
+        <KpuSelect
           v-model="settingsStore.settings.tabbar.dblclickAction" :options="[{
             label: '刷新',
             value: 'reload',
@@ -395,7 +395,7 @@ function handleCopy() {
           标签页合并规则
         </div>
         <div class="flex-center-start gap-1">
-          <KButton
+          <KpuButton
             v-for="(item, index) in [
               { label: '不合并', value: '' },
               { label: '激活导航', value: 'activeMenu' },
@@ -403,95 +403,95 @@ function handleCopy() {
             ]" :key="index" :variant="settingsStore.settings.tabbar.mergeTabsBy === item.value ? 'default' : 'outline'" size="sm" :disabled="!settingsStore.settings.tabbar.enable" @click="settingsStore.settings.tabbar.mergeTabsBy = (item.value as any)"
           >
             {{ item.label }}
-          </KButton>
+          </KpuButton>
         </div>
       </div>
       <div class="setting-item">
         <div class="label">
           是否启用记忆功能
-          <KTooltip text="非固定和非常驻的标签页将在本次会话窗口中始终存在，刷新浏览器或重新登录时不会丢失">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="非固定和非常驻的标签页将在本次会话窗口中始终存在，刷新浏览器或重新登录时不会丢失">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.tabbar.enableMemory" :disabled="!settingsStore.settings.tabbar.enable" />
+        <KpuSwitch v-model="settingsStore.settings.tabbar.enableMemory" :disabled="!settingsStore.settings.tabbar.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           是否启用快捷键
         </div>
-        <KSwitch v-model="settingsStore.settings.tabbar.enableHotkeys" :disabled="!settingsStore.settings.tabbar.enable" />
+        <KpuSwitch v-model="settingsStore.settings.tabbar.enableHotkeys" :disabled="!settingsStore.settings.tabbar.enable" />
       </div>
     </div>
     <div>
-      <KDivider>工具栏</KDivider>
+      <KpuDivider>工具栏</KpuDivider>
       <div class="setting-item">
         <div class="label">
           收藏夹
-          <KTooltip text="可将常用导航添加进收藏夹，方便快读访问">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="可将常用导航添加进收藏夹，方便快读访问">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.toolbar.favorites" />
+        <KpuSwitch v-model="settingsStore.settings.toolbar.favorites" />
       </div>
       <div v-if="settingsStore.mode === 'pc'" class="setting-item">
         <div class="label">
           面包屑导航
         </div>
-        <KSwitch v-model="settingsStore.settings.toolbar.breadcrumb" />
+        <KpuSwitch v-model="settingsStore.settings.toolbar.breadcrumb" />
       </div>
       <div class="setting-item">
         <div class="label">
           导航搜索
-          <KTooltip text="对导航进行快捷搜索">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="对导航进行快捷搜索">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.toolbar.navSearch" />
+        <KpuSwitch v-model="settingsStore.settings.toolbar.navSearch" />
       </div>
       <div class="setting-item">
         <div class="label">
           通知中心
-          <KTooltip text="该功能具体业务功能需自行开发，框架仅提供示例模版">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="该功能具体业务功能需自行开发，框架仅提供示例模版">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.toolbar.notification" />
+        <KpuSwitch v-model="settingsStore.settings.toolbar.notification" />
       </div>
       <div class="setting-item">
         <div class="label">
           锁屏
         </div>
-        <KSwitch v-model="settingsStore.settings.toolbar.lock" />
+        <KpuSwitch v-model="settingsStore.settings.toolbar.lock" />
       </div>
       <div class="setting-item">
         <div class="label">
           国际化
         </div>
-        <KSwitch v-model="settingsStore.settings.toolbar.i18n" />
+        <KpuSwitch v-model="settingsStore.settings.toolbar.i18n" />
       </div>
       <div v-if="settingsStore.mode === 'pc'" class="setting-item">
         <div class="label">
           全屏
         </div>
-        <KSwitch v-model="settingsStore.settings.toolbar.fullscreen" />
+        <KpuSwitch v-model="settingsStore.settings.toolbar.fullscreen" />
       </div>
       <div class="setting-item">
         <div class="label">
           页面刷新
-          <KTooltip text="使用框架内提供的刷新功能进行页面刷新">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="使用框架内提供的刷新功能进行页面刷新">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.toolbar.pageReload" />
+        <KpuSwitch v-model="settingsStore.settings.toolbar.pageReload" />
       </div>
       <div class="setting-item">
         <div class="label">
           颜色主题
-          <KTooltip text="可切换明亮/暗黑模式">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="可切换明亮/暗黑模式">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.toolbar.colorScheme" />
+        <KpuSwitch v-model="settingsStore.settings.toolbar.colorScheme" />
       </div>
       <div ref="toolbarLayoutRef" class="mx-4 my-2 flex items-center rounded-2 px-2 py-1 ring-1 ring-border">
         <span
@@ -501,201 +501,201 @@ function handleCopy() {
             'pointer-events-none w-0 op-0 p-0! no-drag': tool !== '->' && !settingsStore.settings.toolbar[tool],
           }"
         >
-          <KIcon v-if="tool === 'favorites'" name="i-uiw:star-off" />
-          <KIcon v-if="tool === 'breadcrumb'" name="i-ic:twotone-double-arrow" :rotate="settingsStore.settings.app.direction === 'rtl' ? 180 : 0" />
-          <KIcon v-if="tool === 'navSearch'" name="i-ri:search-line" />
-          <KIcon v-if="tool === 'notification'" name="i-ri:notification-3-line" />
-          <KIcon v-if="tool === 'lock'" name="i-ri:lock-line" />
-          <KIcon v-if="tool === 'i18n'" name="i-ri:translate" />
-          <KIcon v-if="tool === 'fullscreen'" name="i-ri:fullscreen-line" />
-          <KIcon v-if="tool === 'pageReload'" name="i-iconoir:refresh-double" />
-          <KIcon v-if="tool === 'colorScheme'" name="i-ri:sun-line" />
+          <KpuIcon v-if="tool === 'favorites'" name="i-uiw:star-off" />
+          <KpuIcon v-if="tool === 'breadcrumb'" name="i-ic:twotone-double-arrow" :rotate="settingsStore.settings.app.direction === 'rtl' ? 180 : 0" />
+          <KpuIcon v-if="tool === 'navSearch'" name="i-ri:search-line" />
+          <KpuIcon v-if="tool === 'notification'" name="i-ri:notification-3-line" />
+          <KpuIcon v-if="tool === 'lock'" name="i-ri:lock-line" />
+          <KpuIcon v-if="tool === 'i18n'" name="i-ri:translate" />
+          <KpuIcon v-if="tool === 'fullscreen'" name="i-ri:fullscreen-line" />
+          <KpuIcon v-if="tool === 'pageReload'" name="i-iconoir:refresh-double" />
+          <KpuIcon v-if="tool === 'colorScheme'" name="i-ri:sun-line" />
           <span v-if="tool === '->'" class="pointer-events-none text-sm">布局调整</span>
         </span>
       </div>
     </div>
     <div v-if="settingsStore.mode === 'pc'">
-      <KDivider>面包屑导航</KDivider>
+      <KpuDivider>面包屑导航</KpuDivider>
       <div class="setting-item">
         <div class="label">
           风格
         </div>
 
         <div class="flex-center-start gap-1">
-          <KButton
+          <KpuButton
             v-for="(item, index) in [
               { label: '默认', value: '' },
               { label: '现代', value: 'modern' },
             ]" :key="index" :variant="settingsStore.settings.breadcrumb.style === item.value ? 'default' : 'outline'" size="sm" :disabled="!settingsStore.settings.toolbar.breadcrumb" @click="settingsStore.settings.breadcrumb.style = (item.value as any)"
           >
             {{ item.label }}
-          </KButton>
+          </KpuButton>
         </div>
       </div>
       <div class="setting-item">
         <div class="label">
           是否显示主导航
         </div>
-        <KSwitch v-model="settingsStore.settings.breadcrumb.enableMainMenu" :disabled="!settingsStore.settings.toolbar.breadcrumb || ['single'].includes(settingsStore.settings.menu.mode)" />
+        <KpuSwitch v-model="settingsStore.settings.breadcrumb.enableMainMenu" :disabled="!settingsStore.settings.toolbar.breadcrumb || ['single'].includes(settingsStore.settings.menu.mode)" />
       </div>
     </div>
     <div>
-      <KDivider>页面</KDivider>
+      <KpuDivider>页面</KpuDivider>
       <div class="setting-item">
         <div class="label">
           是否启用快捷键
         </div>
-        <KSwitch v-model="settingsStore.settings.mainPage.enableHotkeys" />
+        <KpuSwitch v-model="settingsStore.settings.mainPage.enableHotkeys" />
       </div>
     </div>
     <div>
-      <KDivider>导航搜索</KDivider>
+      <KpuDivider>导航搜索</KpuDivider>
       <div class="setting-item">
         <div class="label">
           是否启用快捷键
         </div>
-        <KSwitch v-model="settingsStore.settings.navSearch.enableHotkeys" :disabled="!settingsStore.settings.toolbar.navSearch" />
+        <KpuSwitch v-model="settingsStore.settings.navSearch.enableHotkeys" :disabled="!settingsStore.settings.toolbar.navSearch" />
       </div>
     </div>
     <div>
-      <KDivider>底部版权</KDivider>
+      <KpuDivider>底部版权</KpuDivider>
       <div class="setting-item">
         <div class="label">
           是否启用
         </div>
-        <KSwitch v-model="settingsStore.settings.copyright.enable" />
+        <KpuSwitch v-model="settingsStore.settings.copyright.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           日期
         </div>
-        <KInput v-model="settingsStore.settings.copyright.dates" :disabled="!settingsStore.settings.copyright.enable" />
+        <KpuInput v-model="settingsStore.settings.copyright.dates" :disabled="!settingsStore.settings.copyright.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           公司
         </div>
-        <KInput v-model="settingsStore.settings.copyright.company" :disabled="!settingsStore.settings.copyright.enable" />
+        <KpuInput v-model="settingsStore.settings.copyright.company" :disabled="!settingsStore.settings.copyright.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           网址
         </div>
-        <KInput v-model="settingsStore.settings.copyright.website" :disabled="!settingsStore.settings.copyright.enable" />
+        <KpuInput v-model="settingsStore.settings.copyright.website" :disabled="!settingsStore.settings.copyright.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           备案
         </div>
-        <KInput v-model="settingsStore.settings.copyright.beian" :disabled="!settingsStore.settings.copyright.enable" />
+        <KpuInput v-model="settingsStore.settings.copyright.beian" :disabled="!settingsStore.settings.copyright.enable" />
       </div>
     </div>
     <div>
-      <KDivider>主页</KDivider>
+      <KpuDivider>主页</KpuDivider>
       <div class="setting-item">
         <div class="label">
           是否启用
-          <KTooltip text="该功能开启时，登录成功默认进入主页，反之则默认进入导航栏里第一个导航页面">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="该功能开启时，登录成功默认进入主页，反之则默认进入导航栏里第一个导航页面">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.home.enable" />
+        <KpuSwitch v-model="settingsStore.settings.home.enable" />
       </div>
       <div class="setting-item">
         <div class="label">
           主页名称
-          <KTooltip text="开启国际化时，该设置无效">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="开启国际化时，该设置无效">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KInput v-model="settingsStore.settings.home.title" :disabled="settingsStore.settings.toolbar.i18n" />
+        <KpuInput v-model="settingsStore.settings.home.title" :disabled="settingsStore.settings.toolbar.i18n" />
       </div>
     </div>
     <div>
-      <KDivider>其它</KDivider>
+      <KpuDivider>其它</KpuDivider>
       <div class="setting-item">
         <div class="label">
           是否启用权限
         </div>
-        <KSwitch v-model="settingsStore.settings.app.enablePermission" />
+        <KpuSwitch v-model="settingsStore.settings.app.enablePermission" />
       </div>
       <div class="setting-item">
         <div class="label">
           载入进度条
-          <KTooltip text="该功能开启时，跳转路由会看到页面顶部有进度条">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="该功能开启时，跳转路由会看到页面顶部有进度条">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.app.enableProgress" />
+        <KpuSwitch v-model="settingsStore.settings.app.enableProgress" />
       </div>
       <div class="setting-item">
         <div class="label">
           哀悼模式
-          <KTooltip text="该功能开启时，整站会变为灰色">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="该功能开启时，整站会变为灰色">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.app.enableMournMode" />
+        <KpuSwitch v-model="settingsStore.settings.app.enableMournMode" />
       </div>
       <div class="setting-item">
         <div class="label">
           色弱模式
         </div>
-        <KSwitch v-model="settingsStore.settings.app.enableColorAmblyopiaMode" />
+        <KpuSwitch v-model="settingsStore.settings.app.enableColorAmblyopiaMode" />
       </div>
       <div class="setting-item">
         <div class="label">
           动态标题
-          <KTooltip text="该功能开启时，页面标题会显示当前路由标题，格式为“页面标题 - 网站名称”；关闭时则显示网站名称，网站名称在项目根目录下 .env.* 文件里配置">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="该功能开启时，页面标题会显示当前路由标题，格式为“页面标题 - 网站名称”；关闭时则显示网站名称，网站名称在项目根目录下 .env.* 文件里配置">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KSwitch v-model="settingsStore.settings.app.enableDynamicTitle" />
+        <KpuSwitch v-model="settingsStore.settings.app.enableDynamicTitle" />
       </div>
       <div class="setting-item">
         <div class="label">
           检测更新
         </div>
-        <KSwitch v-model="settingsStore.settings.app.enableCheckUpdates" />
+        <KpuSwitch v-model="settingsStore.settings.app.enableCheckUpdates" />
       </div>
       <div class="setting-item">
         <div class="label">
           Storage 前缀
-          <KTooltip text="localStorage 和 sessionStorage 的字段前缀">
-            <KIcon name="i-ri:question-line" />
-          </KTooltip>
+          <KpuTooltip text="localStorage 和 sessionStorage 的字段前缀">
+            <KpuIcon name="i-ri:question-line" />
+          </KpuTooltip>
         </div>
-        <KInput v-model="settingsStore.settings.app.storagePrefix" />
+        <KpuInput v-model="settingsStore.settings.app.storagePrefix" />
       </div>
       <div class="setting-item">
         <div class="label">
           页面水印
         </div>
-        <KSwitch v-model="settingsStore.settings.app.enableWatermark" />
+        <KpuSwitch v-model="settingsStore.settings.app.enableWatermark" />
       </div>
       <div class="setting-item">
         <div class="label">
           文本方向
         </div>
         <div class="flex-center-start gap-1">
-          <KButton
+          <KpuButton
             v-for="(item, index) in [
               { label: 'LTR', value: 'ltr' },
               { label: 'RTL', value: 'rtl' },
             ]" :key="index" :variant="settingsStore.settings.app.direction === item.value ? 'default' : 'outline'" size="sm" @click="settingsStore.settings.app.direction = (item.value as any)"
           >
             {{ item.label }}
-          </KButton>
+          </KpuButton>
         </div>
       </div>
     </div>
     <template #footer>
-      <KButton class="w-full" @click="handleCopy">
-        <KIcon name="i-ep:document-copy" />
+      <KpuButton class="w-full" @click="handleCopy">
+        <KpuIcon name="i-ep:document-copy" />
         复制配置
-      </KButton>
+      </KpuButton>
     </template>
-  </KDrawer>
+  </KpuDrawer>
 </template>
 
 <style scoped>

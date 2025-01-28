@@ -31,17 +31,17 @@ function to(url: string) {
 
 <template>
   <div>
-    <KPageHeader title="错误日志" content="错误日志通过 Vue 提供的全局错误钩子 errorHandler 进行拦截，如果需要上报给后端，需自行实现">
+    <KpuPageHeader title="错误日志" content="错误日志通过 Vue 提供的全局错误钩子 errorHandler 进行拦截，如果需要上报给后端，需自行实现">
       <ElButton @click="to('https://cn.vuejs.org/api/application.html#app-config-errorhandler')">
         <template #icon>
-          <KIcon
+          <KpuIcon
             name="i-ep:link"
           />
         </template>
         Vue errorHandler 说明
       </ElButton>
-    </KPageHeader>
-    <KPageMain>
+    </KpuPageHeader>
+    <KpuPageMain>
       <div v-if="development !== 'development'">
         <div v-if="settingsStore.settings.app.enableErrorLog">
           <ElButton type="danger" @click="onError(1)">
@@ -87,6 +87,6 @@ function to(url: string) {
       <div v-else>
         当前为开发环境，该功能关闭演示
       </div>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

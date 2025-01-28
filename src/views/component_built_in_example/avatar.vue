@@ -8,13 +8,13 @@ enabled: false
 
 <template>
   <div>
-    <KPageHeader title="头像" description="KAvatar" />
-    <KPageMain>
+    <KpuPageHeader title="头像" description="KpuAvatar" />
+    <KpuPageMain>
       <div class="flex gap-4">
-        <KAvatar src="https://fantastic-admin.hurui.me/logo.png" />
-        <KAvatar src="https://fantastic-admin.hurui.me/logo.png" shape="square" />
-        <KAvatar src="" fallback="Hooray" />
+        <KpuAvatar src="https://kpu-web.github.io/logo.png" />
+        <KpuAvatar src="https://kpu-web.github.io/logo.png" shape="square" />
+        <KpuAvatar src="" fallback="lmx" />
       </div>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

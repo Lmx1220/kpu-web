@@ -1,10 +1,9 @@
 import type { LocaleType } from '#/config'
 import type { Settings } from '#/global'
 import type { RouteLocationNormalized, RouteMeta } from 'vue-router'
-// import { getLocales } from '@/locales'
+import { loadLocaleMessages } from '@/locales/i18n.ts'
 import settingsDefault from '@/settings'
-import { merge } from '@/utils/object.ts'
-import storage from '@/utils/storage.ts'
+import { mergeWithArrayOverride } from '@/utils/object.ts'
 import { cloneDeep } from 'es-toolkit'
 
 const useSettingsStore = defineStore(
@@ -113,7 +112,7 @@ const useSettingsStore = defineStore(
         os.value = 'linux'
         break
     }
-    const lock = ref<boolean>(storage.local.get('lock') === 'true')
+    const lock = ref<boolean>(localStorage.getItem(`${settings.value.app.storagePrefix}lock`) === 'true')
 
     // 页面标题
     const title = ref<RouteMeta['title']>()
@@ -225,10 +224,10 @@ const useSettingsStore = defineStore(
     function setDefaultLang(lang: LocaleType) {
       settings.value.app.defaultLang = lang
     }
-    // const { changeLocale } = useLocale()
-    // watch(() => settings.value.app.defaultLang, async (lang: LocaleType) => {
-    //   await changeLocale(lang)
-    // })
+
+    watch(() => settings.value.app.defaultLang, async (lang: LocaleType) => {
+      await loadLocaleMessages(lang)
+    })
 
     // 设置主题颜色模式
     function setColorScheme(color: Required<Settings.app>['colorScheme']) {
@@ -244,7 +243,7 @@ const useSettingsStore = defineStore(
 
     // 更新应用配置
     function updateSettings(data: Settings.all, fromBase = false) {
-      settings.value = merge(data, fromBase ? cloneDeep(settingsDefault) : settings.value)
+      settings.value = mergeWithArrayOverride(data, fromBase ? cloneDeep(settingsDefault) : settings.value)
     }
 
     return {

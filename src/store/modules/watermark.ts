@@ -1,6 +1,5 @@
 import type { WatermarkOptions } from 'watermark-js-plus'
 import { Watermark } from 'watermark-js-plus'
-// import watermark from '@/utils/watermark'
 import useSettingsStore from './settings'
 import useUserStore from './user'
 
@@ -19,7 +18,7 @@ const useWatermarkStore = defineStore(
           {
             contentType: 'multi-line-text',
             content: `Kpu-admin
-当前用户：${userStore.account}`,
+                      当前用户：${userStore.account}`,
             fontColor: settingsStore.currentColorScheme === 'light' ? '#000' : '#fff',
             globalAlpha: 0.1,
             width: 200,

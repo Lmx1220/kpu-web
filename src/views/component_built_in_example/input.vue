@@ -9,9 +9,9 @@ const value = ref('')
 
 <template>
   <div>
-    <KPageHeader title="输入框" description="KInput" />
-    <KPageMain>
-      <KInput v-model="value" placeholder="请输入内容" />
-    </KPageMain>
+    <KpuPageHeader title="输入框" description="KInput" />
+    <KpuPageMain>
+      <KpuInput v-model="value" placeholder="请输入内容" />
+    </KpuPageMain>
   </div>
 </template>

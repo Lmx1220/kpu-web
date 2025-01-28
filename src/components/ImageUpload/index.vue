@@ -107,16 +107,16 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
       <div class="mask">
         <div class="actions">
           <span title="预览" @click="preview(index)">
-            <KIcon name="i-ep:zoom-in" class="icon" />
+            <KpuIcon name="i-ep:zoom-in" class="icon" />
           </span>
           <span title="移除" @click="remove(index)">
-            <KIcon name="i-ep:delete" class="icon" />
+            <KpuIcon name="i-ep:delete" class="icon" />
           </span>
           <span v-show="url.length > 1" title="左移" :class="{ disabled: index === 0 }" @click="move(index, 'left')">
-            <KIcon name="i-ep:back" class="icon" />
+            <KpuIcon name="i-ep:back" class="icon" />
           </span>
           <span v-show="url.length > 1" title="右移" :class="{ disabled: index === url.length - 1 }" @click="move(index, 'right')">
-            <KIcon name="i-ep:right" class="icon" />
+            <KpuIcon name="i-ep:right" class="icon" />
           </span>
         </div>
       </div>
@@ -135,7 +135,7 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
       class="images-upload"
     >
       <div class="image-slot" :style="`width:${width}px;height:${height}px;`">
-        <KIcon name="i-ep:plus" class="icon" />
+        <KpuIcon name="i-ep:plus" class="icon" />
       </div>
       <div v-show="uploadData.progress.percent" class="progress" :style="`width:${width}px;height:${height}px;`">
         <ElImage :src="uploadData.progress.preview" :style="`width:${width}px;height:${height}px;`" fit="fill" />

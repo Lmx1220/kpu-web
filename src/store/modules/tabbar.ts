@@ -1,6 +1,6 @@
 import type { Tabbar } from '@/types/global'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
-import api from '@/api'
+import { requestClient } from '@/api'
 import storage from '@/utils/storage'
 import { cloneDeep } from 'es-toolkit'
 import useIframeStore from './iframe'
@@ -376,14 +376,11 @@ const useTabbarStore = defineStore(
         storage.local.set('tabbarPinData', JSON.stringify(tabbarPinData))
       }
       else {
-        settingsStore.settings.tabbar.storageTo === 'server' && await api.post({
-          url: '/member/tabbar/edit',
-          data: {
-            tabbar: JSON.stringify(cloneDeep(list.value.filter(item => item.isPin)).map((item) => {
-              item.customTitleList = []
-              return item
-            })),
-          },
+        settingsStore.settings.tabbar.storageTo === 'server' && await requestClient.put('/member/tabbar/edit', {
+          tabbar: JSON.stringify(cloneDeep(list.value.filter(item => item.isPin)).map((item) => {
+            item.customTitleList = []
+            return item
+          })),
         })
       }
       if (settingsStore.settings.tabbar.enableMemory) {
@@ -401,11 +398,8 @@ const useTabbarStore = defineStore(
         storage.local.has('tabbarPinData') && list.value.push(...JSON.parse(`${storage.local.get('tabbarPinData')}`)[userStore.account] || [])
       }
       else if (settingsStore.settings.tabbar.storageTo === 'server') {
-        const res = await api.get<any>({
-          url: '/member/tabbar/edit',
-          data: {
-            tabbar: JSON.stringify(list.value.filter(item => item.isPin)),
-          },
+        const res = await requestClient.put<any>('/member/tabbar/edit', {
+          tabbar: JSON.stringify(list.value.filter(item => item.isPin)),
         })
         list.value.push(...JSON.parse(res.tabbar || '[]'))
       }

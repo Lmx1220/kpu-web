@@ -6,17 +6,17 @@ const dialog = ref(false)
 
 <template>
   <div>
-    <KPageHeader title="图片预览" />
-    <KPageMain>
+    <KpuPageHeader title="图片预览" />
+    <KpuPageMain>
       <img v-zoomable :src="imgLogo" block h-20 w-20 alt="">
-    </KPageMain>
-    <KPageMain>
+    </KpuPageMain>
+    <KpuPageMain>
       <ElButton @click="() => dialog = true">
         打开对话框
       </ElButton>
       <ElDialog v-model="dialog" title="Tips" width="30%">
         <img v-zoomable :src="imgLogo" block h-20 w-20 alt="">
       </ElDialog>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

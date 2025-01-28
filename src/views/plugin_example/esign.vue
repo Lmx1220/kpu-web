@@ -57,7 +57,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <KPageHeader title="电子签名">
+    <KpuPageHeader title="电子签名">
       <template #content>
         <p style="margin-bottom: 0;">
           安装命令：<ElTag>pnpm add vue-esign</ElTag>
@@ -65,12 +65,12 @@ function open(url: string) {
       </template>
       <ElButton @click="open('https://github.com/JaimeCheng/vue-esign')">
         <template #icon>
-          <KIcon name="i-ep:link" />
+          <KpuIcon name="i-ep:link" />
         </template>
         访问 vue-esign
       </ElButton>
-    </KPageHeader>
-    <KPageMain>
+    </KpuPageHeader>
+    <KpuPageMain>
       <VueEsign ref="esignRef" v-model:bg-color="options.bgColor" :width="500" :height="300" :is-crop="options.isCrop" :line-width="options.lineWidth" :line-color="options.lineColor" />
       <div>
         <ElButton @click="handleReset">
@@ -84,6 +84,6 @@ function open(url: string) {
         </ElButton>
       </div>
       <img v-if="result" :src="result" :width="500" :height="300">
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

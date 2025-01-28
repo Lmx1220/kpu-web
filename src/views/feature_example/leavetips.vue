@@ -26,9 +26,9 @@ onBeforeRouteLeave((_from, _to, next) => {
 
 <template>
   <div>
-    <KPageHeader title="页面离开提醒" content="在页面离开时，增加弹窗二次确认，避免因误操作导致当前页面数据清空" />
-    <KPageMain>
+    <KpuPageHeader title="页面离开提醒" content="在页面离开时，增加弹窗二次确认，避免因误操作导致当前页面数据清空" />
+    <KpuPageMain>
       <ElSwitch v-model="tipsSwitch" active-text="开启提醒" inactive-text="关闭提醒" />
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

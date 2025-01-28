@@ -5,11 +5,11 @@ meta:
 
 <template>
   <div>
-    <KPageHeader title="文字提示" description="KTooltip" />
-    <KPageMain>
-      <KTooltip text="注意噢！">
-        <KIcon name="i-ri:question-line" />
-      </KTooltip>
-    </KPageMain>
+    <KpuPageHeader title="文字提示" description="KpuTooltip" />
+    <KpuPageMain>
+      <KpuTooltip text="注意噢！">
+        <KpuIcon name="i-ri:question-line" />
+      </KpuTooltip>
+    </KpuPageMain>
   </div>
 </template>

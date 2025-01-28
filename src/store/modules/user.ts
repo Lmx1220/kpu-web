@@ -1,13 +1,12 @@
 import type { Settings } from '#/global'
-import api from '@/api'
+import { requestClient } from '@/api'
 import router from '@/router'
 import settingsDefault from '@/settings'
 import useMenuStore from '@/store/modules/menu'
 import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar'
-// import useMenuStore from './menu'
 import eventBus from '@/utils/eventBus'
-import { merge } from '@/utils/object.ts'
+import { mergeWithArrayOverride } from '@/utils/object.ts'
 import storage from '@/utils/storage'
 import { cloneDeep } from 'es-toolkit'
 import useRouteStore from './route'
@@ -39,15 +38,11 @@ const useUserStore = defineStore(
       password: string
     }) {
       // 通过 mock 进行登录
-      const res = await api.post<any>({
-        url: '/anyTenant/login',
-        baseURL: '/mock/',
-        data: {
-          username: data.username,
-          password: data.password,
-          grantType: 'PASSWORD',
-        },
-      })
+      const res = await requestClient.post<any>('/anyTenant/login', {
+        username: data.username,
+        password: data.password,
+        grantType: 'PASSWORD',
+      }, { baseURL: '/mock/' })
       storage.local.set('account', res.username)
       storage.local.set('token', res.token)
       storage.local.set('avatar', res.avatar)
@@ -84,8 +79,8 @@ const useUserStore = defineStore(
       }
     }
     function logoutCleanStatus() {
-      localStorage.removeItem('account')
-      localStorage.removeItem('avatar')
+      storage.local.remove('account')
+      storage.local.remove('avatar')
       account.value = ''
       avatar.value = ''
       permissions.value = []
@@ -97,13 +92,12 @@ const useUserStore = defineStore(
     // 获取我的权限
     async function getPermissions() {
       // 通过 mock 获取权限
-      const data = await api.get<{
+      const data = await requestClient.get<{
         caseSensitive: boolean
         enabled: boolean
         resourceList: string[]
         roleList: string[]
-      }>({
-        url: '/anyone/visible/resource',
+      }>('/anyone/visible/resource', {
         baseURL: '/mock/',
         params: {
           account: account.value,
@@ -118,8 +112,7 @@ const useUserStore = defineStore(
       password: string
       newPassword: string
     }) {
-      await api.post({
-        url: '/member/edit/password',
+      await requestClient.post('/member/edit/password', {
         data: {
           account: account.value,
           password: data.password,
@@ -187,7 +180,7 @@ const useUserStore = defineStore(
         }
         if (!isPreferencesUpdating) {
           isPreferencesUpdating = true
-          preferences.value = merge(val, preferences.value)
+          preferences.value = mergeWithArrayOverride(val, preferences.value)
         }
         else {
           isPreferencesUpdating = false
@@ -237,19 +230,21 @@ const useUserStore = defineStore(
         else if (
           settingsStore.settings.userPreferences.storageTo === 'server'
         ) {
-          const res = await api.post<any>({
-            url: '/anyTenant/user/preferences',
+          const res = await requestClient.post<any>('/anyTenant/user/preferences', {}, {
             baseURL: '/mock/',
           })
           data = JSON.parse(res.data.preferences || '{}') as Settings.all
         }
       }
-      preferences.value = merge(data, preferences.value)
+      preferences.value = mergeWithArrayOverride(data, preferences.value)
     }
     // 更新偏好设置
     async function updatePreferences(data: Settings.all = {}) {
       if (!isPreferencesInited) {
         isPreferencesInited = true
+        return
+      }
+      if (!isLogin.value) {
         return
       }
       if (settingsStore.settings.userPreferences.storageTo === 'local') {
@@ -265,12 +260,10 @@ const useUserStore = defineStore(
       else if (
         settingsStore.settings.userPreferences.storageTo === 'server'
       ) {
-        await api.post<any>({
-          url: '/anyTenant/user/preferences/edit',
+        await requestClient.post<any>('/anyTenant/user/preferences/edit', {
+          preferences: JSON.stringify(data),
+        }, {
           baseURL: '/mock/',
-          data: {
-            preferences: JSON.stringify(data),
-          },
         })
       }
     }

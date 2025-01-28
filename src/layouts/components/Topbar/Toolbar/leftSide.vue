@@ -12,9 +12,9 @@ const settingsStore = useSettingsStore()
 
 <template>
   <div class="flex items-center">
-    <KButton v-if="settingsStore.mode === 'mobile'" variant="ghost" size="icon" class="h-9 w-9 -rotate-z-180" @click="settingsStore.toggleSidebarCollapse()">
-      <KIcon name="toolbar-collapse" :rotate="settingsStore.settings.app.direction === 'rtl' ? 180 : 0" />
-    </KButton>
+    <KpuButton v-if="settingsStore.mode === 'mobile'" variant="ghost" size="icon" class="h-9 w-9 -rotate-z-180" @click="settingsStore.toggleSidebarCollapse()">
+      <KpuIcon name="toolbar-collapse" :rotate="settingsStore.settings.app.direction === 'rtl' ? 180 : 0" />
+    </KpuButton>
     <component :is="useSlots('toolbar-start')" />
     <Tools mode="left-side" />
   </div>

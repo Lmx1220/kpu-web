@@ -60,7 +60,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <KPageHeader title="打印">
+    <KpuPageHeader title="打印">
       <template #content>
         <p style="margin-bottom: 0;">
           安装命令：<ElTag>pnpm add print-js</ElTag>
@@ -68,12 +68,12 @@ function open(url: string) {
       </template>
       <ElButton @click="open('https://github.com/crabbly/print.js')">
         <template #icon>
-          <KIcon name="i-ep:link" />
+          <KpuIcon name="i-ep:link" />
         </template>
         访问 print.js
       </ElButton>
-    </KPageHeader>
-    <KPageMain title="打印JSON">
+    </KpuPageHeader>
+    <KpuPageMain title="打印JSON">
       <ElTable :data="tableData" stripe border :style="{ width: '100%' }">
         <ElTableColumn prop="date" label="日期" width="180" />
         <ElTableColumn prop="name" label="姓名" width="180" />
@@ -82,11 +82,11 @@ function open(url: string) {
       <ElButton @click="print('json')">
         打印
       </ElButton>
-    </KPageMain>
-    <KPageMain title="打印图片">
+    </KpuPageMain>
+    <KpuPageMain title="打印图片">
       <ElButton @click="print('image')">
         打印
       </ElButton>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

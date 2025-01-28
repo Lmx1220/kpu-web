@@ -42,23 +42,23 @@ withDefaults(
     {{ title }}
     <slot v-if="$slots.tag" name="tag" />
     <p>
-      <Count
+      <KpuCountTo
         :decimals="countConfig.decimals"
         :duration="countConfig.duration"
-        :end-value="countConfig.endValue"
+        :end-val="countConfig.endValue"
         :prefix="countConfig.prefix"
         :separator="countConfig.separator"
-        :start-value="countConfig.startValue"
+        :start-val="countConfig.startValue"
         :suffix="countConfig.suffix"
       />
     </p>
     <div v-if="icon" class="right-icon">
-      <KIcon :name="icon" />
+      <KpuIcon :name="icon" />
     </div>
 
     <div class="bottom">
       自上周以来
-      <KIcon name="ri:arrow-up-line" />
+      <KpuIcon name="ri:arrow-up-line" />
       <span>{{ percentage }}</span>
     </div>
     <slot v-if="$slots.chart" name="chart" />

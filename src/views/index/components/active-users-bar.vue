@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IntervalHandle } from '@/hooks/utils.ts'
+import type { IntervalHandle } from '#/index'
 import * as Echarts from 'echarts'
 import _ from 'lodash'
 

@@ -9,9 +9,9 @@ const pin = ref('')
 
 <template>
   <div>
-    <KPageHeader title="数字输入框" description="KPinInput" />
-    <KPageMain>
-      <KPinInput v-model="pin" />
-    </KPageMain>
+    <KpuPageHeader title="数字输入框" description="KpuPinInput" />
+    <KpuPageMain>
+      <KpuPinInput v-model="pin" />
+    </KpuPageMain>
   </div>
 </template>

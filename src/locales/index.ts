@@ -1,24 +1,99 @@
-import type { LocaleType } from '#/config'
+import type { LocaleType } from '@/types'
+
+import type { Language } from 'element-plus/es/locale'
+
 import type { App } from 'vue'
-import type { I18nOptions } from 'vue-i18n'
+import type { LocaleSetupOptions, SupportedLanguagesType } from './utils'
 import useSettingsStore from '@/store/modules/settings'
-import useUserStore from '@/store/modules/user.ts'
-import { createI18n } from 'vue-i18n'
-import { setHtmlPageLang, setLoadLocalePool } from './helper.ts'
 
-// eslint-disable-next-line import/no-mutable-exports
-export let i18n: ReturnType<typeof createI18n>
+import dayjs from 'dayjs'
 
-async function createI18nOptions(): Promise<I18nOptions> {
-  const settingsStore = useSettingsStore()
-  const userStore = useUserStore()
-  console.warn('i8n语音：')
-  let locale = settingsStore.settings.app.defaultLang
-  if (settingsStore.settings.userPreferences.enable && userStore.isLogin) {
-    await userStore.getPreferences()
-    locale = userStore.preferences.app.defaultLang
-    console.warn('远程加载用户语音：', locale)
+import enLocale from 'element-plus/es/locale/lang/en'
+import defaultLocale from 'element-plus/es/locale/lang/zh-cn'
+import { ref } from 'vue'
+import {
+  $t,
+  setupI18n as coreSetup,
+  loadLocalesMapFromDir,
+} from './utils'
+
+const elementLocale = ref<Language>(defaultLocale)
+
+const modules = import.meta.glob('./langs/**/*.json')
+
+const localesMap = loadLocalesMapFromDir(
+  /\.\/langs\/([^/]+)\/(.*)\.json$/,
+  modules,
+)
+/**
+ * 加载应用特有的语言包
+ * 这里也可以改造为从服务端获取翻译数据
+ * @param lang
+ */
+async function loadMessages(lang: SupportedLanguagesType) {
+  const [appLocaleMessages] = await Promise.all([
+    localesMap[lang]?.(),
+    loadThirdPartyMessage(lang),
+  ])
+  return appLocaleMessages?.default
+}
+
+/**
+ * 加载第三方组件库的语言包
+ * @param lang
+ */
+async function loadThirdPartyMessage(lang: SupportedLanguagesType) {
+  await Promise.all([loadElementLocale(lang), loadDayjsLocale(lang)])
+}
+
+/**
+ * 加载dayjs的语言包
+ * @param lang
+ */
+async function loadDayjsLocale(lang: SupportedLanguagesType) {
+  let locale
+  switch (lang) {
+    case 'en': {
+      locale = await import('dayjs/locale/en')
+      break
+    }
+    case 'zh-cn': {
+      locale = await import('dayjs/locale/zh-cn')
+      break
+    }
+    // 默认使用英语
+    default: {
+      locale = await import('dayjs/locale/en')
+    }
   }
+  if (locale) {
+    dayjs.locale(locale)
+  }
+  else {
+    console.error(`Failed to load dayjs locale for ${lang}`)
+  }
+}
+
+/**
+ * 加载element-plus的语言包
+ * @param lang
+ */
+async function loadElementLocale(lang: SupportedLanguagesType) {
+  switch (lang) {
+    case 'en': {
+      elementLocale.value = enLocale
+      break
+    }
+    case 'zh-cn': {
+      elementLocale.value = defaultLocale
+      break
+    }
+  }
+}
+
+async function setupI18n(app: App, options: LocaleSetupOptions = {}) {
+  const settingsStore = useSettingsStore()
+  let locale = settingsStore.settings.app.defaultLang
 
   if (!locale) {
     // navigator.language || navigator.browserLanguage
@@ -28,39 +103,12 @@ async function createI18nOptions(): Promise<I18nOptions> {
       settingsStore.setDefaultLang(lang)
     }, 100)
   }
-  const defaultLocal = await import(`./lang/${locale}.ts`)
-  const message = defaultLocal.default?.message ?? {}
-
-  setHtmlPageLang(locale)
-  setLoadLocalePool((loadLocalePool) => {
-    loadLocalePool.push(locale)
+  await coreSetup(app, {
+    defaultLocale: locale,
+    loadMessages,
+    missingWarn: !import.meta.env.PROD,
+    ...options,
   })
-
-  return {
-    legacy: false,
-    locale,
-    fallbackLocale: 'zh-ch',
-    messages: {
-      [locale]: message,
-    },
-    availableLocales: ['zh-ch', 'en'],
-    sync: true, // If you don’t want to inherit locale from global scope, you need to set sync of i18n component option to false.
-    silentTranslationWarn: true, // true - warning off
-    missingWarn: false,
-    silentFallbackWarn: true,
-  }
 }
 
-export async function useI18n(app: App) {
-  const options = await createI18nOptions()
-  i18n = createI18n(options)
-  app.use(i18n)
-  // 在控制台打印警告
-  // i18n.global.setMissingHandler((locale, key) => {
-  //   if (key.includes('.')) {
-  //     console.warn(
-  //       `[intlify] Not found '${key}' key in '${locale}' locale messages.`,
-  //     )
-  //   }
-  // })
-}
+export { $t, elementLocale, setupI18n }

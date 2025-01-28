@@ -7,12 +7,12 @@ defineOptions({
 </script>
 
 <template>
-  <KPopover class="p-0">
-    <KButton variant="ghost" size="icon" class="animation">
-      <KIcon name="i-uiw:star-off" :size="16" />
-    </KButton>
+  <KpuPopover class="p-0">
+    <KpuButton variant="ghost" size="icon" class="animation">
+      <KpuIcon name="i-uiw:star-off" :size="16" />
+    </KpuButton>
     <template #panel>
       <Panel />
     </template>
-  </KPopover>
+  </KpuPopover>
 </template>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import NotFound from '@/assets/icons/not-found.vue'
 import useSettingsStore from '@/store/modules/settings'
 
 const router = useRouter()
@@ -31,7 +32,9 @@ function goBack() {
 
 <template>
   <div class="absolute left-[50%] top-[50%] flex flex-col items-center justify-between lg-flex-row -translate-x-50% -translate-y-50% lg-gap-12">
-    <KIcon name="404" class="text-[300px] lg-text-[400px]" />
+    <div class="text-[300px] lg-text-[400px]">
+      <NotFound />
+    </div>
     <div class="flex flex-col gap-4">
       <h1 class="m-0 text-6xl font-sans">
         404
@@ -40,9 +43,9 @@ function goBack() {
         抱歉，你访问的页面不存在
       </div>
       <div>
-        <KButton @click="goBack">
+        <KpuButton @click="goBack">
           {{ data.countdown }} 秒后，返回首页
-        </KButton>
+        </KpuButton>
       </div>
     </div>
   </div>

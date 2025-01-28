@@ -54,7 +54,7 @@ defineExpose({
     }"
   >
     <router-link v-slot="{ href, navigate }" custom :to="uniqueKey.at(-1) ?? ''">
-      <KTooltip
+      <KpuTooltip
         :enable="level !== 0 || !subMenu" :text="generateI18nTitle(item.meta?.title)" placement="right"
         class="h-full w-full"
       >
@@ -91,7 +91,7 @@ defineExpose({
               'w-full': level === 0 && rootMenu.props.showCollapseName && rootMenu.props.mode === 'vertical',
             }" :style="indentStyle"
           >
-            <KIcon
+            <KpuIcon
               v-if="icon" :name="icon" :size="16" class="menu-item-container-icon"
             />
             <span
@@ -105,7 +105,7 @@ defineExpose({
             >
               {{ generateI18nTitle(item.meta?.title) }}
             </span>
-            <KBadge
+            <KpuBadge
               v-if="item.meta?.badge"
               :value="typeof item.meta.badge === 'function' ? item.meta.badge() : item.meta.badge"
               :variant="typeof item.meta.badgeVariant == 'function' ? item.meta.badgeVariant() : item.meta.badgeVariant"
@@ -116,7 +116,7 @@ defineExpose({
             />
           </div>
         </component>
-      </KTooltip>
+      </KpuTooltip>
     </router-link>
   </div>
 </template>

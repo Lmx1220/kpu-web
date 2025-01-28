@@ -19,12 +19,12 @@ function switchTo() {
 
 <template>
   <div>
-    <KPageHeader title="主导航切换" content="可切换并激活指定的主导航" />
-    <KPageMain>
+    <KpuPageHeader title="主导航切换" content="可切换并激活指定的主导航" />
+    <KpuPageMain>
       <p>该特性只有在导航模式为 side 和 head 时生效。</p>
       <ElButton :disabled="!['side', 'head'].includes(settingsStore.settings.menu.mode)" @click="switchTo">
         切换下一个
       </ElButton>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

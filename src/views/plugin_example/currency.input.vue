@@ -148,7 +148,7 @@ function open(url: string) {
       </section>
     </Option.define>
     <Alert />
-    <KPageHeader title="货币格式输入">
+    <KpuPageHeader title="货币格式输入">
       <template #content>
         <p style="margin-bottom: 0;">
           安装命令：<ElTag>pnpm add vue-currency-input</ElTag>
@@ -156,20 +156,20 @@ function open(url: string) {
       </template>
       <ElButton @click="open('https://github.com/dm4t2/vue-currency-input')">
         <template #icon>
-          <KIcon name="i-ep:link" />
+          <KpuIcon name="i-ep:link" />
         </template>
         访问 vue-currency-input
       </ElButton>
-    </KPageHeader>
-    <KPageMain>
+    </KpuPageHeader>
+    <KpuPageMain>
       <div class="grid items-center gap-y-4 md-grid-cols-2 md-gap-x-8">
         <el-input ref="inputRef" v-model="formattedValue" />
         <div>
           数值：<code class="ml-2">{{ numberValue != null ? numberValue : 'null' }}</code>
         </div>
       </div>
-    </KPageMain>
-    <KPageMain title="选项">
+    </KpuPageMain>
+    <KpuPageMain title="选项">
       <template #title>
         <div class="flex items-center justify-between">
           选项
@@ -258,6 +258,6 @@ function open(url: string) {
           </Option.reuse>
         </div>
       </div>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

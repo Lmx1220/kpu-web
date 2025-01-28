@@ -22,9 +22,9 @@ function onToggle(fold: boolean) {
 
 <template>
   <div>
-    <KPageHeader title="搜索面板" description="KSearchBar" />
-    <KPageMain>
-      <KSearchBar>
+    <KpuPageHeader title="搜索面板" description="KpuSearchBar" />
+    <KpuPageMain>
+      <KpuSearchBar>
         <template #default="{ fold }">
           <ElForm :model="search" size="default" label-width="120px">
             <ElRow>
@@ -77,7 +77,7 @@ function onToggle(fold: boolean) {
             <ElFormItem>
               <ElButton type="primary">
                 <template #icon>
-                  <KIcon name="i-ep:search" />
+                  <KpuIcon name="i-ep:search" />
                 </template>
                 筛选
               </ElButton>
@@ -88,10 +88,10 @@ function onToggle(fold: boolean) {
             </ElFormItem>
           </ElForm>
         </template>
-      </KSearchBar>
-    </KPageMain>
-    <KPageMain title="默认展开">
-      <KSearchBar :fold="false">
+      </KpuSearchBar>
+    </KpuPageMain>
+    <KpuPageMain title="默认展开">
+      <KpuSearchBar :fold="false">
         <template #default="{ fold }">
           <ElForm :model="search" size="default" label-width="120px">
             <ElRow>
@@ -144,7 +144,7 @@ function onToggle(fold: boolean) {
             <ElFormItem>
               <ElButton type="primary">
                 <template #icon>
-                  <KIcon name="i-ep:search" />
+                  <KpuIcon name="i-ep:search" />
                 </template>
                 筛选
               </ElButton>
@@ -155,10 +155,10 @@ function onToggle(fold: boolean) {
             </ElFormItem>
           </ElForm>
         </template>
-      </KSearchBar>
-    </KPageMain>
-    <KPageMain title="显示背景">
-      <KSearchBar background>
+      </KpuSearchBar>
+    </KpuPageMain>
+    <KpuPageMain title="显示背景">
+      <KpuSearchBar background>
         <template #default="{ fold }">
           <ElForm :model="search" size="default" label-width="120px">
             <ElRow>
@@ -211,7 +211,7 @@ function onToggle(fold: boolean) {
             <ElFormItem>
               <ElButton type="primary">
                 <template #icon>
-                  <KIcon name="i-ep:search" />
+                  <KpuIcon name="i-ep:search" />
                 </template>
                 筛选
               </ElButton>
@@ -222,10 +222,10 @@ function onToggle(fold: boolean) {
             </ElFormItem>
           </ElForm>
         </template>
-      </KSearchBar>
-    </KPageMain>
-    <KPageMain title="切换事件">
-      <KSearchBar @toggle="onToggle">
+      </KpuSearchBar>
+    </KpuPageMain>
+    <KpuPageMain title="切换事件">
+      <KpuSearchBar @toggle="onToggle">
         <template #default="{ fold }">
           <ElForm :model="search" size="default" label-width="120px">
             <ElRow>
@@ -278,7 +278,7 @@ function onToggle(fold: boolean) {
             <ElFormItem>
               <ElButton type="primary">
                 <template #icon>
-                  <KIcon name="i-ep:search" />
+                  <KpuIcon name="i-ep:search" />
                 </template>
                 筛选
               </ElButton>
@@ -289,10 +289,10 @@ function onToggle(fold: boolean) {
             </ElFormItem>
           </ElForm>
         </template>
-      </KSearchBar>
-    </KPageMain>
-    <KPageMain title="自定义切换按钮（搭配自定义 grid 布局）">
-      <KSearchBar :show-toggle="false">
+      </KpuSearchBar>
+    </KpuPageMain>
+    <KpuPageMain title="自定义切换按钮（搭配自定义 grid 布局）">
+      <KpuSearchBar :show-toggle="false">
         <template #default="{ fold, toggle }">
           <ElForm :model="search" size="default" label-width="120px" inline class="search-form">
             <ElFormItem label="姓名 / 手机号" class="search-form-item-name">
@@ -329,23 +329,23 @@ function onToggle(fold: boolean) {
             <ElFormItem>
               <ElButton type="primary">
                 <template #icon>
-                  <KIcon name="i-ep:search" />
+                  <KpuIcon name="i-ep:search" />
                 </template>
                 筛选
               </ElButton>
               <ElButton link @click="toggle">
                 <template #icon>
-                  <KIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top' " />
+                  <KpuIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top' " />
                 </template>
                 {{ fold ? '展开' : '收起' }}
               </ElButton>
             </ElFormItem>
           </ElForm>
         </template>
-      </KSearchBar>
-    </KPageMain>
-    <KPageMain title="自定义切换按钮（搭配 el-row 组件）">
-      <KSearchBar :show-toggle="false">
+      </KpuSearchBar>
+    </KpuPageMain>
+    <KpuPageMain title="自定义切换按钮（搭配 el-row 组件）">
+      <KpuSearchBar :show-toggle="false">
         <template #default="{ fold, toggle }">
           <ElForm :model="search" size="default" label-width="120px">
             <ElRow>
@@ -394,13 +394,13 @@ function onToggle(fold: boolean) {
                 <ElFormItem label-width="0" class="action-box">
                   <ElButton type="primary">
                     <template #icon>
-                      <KIcon name="i-ep:search" />
+                      <KpuIcon name="i-ep:search" />
                     </template>
                     筛选
                   </ElButton>
                   <ElButton link @click="toggle">
                     <template #icon>
-                      <KIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top' " />
+                      <KpuIcon :name="fold ? 'i-ep:caret-bottom' : 'i-ep:caret-top' " />
                     </template>
                     {{ fold ? '展开' : '收起' }}
                   </ElButton>
@@ -409,8 +409,8 @@ function onToggle(fold: boolean) {
             </ElRow>
           </ElForm>
         </template>
-      </KSearchBar>
-    </KPageMain>
+      </KpuSearchBar>
+    </KpuPageMain>
   </div>
 </template>
 

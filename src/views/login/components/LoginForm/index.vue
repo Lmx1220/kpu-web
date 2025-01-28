@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from '@/locales/utils'
 import useUserStore from '@/store/modules/user.ts'
 import { FormControl, FormField, FormItem, FormMessage } from '@/ui/shadcn/ui/form'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
-
 import * as z from 'zod'
 
 defineOptions({
@@ -72,7 +72,7 @@ function testAccount(account: string) {
       </p>
     </div>
     <div class="mb-4">
-      <KTabs
+      <KpuTabs
         v-model="type" :list="[
           { label: t('loginFrom.accountLogin'), value: 'default' },
           { label: t('loginFrom.qrcodeLogin'), value: 'qrcode' },
@@ -84,7 +84,7 @@ function testAccount(account: string) {
         <FormField v-slot="{ componentField, errors }" name="account">
           <FormItem class="relative pb-6 space-y-0">
             <FormControl>
-              <KInput type="text" :placeholder="t('loginFrom.form.account')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+              <KpuInput type="text" :placeholder="t('loginFrom.form.account')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
             </FormControl>
             <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
               <FormMessage class="absolute bottom-1 text-xs" />
@@ -94,7 +94,7 @@ function testAccount(account: string) {
         <FormField v-slot="{ componentField, errors }" name="password">
           <FormItem class="relative pb-6 space-y-0">
             <FormControl>
-              <KInput type="password" :placeholder="t('loginFrom.form.password')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+              <KpuInput type="password" :placeholder="t('loginFrom.form.password')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
             </FormControl>
             <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
               <FormMessage class="absolute bottom-1 text-xs" />
@@ -106,36 +106,36 @@ function testAccount(account: string) {
             <FormField v-slot="{ componentField }" type="checkbox" name="remember">
               <FormItem>
                 <FormControl>
-                  <KCheckbox v-bind="componentField">
+                  <KpuCheckbox v-bind="componentField">
                     {{ t('loginFrom.remember') }}
-                  </KCheckbox>
+                  </KpuCheckbox>
                 </FormControl>
               </FormItem>
             </FormField>
           </div>
-          <KButton variant="link" class="h-auto p-0" type="button" @click="emits('onResetPassword', form.values.account)">
+          <KpuButton variant="link" class="h-auto p-0" type="button" @click="emits('onResetPassword', form.values.account)">
             {{ t('loginFrom.forget') }}
-          </KButton>
+          </KpuButton>
         </div>
-        <KButton :loading="loading" size="lg" class="w-full" type="submit">
+        <KpuButton :loading="loading" size="lg" class="w-full" type="submit">
           {{ t('loginFrom.form.login') }}
-        </KButton>
+        </KpuButton>
         <div class="mt-4 flex-center gap-2 text-sm">
           <span class="text-secondary-foreground op-50"> {{ t('loginFrom.noAccount') }}</span>
-          <KButton variant="link" class="h-auto p-0" type="button" @click="emits('onRegister', form.values.account)">
+          <KpuButton variant="link" class="h-auto p-0" type="button" @click="emits('onRegister', form.values.account)">
             {{ t('loginFrom.register') }}
-          </KButton>
+          </KpuButton>
         </div>
       </form>
       <div class="mt-4 text-center -mb-4">
-        <KDivider>{{ t('loginFrom.testLogin') }}</KDivider>
+        <KpuDivider>{{ t('loginFrom.testLogin') }}</KpuDivider>
         <div class="space-x-2">
-          <KButton variant="default" size="sm" plain @click="testAccount('kpu')">
+          <KpuButton variant="default" size="sm" plain @click="testAccount('kpu')">
             kpu
-          </KButton>
-          <KButton variant="outline" size="sm" plain @click="testAccount('test')">
+          </KpuButton>
+          <KpuButton variant="outline" size="sm" plain @click="testAccount('test')">
             test
-          </KButton>
+          </KpuButton>
         </div>
       </div>
     </div>

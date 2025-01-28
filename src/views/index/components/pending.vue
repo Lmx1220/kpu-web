@@ -21,7 +21,7 @@ const y = {
 <template>
   <ElCard class="pending">
     <template #header>
-      <KIcon name="ri:ball-pen-line" />
+      <KpuIcon name="ri:ball-pen-line" />
       待处理
       <el-badge type="danger" class="pending-count" :value="6" />
     </template>

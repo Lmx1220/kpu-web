@@ -5,15 +5,15 @@ meta:
 
 <template>
   <div>
-    <KPageHeader title="复选框" description="KCheckbox" />
-    <KPageMain>
-      <KDivider>center</KDivider>
-      <KDivider position="start">
+    <KpuPageHeader title="复选框" description="KpuDivider" />
+    <KpuPageMain>
+      <KpuDivider>center</KpuDivider>
+      <KpuDivider position="start">
         left
-      </KDivider>
-      <KDivider position="end">
+      </KpuDivider>
+      <KpuDivider position="end">
         right
-      </KDivider>
-    </KPageMain>
+      </KpuDivider>
+    </KpuPageMain>
   </div>
 </template>

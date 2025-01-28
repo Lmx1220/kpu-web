@@ -28,12 +28,12 @@ const textarea = ref('')
     </ElDivider>
     <ElInput v-model="input1" placeholder="请选择日期">
       <template #suffix>
-        <KIcon name="i-ep:calendar" />
+        <KpuIcon name="i-ep:calendar" />
       </template>
     </ElInput>
     <ElInput v-model="input2" placeholder="请输入内容">
       <template #prefix>
-        <KIcon name="i-ep:search" />
+        <KpuIcon name="i-ep:search" />
       </template>
     </ElInput>
     <ElDivider content-position="left">

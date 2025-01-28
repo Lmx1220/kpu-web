@@ -12,21 +12,21 @@ function sub() {
 
 <template>
   <div>
-    <KPageHeader title="数字标记" content="搭配 Pinia 可实现动态设置。请控制数字展示长度，避免导航标记覆盖导航标题，为 0 时则隐藏" />
-    <KPageMain>
+    <KpuPageHeader title="数字标记" content="搭配 Pinia 可实现动态设置。请控制数字展示长度，避免导航标记覆盖导航标题，为 0 时则隐藏" />
+    <KpuPageMain>
       <div>
         当前 number 值：{{ menuBadgeStore.number }}
       </div>
       <ElButton @click="add">
         <template #icon>
-          <KIcon name="i-ep:plus" />
+          <KpuIcon name="i-ep:plus" />
         </template>
         1
       </ElButton>
       <ElButton @click="sub">
-        <KIcon name="i-ep:minus" />
+        <KpuIcon name="i-ep:minus" />
         1
       </ElButton>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

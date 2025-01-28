@@ -9,9 +9,9 @@ const select = ref('1')
 
 <template>
   <div>
-    <KPageHeader title="选择器" description="KSelect" />
-    <KPageMain>
-      <KSelect
+    <KpuPageHeader title="选择器" description="KpuSelect" />
+    <KpuPageMain>
+      <KpuSelect
         v-model="select"
         :options="[
           { label: '选项1', value: '1' },
@@ -19,6 +19,6 @@ const select = ref('1')
           { label: '选项3', value: '3' },
         ]"
       />
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

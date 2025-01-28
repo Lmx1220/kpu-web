@@ -1,5 +1,6 @@
 // 该文件为系统默认配置，请勿修改！！！
-import type { RecursiveRequired, Settings } from '#/global'
+import type { Settings } from '#/global'
+import type { RecursiveRequired } from '#/index'
 
 const globalSettingsDefault: RecursiveRequired<Settings.all> = {
   app: {

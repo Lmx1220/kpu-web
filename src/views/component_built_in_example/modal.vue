@@ -4,7 +4,7 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useKModal } from '@/ui/components/KModal'
+import { useKModal } from 'src/ui/components/KpuModal'
 
 const modal = ref(false)
 const modalInfo = ref({
@@ -59,8 +59,8 @@ function showModalConfirm() {
 
 <template>
   <div>
-    <KPageHeader title="弹窗" description="KModal" />
-    <KPageMain>
+    <KpuPageHeader title="弹窗" description="KModal" />
+    <KpuPageMain>
       <div class="flex gap-4">
         <KButton @click="modal = true">
           打开
@@ -111,6 +111,6 @@ function showModalConfirm() {
           </div>
         </div>
       </KModal>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

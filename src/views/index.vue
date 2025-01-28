@@ -6,14 +6,14 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useKpuDrawer } from '@/ui/components/KDrawer/use-drawer.ts'
+import { useKpuDrawer } from '@/ui/components/KpuDrawer/use-drawer.ts'
 // import {
 //   Avatar,
 //   AvatarFallback,
 //   AvatarImage,
 // } from '@/components/ui/avatar'
 // import { useVbenDrawer, useVbenModal } from '@/ui-kit'
-import { useKpuModal } from '@/ui/components/KModal/use-modal.ts'
+import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 
 import AutoHeightDemo2 from './auto-height-demo2.vue'
 import AutoHeightDemo from './auto-height-demo.vue'
@@ -38,15 +38,15 @@ function openAutoHeightDrawer() {
 
 <template>
   <div>
-    <kPageMain class="kpu-j-vxe-table">
+    <KpuPageMain class="kpu-j-vxe-table">
       <el-button @click="openAutoHeightModal">
         打开Modal
-        <KIcon name="i-mdi:draw" />
+        <KpuIcon name="i-mdi:draw" />
       </el-button>
       <el-button @click="openAutoHeightDrawer">
         打开Drawer
       </el-button>
-    </kPageMain>
+    </KpuPageMain>
     sss
     <AutoHeightModal />
     <AutoHeightDrawer2 />

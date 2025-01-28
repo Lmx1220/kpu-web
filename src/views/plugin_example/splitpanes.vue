@@ -16,7 +16,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <KPageHeader title="拆分面板">
+    <KpuPageHeader title="拆分面板">
       <template #content>
         <p style="margin-bottom: 0;">
           安装命令：<ElTag>pnpm add splitpanes</ElTag> <ElTag>pnpm add @types/splitpanes -D</ElTag>
@@ -24,12 +24,12 @@ function open(url: string) {
       </template>
       <ElButton @click="open('https://github.com/antoniandre/splitpanes')">
         <template #icon>
-          <KIcon name="i-ep:link" />
+          <KpuIcon name="i-ep:link" />
         </template>
         访问 splitpanes
       </ElButton>
-    </KPageHeader>
-    <KPageMain>
+    </KpuPageHeader>
+    <KpuPageMain>
       <Splitpanes class="default-theme" style="height: 400px;">
         <Pane min-size="20">
           1
@@ -45,7 +45,7 @@ function open(url: string) {
           5
         </Pane>
       </Splitpanes>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>
 

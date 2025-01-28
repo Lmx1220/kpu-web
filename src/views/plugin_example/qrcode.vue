@@ -59,7 +59,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <KPageHeader title="二维码">
+    <KpuPageHeader title="二维码">
       <template #content>
         <p style="margin-bottom: 0;">
           安装命令：<ElTag>pnpm add qrcode</ElTag> <ElTag>pnpm add @types/qrcode -D</ElTag>
@@ -67,31 +67,31 @@ function open(url: string) {
       </template>
       <ElButton @click="open('https://github.com/soldair/node-qrcode')">
         <template #icon>
-          <KIcon name="i-ep:link" />
+          <KpuIcon name="i-ep:link" />
         </template>
         访问 node-qrcode
       </ElButton>
-    </KPageHeader>
+    </KpuPageHeader>
     <ElRow :gutter="20" style="margin: 0 10px;">
       <ElCol :sm="6">
-        <KPageMain title="渲染成 img 标签" style="margin: 0;">
+        <KpuPageMain title="渲染成 img 标签" style="margin: 0;">
           <img :src="url1">
-        </KPageMain>
+        </KpuPageMain>
       </ElCol>
       <ElCol :sm="6">
-        <KPageMain title="渲染成 canvas 标签" style="margin: 0;">
+        <KpuPageMain title="渲染成 canvas 标签" style="margin: 0;">
           <canvas ref="canvasRef" />
-        </KPageMain>
+        </KpuPageMain>
       </ElCol>
       <ElCol :sm="6">
-        <KPageMain title="自定义颜色" style="margin: 0;">
+        <KpuPageMain title="自定义颜色" style="margin: 0;">
           <img :src="url2">
-        </KPageMain>
+        </KpuPageMain>
       </ElCol>
       <ElCol :sm="6">
-        <KPageMain title="指定宽度" style="margin: 0;">
+        <KpuPageMain title="指定宽度" style="margin: 0;">
           <img :src="url3">
-        </KPageMain>
+        </KpuPageMain>
       </ElCol>
     </ElRow>
   </div>

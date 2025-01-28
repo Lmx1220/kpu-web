@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useLocale } from '@/locales/useLocale.ts'
+import { elementLocale } from '@/locales'
+
 import useSettingsStore from '@/store/modules/settings'
 
-const locale = useLocale()
 const settingsStore = useSettingsStore()
 
 // 跟随框架主题
@@ -32,7 +32,7 @@ watch(() => settingsStore.currentColorScheme, (val) => {
 </script>
 
 <template>
-  <ElConfigProvider :locale="locale.getElementLocale.value" :button="{ autoInsertSpace: true }">
+  <ElConfigProvider :locale="elementLocale" :button="{ autoInsertSpace: true }">
     <slot />
   </ElConfigProvider>
 </template>

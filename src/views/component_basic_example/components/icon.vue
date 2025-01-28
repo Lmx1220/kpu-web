@@ -7,12 +7,12 @@ const icon = icons.filter(item => item.prefix === 'ep')[0]
 <template>
   <div>
     <div class="demo">
-      <KIcon name="i-ep:edit" />
-      <KIcon name="i-ep:share" />
-      <KIcon name="i-ep:delete" />
+      <KpuIcon name="i-ep:edit" />
+      <KpuIcon name="i-ep:share" />
+      <KpuIcon name="i-ep:delete" />
       <ElButton type="primary">
         <template #icon>
-          <KIcon name="i-ep:search" />
+          <KpuIcon name="i-ep:search" />
         </template>
         搜索
       </ElButton>
@@ -22,7 +22,7 @@ const icon = icons.filter(item => item.prefix === 'ep')[0]
     </ElDivider>
     <div v-for="(item, index) in icon.icons" :key="index" class="list-icon">
       <ElTooltip class="item" effect="dark" :content="`ep:${item}`" placement="top">
-        <KIcon :name="`ep:${item}`" />
+        <KpuIcon :name="`ep:${item}`" />
       </ElTooltip>
     </div>
   </div>

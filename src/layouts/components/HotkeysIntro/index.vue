@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { $t } from '@/locales/utils'
 import useSettingsStore from '@/store/modules/settings'
-import { useKpuModal } from '@/ui/components/KModal/use-modal.ts'
+import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 import eventBus from '@/utils/eventBus'
 
 defineOptions({
   name: 'HotkeysIntro',
 })
-const { t } = useI18n()
 const [KModal, modalApi] = useKpuModal({
 })
 const settingsStore = useSettingsStore()
@@ -19,133 +19,133 @@ onMounted(() => {
 </script>
 
 <template>
-  <KModal :title="t('app.hotkeys.title')" :footer="false">
+  <KModal :title="$t('app.hotkeys.title')" :footer="false">
     <div class="px-4">
       <div class="grid gap-2 sm-grid-cols-2">
         <div>
           <h2 class="m-0 text-lg font-bold">
-            {{ t('app.hotkeys.global.root') }}
+            {{ $t('app.hotkeys.global.root') }}
           </h2>
           <ul class="list-none ps-4 text-sm">
             <li class="flex-baseline gap-2 py-1">
-              <KKbd>
+              <KpuKbd>
                 {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
-              </KKbd>
-              <KKbd>
+              </KpuKbd>
+              <KpuKbd>
                 I
-              </KKbd>
-              {{ t('app.hotkeys.global.system') }}
+              </KpuKbd>
+              {{ $t('app.hotkeys.global.system') }}
             </li>
             <li v-if="settingsStore.settings.toolbar.navSearch && settingsStore.settings.navSearch.enableHotkeys" class="flex-baseline gap-2 py-1">
-              <KKbd>
+              <KpuKbd>
                 {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
-              </KKbd>
-              <KKbd>
+              </KpuKbd>
+              <KpuKbd>
                 K
-              </KKbd>
-              {{ t('app.hotkeys.global.search') }}
+              </KpuKbd>
+              {{ $t('app.hotkeys.global.search') }}
             </li>
             <li class="flex-baseline gap-2 py-1">
-              <KKbd>
+              <KpuKbd>
                 {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
-              </KKbd>
-              <KKbd>
+              </KpuKbd>
+              <KpuKbd>
                 L
-              </KKbd>
-              {{ t('app.hotkeys.global.lock') }}
+              </KpuKbd>
+              {{ $t('app.hotkeys.global.lock') }}
             </li>
           </ul>
         </div>
         <div v-if="settingsStore.settings.menu.enableHotkeys && ['side', 'head'].includes(settingsStore.settings.menu.mode)">
           <h2 class="m-0 text-lg font-bold">
-            {{ t('app.hotkeys.nav.root') }}
+            {{ $t('app.hotkeys.nav.root') }}
           </h2>
           <ul class="list-none ps-4 text-sm">
             <li class="flex-baseline gap-2 py-1">
-              <KKbd>
+              <KpuKbd>
                 {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
-              </KKbd>
-              <KKbd>
+              </KpuKbd>
+              <KpuKbd>
                 `
-              </KKbd>
-              {{ t('app.hotkeys.nav.next') }}
+              </KpuKbd>
+              {{ $t('app.hotkeys.nav.next') }}
             </li>
           </ul>
         </div>
         <div v-if="settingsStore.settings.tabbar.enable && settingsStore.settings.tabbar.enableHotkeys">
           <h2 class="m-0 text-lg font-bold">
-            {{ t('app.hotkeys.tabbar.root') }}
+            {{ $t('app.hotkeys.tabbar.root') }}
           </h2>
           <ul class="list-none ps-4 text-sm">
             <li class="flex-baseline gap-2 py-1">
-              <KKbd>
+              <KpuKbd>
                 {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
-              </KKbd>
-              <KKbd>
+              </KpuKbd>
+              <KpuKbd>
                 ←
-              </KKbd>
-              {{ t('app.hotkeys.tabbar.prev') }}
+              </KpuKbd>
+              {{ $t('app.hotkeys.tabbar.prev') }}
             </li>
             <li class="flex-baseline gap-2 py-1">
-              <KKbd>
+              <KpuKbd>
                 {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
-              </KKbd>
-              <KKbd>
+              </KpuKbd>
+              <KpuKbd>
                 →
-              </KKbd>
-              {{ t('app.hotkeys.tabbar.next') }}
+              </KpuKbd>
+              {{ $t('app.hotkeys.tabbar.next') }}
             </li>
             <li class="flex-baseline gap-2 py-1">
-              <KKbd>
+              <KpuKbd>
                 {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
-              </KKbd>
-              <KKbd>
+              </KpuKbd>
+              <KpuKbd>
                 W
-              </KKbd>
-              {{ t('app.hotkeys.tabbar.close') }}
+              </KpuKbd>
+              {{ $t('app.hotkeys.tabbar.close') }}
             </li>
             <li class="flex-baseline gap-2 py-1">
-              <KKbd>
+              <KpuKbd>
                 {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
-              </KKbd>
-              <KKbd>
+              </KpuKbd>
+              <KpuKbd>
                 1~9
-              </KKbd>
-              {{ t('app.hotkeys.tabbar.n') }}
+              </KpuKbd>
+              {{ $t('app.hotkeys.tabbar.n') }}
             </li>
             <li class="flex-baseline gap-2 py-1">
-              <KKbd>
+              <KpuKbd>
                 {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
-              </KKbd>
-              <KKbd>
+              </KpuKbd>
+              <KpuKbd>
                 0
-              </KKbd>
-              {{ t('app.hotkeys.tabbar.last') }}
+              </KpuKbd>
+              {{ $t('app.hotkeys.tabbar.last') }}
             </li>
           </ul>
         </div>
         <div v-if="settingsStore.settings.mainPage.enableHotkeys">
           <h2 class="m-0 text-lg font-bold">
-            {{ t('app.hotkeys.page.root') }}
+            {{ $t('app.hotkeys.page.root') }}
           </h2>
           <ul class="list-none ps-4 text-sm">
             <li class="flex-baseline gap-2 py-1">
-              <KKbd>
+              <KpuKbd>
                 {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
-              </KKbd>
-              <KKbd>
+              </KpuKbd>
+              <KpuKbd>
                 ↑
-              </KKbd>
-              {{ t('app.hotkeys.page.maximizing') }}
+              </KpuKbd>
+              {{ $t('app.hotkeys.page.maximizing') }}
             </li>
             <li class="flex-baseline gap-2 py-1">
-              <KKbd>
+              <KpuKbd>
                 {{ settingsStore.os === 'mac' ? '⌥' : 'Alt' }}
-              </KKbd>
-              <KKbd>
+              </KpuKbd>
+              <KpuKbd>
                 ↓
-              </KKbd>
-              {{ t('app.hotkeys.page.exit') }}
+              </KpuKbd>
+              {{ $t('app.hotkeys.page.exit') }}
             </li>
           </ul>
         </div>

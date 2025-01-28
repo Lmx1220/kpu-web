@@ -45,7 +45,7 @@ watch(scrollTop, (val, oldVal) => {
 </script>
 
 <template>
-  <KSmartFixedBlock position="top" :class="{ 'absolute!': settingsStore.settings.topbar.mode === 'static' }">
+  <KpuSmartFixedBlock position="top" :class="{ 'absolute!': settingsStore.settings.topbar.mode === 'static' }">
     <div
       class="topbar-container transition-[transform,box-shadow]-300" :class="{
         [`topbar-${settingsStore.settings.topbar.mode}`]: true,
@@ -57,7 +57,7 @@ watch(scrollTop, (val, oldVal) => {
       <Tabbar v-if="settingsStore.settings.tabbar.enable" />
       <Toolbar v-if="enableToolbar" />
     </div>
-  </KSmartFixedBlock>
+  </KpuSmartFixedBlock>
 </template>
 
 <style scoped>

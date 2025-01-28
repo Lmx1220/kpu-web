@@ -37,26 +37,26 @@ function toggleColorScheme(event: MouseEvent) {
 </script>
 
 <template>
-  <KPopover class="min-w-auto flex-center cursor-pointer px-2 py-1">
-    <KButton variant="ghost" size="icon" @click="toggleColorScheme">
-      <KIcon
+  <KpuPopover class="min-w-auto flex-center cursor-pointer p-0">
+    <KpuButton variant="ghost" size="icon" @click="toggleColorScheme">
+      <KpuIcon
         :name="{
           'light': 'i-ri:sun-line',
           'dark': 'i-ri:moon-line',
           '': 'i-codicon:color-mode',
         }[settingsStore.settings.app.colorScheme]" :size="16"
       />
-    </KButton>
+    </KpuButton>
     <template #panel>
-      <KTabs
+      <KpuTabs
         v-model="settingsStore.settings.app.colorScheme"
         :list="[
           { icon: 'i-ri:sun-line', label: '', value: 'light' },
           { icon: 'i-ri:moon-line', label: '', value: 'dark' },
           { icon: 'i-codicon:color-mode', label: '', value: '' },
         ]"
-        class="h-full"
+        class="h-full -mb-2"
       />
     </template>
-  </KPopover>
+  </KpuPopover>
 </template>

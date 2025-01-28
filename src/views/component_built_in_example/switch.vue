@@ -9,12 +9,12 @@ const switchVal = ref(false)
 
 <template>
   <div>
-    <KPageHeader title="开关" description="KSwitch" />
-    <KPageMain>
+    <KpuPageHeader title="开关" description="KpuSwitch" />
+    <KpuPageMain>
       <div class="flex gap-4">
-        <KSwitch v-model="switchVal" />
-        <KSwitch v-model="switchVal" on-icon="ri:sun-line" off-icon="ri:moon-line" />
+        <KpuSwitch v-model="switchVal" />
+        <KpuSwitch v-model="switchVal" on-icon="ri:sun-line" off-icon="ri:moon-line" />
       </div>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

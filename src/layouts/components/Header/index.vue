@@ -41,7 +41,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
       <div class="header-container">
         <Logo class="title" />
         <component :is="useSlots('header-after-logo')" />
-        <KScrollArea horizontal :scrollbar="false" mask gradient-color="var(--g-header-bg)" class="menu-container h-full flex-1">
+        <KpuScrollArea :scrollbar="false" mask horizontal gradient-color="var(--g-header-bg)" class="menu-container h-full flex-1">
           <!-- 顶部模式 -->
           <div
             v-if="settingsStore.settings.menu.mode === 'head'" class="menu h-full flex of-hidden transition-all"
@@ -63,7 +63,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
                   }" :title="generateI18nTitle(item.meta?.title)" @click="switchTo(index)"
                 >
                   <div class="inline-flex flex-1 items-center justify-center gap-1">
-                    <KIcon
+                    <KpuIcon
                       v-if="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)"
                       :name="iconName(index === menuStore.actived, item.meta?.icon, item.meta?.activeIcon)!"
                       class="menu-item-container-icon transition-transform group-hover-scale-120"
@@ -98,7 +98,7 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
               [`menu-active-${settingsStore.settings.menu.style}`]: settingsStore.settings.menu.style !== '',
             }"
           />
-        </KScrollArea>
+        </KpuScrollArea>
         <ToolbarRightSide />
       </div>
       <component :is="useSlots('header-end')" />

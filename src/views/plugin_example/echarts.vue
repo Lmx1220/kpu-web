@@ -301,7 +301,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <KPageHeader title="ECharts">
+    <KpuPageHeader title="ECharts">
       <template #content>
         <p>不建议使用第三方封装的组件（如：vue-echarts），因为 ECharts 本身文档和演示 demo 已经很完善且方便了，再使用第三方的组件在使用体验上反而会束手束脚。</p>
         <p style="margin-bottom: 0;">
@@ -310,33 +310,33 @@ function open(url: string) {
       </template>
       <ElButton @click="open('https://github.com/apache/echarts')">
         <template #icon>
-          <KIcon name="i-ep:link" />
+          <KpuIcon name="i-ep:link" />
         </template>
         访问 echarts
       </ElButton>
-    </KPageHeader>
+    </KpuPageHeader>
     <ElRow :gutter="20" style="margin: -10px 10px;">
       <ElCol :md="12">
-        <KPageMain title="柱状图" style="margin: 10px 0;">
+        <KpuPageMain title="柱状图" style="margin: 10px 0;">
           <div ref="chart1Ref" style="width: 100%; height: 400px;" />
-        </KPageMain>
+        </KpuPageMain>
       </ElCol>
       <ElCol :md="12">
-        <KPageMain title="折线图" style="margin: 10px 0;">
+        <KpuPageMain title="折线图" style="margin: 10px 0;">
           <div ref="chart2Ref" style="width: 100%; height: 400px;" />
-        </KPageMain>
+        </KpuPageMain>
       </ElCol>
     </ElRow>
     <ElRow :gutter="20" style="margin: 0 10px;">
       <ElCol :md="12">
-        <KPageMain title="饼图" style="margin: 10px 0;">
+        <KpuPageMain title="饼图" style="margin: 10px 0;">
           <div ref="chart3Ref" style="width: 100%; height: 400px;" />
-        </KPageMain>
+        </KpuPageMain>
       </ElCol>
       <ElCol :md="12">
-        <KPageMain title="雷达图" style="margin: 10px 0;">
+        <KpuPageMain title="雷达图" style="margin: 10px 0;">
           <div ref="chart4Ref" style="width: 100%; height: 400px;" />
-        </KPageMain>
+        </KpuPageMain>
       </ElCol>
     </ElRow>
   </div>

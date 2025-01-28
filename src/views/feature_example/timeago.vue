@@ -40,8 +40,8 @@ onBeforeUnmount(() => {
 
 <template>
   <div>
-    <KPageHeader title="可阅读时间" content="将时间格式化可阅读的格式" />
-    <KPageMain title="指令（基础使用）">
+    <KpuPageHeader title="可阅读时间" content="将时间格式化可阅读的格式" />
+    <KpuPageMain title="指令（基础使用）">
       <ElTable :data="data" width="100%">
         <ElTableColumn label="标题" prop="title" />
         <ElTableColumn label="时间" prop="date" width="180">
@@ -50,8 +50,8 @@ onBeforeUnmount(() => {
           </template>
         </ElTableColumn>
       </ElTable>
-    </KPageMain>
-    <KPageMain title="指令（定时器）">
+    </KpuPageMain>
+    <KpuPageMain title="指令（定时器）">
       <ElTable :data="data1" width="100%">
         <ElTableColumn label="标题" prop="title" />
         <ElTableColumn label="时间" prop="date" width="180">
@@ -62,12 +62,12 @@ onBeforeUnmount(() => {
           </template>
         </ElTableColumn>
       </ElTable>
-    </KPageMain>
-    <KPageMain title="组合式函数（相对时间）">
+    </KpuPageMain>
+    <KpuPageMain title="组合式函数（相对时间）">
       2020-01-01 相对于 2020-01-03 是 <b>{{ format('2020-01-01', { relativeDate: '2020-01-03' }) }}</b>
-    </KPageMain>
-    <KPageMain title="组合式函数（定时器）">
+    </KpuPageMain>
+    <KpuPageMain title="组合式函数（定时器）">
       每隔2秒更新 <b ref="timeRef" :datetime="dayjs().format()" />
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

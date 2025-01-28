@@ -29,16 +29,16 @@ const data1 = ref([{
 
 <template>
   <div>
-    <KPageHeader title="迷你图" content="Sparkline" />
-    <KPageMain>
-      <KSparkline :value="data" />
-      <KSparkline :value="data1" stroke-color="#409eff" fill-color="#b3d8ff" />
-      <KSparkline :value="data1" tooltip />
-      <KSparkline
+    <KpuPageHeader title="迷你图" content="KpuSparkline" />
+    <KpuPageMain>
+      <KpuSparkline :value="data" />
+      <KpuSparkline :value="data1" stroke-color="#409eff" fill-color="#b3d8ff" />
+      <KpuSparkline :value="data1" tooltip />
+      <KpuSparkline
         :value="data1" stroke-color="#409eff" fill-color="#b3d8ff"
         cursor-color="#e6a23c"
         spot-color="#909399"
       />
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

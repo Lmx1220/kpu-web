@@ -8,9 +8,9 @@ const val = ref('')
 
 <template>
   <div>
-    <KPageMain>
+    <KpuPageMain>
       <div>层级 1-1-1</div>
       <ElInput v-model="val" />
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

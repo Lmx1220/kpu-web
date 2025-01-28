@@ -53,31 +53,31 @@ function showToast(type?: 'success' | 'error' | 'info' | 'warning' | 'loading1' 
 
 <template>
   <div>
-    <KPageHeader title="" description="KToast" />
-    <KPageMain>
+    <KpuPageHeader title="" description="KpuToast" />
+    <KpuPageMain>
       <div class="flex gap-4">
-        <KButton @click="showToast()">
+        <KpuButton @click="showToast()">
           默认
-        </KButton>
-        <KButton @click="showToast('success')">
+        </KpuButton>
+        <KpuButton @click="showToast('success')">
           成功
-        </KButton>
-        <KButton @click="showToast('error')">
+        </KpuButton>
+        <KpuButton @click="showToast('error')">
           错误
-        </KButton>
-        <KButton @click="showToast('info')">
+        </KpuButton>
+        <KpuButton @click="showToast('info')">
           信息
-        </KButton>
-        <KButton @click="showToast('warning')">
+        </KpuButton>
+        <KpuButton @click="showToast('warning')">
           警告
-        </KButton>
-        <KButton @click="showToast('loading1')">
+        </KpuButton>
+        <KpuButton @click="showToast('loading1')">
           加载中 1
-        </KButton>
-        <KButton @click="showToast('loading2')">
+        </KpuButton>
+        <KpuButton @click="showToast('loading2')">
           加载中 2
-        </KButton>
+        </KpuButton>
       </div>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

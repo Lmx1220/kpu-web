@@ -5,9 +5,9 @@ meta:
 
 <template>
   <div>
-    <KPageHeader title="右键菜单" description="KContextMenu" />
-    <KPageMain>
-      <KContextMenu
+    <KpuPageHeader title="右键菜单" description="KpuContextMenu" />
+    <KpuPageMain>
+      <KpuContextMenu
         :items="[
           [
             { label: '菜单1-1' },
@@ -22,7 +22,7 @@ meta:
         <div class="h-[150px] w-[300px] flex items-center justify-center border rounded-md border-dashed text-sm">
           在这右键
         </div>
-      </KContextMenu>
-    </KPageMain>
+      </KpuContextMenu>
+    </KpuPageMain>
   </div>
 </template>

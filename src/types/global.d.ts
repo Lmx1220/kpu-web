@@ -1,24 +1,7 @@
-import type { LocaleType } from '#/config'
 import type { ActionEnum } from '@/enums/commonEnum'
 import type { FormRules } from 'element-plus'
 import type { ComponentRenderProxy, VNode } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
-
-type RecursiveRequired<T> = {
-  [P in keyof T]-?: RecursiveRequired<T[P]>
-}
-type RecursivePartial<T> = {
-  [P in keyof T]?: RecursivePartial<T[P]>
-}
-
-declare interface PromiseFn<T = any, R = T> {
-  (...arg: T[]): Promise<R>
-}
-
-type MaybePromise<T> = Promise<T> | T
-type ClassType = Array<object | string> | object | string
-
-declare type Nullable<T> = T | null
 
 declare namespace Settings {
   interface app {
@@ -469,11 +452,7 @@ declare module 'vue-router' {
     alwaysOpened?: boolean
     permanent?: boolean
     auth?: string | string[]
-    auths?: {
-      name: string
-      value: string
-    }[]
-    sidebar?: boolean
+    auths?: { name: string, value: string }[]
     menu?: boolean
     activeMenu?: string
     singleMenu?: boolean
@@ -482,14 +461,16 @@ declare module 'vue-router' {
     noCache?: string | string[]
     badge?: boolean | string | number | (() => boolean | string | number)
     badgeVariant?: 'default' | 'secondary' | 'destructive' | (() => 'default' | 'secondary' | 'destructive')
+    query?: Record<string, T>
+    maximize?: boolean
+    exitMaximize?: boolean
     newWindow?: boolean
     iframe?: string
     link?: string
     copyright?: boolean
-    paddingBottom?: string
     whiteList?: boolean
+    // sort?: number
     breadcrumbNeste?: Route.breadcrumb[]
-    query?: Record<string, any>
   }
 }
 
@@ -500,10 +481,7 @@ declare namespace Route {
       icon?: string
       activeIcon?: string
       auth?: string | string[]
-      auths?: {
-        name: string
-        value: string
-      }[]
+      auths?: { name: string, value: string }[]
       badge?: boolean | string | number | (() => boolean | string | number)
       badgeVariant?: 'default' | 'secondary' | 'destructive' | (() => 'default' | 'secondary' | 'destructive')
       query?: Record<string, any>
@@ -535,7 +513,7 @@ declare namespace Menu {
       badgeVariant?: 'default' | 'secondary' | 'destructive' | (() => 'default' | 'secondary' | 'destructive')
       newWindow?: boolean
       link?: string
-      query?: Record<string, any>
+      query?: Record<string, T>
     }
     children?: recordRaw[]
   }

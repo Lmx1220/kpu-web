@@ -118,6 +118,18 @@ function setupRoutes(router: Router) {
   })
 }
 
+function setupMaximize(router: Router) {
+  router.afterEach((to, from) => {
+    const settingsStore = useSettingsStore()
+    if (to.meta.maximize) {
+      settingsStore.setMainPageMaximize(true)
+    }
+    else {
+      from.meta.exitMaximize && settingsStore.setMainPageMaximize(false)
+    }
+  },
+  )
+}
 // 进度条
 function setupProgress(router: Router) {
   const { isLoading } = useNProgress()
@@ -266,6 +278,7 @@ function setupOther(router: Router) {
 
 export default function setupGuards(router: Router) {
   setupRoutes(router)
+  setupMaximize(router)
   setupProgress(router)
   setupTitle(router)
   setupKeepAlive(router)

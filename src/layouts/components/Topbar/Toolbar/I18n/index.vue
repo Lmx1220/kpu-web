@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { useLocale } from '@/locales/useLocale.ts'
+import useSettingsStore from '@/store/modules/settings'
 
 defineOptions({
   name: 'I18n',
 })
 
 const isAnimating = ref(false)
-const { getLocale } = useLocale()
-
-watch(getLocale, (newVal, oldVal) => {
+const settingsStore = useSettingsStore()
+watch(() => settingsStore.settings.app.defaultLang, (newVal, oldVal) => {
   if (newVal !== oldVal) {
     isAnimating.value = true
   }
@@ -17,9 +16,9 @@ watch(getLocale, (newVal, oldVal) => {
 
 <template>
   <I18nSelector :class="{ animation: isAnimating }" @animationend="isAnimating = false">
-    <KButton variant="ghost" size="icon">
-      <KIcon name="i-ri:translate" :size="16" />
-    </KButton>
+    <KpuButton variant="ghost" size="icon">
+      <KpuIcon name="i-ri:translate" :size="16" />
+    </KpuButton>
   </I18nSelector>
 </template>
 

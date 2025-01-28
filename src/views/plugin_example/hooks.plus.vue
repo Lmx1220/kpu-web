@@ -41,7 +41,7 @@ function open(url: string) {
 <template>
   <div>
     <Alert />
-    <KPageHeader title="VueHooks Plus">
+    <KpuPageHeader title="VueHooks Plus">
       <template #content>
         <p>提供基础和高级的 hook ，高性能逻辑的抽象封装，满足大量场景，更多 API 和例子请查看 VueHooks Plus 官网。</p>
         <p style="margin-bottom: 0;">
@@ -50,12 +50,12 @@ function open(url: string) {
       </template>
       <ElButton @click="open('https://github.com/InhiblabCore/vue-hooks-plus')">
         <template #icon>
-          <KIcon name="i-ep:link" />
+          <KpuIcon name="i-ep:link" />
         </template>
         访问 VueHooks Plus
       </ElButton>
-    </KPageHeader>
-    <KPageMain title="轮询">
+    </KpuPageHeader>
+    <KpuPageMain title="轮询">
       <div class="mb-4">
         Data：<span>{{ loading ? 'loading' : data }}</span>
       </div>
@@ -73,6 +73,6 @@ function open(url: string) {
           Stop
         </el-button>
       </div>
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

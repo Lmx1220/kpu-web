@@ -34,31 +34,33 @@ function onFinished() {
 
 <template>
   <div>
-    <KPageHeader title="计数到" description="KCountTo" />
-    <KPageMain>
-      <KCountTo :start-val="0" :end-val="100000" />
-    </KPageMain>
-    <KPageMain title="持续10秒">
-      <KCountTo :start-val="0" :end-val="100000" :duration="10000" />
-    </KPageMain>
-    <KPageMain title="保留2位小数">
-      <KCountTo :start-val="0" :end-val="100000" :decimals="2" />
-    </KPageMain>
-    <KPageMain title="带前缀和后缀">
-      <KCountTo :start-val="0" :end-val="100000" prefix="￥" suffix="元" />
-    </KPageMain>
-    <KPageMain title="手动控制">
-      <KCountTo ref="countToRef" :start-val="form.startVal" :end-val="form.endVal" :autoplay="false" @on-started="onStarted" @on-finished="onFinished" />
-      <KButton @click="start">
-        开始
-      </KButton>
-      <KButton @click="reset">
-        重置
-      </KButton>
-      <KButton @click="form.endVal += 10000">
-        增加10000
-      </KButton>
-    </KPageMain>
+    <KpuPageHeader title="计数到" description="KpuCountTo" />
+    <KpuPageMain>
+      <KpuCountTo :start-val="0" :end-val="100000" />
+    </KpuPageMain>
+    <KpuPageMain title="持续10秒">
+      <KpuCountTo :start-val="0" :end-val="100000" :duration="10000" />
+    </KpuPageMain>
+    <KpuPageMain title="保留2位小数">
+      <KpuCountTo :start-val="0" :end-val="100000" :decimals="2" />
+    </KpuPageMain>
+    <KpuPageMain title="带前缀和后缀">
+      <KpuCountTo :start-val="0" :end-val="100000" prefix="￥" suffix="元" />
+    </KpuPageMain>
+    <KpuPageMain title="手动控制">
+      <KpuCountTo ref="countToRef" :start-val="form.startVal" :end-val="form.endVal" :autoplay="false" @on-started="onStarted" @on-finished="onFinished" />
+      <div>
+        <KpuButton @click="start">
+          开始
+        </KpuButton>
+        <KpuButton @click="reset">
+          重置
+        </KpuButton>
+        <KpuButton @click="form.endVal += 10000">
+          增加10000
+        </KpuButton>
+      </div>
+    </KpuPageMain>
   </div>
 </template>
 

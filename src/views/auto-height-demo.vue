@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useKpuModal } from '@/ui/components/KModal/use-modal.ts'
+import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
 

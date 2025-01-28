@@ -5,8 +5,8 @@ meta:
 
 <template>
   <div>
-    <KPageMain>
+    <KpuPageMain>
       注意看面包屑导航的变化
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

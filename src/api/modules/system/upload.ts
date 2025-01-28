@@ -1,7 +1,7 @@
 import type { UploadFileParams } from '#/axios'
 import type { AxiosProgressEvent } from 'axios'
 import type { FileResultVO } from './model/fileModel'
-import defHttp from '@/api'
+import { requestClient } from '@/api'
 import { TimeDelayReq } from '@/api/helper/timeDelayReq'
 import qs from 'qs'
 
@@ -15,34 +15,27 @@ export function uploadApi(
   params: UploadFileParams,
   onUploadProgress: (progressEvent: AxiosProgressEvent) => void,
 ) {
-  return defHttp.uploadFile<FileResultVO>(
+  return requestClient.upload<FileResultVO>(
+    `/proxy${ServicePrefix}/${MODULAR}/anyone/upload`,
+    params,
     {
-      url: `/proxy${ServicePrefix}/${MODULAR}/anyone/upload`,
       onUploadProgress,
       timeout: 60 * 1000,
     },
-    params,
   )
 }
 export function downloadIds(ids: string[]) {
-  return defHttp.get({
-    url: `${ServicePrefix}/${MODULAR}/download`,
-    responseType: 'blob',
+  return requestClient.download(`${ServicePrefix}/${MODULAR}/download`, {
     params: qs.stringify({
       ids,
     }, {
       arrayFormat: 'repeat',
     }),
-  }, {
-    isReturnNativeResponse: true,
   })
 }
 
 export function findUrlById(data: string[]) {
-  return defHttp.post<Record<string, string>>({
-    url: `${ServicePrefix}/${MODULAR}/anyone/findUrlById`,
-    data,
-  })
+  return requestClient.post<Record<string, string>>(`${ServicePrefix}/${MODULAR}/anyone/findUrlById`, data)
 }
 function formatData(params: string[], cacheKey: (param: any) => string, data: { [key: string]: string }) {
   const map = new Map<string, { key: string, isOk: boolean, data: any }>()
