@@ -18,8 +18,6 @@ import EmptyIcon from '@/assets/icons/empty-icon.vue'
 import { $t } from '@/locales'
 import useSettingsStore from '@/store/modules/settings.ts'
 import { KpuLoading } from '@/ui/components/KpuSpinner/index.ts'
-// import { usePriorityValues } from '@vben/hooks'
-// import { EmptyIcon } from 'la'
 
 import KpuHelpTooltip from '@/ui/components/KpuTooltip/help-tooltip.vue'
 
@@ -43,8 +41,6 @@ import 'vxe-pc-ui/styles/cssvar.scss'
 import './style.css'
 
 const props = withDefaults(defineProps<Props>(), {})
-
-// import { VbenLoading } from '@vben-core/shadcn-ui'
 
 interface Props extends VxeGridProps {
   api: ExtendedVxeGridApi
@@ -257,7 +253,7 @@ async function init() {
     // props.api.reload(formApi.form?.values ?? {});
   }
 
-  // form 由 vben-form代替，所以不适配formConfig，这里给出警告
+  // form 由 kpu-form代替，所以不适配formConfig，这里给出警告
   const formConfig = gridOptions.value?.formConfig
   // 处理某个页面加载多个Table时，第2个之后的Table初始化报出警告
   // 因为第一次初始化之后会把defaultGridOptions和gridOptions合并后缓存进State
@@ -267,7 +263,7 @@ async function init() {
     )
   }
   props.api?.setState?.({ gridOptions: defaultGridOptions })
-  // form 由 vben-form 代替，所以需要保证query相关事件可以拿到参数
+  // form 由 kpu-form 代替，所以需要保证query相关事件可以拿到参数
   extendProxyOptions(props.api, defaultGridOptions, () =>
     formApi.getLatestSubmissionValues())
 }

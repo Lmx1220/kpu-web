@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { LabelValueOptions } from '#/index'
 import type { ApiRadioGroupProps } from './typing'
 import { radioGroupEmits } from 'element-plus'
 import { get } from 'lodash-es'

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { $t } from '@/locales'
 import useBingStore from '@/store/modules/bing.ts'
 import useSettingsStore from '@/store/modules/settings.ts'
 import useUserStore from '@/store/modules/user.ts'
@@ -6,7 +7,6 @@ import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 import storage from '@/utils/storage.ts'
 import hotkeys from 'hotkeys-js'
 import { sample, shuffle } from 'lodash-es'
-import { useI18n } from 'vue-i18n'
 import { toast } from 'vue-sonner'
 
 defineOptions({
@@ -36,7 +36,6 @@ const vFocus: any = {
 //     leaveTo: '-translate-y-full',
 //   }
 // })
-const { t } = useI18n()
 const title = import.meta.env.VITE_APP_TITLE
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
@@ -155,7 +154,7 @@ onUnmounted(() => {
           <div class="screen-lock-content-title">
             <img width="180px" :src="userStore.avatar" alt="">
             <KpuIcon name="i-ri:lock-2-line" class="i-ri:lock-2-line" />
-            {{ t(title) }} {{ t('屏幕已锁定') }}
+            {{ $t(title) }} {{ $t('屏幕已锁定') }}
           </div>
           <div class="screen-lock-content-form">
             <div ref="formRef" @submit.prevent>
@@ -179,12 +178,12 @@ onUnmounted(() => {
                     name="i-ri:rotate-lock-2-line"
                     class="i-ri:rotate-lock-2-line"
                   />
-                  {{ t('解锁') }}
+                  {{ $t('解锁') }}
                 </KpuButton>
               </div>
             </div>
           </div>
-          <span @click="randomBackground">{{ t('切换壁纸') }}</span>
+          <span @click="randomBackground">{{ $t('切换壁纸') }}</span>
         </div>
       </div>
     </KpuModal>

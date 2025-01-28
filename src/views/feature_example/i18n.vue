@@ -4,7 +4,7 @@ import { $t } from '@/locales'
 import { i18n } from '@/locales/i18n'
 // import { loadLocaleMessages } from '@/locales/utils'
 import { toast } from 'vue-sonner'
-// const { t } = useI18n()
+
 const currentPage = ref(1)
 const pageSize = ref(100)
 const data = ref({

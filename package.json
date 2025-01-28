@@ -19,7 +19,7 @@
     "new": "plop",
     "generate:icons": "esno scripts/generate.icons.ts",
     "lint": "npm-run-all -s lint:tsc lint:eslint lint:stylelint",
-    "lint:tsc": "vue-tsc",
+    "lint:tsc": "vue-tsc -b",
     "lint:eslint": "eslint . --cache --fix",
     "lint:stylelint": "stylelint \"src/**/*.{css,scss,vue}\" --cache --fix",
     "postfinstall": "simple-git-hooks",

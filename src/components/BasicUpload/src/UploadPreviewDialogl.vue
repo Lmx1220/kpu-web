@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { FileResultVO } from '@/api/modules/system/model/fileModel'
 import { downloadIds } from '@/api/modules/system/upload'
+import { $t } from '@/locales'
+import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 import { isArray } from '@/utils/is'
 import { downloadFile } from '@/utils/kpu/common.ts'
+import ThumbUrl from './ThumbUrl.vue'
 
 interface Props {
   value?: FileResultVO[]
@@ -16,7 +19,6 @@ const emits = defineEmits<{
   'delete': [string]
   'update:value': [FileResultVO[]]
 }>()
-const { t } = useI18n()
 const fileListRef = ref<FileResultVO[]>([])
 const [BaseDialog, modalApi] = useKpuModal({
   // draggable: true,
@@ -54,30 +56,30 @@ async function handleDownload(record: FileResultVO) {
 <template>
   <BaseDialog
     width="800px"
-    :title="t('component.upload.preview')"
+    :title="$t('component.upload.preview')"
     class="upload-preview-modal"
     v-bind="$attrs"
     :show-ok-btn="false"
   >
     <ElTable :data="fileListRef">
       <ElTableColumn type="index" width="50" />
-      <ElTableColumn align="center" width="100" :label="t('component.upload.legend')" prop="url">
+      <ElTableColumn align="center" width="100" :label="$t('component.upload.legend')" prop="url">
         <template #default="{ row }">
           <ThumbUrl v-if="row.fileType === 'IMAGE'" :file-id="row.id" :original-file-name="row.originalFileName" />
         </template>
       </ElTableColumn>
       <ElTableColumn
         prop="originalFileName"
-        :label="t('component.upload.fileName')"
+        :label="$t('component.upload.fileName')"
         align="left"
       />
-      <ElTableColumn width="180" fixed="right" align="center" border :label="t('component.upload.operating')">
+      <ElTableColumn width="180" fixed="right" align="center" border :label="$t('component.upload.operating')">
         <template #default="{ row }">
           <ElButton text type="warning" @click="handleRemove(row)">
-            {{ t('component.upload.del') }}
+            {{ $t('component.upload.del') }}
           </ElButton>
           <ElButton text type="danger" @click="handleDownload(row)">
-            {{ t('component.upload.download') }}
+            {{ $t('component.upload.download') }}
           </ElButton>
         </template>
       </ElTableColumn>

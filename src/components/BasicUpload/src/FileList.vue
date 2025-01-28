@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { FileItem } from './types'
+import { $t } from '@/locales'
+import ThumbUrl from './ThumbUrl.vue'
 import { UploadResultStatus } from './types'
 
 interface Props {
@@ -38,19 +40,17 @@ function formatStatus(record: FileItem) {
   }
   return status as any
 }
-
-const { t } = useI18n()
 </script>
 
 <template>
   <ElTable :data="dataSource" border>
     <ElTableColumn type="index" />
-    <ElTableColumn width="100" prop="thumbUrl" :label="t('component.upload.legend')">
+    <ElTableColumn width="100" prop="thumbUrl" :label="$t('component.upload.legend')">
       <template #default="{ row }">
         <ThumbUrl v-if="row.thumbUrl" :file-url="row.thumbUrl" :is-def="true" />
       </template>
     </ElTableColumn>
-    <ElTableColumn prop="name" align="left" :label="t('component.upload.fileName')">
+    <ElTableColumn prop="name" align="left" :label="$t('component.upload.fileName')">
       <template #default="{ row, column }">
         <span>
           <p class="mb-1 truncate" :title="column">
@@ -60,25 +60,25 @@ const { t } = useI18n()
         </span>
       </template>
     </ElTableColumn>
-    <ElTableColumn width="100" prop="size" :label="t('component.upload.fileSize')">
+    <ElTableColumn width="100" prop="size" :label="$t('component.upload.fileSize')">
       <template #default="{ row }">
         {{ row.size && `${(row.size / 1024).toFixed(2)}KB` }}
       </template>
     </ElTableColumn>
-    <ElTableColumn width="100" prop="status" :label="t('component.upload.fileStatue')">
+    <ElTableColumn width="100" prop="status" :label="$t('component.upload.fileStatue')">
       <template #default="{ row }">
         <ElTag v-if="row.status === UploadResultStatus.SUCCESS" type="success">
-          {{ t('component.upload.uploadSuccess') }}
+          {{ $t('component.upload.uploadSuccess') }}
         </ElTag>
         <ElTag v-if="row.status === UploadResultStatus.ERROR" type="warning">
-          {{ t('component.upload.uploadError') }}
+          {{ $t('component.upload.uploadError') }}
         </ElTag>
         <ElTag v-if="row.status === UploadResultStatus.UPLOADING">
-          {{ t('component.upload.uploading') }}
+          {{ $t('component.upload.uploading') }}
         </ElTag>
       </template>
     </ElTableColumn>
-    <ElTableColumn width="120" :label="t('component.upload.operating')">
+    <ElTableColumn width="120" :label="$t('component.upload.operating')">
       <template #default="{ row }">
         <ElButton type="danger" @click="handleRemove(row)">
           删除

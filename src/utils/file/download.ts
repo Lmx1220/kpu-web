@@ -1,3 +1,4 @@
+import type { TargetContext } from '#/index'
 import { openWindow } from '..'
 import { dataURLtoBlob, urlToBase64 } from './base64Conver'
 

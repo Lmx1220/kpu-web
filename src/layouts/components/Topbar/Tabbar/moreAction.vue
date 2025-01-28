@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Tabbar } from '#/global'
+import { $t } from '@/locales'
 import useSettingsStore from '@/store/modules/settings'
 import useTabbarStore from '@/store/modules/tabbar'
 import eventBus from '@/utils/eventBus'
 import Sortable from 'sortablejs'
-import { useI18n } from 'vue-i18n'
 
 defineOptions({
   name: 'TabbarMoreAction',
@@ -16,8 +16,6 @@ const settingsStore = useSettingsStore()
 const tabbarStore = useTabbarStore()
 
 const tabbar = useTabbar()
-
-const { t } = useI18n()
 
 const { generateI18nTitle } = useMenu()
 
@@ -105,7 +103,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
           <div class="flex-center-between gap-2 p-4">
             <template v-if="isNavSearch">
               <KpuInput
-                :placeholder="t('searchPlaceholder')"
+                :placeholder="$t('searchPlaceholder')"
                 class="h-8 w-0 flex-1 border border-input rounded-md bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none"
               />
               <KpuButton variant="outline" size="icon" class="h-8 w-8" @click="isNavSearch = false">
@@ -113,7 +111,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
               </KpuButton>
             </template>
             <template v-else>
-              <KpuTooltip :text="t('app.tabbar.searchTabs')">
+              <KpuTooltip :text="$t('app.tabbar.searchTabs')">
                 <KpuButton
                   v-if="settingsStore.settings.toolbar.navSearch" variant="secondary" size="icon" class="h-8 w-8"
                   @click="isNavSearch = true"
@@ -121,7 +119,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
                   <KpuIcon name="i-ri:search-line" />
                 </KpuButton>
               </KpuTooltip>
-              <KpuTooltip :text="t('app.tabbar.closeOtherSide')">
+              <KpuTooltip :text="$t('app.tabbar.closeOtherSide')">
                 <KpuButton
                   variant="secondary" size="icon" class="h-8 w-8" :disabled="!tabbar.checkCloseOtherSide()"
                   @click="actionCommand('other-side')"
@@ -129,7 +127,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
                   <KpuIcon name="i-ri:close-fill" />
                 </KpuButton>
               </KpuTooltip>
-              <KpuTooltip :text="t('app.tabbar.closeLeftSide')">
+              <KpuTooltip :text="$t('app.tabbar.closeLeftSide')">
                 <KpuButton
                   variant="secondary" size="icon" class="h-8 w-8" :disabled="!tabbar.checkCloseLeftSide()"
                   @click="actionCommand('left-side')"
@@ -137,7 +135,7 @@ function iconName(isActive: boolean, icon: Tabbar.recordRaw['icon'], activeIcon:
                   <KpuIcon name="i-ph:arrow-line-left" />
                 </KpuButton>
               </KpuTooltip>
-              <KpuTooltip :text="t('app.tabbar.closeRightSide')">
+              <KpuTooltip :text="$t('app.tabbar.closeRightSide')">
                 <KpuButton
                   variant="secondary" size="icon" class="h-8 w-8" :disabled="!tabbar.checkCloseRightSide()"
                   @click="actionCommand('right-side')"

@@ -1,3 +1,4 @@
+import type { IntervalHandle } from '#/index'
 import type { DirectiveBinding } from 'vue'
 
 interface TimeagoElement extends HTMLElement {

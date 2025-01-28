@@ -1,5 +1,5 @@
 import type { UploadFileParams } from '#/axios'
-import type { AxiosProgressEvent } from 'axios'
+import type { AxiosProgressEvent, AxiosResponse } from 'axios'
 import type { FileResultVO } from './model/fileModel'
 import { requestClient } from '@/api'
 import { TimeDelayReq } from '@/api/helper/timeDelayReq'
@@ -25,7 +25,7 @@ export function uploadApi(
   )
 }
 export function downloadIds(ids: string[]) {
-  return requestClient.download(`${ServicePrefix}/${MODULAR}/download`, {
+  return requestClient.download<AxiosResponse<Blob>>(`${ServicePrefix}/${MODULAR}/download`, {
     params: qs.stringify({
       ids,
     }, {

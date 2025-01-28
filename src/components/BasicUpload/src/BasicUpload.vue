@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { AnyFunction } from '#/index'
 import type { FileResultVO } from '@/api/modules/system/model/fileModel'
+import { $t } from '@/locales'
 
+import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 import { omit } from 'lodash-es'
 import { useAttrs } from 'vue'
 import UploadDialog from './UploadDialog.vue'
@@ -52,7 +54,6 @@ const emits = defineEmits<{
   'previewDelete': [Recordable<any>]
   'update:value': [FileResultVO[]]
 }>()
-const { t } = useI18n()
 
 const fileList = ref<FileResultVO[]>([])
 const showPreview = computed(() => {
@@ -101,11 +102,11 @@ const [UploadPreviewDialoglModal, uploadPreviewDialoglApi] = useKpuModal({
   <div>
     <ElButtonGroup>
       <ElButton @click="uploadDialogModalApi.open()">
-        {{ t('component.upload.upload') }}
+        {{ $t('component.upload.upload') }}
       </ElButton>
       <ElTooltip v-if="showPreview && showPreviewButton" placement="bottom">
         <template #content>
-          {{ t('component.upload.uploaded') }}
+          {{ $t('component.upload.uploaded') }}
           <template v-if="fileList.length">
             {{ fileList.length }}
           </template>

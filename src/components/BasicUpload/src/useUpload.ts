@@ -1,7 +1,6 @@
 import type { Ref } from 'vue'
+import { $t } from '@/locales'
 import { computed, unref } from 'vue'
-
-const { t } = useI18n()
 
 export function useUploadType({
   acceptRef,
@@ -45,17 +44,17 @@ export function useUploadType({
 
     const accept = unref(acceptRef)
     if (accept.length > 0) {
-      helpTexts.push(t('component.upload.accept', [accept.join(',')]))
+      helpTexts.push($t('component.upload.accept', [accept.join(',')]))
     }
 
     const maxSize = unref(maxSizeRef)
     if (maxSize) {
-      helpTexts.push(t('component.upload.maxSize', [maxSize]))
+      helpTexts.push($t('component.upload.maxSize', [maxSize]))
     }
 
     const maxNumber = unref(maxNumberRef)
     if (maxNumber && maxNumber !== Number.POSITIVE_INFINITY) {
-      helpTexts.push(t('component.upload.maxNumber', [maxNumber]))
+      helpTexts.push($t('component.upload.maxNumber', [maxNumber]))
     }
     return helpTexts.join('，')
   })

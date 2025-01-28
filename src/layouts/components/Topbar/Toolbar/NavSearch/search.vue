@@ -214,7 +214,7 @@ function pageJump(path: listTypes['path'], link: listTypes['link']) {
         <div class="h-full w-14 flex-center">
           <KpuIcon name="i-ri:search-line" :size="18" class="text-foreground/30" />
         </div>
-        <input v-model="searchInput" :placeholder="$t('app.search.input')" class="h-full w-full border-0 rounded-md bg-transparent text-base text-foreground focus-outline-none placeholder-foreground/30" @keydown.esc="isShow = false" @keydown.up.prevent="keyUp" @keydown.down.prevent="keyDown" @keydown.enter.prevent="keyEnter">
+        <input v-model="searchInput" :placeholder="$t('app.search.input')" class="h-full w-full border-0 rounded-md bg-transparent text-base text-foreground focus-outline-none placeholder-foreground/30" @keydown.up.prevent="keyUp" @keydown.down.prevent="keyDown" @keydown.enter.prevent="keyEnter">
         <div v-if="settingsStore.mode === 'mobile'" class="h-full w-14 flex-center border-s">
           <KpuIcon name="i-carbon:close" :size="18" @click="() => modalApi.close()" />
         </div>

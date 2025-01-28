@@ -1,3 +1,5 @@
+import type { AnyFunction } from '@/types'
+
 interface TreeHelperConfig {
   id: string
   children: string
@@ -95,7 +97,7 @@ export function findNodeByKey(key: any, tree: any[], config: Partial<TreeHelperC
  */
 export function findNode<T = any>(
   tree: any,
-  func: Fn,
+  func: AnyFunction,
   config: Partial<TreeHelperConfig> = {},
 ): T | null {
   config = getConfig(config)
@@ -118,7 +120,7 @@ export function findNode<T = any>(
  */
 export function findNodeAll<T = any>(
   tree: any,
-  func: Fn,
+  func: AnyFunction,
   config: Partial<TreeHelperConfig> = {},
 ): T[] {
   config = getConfig(config)
@@ -134,7 +136,7 @@ export function findNodeAll<T = any>(
 
 export function findPath<T = any>(
   tree: any,
-  func: Fn,
+  func: AnyFunction,
   config: Partial<TreeHelperConfig> = {},
 ): T | T[] | null {
   config = getConfig(config)
@@ -160,7 +162,7 @@ export function findPath<T = any>(
   return null
 }
 
-export function findPathAll(tree: any, func: Fn, config: Partial<TreeHelperConfig> = {}) {
+export function findPathAll(tree: any, func: AnyFunction, config: Partial<TreeHelperConfig> = {}) {
   config = getConfig(config)
   const path: any[] = []
   const list = [...tree]
@@ -228,7 +230,9 @@ export function forEach<T = any>(
  * @description: Extract tree specified structure
  * @description: 提取树指定结构
  */
-export function treeMap<T = any>(treeData: T[], opt: { children?: string, conversion: Fn }): T[] {
+export function treeMap<T = any>(treeData: T[], opt: { children?: string, conversion: AnyFunction }): {
+  [p: string]: any
+}[] {
   return treeData.map(item => treeMapEach(item, opt))
 }
 
@@ -238,7 +242,7 @@ export function treeMap<T = any>(treeData: T[], opt: { children?: string, conver
  */
 export function treeMapEach(
   data: any,
-  { children = 'children', conversion }: { children?: string, conversion: Fn },
+  { children = 'children', conversion }: { children?: string, conversion: AnyFunction },
 ) {
   const haveChildren = Array.isArray(data[children]) && data[children].length > 0
   const conversionData = conversion(data) || {}
@@ -335,7 +339,7 @@ export function getById<T = string | number, N = Recordable>(
 }
 
 // 遍历树结构
-export function eachTree(treeDatas: any[], callBack: Fn, parentNode = {}) {
+export function eachTree(treeDatas: any[], callBack: AnyFunction, parentNode = {}) {
   treeDatas.forEach((element) => {
     const newNode = callBack(element, parentNode) || element
     if (element.children) {

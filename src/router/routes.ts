@@ -2,8 +2,6 @@ import type { Route } from '@/types/global'
 import type { RouteRecordRaw } from 'vue-router'
 import pinia from '@/store'
 import useSettingsStore from '@/store/modules/settings.ts'
-import generatedRoutes from 'virtual:generated-pages'
-import { setupLayouts } from 'virtual:meta-layouts'
 import AlwaysOpenedExample from './modules/always.opened.example.ts'
 import BreadcrumbExample from './modules/breadcrumb.example.ts'
 import ComponentExample from './modules/component.example.ts'
@@ -115,13 +113,14 @@ const asyncRoutes: Route.recordMainRaw[] = [
   },
 ]
 
-const constantRoutesByFilesystem = generatedRoutes.filter((item) => {
-  return item.meta?.enabled !== false && item.meta?.constant === true
-})
-
-const asyncRoutesByFilesystem = setupLayouts(generatedRoutes.filter((item) => {
-  return item.meta?.enabled !== false && item.meta?.constant !== true && item.meta?.layout !== false
-}))
+// const constantRoutesByFilesystem = generatedRoutes.filter((item) => {
+//   return item.meta?.enabled !== false && item.meta?.constant === true
+// })
+const constantRoutesByFilesystem: RouteRecordRaw[] = []
+// const asyncRoutesByFilesystem: RouteRecordRaw[] = setupLayouts(generatedRoutes.filter((item) => {
+//   return item.meta?.enabled !== false && item.meta?.constant !== true && item.meta?.layout !== false
+// }))
+const asyncRoutesByFilesystem: RouteRecordRaw[] = []
 export {
   asyncRoutes,
   asyncRoutesByFilesystem,

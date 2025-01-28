@@ -1,3 +1,5 @@
+import { $t } from '@/locales'
+
 export enum YesOrNoEnum {
   Yes = 1,
   No = 0,
@@ -5,7 +7,6 @@ export enum YesOrNoEnum {
 
 export default {
   enum: (all = false) => {
-    const { t } = useI18n()
     return all
       ? [
 
@@ -14,21 +15,21 @@ export default {
             value: undefined,
           },
           {
-            label: t('kpu.common.yes'),
+            label: $t('kpu.common.yes'),
             value: true,
           },
           {
-            label: t('kpu.common.no'),
+            label: $t('kpu.common.no'),
             value: false,
           },
         ]
       : [
           {
-            label: t('kpu.common.yes'),
+            label: $t('kpu.common.yes'),
             value: true,
           },
           {
-            label: t('kpu.common.no'),
+            label: $t('kpu.common.no'),
             value: false,
           },
         ]

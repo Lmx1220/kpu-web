@@ -1,11 +1,6 @@
 import type { useKpuForm } from '../form-ui'
-
 import type { SetupVxeTable } from './types'
-
-// import { usePreferences } from '@vben/preferences'
-
 import useSettingsStore from '@/store/modules/settings.ts'
-
 import { defineComponent, watch } from 'vue'
 import {
   VxeButton,

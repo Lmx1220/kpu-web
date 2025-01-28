@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useI18n } from '@/locales/utils'
+import { $t } from '@/locales'
 import useUserStore from '@/store/modules/user.ts'
 import { FormControl, FormField, FormItem, FormMessage } from '@/ui/shadcn/ui/form'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -19,7 +19,6 @@ const emits = defineEmits<{
   onRegister: [account?: string]
   onResetPassword: [account?: string]
 }>()
-const { t } = useI18n()
 const userStore = useUserStore()
 
 const title = import.meta.env.VITE_APP_TITLE
@@ -29,8 +28,8 @@ const loading = ref(false)
 const type = ref<'default' | 'qrcode'>('default')
 const form = useForm({
   validationSchema: toTypedSchema(z.object({
-    account: z.string().min(1, t('loginFrom.rules.account')),
-    password: z.string().min(1, t('loginFrom.rules.password')),
+    account: z.string().min(1, $t('loginFrom.rules.account')),
+    password: z.string().min(1, $t('loginFrom.rules.password')),
     remember: z.boolean(),
   })),
   initialValues: {
@@ -65,7 +64,7 @@ function testAccount(account: string) {
   <div class="min-h-500px w-full flex-col-stretch-center p-12">
     <div class="mb-6 space-y-2">
       <h3 class="text-4xl color-[var(--el-text-color-primary)] font-bold">
-        {{ t('loginFrom.intro') }}
+        {{ $t('loginFrom.intro') }}
       </h3>
       <p class="text-sm text-muted-foreground lg:text-base">
         {{ title }}
@@ -74,8 +73,8 @@ function testAccount(account: string) {
     <div class="mb-4">
       <KpuTabs
         v-model="type" :list="[
-          { label: t('loginFrom.accountLogin'), value: 'default' },
-          { label: t('loginFrom.qrcodeLogin'), value: 'qrcode' },
+          { label: $t('loginFrom.accountLogin'), value: 'default' },
+          { label: $t('loginFrom.qrcodeLogin'), value: 'qrcode' },
         ]" class="inline-flex"
       />
     </div>
@@ -84,7 +83,7 @@ function testAccount(account: string) {
         <FormField v-slot="{ componentField, errors }" name="account">
           <FormItem class="relative pb-6 space-y-0">
             <FormControl>
-              <KpuInput type="text" :placeholder="t('loginFrom.form.account')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+              <KpuInput type="text" :placeholder="$t('loginFrom.form.account')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
             </FormControl>
             <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
               <FormMessage class="absolute bottom-1 text-xs" />
@@ -94,7 +93,7 @@ function testAccount(account: string) {
         <FormField v-slot="{ componentField, errors }" name="password">
           <FormItem class="relative pb-6 space-y-0">
             <FormControl>
-              <KpuInput type="password" :placeholder="t('loginFrom.form.password')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
+              <KpuInput type="password" :placeholder="$t('loginFrom.form.password')" class="w-full" :class="errors.length && 'border-destructive'" v-bind="componentField" />
             </FormControl>
             <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
               <FormMessage class="absolute bottom-1 text-xs" />
@@ -107,28 +106,28 @@ function testAccount(account: string) {
               <FormItem>
                 <FormControl>
                   <KpuCheckbox v-bind="componentField">
-                    {{ t('loginFrom.remember') }}
+                    {{ $t('loginFrom.remember') }}
                   </KpuCheckbox>
                 </FormControl>
               </FormItem>
             </FormField>
           </div>
           <KpuButton variant="link" class="h-auto p-0" type="button" @click="emits('onResetPassword', form.values.account)">
-            {{ t('loginFrom.forget') }}
+            {{ $t('loginFrom.forget') }}
           </KpuButton>
         </div>
         <KpuButton :loading="loading" size="lg" class="w-full" type="submit">
-          {{ t('loginFrom.form.login') }}
+          {{ $t('loginFrom.form.login') }}
         </KpuButton>
         <div class="mt-4 flex-center gap-2 text-sm">
-          <span class="text-secondary-foreground op-50"> {{ t('loginFrom.noAccount') }}</span>
+          <span class="text-secondary-foreground op-50"> {{ $t('loginFrom.noAccount') }}</span>
           <KpuButton variant="link" class="h-auto p-0" type="button" @click="emits('onRegister', form.values.account)">
-            {{ t('loginFrom.register') }}
+            {{ $t('loginFrom.register') }}
           </KpuButton>
         </div>
       </form>
       <div class="mt-4 text-center -mb-4">
-        <KpuDivider>{{ t('loginFrom.testLogin') }}</KpuDivider>
+        <KpuDivider>{{ $t('loginFrom.testLogin') }}</KpuDivider>
         <div class="space-x-2">
           <KpuButton variant="default" size="sm" plain @click="testAccount('kpu')">
             kpu
@@ -143,7 +142,7 @@ function testAccount(account: string) {
       <div class="flex-col-center">
         <img src="https://s2.loli.net/2024/04/26/GsahtuIZ9XOg5jr.png" class="h-[250px] w-[250px]">
         <div class="mt-2 text-sm text-secondary-foreground op-50">
-          {{ t('loginFrom.wechatQrcode') }}
+          {{ $t('loginFrom.wechatQrcode') }}
         </div>
       </div>
     </div>

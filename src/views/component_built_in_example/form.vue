@@ -1,10 +1,6 @@
 <script lang="ts" setup>
 import { useKpuForm } from '@/adapter/form'
-
-// import { Page } from '@vben/common-ui';
-
 import { getOption } from '@/api/modules/standardModuleExample.ts'
-
 import { ElButton, ElCard, ElCheckbox, ElMessage } from 'element-plus'
 import { h } from 'vue'
 

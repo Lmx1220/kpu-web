@@ -31,9 +31,16 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const slots = defineSlots<{
-  header?: () => VNode
-  default?: () => VNode
-  footer?: () => VNode
+  'header'?: () => VNode
+  'default'?: () => VNode
+  'title'?: () => VNode
+  'titleTooltip'?: () => VNode
+  'description'?: () => VNode
+  'footer'?: () => VNode
+  'prepend-footer'?: () => VNode
+  'cancelText'?: () => VNode
+  'confirmText'?: () => VNode
+  'append-footer'?: () => VNode
 }>()
 
 const components = globalShareState.getComponents()

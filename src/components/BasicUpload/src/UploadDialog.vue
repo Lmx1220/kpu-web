@@ -5,9 +5,12 @@ import type { FileItem } from '@/components/BasicUpload/src/types'
 
 import type { UploadRawFile } from 'element-plus'
 import { UploadResultStatus } from '@/components/BasicUpload/src/types'
+import { $t } from '@/locales'
+import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 import { buildUUID } from '@/utils/uuid'
 import { ElMessage } from 'element-plus'
 import { isFunction } from 'lodash-es'
+import FileList from './FileList.vue'
 import { checkImgType, getBase64WithFile } from './helper'
 import { useUploadType } from './useUpload'
 
@@ -27,7 +30,6 @@ const emits = defineEmits<{
   // register: [DialogMethods, string]
   delete: [FileItem]
 }>()
-const { t } = useI18n()
 const isUploadingRef = ref(false)
 const fileListRef = ref<FileItem[]>([])
 const {
@@ -48,7 +50,7 @@ async function handleCloseFunc() {
     return true
   }
   else {
-    ElMessage.warning(t('component.upload.uploadWait'))
+    ElMessage.warning($t('component.upload.uploadWait'))
     return false
   }
 }
@@ -72,10 +74,10 @@ function handleOk() {
   const { maxNumber } = props
 
   if (fileListRef.value.length > maxNumber) {
-    return ElMessage.warning(t('component.upload.maxNumber', [maxNumber]))
+    return ElMessage.warning($t('component.upload.maxNumber', [maxNumber]))
   }
   if (isUploadingRef.value) {
-    return ElMessage.warning(t('component.upload.saveWarn'))
+    return ElMessage.warning($t('component.upload.saveWarn'))
   }
   const fileList: FileResultVO[] = []
 
@@ -90,7 +92,7 @@ function handleOk() {
   }
   // 存在一个上传成功的即可保存
   if (fileList.length <= 0) {
-    return ElMessage.warning(t('component.upload.saveError'))
+    return ElMessage.warning($t('component.upload.saveError'))
   }
   fileListRef.value = []
   modalApi.close()
@@ -104,7 +106,7 @@ async function uploadApiByItem(item: FileItem) {
   }
   try {
     item.status = UploadResultStatus.UPLOADING
-    const ret = await props.api?.(
+    const ret: any = await props.api?.(
       {
         data: {
           ...(props.uploadParams || {}),
@@ -138,7 +140,7 @@ async function uploadApiByItem(item: FileItem) {
 async function handleStartUpload() {
   const { maxNumber } = props
   if ((fileListRef.value.length + (props.previewFileList?.length || 0)) > maxNumber) {
-    return ElMessage.warning(t('component.upload.maxNumber', [maxNumber]))
+    return ElMessage.warning($t('component.upload.maxNumber', [maxNumber]))
   }
   try {
     isUploadingRef.value = true
@@ -168,10 +170,10 @@ const getUploadBtnText = computed(() => {
     item => item.status === UploadResultStatus.ERROR,
   )
   return isUploadingRef.value
-    ? t('component.upload.uploading')
+    ? $t('component.upload.uploading')
     : someError
-      ? t('component.upload.reUploadFailed')
-      : t('component.upload.startUpload')
+      ? $t('component.upload.reUploadFailed')
+      : $t('component.upload.startUpload')
 })
 
 const {
@@ -192,7 +194,7 @@ function beforeUpload(file: UploadRawFile) {
   const { maxSize } = props
   // 设置最大值，则判断
   if (maxSize && file.size / 1024 / 1024 >= maxSize) {
-    ElMessage.error(t('component.upload.maxSizeMultiple', [maxSize]))
+    ElMessage.error($t('component.upload.maxSizeMultiple', [maxSize]))
     return false
   }
 
@@ -232,8 +234,8 @@ function handleRemove(record: FileItem) {
 <template>
   <BaseDialog
     width="800px"
-    :title="t('component.upload.upload')"
-    :ok-text="t('component.upload.save')"
+    :title="$t('component.upload.upload')"
+    :ok-text="$t('component.upload.save')"
     v-bind="$attrs"
     :close-func="handleCloseFunc"
     :close-on-click-modal="false"
@@ -263,7 +265,7 @@ function handleRemove(record: FileItem) {
         class="upload-dialog-toolbar__btn"
       >
         <ElButton type="primary">
-          {{ t('component.upload.choose') }}
+          {{ $t('component.upload.choose') }}
         </ElButton>
       </ElUpload>
     </div>

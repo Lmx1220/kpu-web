@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { FieldNames, KeyType, TreeProps, TreeState } from './tree'
+import { $t } from '@/locales'
 import { isString } from '@/utils/is'
 
 import { ElTree } from 'element-plus'
@@ -29,7 +30,6 @@ const emits = defineEmits<{
   'select': [keys: KeyType[]]
   'check': [key: KeyType[], check: any]
 }>()
-const { t } = useI18n()
 const treeDataRef = ref<any[]>([])
 const state = reactive<TreeState>({
   checkStrictly: props.checkStrictly,
@@ -337,7 +337,7 @@ defineExpose({
         <span v-if="title" class="ml-5 mr-1">{{ title }}</span>
       </slot>
       <div class="cursor-pointe flex flex-1 items-center">
-        <ElInput v-if="search" v-model="filterText" class="ml-5 mr-1 w-full" :placeholder="t('common.searchText')">
+        <ElInput v-if="search" v-model="filterText" class="ml-5 mr-1 w-full" :placeholder="$t('common.searchText')">
           <template #append>
             <KpuIcon name="i-ep:search" />
           </template>
@@ -348,22 +348,22 @@ defineExpose({
             <template #dropdown>
               <ElDropdownMenu>
                 <ElDropdownItem v-if="toolbarStrictly" command="checkAll">
-                  {{ t('component.tree.selectAll') }}
+                  {{ $t('component.tree.selectAll') }}
                 </ElDropdownItem>
                 <ElDropdownItem v-if="toolbarStrictly" command="uncheckAll">
-                  {{ t('component.tree.unSelectAll') }}
+                  {{ $t('component.tree.unSelectAll') }}
                 </ElDropdownItem>
                 <ElDropdownItem command="expand" :divided="checkable">
-                  {{ t('component.tree.expandAll') }}
+                  {{ $t('component.tree.expandAll') }}
                 </ElDropdownItem>
                 <ElDropdownItem command="fold">
-                  {{ t('component.tree.unExpandAll') }}
+                  {{ $t('component.tree.unExpandAll') }}
                 </ElDropdownItem>
                 <ElDropdownItem v-if="checkable" command="checkStrictly" divided>
-                  {{ t('component.tree.checkStrictly') }}
+                  {{ $t('component.tree.checkStrictly') }}
                 </ElDropdownItem>
                 <ElDropdownItem v-if="checkable" command="checkUnStrictly">
-                  {{ t('component.tree.checkUnStrictly') }}
+                  {{ $t('component.tree.checkUnStrictly') }}
                 </ElDropdownItem>
               </ElDropdownMenu>
             </template>

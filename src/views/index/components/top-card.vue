@@ -9,13 +9,13 @@ withDefaults(
     icon?: string
     percentage?: string
     countConfig?: {
-      startValue?: number
-      endValue?: number
-      decimals?: number
-      prefix?: string
-      suffix?: string
-      separator?: string
-      duration?: number
+      startValue: number
+      endValue: number
+      decimals: number
+      prefix: string
+      suffix: string
+      separator: string
+      duration: number
     }
   }>(),
   {

@@ -1,4 +1,4 @@
-import type { AnyFunction } from './utils'
+import type { AnyFunction } from '#/index'
 import { tryOnMounted, tryOnUnmounted, useDebounceFn } from '@vueuse/core'
 
 interface UseWindowSizeOptions {

@@ -79,6 +79,8 @@ const emit = defineEmits<{
   optionsChange: [OptionsItem[]]
 }>()
 
+defineSlots<Record<string, () => VNode>>()
+
 const modelValue = defineModel({ default: '' })
 
 const attrs = useAttrs()
@@ -198,7 +200,7 @@ function emitChange() {
     v-bind="bindProps"
     :placeholder="$attrs.placeholder"
   >
-    <template v-for="item in Object.keys($slots)" #[item]="data">
+    <template v-for="(item) in Object.keys($slots)" #[item]="data">
       <slot :name="item" v-bind="data || {}" />
     </template>
     <template v-if="loadingSlot && loading" #[loadingSlot]>

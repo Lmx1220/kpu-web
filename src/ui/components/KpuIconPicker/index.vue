@@ -17,6 +17,13 @@ icons.splice(2, 0, {
   info: {
     name: 'svg',
     total: svgs.length,
+    author: { name: '', url: '' },
+    license: { title: '', spdx: '', url: '' },
+    samples: [],
+    height: 0,
+    displayHeight: 0,
+    category: '',
+    palette: false,
   },
   icons: svgs,
 })

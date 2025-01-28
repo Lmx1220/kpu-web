@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { KpuFormProps } from './types'
+import type { ExtendedFormApi, KpuFormProps } from './types'
 import { useForwardPropsEmits } from 'radix-vue'
 import { ref, watchEffect } from 'vue'
 
@@ -13,7 +13,9 @@ import { Form } from './form-render'
 import { provideFormProps, useFormInitial } from './use-form-context'
 
 // 通过 extends 会导致热更新卡死
-interface Props extends KpuFormProps {}
+interface Props extends KpuFormProps {
+  formApi: ExtendedFormApi
+}
 const props = withDefaults(defineProps<Props>(), {
   actionWrapperClass: '',
   collapsed: false,

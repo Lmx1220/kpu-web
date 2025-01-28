@@ -1,5 +1,5 @@
 import type { ClassType, MaybeComputedRef } from '#/index'
-import type { Props as KpuButtonProps } from '@/ui/components/KButton/button/Button.vue'
+import type { Props as KpuButtonProps } from '@/ui/components/KpuButton/button/Button.vue'
 
 import type { FieldOptions, FormContext, GenericObject } from 'vee-validate'
 
@@ -13,11 +13,11 @@ export type FormLayout = 'horizontal' | 'vertical'
 export type BaseFormComponentType =
   | 'DefaultButton'
   | 'PrimaryButton'
-  | 'KCheckbox'
-  | 'KInput'
-  // | 'KInputPassword'
-  | 'KPinInput'
-  | 'KSelect'
+  | 'KpuCheckbox'
+  | 'KpuInput'
+  // | 'KpuInputPassword'
+  | 'KpuPinInput'
+  | 'KpuSelect'
   | (Record<never, never> & string)
 
 type Breakpoints = '2xl:' | '3xl:' | '' | 'lg:' | 'md:' | 'sm:' | 'xl:'

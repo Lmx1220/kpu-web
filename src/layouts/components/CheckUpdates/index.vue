@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { IntervalHandle } from '#/index'
-import { useI18n } from '@/locales/utils'
+import { $t } from '@/locales'
 import useSettingsStore from '@/store/modules/settings.ts'
 import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 
@@ -16,7 +16,6 @@ const props = withDefaults(defineProps<Props>(), {
   // checkUpdatesInterval: 1,
   checkUpdateUrl: import.meta.env.BASE_URL || '/',
 })
-const { t } = useI18n()
 const settingsStore = useSettingsStore()
 let isCheckingUpdates = false
 const currentVersionTag = ref('')
@@ -127,15 +126,15 @@ onUnmounted(() => {
 
 <template>
   <UpdateNoticeModal
-    :cancel-text="t('common.cancel')"
-    :confirm-text="t('common.refresh')"
+    :cancel-text="$t('common.cancel')"
+    :confirm-text="$t('common.refresh')"
     :fullscreen-button="false"
-    :title="t('app.checkUpdatesTitle')"
+    :title="$t('app.checkUpdatesTitle')"
     centered
     content-class="px-8 min-h-10"
     footer-class="border-none mb-3 mr-3"
     header-class="border-none"
   >
-    {{ t('app.checkUpdatesDescription') }}
+    {{ $t('app.checkUpdatesDescription') }}
   </UpdateNoticeModal>
 </template>
