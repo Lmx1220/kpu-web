@@ -4,7 +4,7 @@ defineOptions({
 })
 const v = ref('rgba(240,2,20,0.098)')
 const _ = ref('#fff')
-const h = ref('rgb(var(--primary) / 10%)')
+const background = ref('rgb(var(--primary) / 10%)')
 const b = ref('#fff')
 const f = {
   background: `linear-gradient(to right,${v.value}, ${_.value}) no-repeat`,
@@ -12,7 +12,7 @@ const f = {
   height: '135.19px',
 }
 const y = {
-  background: `linear-gradient(to right,${h.value}, ${b.value}) no-repeat`,
+  background: `linear-gradient(to right,${background.value}, ${b.value}) no-repeat`,
   border: 0,
   height: '135.19px',
 }

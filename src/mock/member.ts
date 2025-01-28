@@ -1,5 +1,5 @@
 // import { defineFakeRoute } from 'vite-plugin-fake-server/client'
-import { faker } from '@faker-js/faker'
+// import { faker } from '@faker-js/faker'
 import Mock from 'mockjs'
 import { defineFakeRoute } from 'vite-plugin-fake-server/client'
 
@@ -14,8 +14,8 @@ export default defineFakeRoute([
         data: {
           username: option.body.username,
           token: '@guid',
-          // avatar: `@image("600x600/000/fff&text=${option.body.username}")`,
-          avater: faker.image.avatar(),
+          avatar: `@image("600x600/000/fff&text=${option.body.username}")`,
+          // avater: faker.image.avatar(),
           expiration: `${Math.ceil(new Date().getTime()) + (24 * 60 * 60 * 1000)}`,
         },
       })
