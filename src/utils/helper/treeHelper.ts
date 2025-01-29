@@ -1,4 +1,4 @@
-import type { AnyFunction } from '@/types'
+import type { AnyFunction } from '#/index'
 
 interface TreeHelperConfig {
   id: string
@@ -231,7 +231,7 @@ export function forEach<T = any>(
  * @description: 提取树指定结构
  */
 export function treeMap<T = any>(treeData: T[], opt: { children?: string, conversion: AnyFunction }): {
-  [p: string]: any
+  [key: string]: any
 }[] {
   return treeData.map(item => treeMapEach(item, opt))
 }

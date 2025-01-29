@@ -109,8 +109,8 @@ withDefaults(
       width: 18px;
       height: 18px;
       margin: 0 3px 0 2px;
-      color: var(--el-color-success);
       vertical-align: -3px !important;
+      color: var(--el-color-success);
       background: rgb(19 206 102 / 20%);
       border-radius: 50%;
       transform: scale(0.8);

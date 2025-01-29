@@ -180,8 +180,8 @@ header {
             border-bottom: 5px solid var(--g-header-bg);
             border-left: 5px solid transparent;
             opacity: 0;
-            transition: all 0.3s;
             transform: translate(-50%);
+            transition: all 0.3s;
           }
 
           .item-container.active::before,
@@ -205,8 +205,8 @@ header {
             border-radius: 2px;
             box-shadow: 0 0 0 1px var(--g-header-bg);
             opacity: 0;
-            transition: all 0.3s;
             transform: translate(-50%);
+            transition: all 0.3s;
           }
 
           .item-container.active::before,
@@ -230,8 +230,8 @@ header {
             border-radius: 50%;
             box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
             opacity: 0;
-            transition: all 0.3s;
             transform: translate(-50%);
+            transition: all 0.3s;
           }
 
           .item-container.active::before,

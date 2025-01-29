@@ -2,6 +2,7 @@
 import { $t } from '@/locales'
 import useUserStore from '@/store/modules/user.ts'
 import { FormControl, FormField, FormItem, FormMessage } from '@/ui/shadcn/ui/form'
+import storage from '@/utils/storage.ts'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import * as z from 'zod'
@@ -33,19 +34,19 @@ const form = useForm({
     remember: z.boolean(),
   })),
   initialValues: {
-    account: props.account ?? localStorage.getItem('login_account') ?? '',
+    account: props.account ?? storage.local.get('login_account') ?? '',
     password: '',
-    remember: !!localStorage.getItem('login_account'),
+    remember: !!storage.local.get('login_account'),
   },
 })
 const onSubmit = form.handleSubmit((values) => {
   loading.value = true
   userStore.login({ username: values.account, password: values.password }).then(() => {
     if (values.remember) {
-      localStorage.setItem('login_account', values.account)
+      storage.local.set('login_account', values.account)
     }
     else {
-      localStorage.removeItem('login_account')
+      storage.local.remove('login_account')
     }
     emits('onLogin', values.account)
   }).finally(() => {

@@ -80,8 +80,8 @@ watch(scrollTop, (val, oldVal) => {
     background-image: linear-gradient(0deg, transparent, var(--g-main-area-bg));
     box-shadow: 0 -1px hsl(var(--border));
     opacity: 0;
-    transition: opacity 0.3s;
     transform: translateY(100%);
+    transition: opacity 0.3s;
   }
 
   &.topbar-fixed,

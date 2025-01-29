@@ -221,9 +221,9 @@ onUnmounted(() => {
       color: rgb(0 0 0 / 65%);
       text-align: center;
       background: rgb(255 255 255);
-      backdrop-filter: blur(10px);
       border: 1px solid rgb(255 255 255);
       border-radius: 15px;
+      backdrop-filter: blur(10px);
 
       > span {
         font-size: 12px;

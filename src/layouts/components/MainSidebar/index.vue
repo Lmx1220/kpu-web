@@ -136,8 +136,8 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
           border-block: 5px solid transparent;
           border-inline-end: 5px solid var(--g-main-sidebar-bg);
           opacity: 0;
-          transition: all 0.3s;
           transform: translateY(-50%);
+          transition: all 0.3s;
         }
 
         .item-container.active::before,
@@ -161,8 +161,8 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
           border-radius: 2px;
           box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
           opacity: 0;
-          transition: all 0.3s;
           transform: translateY(-50%);
+          transition: all 0.3s;
         }
 
         .item-container.active::before,
@@ -186,8 +186,8 @@ function iconName(isActive: boolean, icon?: string, activeIcon?: string) {
           border-radius: 50%;
           box-shadow: 0 0 0 1px var(--g-main-sidebar-bg);
           opacity: 0;
-          transition: all 0.3s;
           transform: translateY(-50%);
+          transition: all 0.3s;
         }
 
         .item-container.active::before,

@@ -1,7 +1,7 @@
 import type { Settings } from '#/global'
 import type { RecursiveRequired } from '#/index'
 import settingsDefault from '@/settings.default'
-import { merge } from '@/utils/object'
+import { mergeWithArrayOverride } from '@/utils'
 import { cloneDeep } from 'es-toolkit'
 
 const globalSettings: Settings.all = {
@@ -59,4 +59,4 @@ const globalSettings: Settings.all = {
     website: 'https://kpu-admin.kpu.me',
   },
 }
-export default merge(globalSettings, cloneDeep(settingsDefault)) as RecursiveRequired<Settings.all>
+export default mergeWithArrayOverride(globalSettings, cloneDeep(settingsDefault)) as RecursiveRequired<Settings.all>

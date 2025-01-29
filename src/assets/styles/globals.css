@@ -93,10 +93,10 @@
 }
 
 * {
+  outline: unset;
   scrollbar-color: hsl(var(--scrollbar-color)) transparent;
   scrollbar-width: thin;
   border-color: hsl(var(--border));
-  outline: unset;
 }
 
 html,

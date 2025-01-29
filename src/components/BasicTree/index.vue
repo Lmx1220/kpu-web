@@ -423,8 +423,8 @@ defineExpose({
   }
 
   .tree__actions {
-    margin-right: 4px;
     visibility: hidden;
+    margin-right: 4px;
   }
 }
 </style>

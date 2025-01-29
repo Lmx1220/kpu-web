@@ -708,8 +708,8 @@ watch(
   line-height: 1.5715;
   color: #fff;
   text-align: center;
-  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
   white-space: nowrap;
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
   touch-action: manipulation;
   cursor: pointer;
   user-select: none;
@@ -732,8 +732,8 @@ watch(
   line-height: 1.5715;
   color: #fff;
   text-align: center;
-  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
   white-space: nowrap;
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
   touch-action: manipulation;
   cursor: pointer;
   user-select: none;

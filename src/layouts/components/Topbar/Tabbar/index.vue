@@ -114,7 +114,7 @@ watch(() => route, (val) => {
 })
 
 function tabbarScrollTip() {
-  if (tabContainerRef.value?.$el.clientWidth > (tabsRef.value?.ref?.$el.clientWidth ?? 0) && localStorage.getItem('tabbarScrollTip') === undefined) {
+  if (tabContainerRef.value?.$el.clientWidth > (tabsRef.value?.ref?.$el.clientWidth ?? 0) && storage.local.get('tabbarScrollTip') === null) {
     storage.local.set('tabbarScrollTip', '')
     const tips = toast.info('温馨提示', {
       description: '标签栏数量超过展示区域范围，可以将鼠标移到标签栏上，通过鼠标滚轮滑动浏览',

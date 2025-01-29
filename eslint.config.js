@@ -7,6 +7,8 @@ export default antfu(
       'public',
       'dist*',
       'src/ui/shadcn/ui',
+      'src/ui/form-ui',
+      'src/ui/vxe-table',
     ],
   },
   {

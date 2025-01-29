@@ -33,8 +33,8 @@ const icon = icons.filter(item => item.prefix === 'ep')[0]
   > i {
     margin: 0 20px;
     font-size: 1.5em;
-    color: #606266;
     vertical-align: middle;
+    color: #606266;
   }
 
   button {

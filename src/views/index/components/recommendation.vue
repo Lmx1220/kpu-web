@@ -113,8 +113,8 @@ const apps = ref([{
     display: inline-block;
     padding-top: 10px;
     margin-left: 10px;
-    color: #0f0f0f;
     vertical-align: -10px;
+    color: #0f0f0f;
 
     .icon-panel-tips {
       margin-top: 5px;
