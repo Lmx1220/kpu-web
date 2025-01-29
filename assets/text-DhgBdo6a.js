@@ -1,9 +1,0 @@
-
-/**
- * 由 admin 提供技术支持
- * Powered by admin
- * 代码仓库
- * Github https://github.com/Lmx1220/kpu-web
- */
-    
-import{_ as u}from"./index.vue_vue_type_script_setup_true_lang-ia1rdtXp.js";import{_}from"./index.vue_vue_type_script_setup_true_lang-CJRusrx0.js";import{d as m,cg as p,aH as d,o as f,a as x,h as n,w as o,b as g,M as B,e as C,L as s}from"./bootstrap-BssOdyNs.js";import"./index-CI4shd_A.js";const N=m({__name:"text",setup(k){const e=p();function r(){e.setText(e.text==="热门"?"促销":"热门")}function i(){e.setText("")}return(T,t)=>{const l=_,a=d("ElButton"),c=u;return f(),x("div",null,[n(l,{title:"文字标记",content:"搭配 Pinia 可实现动态设置。请控制文字展示长度，避免导航标记覆盖导航标题"}),n(c,null,{default:o(()=>[g("div",null," 当前 badge 值：'"+B(C(e).text)+"' ",1),n(a,{onClick:r},{default:o(()=>t[0]||(t[0]=[s(" 切换 ")])),_:1}),n(a,{onClick:i},{default:o(()=>t[1]||(t[1]=[s(" 清空 ")])),_:1})]),_:1})])}}});export{N as default};
