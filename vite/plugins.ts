@@ -51,9 +51,7 @@ export default function createVitePlugins(mode: string, isBuild = false) {
       dts: './src/types/auto-imports.d.ts',
       dirs: [
         './src/utils/composables/**.ts',
-        './src/utils/composables/use-simple-locale/index.ts',
       ],
-      exclude: ['**/use-simple-locale/**'],
     }),
 
     // https://github.com/unplugin/unplugin-vue-components

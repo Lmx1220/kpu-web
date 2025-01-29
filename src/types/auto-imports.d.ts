@@ -83,7 +83,7 @@ declare global {
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
   const useScrollLock: typeof import('../utils/composables/use-scroll-lock')['useScrollLock']
-  const useSimpleLocale: typeof import('../utils/composables/use-simple-locale/index')['useSimpleLocale']
+  const useSimpleLocale: typeof import('../utils/composables/use-simple-locale')['useSimpleLocale']
   const useSlots: typeof import('vue')['useSlots']
   const useTabbar: typeof import('../utils/composables/useTabbar')['default']
   const useTemplateRef: typeof import('vue')['useTemplateRef']

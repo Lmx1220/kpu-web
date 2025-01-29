@@ -1,6 +1,4 @@
-// import { defineFakeRoute } from 'vite-plugin-fake-server/client'
-// import { faker } from '@faker-js/faker'
-import Mock from 'mockjs'
+import { faker } from '@faker-js/faker'
 import { defineFakeRoute } from 'vite-plugin-fake-server/client'
 
 export default defineFakeRoute([
@@ -8,31 +6,31 @@ export default defineFakeRoute([
     url: '/mock/anyTenant/login',
     method: 'post',
     response: (option: any) => {
-      return Mock.mock({
+      return {
         msg: '',
         code: 0,
         data: {
           username: option.body.username,
-          token: '@guid',
-          avatar: `@image("600x600/000/fff&text=${option.body.username}")`,
-          // avater: faker.image.avatar(),
+          token: faker.string.uuid(),
+          // avatar: `@image("600x600/000/fff&text=${option.body.username}")`,
+          avatar: faker.image.avatar(),
           expiration: `${Math.ceil(new Date().getTime()) + (24 * 60 * 60 * 1000)}`,
         },
-      })
+      }
     },
   },
   {
     url: '/mock/auth/refresh',
     method: 'post',
     response: (option: any) => {
-      return Mock.mock({
+      return {
         msg: '',
         code: 0,
         data: {
           withCredentials: option.body.withCredentials,
-          token: '@guid',
+          token: faker.string.uuid(),
         },
-      })
+      }
     },
   },
   {
