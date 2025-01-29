@@ -1,9 +1,0 @@
-
-/**
- * 由 admin 提供技术支持
- * Powered by admin
- * 代码仓库
- * Github https://github.com/Lmx1220/kpu-web
- */
-    
-import{d as p,c as f,x as b,o as r,f as d,w as c,i as h,e as s,bk as g,n as k,B as m,t as _,A as v,bl as w,a3 as y,a4 as B,h as I,m as C}from"./bootstrap-CFLGDgEx.js";const x=p({__name:"Switch",props:{defaultChecked:{type:Boolean},checked:{type:Boolean},disabled:{type:Boolean},required:{type:Boolean},name:{},id:{},value:{},asChild:{type:Boolean},as:{},class:{}},emits:["update:checked"],setup(n,{emit:a}){const e=n,o=a,t=f(()=>{const{class:i,...u}=e;return u}),l=b(t,o);return(i,u)=>(r(),d(s(w),v(s(l),{class:s(m)("peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",e.class)}),{default:c(()=>[h(s(g),{class:k(s(m)("pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 rtl:data-[state=checked]:-translate-x-5"))},{default:c(()=>[_(i.$slots,"thumb")]),_:3},8,["class"])]),_:3},16,["class"]))}}),M=p({name:"KSwitch",__name:"index",props:y({disabled:{type:Boolean},onIcon:{},offIcon:{}},{modelValue:{type:Boolean},modelModifiers:{}}),emits:["update:modelValue"],setup(n){const a=B(n,"modelValue");return(e,o)=>{const t=C;return r(),d(s(x),{checked:a.value,"onUpdate:checked":o[0]||(o[0]=l=>a.value=l),disabled:e.disabled},{thumb:c(()=>[a.value&&e.onIcon||!a.value&&e.offIcon?(r(),d(t,{key:0,name:a.value?e.onIcon:e.offIcon,class:"h-3 w-3 text-foreground"},null,8,["name"])):I("",!0)]),_:1},8,["checked","disabled"])}}});export{M as _};
