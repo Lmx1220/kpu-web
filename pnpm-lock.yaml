@@ -219,8 +219,8 @@ importers:
         specifier: ^4.3.67
         version: 4.3.73(vue@3.5.13(typescript@5.7.3))
       vxe-table:
-        specifier: ^4.10.5
-        version: 4.10.5(vue@3.5.13(typescript@5.7.3))
+        specifier: 4.10.0
+        version: 4.10.0(vue@3.5.13(typescript@5.7.3))
       watermark-js-plus:
         specifier: ^1.5.7
         version: 1.5.7
@@ -7205,8 +7205,8 @@ packages:
   vxe-pc-ui@4.3.73:
     resolution: {integrity: sha512-k5oSoiIhJsE9pcZdtT1kS43okM6526UG/bbEm5u/DyPnwm07/QqjnrMMfp/WKw5NRGb3k3Vc8nCCmXVXNnjbFQ==}
 
-  vxe-table@4.10.5:
-    resolution: {integrity: sha512-X04AwhfZLaBy1gSiCsVd0EPurIaFwOOna9XzojF0eUr2c6rYF8u9IrhP+vSBmOj+yDiAENf8QjXFyLgNU3NTTg==}
+  vxe-table@4.10.0:
+    resolution: {integrity: sha512-HysVARZXZGgXd5tR9vpahZcLB4RuB90ZoZNFKmKc670bGD3bWFFBdBpeQshXziVSkuPi65MqfE7Wq0b2enRcYg==}
 
   w3c-keyname@2.2.8:
     resolution: {integrity: sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ==}
@@ -15437,7 +15437,7 @@ snapshots:
     transitivePeerDependencies:
       - vue
 
-  vxe-table@4.10.5(vue@3.5.13(typescript@5.7.3)):
+  vxe-table@4.10.0(vue@3.5.13(typescript@5.7.3)):
     dependencies:
       vxe-pc-ui: 4.3.73(vue@3.5.13(typescript@5.7.3))
     transitivePeerDependencies:
