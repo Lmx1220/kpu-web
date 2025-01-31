@@ -42,7 +42,7 @@ function submitForm() {
 
 <template>
   <div>
-    <KpuPageHeader title="省市区街道联动" content="PcasCascader" />
+    <KpuPageHeader title="省市区街道联动" description="PcasCascader" />
     <KpuPageMain title="多级联动">
       <p>省份/城市联动</p>
       <PcasCascader v-model="pcas1" type="pc" />

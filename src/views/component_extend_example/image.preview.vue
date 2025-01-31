@@ -9,34 +9,34 @@ const tableData = [
     date: '2016-05-03',
     name: 'Tom',
     address: 'No. 189, Grove St, Los Angeles',
-    src: 'https://kpu-web.github.io/logo.png',
+    src: 'https://lmx1220.github.io/kpu-web/assets/logo-BGVN89r2.png',
   },
   {
     date: '2016-05-02',
     name: 'Tom',
     address: 'No. 189, Grove St, Los Angeles',
-    src: 'https://kpu-web.github.io/logo.png',
+    src: 'https://lmx1220.github.io/kpu-web/assets/logo-BGVN89r2.png',
   },
   {
     date: '2016-05-04',
     name: 'Tom',
     address: 'No. 189, Grove St, Los Angeles',
-    src: 'https://kpu-web.github.io/logo.png',
+    src: 'https://lmx1220.github.io/kpu-web/assets/logo-BGVN89r2.png',
   },
   {
     date: '2016-05-01',
     name: 'Tom',
     address: 'No. 189, Grove St, Los Angeles',
-    src: 'https://kpu-web.github.io/logo.png',
+    src: 'https://lmx1220.github.io/kpu-web/assets/logo-BGVN89r2.png',
   },
 ]
 </script>
 
 <template>
   <div>
-    <KpuPageHeader title="图片预览" content="ImagePreview" />
+    <KpuPageHeader title="图片预览" description="ImagePreview" />
     <KpuPageMain>
-      <ImagePreview src="https://kpu-web.github.io/logo.png" :width="200" />
+      <ImagePreview src="https://lmx1220.github.io/kpu-web/assets/logo-BGVN89r2.png" :width="200" />
     </KpuPageMain>
     <KpuPageMain title="图片加载失败时">
       <ImagePreview src="http://www.baidu.com" width="100px" height="100px" />
