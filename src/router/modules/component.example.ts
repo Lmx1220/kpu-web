@@ -359,7 +359,7 @@ const routes: RouteRecordRaw = {
       {
         path: 'upload',
         name: 'componentExampleExtendUpload',
-        component: () => import('@/views/component_extend_example/upload.demo.vue'),
+        component: () => import('@/views/component_extend_example/upload.vue'),
         meta: {
           title: 'route.component.extend.upload',
         },
@@ -367,7 +367,7 @@ const routes: RouteRecordRaw = {
       {
         path: 'imagepreview',
         name: 'componentExampleExtendImagePreview',
-        component: () => import('@/views/component_extend_example/image.preview.demo.vue'),
+        component: () => import('@/views/component_extend_example/image.preview.vue'),
         meta: {
           title: 'route.component.extend.imagepreview',
         },
@@ -375,7 +375,7 @@ const routes: RouteRecordRaw = {
       {
         path: 'pcas',
         name: 'componentExampleExtendPcas',
-        component: () => import('@/views/component_extend_example/pcas.demo.vue'),
+        component: () => import('@/views/component_extend_example/pcas.vue'),
         meta: {
           title: 'route.component.extend.pcas',
         },

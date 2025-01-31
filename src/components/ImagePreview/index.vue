@@ -28,7 +28,7 @@ const realHeight = computed(() => {
   <ElImage :src="src" fit="cover" :style="`width:${realWidth};height:${realHeight};`" :preview-src-list="[src]" preview-teleported>
     <template #error>
       <div class="image-slot">
-        <KpuIcon name="image-load-fail" />
+        <KpuIcon name="i-ph:image-broken-duotone" />
       </div>
     </template>
   </ElImage>

@@ -19,6 +19,7 @@ const props = withDefaults(
     placeholder?: string
     notip?: boolean
     ext?: string[]
+    httpRequest?: UploadProps['httpRequest']
   }>(),
   {
     name: 'file',
@@ -106,16 +107,16 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
       <ElImage v-if="index < max" :src="item" :style="`width:${width}px;height:${height}px;`" fit="cover" />
       <div class="mask">
         <div class="actions">
-          <span title="预览" @click="preview(index)">
+          <span @click="preview(index)">
             <KpuIcon name="i-ep:zoom-in" class="icon" />
           </span>
-          <span title="移除" @click="remove(index)">
+          <span @click="remove(index)">
             <KpuIcon name="i-ep:delete" class="icon" />
           </span>
-          <span v-show="url.length > 1" title="左移" :class="{ disabled: index === 0 }" @click="move(index, 'left')">
+          <span v-show="url.length > 1" :class="{ disabled: index === 0 }" @click="move(index, 'left')">
             <KpuIcon name="i-ep:back" class="icon" />
           </span>
-          <span v-show="url.length > 1" title="右移" :class="{ disabled: index === url.length - 1 }" @click="move(index, 'right')">
+          <span v-show="url.length > 1" :class="{ disabled: index === url.length - 1 }" @click="move(index, 'right')">
             <KpuIcon name="i-ep:right" class="icon" />
           </span>
         </div>
@@ -131,6 +132,7 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
       :before-upload="beforeUpload"
       :on-progress="onProgress"
       :on-success="onSuccess"
+      :http-request="httpRequest"
       drag
       class="images-upload"
     >
@@ -163,7 +165,7 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
 .images {
   position: relative;
   display: inline-block;
-  margin-right: 10px;
+  margin-inline-end: 10px;
   overflow: hidden;
   border: 1px dashed var(--el-border-color);
   border-radius: 6px;
@@ -178,6 +180,7 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
     transition: opacity 0.3s;
 
     .actions {
+      position: absolute;
       top: 50%;
       left: 50%;
       display: flex;
@@ -259,6 +262,7 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
       }
 
       .el-progress {
+        position: absolute;
         top: 50%;
         left: 50%;
         z-index: 1;
