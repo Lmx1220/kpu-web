@@ -130,36 +130,6 @@ textarea {
   z-index: 3000;
 }
 
-/* 右侧内容区针对fixed元素，有横向铺满的需求，可在fixed元素上设置 [data-fixed-calc-width] */
-[data-fixed-calc-width] {
-  position: fixed;
-  inset-inline: 50% 0;
-  width: calc(100% - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
-  transform: translate(-50%) translate(calc(var(--g-main-sidebar-actual-width) / 2)) translate(calc(var(--g-sub-sidebar-actual-width) / 2));
-}
-
-[data-app-width-mode="center"],
-[data-app-width-mode="center-max-width"] {
-  [data-fixed-calc-width] {
-    max-width: calc(var(--g-app-width) - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
-  }
-}
-
-[dir="rtl"] [data-fixed-calc-width] {
-  transform: translate(50%) translate(calc(var(--g-main-sidebar-actual-width) / 2 * -1)) translate(calc(var(--g-sub-sidebar-actual-width) / 2 * -1));
-}
-
-[data-mode="mobile"] {
-  [data-fixed-calc-width] {
-    width: 100% !important;
-    transform: translate(-50%) !important;
-
-    [dir="rtl"] & {
-      transform: translateX(50%) !important;
-    }
-  }
-}
-
 /* Overrides Floating Vue */
 .v-popper--theme-dropdown,
 .v-popper--theme-tooltip {

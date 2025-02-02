@@ -369,11 +369,11 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING
 }
 
 .app-setting {
-  --uno: bg-primary text-primary-foreground rounded-l-md;
+  --uno: bg-primary text-primary-foreground;
 
   position: fixed;
+  inset-inline-end: 0;
   top: calc(50% + 250px);
-  right: 0;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -384,13 +384,11 @@ const enableAppSetting = import.meta.env.VITE_APP_SETTING
   cursor: pointer;
 
   [dir="ltr"] & {
-    border-top-left-radius: calc(var(--radius) - 2px);
-    border-bottom-left-radius: calc(var(--radius) - 2px);
+    --uno: rounded-l-md;
   }
 
   [dir="rtl"] & {
-    border-top-right-radius: calc(var(--radius) - 2px);
-    border-bottom-right-radius: calc(var(--radius) - 2px);
+    --uno: rounded-r-md;
   }
 
   .icon {

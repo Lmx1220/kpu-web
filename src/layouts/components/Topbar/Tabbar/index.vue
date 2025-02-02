@@ -306,7 +306,7 @@ onUnmounted(() => {
     <component :is="useSlots('tabbar-start')" />
     <div class="tabbar-container">
       <KpuScrollArea
-        ref="tabsRef" :scrollbar="false" horizontal mask gradient-color="var(--g-tabbar-bg)" class="tabs"
+        ref="tabsRef" :scrollbar="false" mask horizontal gradient-color="var(--g-tabbar-bg)" class="tabs"
         :class="{
           'tabs-ontop': settingsStore.settings.topbar.switchTabbarAndToolbar,
           [`tabs-${settingsStore.settings.tabbar.style}`]: settingsStore.settings.tabbar.style !== '',
@@ -371,8 +371,8 @@ onUnmounted(() => {
           </div>
         </TransitionGroup>
       </KpuScrollArea>
-      <div class="absolute end-0 top-0 z-10 h-full w-50px flex-center">
-        <MoreAction v-if="isShowMoreAction" />
+      <div v-if="isShowMoreAction" class="absolute end-0 top-0 z-10 h-full w-50px flex-center">
+        <MoreAction />
       </div>
     </div>
     <component :is="useSlots('tabbar-end')" />

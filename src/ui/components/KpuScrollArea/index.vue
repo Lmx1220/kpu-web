@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
+import useSettingsStore from '@/store/modules/settings.ts'
 import { cn } from '@/utils'
 import { useElementSize, useScroll } from '@vueuse/core'
 import { ScrollArea, ScrollBar } from './scroll-area'
@@ -33,15 +34,26 @@ const arrivedState = ref<{
   top: boolean
   bottom: boolean
 }>()
+const settingsStore = useSettingsStore()
 const showMaskStart = computed(() => {
   if (props.horizontal) {
-    return !arrivedState.value?.left
+    if (settingsStore.settings.app.direction === 'ltr') {
+      return !arrivedState.value?.left
+    }
+    else {
+      return !arrivedState.value?.right
+    }
   }
   return !arrivedState.value?.top
 })
 const showMaskEnd = computed(() => {
   if (props.horizontal) {
-    return !arrivedState.value?.right
+    if (settingsStore.settings.app.direction === 'ltr') {
+      return !arrivedState.value?.right
+    }
+    else {
+      return !arrivedState.value?.left
+    }
   }
   return !arrivedState.value?.bottom
 })
@@ -108,7 +120,7 @@ defineExpose({
       '--mask-scroll-container-gradient-color': props.gradientColor,
     } : {}"
   >
-    <ScrollArea ref="scrollAreaRef" :class="cn('relative z-0 flex-1', props.contentClass)" :scrollbar="props.scrollbar" :on-wheel="onWheel">
+    <ScrollArea ref="scrollAreaRef" :class="cn('relative z-0 flex-1', props.contentClass)" :dir="settingsStore.settings.app.direction" :scrollbar="props.scrollbar" :on-wheel="onWheel">
       <slot />
       <ScrollBar v-if="props.horizontal" orientation="horizontal" :class="{ 'opacity-0 pointer-events-none': !props.scrollbar }" />
     </ScrollArea>
