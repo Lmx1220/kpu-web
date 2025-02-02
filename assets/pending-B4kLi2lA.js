@@ -1,9 +1,0 @@
-
-/**
- * 由 admin 提供技术支持
- * Powered by admin
- * 代码仓库
- * Github https://github.com/Lmx1220/kpu-web
- */
-    
-import{d as v,r as o,aJ as l,o as x,f as C,w as e,i as t,M as a,b as s,m as E,s as k}from"./bootstrap-CKvMAU9X.js";import"./index-DW2EscPo.js";const $=v({name:"Pending",__name:"pending",setup(w){const d=o("rgba(240,2,20,0.098)"),g=o("#fff"),m=o("rgb(var(--primary) / 10%)"),u=o("#fff"),f={background:`linear-gradient(to right,${d.value}, ${g.value}) no-repeat`,border:0,height:"135.19px"},_={background:`linear-gradient(to right,${m.value}, ${u.value}) no-repeat`,border:0,height:"135.19px"};return(B,n)=>{const b=E,y=l("el-badge"),i=l("el-tag"),r=l("ElCard"),p=l("ElCol"),c=l("ElRow");return x(),C(r,{class:"pending"},{header:e(()=>[t(b,{name:"ri:ball-pen-line"}),n[0]||(n[0]=a(" 待处理 ")),t(y,{type:"danger",class:"pending-count",value:6})]),default:e(()=>[t(c,{gutter:20},{default:e(()=>[t(p,{lg:12,md:12,sm:24,xl:12,xs:24},{default:e(()=>[t(r,{style:f,"body-style":{height:"100%"}},{default:e(()=>[n[2]||(n[2]=s("div",{class:"parting-line parting-line-danger"},null,-1)),n[3]||(n[3]=s("span",{class:"pending-title pending-title-danger"},[a(" 订单预警 "),s("span",null,"产品爆单，请及时处理")],-1)),t(i,{type:"primary",size:"small"},{default:e(()=>n[1]||(n[1]=[a(" 完成中 ")])),_:1}),n[4]||(n[4]=s("span",{class:"pending-tips"},"预警原因：用户投诉发货不及时",-1))]),_:1})]),_:1}),t(p,{lg:12,md:12,sm:24,xl:12,xs:24},{default:e(()=>[t(r,{style:_,"body-style":{height:"100%"}},{default:e(()=>[n[6]||(n[6]=s("div",{class:"parting-line parting-line-primary"},null,-1)),n[7]||(n[7]=s("span",{class:"pending-title pending-title-primary"},[a(" 售后工单 "),s("span",null,"用户张*给予五星好评")],-1)),t(i,{size:"small",type:"danger"},{default:e(()=>n[5]||(n[5]=[a(" 未完成 ")])),_:1}),n[8]||(n[8]=s("span",{class:"pending-tips"},"订单号：12345689654321",-1))]),_:1})]),_:1})]),_:1})]),_:1})}}}),z=k($,[["__scopeId","data-v-3e231bc0"]]);export{z as default};

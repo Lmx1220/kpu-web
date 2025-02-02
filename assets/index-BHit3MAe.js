@@ -1,9 +1,0 @@
-
-/**
- * 由 admin 提供技术支持
- * Powered by admin
- * 代码仓库
- * Github https://github.com/Lmx1220/kpu-web
- */
-    
-import{_ as c}from"./lodash-CEMzXMls.js";import d from"./active-users-bar-sv9ChW0m.js";import p from"./page-header-D9OF5x2j.js";import f from"./pending-B4kLi2lA.js";import u from"./recommendation-C8aZrTlI.js";import n from"./top-card-DRFlM2x-.js";import{d as _,r as g,a as x,i as e,w as t,aJ as r,o as b,e as k,M as w}from"./bootstrap-CKvMAU9X.js";import{b as l}from"./route-block-B_A1xBdJ.js";import"./index-BCfGw-_2.js";import"./index.vue_vue_type_script_setup_true_lang-CWF5QOtR.js";import"./index-DW2EscPo.js";const C={class:"m-4"},E=_({name:"Home",__name:"index",setup(y){const m=g({startValue:0,endValue:c.random(1e3,2e4),decimals:2,prefix:"￥",suffix:"",separator:",",duration:8e3});return(h,a)=>{const o=r("ElCol"),i=r("ElTag"),s=r("ElRow");return b(),x("div",C,[e(s,{gutter:20},{default:t(()=>[e(o,null,{default:t(()=>[e(p,{"mb-5":""})]),_:1}),e(o,{lg:6,md:12,sm:24,xl:6,xs:24},{default:t(()=>[e(n,{background:"blue","count-config":k(m),icon:"ri:money-cny-circle-line",percentage:"10%",title:"总销量"},null,8,["count-config"])]),_:1}),e(o,{lg:6,md:12,sm:24,xl:6,xs:24},{default:t(()=>[e(n,{background:"white",percentage:"30%",title:"活跃用户"},{tag:t(()=>[e(i,{type:"danger"},{default:t(()=>a[0]||(a[0]=[w(" 日 ")])),_:1})]),chart:t(()=>[e(d)]),_:1})]),_:1}),e(o,{lg:6,md:12,sm:24,xl:6,xs:24},{default:t(()=>[e(n,{background:"white",percentage:"44%",title:"总成交",icon:"ri:money-cny-box-line"})]),_:1}),e(o,{lg:6,md:12,sm:24,xl:6,xs:24},{default:t(()=>[e(n,{background:"white",percentage:"10%",title:"订单",icon:"ri:passport-line"})]),_:1}),e(o,{lg:12,md:24,sm:24,xl:12,xs:24},{default:t(()=>[e(f)]),_:1}),e(o,{lg:24,md:24,sm:24,xl:24,xs:24},{default:t(()=>[e(u)]),_:1})]),_:1})])}}});typeof l=="function"&&l(E);export{E as default};
