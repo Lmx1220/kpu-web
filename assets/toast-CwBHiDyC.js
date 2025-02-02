@@ -1,0 +1,9 @@
+
+/**
+ * 由 admin 提供技术支持
+ * Powered by admin
+ * 代码仓库
+ * Github https://github.com/Lmx1220/kpu-web
+ */
+    
+import{_ as f}from"./index.vue_vue_type_script_setup_true_lang-By6yHxyk.js";import{d as m,o as g,a as k,i as t,w as i,b as $,M as e,ay as d,p as v}from"./bootstrap-aYN_ym_b.js";import{_ as C}from"./index.vue_vue_type_script_setup_true_lang-3Yu1E9T9.js";import{b as p}from"./route-block-B_A1xBdJ.js";import"./index-CbsWY-kb.js";const K={class:"flex gap-4"},w=m({__name:"toast",setup(x){function n(l){if(l)if(l==="loading1")d.promise(()=>new Promise(o=>{setTimeout(o,2e3)}),{loading:"加载中",success:()=>"加载成功",error:()=>"加载失败",position:"top-right",duration:3e3});else if(l==="loading2"){const o=d.loading("加载中",{position:"top-right",duration:1/0});setTimeout(()=>{d.dismiss(o),d("Kpu-admin 杰出的管理系统框架",{description:"开箱即用，提供舒适开发体验",position:"top-right",duration:3e3})},2e3)}else d[l]("Kpu-admin 杰出的管理系统框架",{description:"开箱即用，提供舒适开发体验",position:"top-right",duration:3e3});else d("Kpu-admin 杰出的管理系统框架",{description:"开箱即用，提供舒适开发体验",position:"top-right",duration:3e3})}return(l,o)=>{const u=C,s=v,a=f;return g(),k("div",null,[t(u,{title:"",description:"KpuToast"}),t(a,null,{default:i(()=>[$("div",K,[t(s,{onClick:o[0]||(o[0]=r=>n())},{default:i(()=>o[7]||(o[7]=[e(" 默认 ")])),_:1}),t(s,{onClick:o[1]||(o[1]=r=>n("success"))},{default:i(()=>o[8]||(o[8]=[e(" 成功 ")])),_:1}),t(s,{onClick:o[2]||(o[2]=r=>n("error"))},{default:i(()=>o[9]||(o[9]=[e(" 错误 ")])),_:1}),t(s,{onClick:o[3]||(o[3]=r=>n("info"))},{default:i(()=>o[10]||(o[10]=[e(" 信息 ")])),_:1}),t(s,{onClick:o[4]||(o[4]=r=>n("warning"))},{default:i(()=>o[11]||(o[11]=[e(" 警告 ")])),_:1}),t(s,{onClick:o[5]||(o[5]=r=>n("loading1"))},{default:i(()=>o[12]||(o[12]=[e(" 加载中 1 ")])),_:1}),t(s,{onClick:o[6]||(o[6]=r=>n("loading2"))},{default:i(()=>o[13]||(o[13]=[e(" 加载中 2 ")])),_:1})])]),_:1})])}}});typeof p=="function"&&p(w);export{w as default};
