@@ -92,6 +92,7 @@ async function upload(option: any) {
     file: option.file,
     ...option.data,
   })
+  return response
 }
 </script>
 
