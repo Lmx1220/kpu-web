@@ -1,0 +1,20 @@
+{
+  "table": {
+    "title": "DefApplication list",
+    "resource": "resource"
+  },
+  "id": "ID",
+  "appKey": "appKey",
+  "appSecret": "appSecret",
+  "name": "name",
+  "version": "version",
+  "type": "type",
+  "introduce": "introduce",
+  "remark": "remark",
+  "url": "url",
+  "redirect": "Redirect",
+  "isVisible": "isVisible",
+  "isGeneral": "isGeneral",
+  "sortValue": "sortValue",
+  "logo": "logo"
+}

@@ -33,7 +33,7 @@ defineProps<{
   }
 
   [data-app-width-mode="center"] &,
- [data-app-width-mode="center-max-width"] & {
+  [data-app-width-mode="center-max-width"] & {
     max-width: calc(var(--g-app-width) - var(--g-main-sidebar-actual-width) - var(--g-sub-sidebar-actual-width));
     padding-right: initial;
     transform: translate(-50%) translate(calc(var(--g-main-sidebar-actual-width) / 2)) translate(calc(var(--g-sub-sidebar-actual-width) / 2)) translate(calc(var(--scrollbar-width, 0px) * -0.5));

@@ -1,23 +1,30 @@
 import type { AxiosRequestConfig } from 'axios'
+import type { ZodTypeAny } from 'zod'
 import type { ConstraintInfo, FieldValidatorDesc } from './model/formValidateModel'
 import { requestClient } from '@/api'
+import { isNull, isUndefined } from '@/utils'
 import dateUtil from '@/utils/dayjs'
-// import type { VxeTableDefines, VxeTablePropTypes } from 'vxe-table'
+import { split } from 'lodash-es'
 import { toast } from 'vue-sonner'
+import z from 'zod'
 
 export enum RuleType {
-  append,
+  and,
+  or,
   cover,
 }
 
 export interface FormSchemaExt {
   // Field name
-  field: string
-  rules?: any[]
+  fieldName: string
+  // field: string
+  rules: ZodTypeAny
   // 类型 append：追加  cover：覆盖
   type?: RuleType
+  ruleType?: RuleType
 }
 
+const numberType = ['BigDecimal', 'BigInteger', 'Integer', 'Long', 'Float', 'Double', 'Short']
 const ruleTypeMap = new Map()
 ruleTypeMap.set('String', 'string')
 ruleTypeMap.set('Integer', 'string')
@@ -28,384 +35,272 @@ ruleTypeMap.set('Date', 'date')
 ruleTypeMap.set('DateTime', 'date')
 ruleTypeMap.set('Time', 'date')
 
-/**
- * 时间与当前时间进行比较， 不存在的情况默认都是比较成功 返回true
- * @param dateStr 待比较日期
- * @param _timeType 时间类型
- * @param compareType 比较类型
- */
-function compareDate2Now(dateStr: string, _timeType = 'Date', compareType = 'Past') {
-  if (dateStr) {
-    const now = dateUtil()
-    if (compareType === 'Past') {
-      return now.isAfter(dateUtil(dateStr))
-    }
-    else if (compareType === 'PastOrPresent') {
-      return now.isSameOrAfter(dateUtil(dateStr))
-    }
-    else if (compareType === 'Future') {
-      return now.isBefore(dateUtil(dateStr))
-    }
-    else if (compareType === 'FutureOrPresent') {
-      return now.isSameOrBefore(dateUtil(dateStr))
+function findNotNullConstraint(constraints: ConstraintInfo[]) {
+  for (const constraint of constraints) {
+    if (constraint.type === 'NotNull') {
+      return constraint
     }
   }
-  return true
+  return null
+}
+
+function compareDate2Now(dateStr: string, _timeType = 'Date', compareType = 'Past') {
+  if (!dateStr) {
+    return true // 如果没有传入日期，默认返回 true
+  }
+
+  let now = dateUtil()
+  if (_timeType === 'Date') {
+    now = now.startOf('day')
+  }
+
+  if (compareType === 'Past') {
+    return now.isAfter(dateUtil(dateStr))
+  }
+  else if (compareType === 'PastOrPresent') {
+    return now.isSameOrAfter(dateUtil(dateStr))
+  }
+  else if (compareType === 'Future') {
+    return now.isBefore(dateUtil(dateStr))
+  }
+  else if (compareType === 'FutureOrPresent') {
+    return now.isSameOrBefore(dateUtil(dateStr))
+  }
 }
 
 function getMessage(attrs: Recordable) {
-  if (attrs && attrs.message) {
-    // eslint-disable-next-line regexp/no-unused-capturing-group
-    const reg = /(\{([a-z0-9]*)\})/gi
-    let result: any
-    let message = attrs.message
-    // eslint-disable-next-line no-cond-assign
-    while ((result = reg.exec(attrs.message)) !== null) {
-      const place = result[0]
-      const field = result[2]
-      message = message.replaceAll(place, attrs[field])
-    }
-    return message
+  if (!attrs || !attrs.message) {
+    return
   }
-  return '输入不符合规则'
+
+  const reg = /(\{([a-z0-9]*)\})/gi
+  let formattedMessage = attrs.message
+  let match = reg.exec(attrs.message)
+
+  while (match !== null) {
+    const placeholder = match[0]
+    const key = match[1]
+    const replacement = attrs[key] ?? ''
+    formattedMessage = formattedMessage.replaceAll(placeholder, replacement)
+
+    match = reg.exec(attrs.message) // 在循环底部重新匹配
+  }
+
+  return formattedMessage
 }
 
-/**
- * 解析字段的校验规则
- * @param fieldRules 字段约束
- * @param constraints 约束
- * @param fieldType 字段类型
- */
-function decodeRules(fieldRules: any[], constraints: ConstraintInfo[], fieldType: string) {
-  constraints
-  && constraints.forEach(({ type, attrs }) => {
-    switch (type) {
-      case 'RegEx':
-        fieldRules.push({
-          type: 'method',
-          validator(_rule: any, value: any) {
-            if (!value) {
-              return Promise.resolve()
-            }
-            const regexp = new RegExp(attrs.regexp)
-            if (!regexp.test(value)) {
-              return Promise.reject(attrs.message)
-            }
-            else {
-              return Promise.resolve()
-            }
-          },
-          message: attrs.message,
-        })
-        break
-      case 'Max':
-        fieldRules.push({
-          type: 'method',
-          validator(_rule: any, value: any) {
-            if (Number.parseInt(value) > attrs.value) {
-              return Promise.reject(attrs.message)
-            }
-            else {
-              return Promise.resolve()
-            }
-          },
-          message: getMessage(attrs),
-        })
-        break
-      case 'Min':
-        fieldRules.push({
-          type: 'method',
-          validator(_rule: any, value: any) {
-            if (Number.parseInt(value) < attrs.value) {
-              return Promise.reject(attrs.message)
-            }
-            else {
-              return Promise.resolve()
-            }
-          },
-          message: getMessage(attrs),
-        })
-        break
-      case 'DecimalMax':
-        fieldRules.push({
-          type: 'method',
-          validator(_rule: any, value: any) {
-            if (Number.parseFloat(value) > attrs.value) {
-              return Promise.reject(attrs.message)
-            }
-            else {
-              return Promise.resolve()
-            }
-          },
-          message: attrs.message,
-        })
-        break
-      case 'DecimalMin':
-        fieldRules.push({
-          type: 'method',
-          validator(_rule: any, value: any) {
-            if (Number.parseFloat(value) < attrs.value) {
-              return Promise.reject(attrs.message)
-            }
-            else {
-              return Promise.resolve()
-            }
-          },
-          message: attrs.message,
-        })
-        break
-      case 'Null':
-        fieldRules.push({
-          type: 'method',
-          validator(_rule: any, value: any) {
-            if (value.length !== 0) {
-              return Promise.reject(attrs.message)
-            }
-            else {
-              return Promise.resolve()
-            }
-          },
-          message: attrs.message,
-        })
-        break
-      case 'NotNull':
-        // eslint-disable-next-line no-case-declarations
-        const type = ruleTypeMap.get(fieldType) || 'string'
-        fieldRules.push({
-          required: true,
-          type,
-          whitespace: true,
-          message: attrs.message,
-        })
-        break
-      case 'Range':
-        fieldRules.push({
-          max: attrs.max,
-          min: attrs.min,
-          message: getMessage(attrs),
-        })
-        break
-      case 'AssertTrue':
-        fieldRules.push({
-          type: 'method',
-          validator(_rule: any, value: any) {
-            if (value === 'true' || value === true) {
-              return Promise.resolve()
-            }
-            else {
-              return Promise.reject(attrs.message)
-            }
-          },
-          message: attrs.message,
-        })
-        break
-      case 'AssertFalse':
-        fieldRules.push({
-          type: 'method',
-          validator(_rule: any, value: any) {
-            if (value === 'false' || value === false) {
-              return Promise.resolve()
-            }
-            else {
-              return Promise.reject(attrs.message)
-            }
-          },
-          message: attrs.message,
-        })
-        break
-      case 'Past':
-        fieldRules.push({
-          type: 'method',
-          validator(_rule: any, value: any) {
-            if (compareDate2Now(value, fieldType, 'Past')) {
-              return Promise.resolve()
-            }
-            else {
-              return Promise.reject(attrs.message)
-            }
-          },
-          message: attrs.message,
-        })
-        break
-      case 'PastOrPresent':
-        fieldRules.push({
-          type: 'method',
-          validator(_rule: any, value: any) {
-            if (compareDate2Now(value, fieldType, 'PastOrPresent')) {
-              return Promise.resolve()
-            }
-            else {
-              return Promise.reject(attrs.message)
-            }
-          },
-          message: attrs.message,
-        })
-        break
-      case 'Future':
-        fieldRules.push({
-          type: 'method',
-          validator(_rule: any, value: any) {
-            if (compareDate2Now(value, fieldType, 'Future')) {
-              return Promise.resolve()
-            }
-            else {
-              return Promise.reject(attrs.message)
-            }
-          },
-          message: attrs.message,
-        })
-        break
-      case 'FutureOrPresent':
-        fieldRules.push({
-          type: 'method',
-          validator(_rule: any, value: any) {
-            if (compareDate2Now(value, fieldType, 'FutureOrPresent')) {
-              return Promise.resolve()
-            }
-            else {
-              return Promise.reject(attrs.message)
-            }
-          },
-          message: attrs.message,
-        })
-        break
-      default:
-        break
-    }
-  })
-}
+const fieldTypeList: {
+  match: (type: string) => boolean
+  callback: (params: { rules: any, attrs: any, fieldType: string, type: string }) => ZodTypeAny
+}[] = [
+  {
+    match: type => type === 'Null',
+    callback: ({ rules, attrs }) => {
+      return rules.refine((val: any) => isNull(val) || isUndefined(val) || val.length === 0, {
+        message: getMessage(attrs),
+      })
+    },
+  },
+  {
+    match: type => type === 'Range',
+    callback: ({ rules, attrs }) => {
+      if (attrs.min) {
+        rules = rules.min(attrs.min, { message: getMessage(attrs) })
+      }
+      if (!isUndefined(attrs.max) && !isNull(attrs.max)) {
+        rules = rules.max(attrs.max, { message: getMessage(attrs) })
+      }
+      return rules
+    },
+  },
+  {
+    match: type => type === 'RegEx',
+    callback: ({ rules, attrs }) =>
+      attrs.regexp ? rules.regex(new RegExp(attrs.regexp), { message: getMessage(attrs) }) : rules,
+  },
+  {
+    match: type => ['DecimalMax', 'Max'].includes(type),
+    callback: ({ rules, attrs }) =>
+      rules.max(attrs.value, { message: getMessage(attrs) }),
+  },
+  {
+    match: type => ['DecimalMin', 'Min'].includes(type),
+    callback: ({ rules, attrs }) =>
+      rules.min(attrs.value, { message: getMessage(attrs) }),
+  },
+  {
+    match: type => ['AssertTrue'].includes(type),
+    callback: ({ rules, attrs }) =>
+      rules.refine((val: any) => val === 'true' || val === true, { message: getMessage(attrs) }),
+  },
+  {
+    match: type => ['AssertFalse'].includes(type),
+    callback: ({ rules, attrs }) =>
+      rules.refine((val: any) => val === 'false' || val === false, { message: getMessage(attrs) }),
+  },
+  {
+    match: type => ['Digits'].includes(type),
+    callback: ({ rules, attrs }) =>
+      rules.refine(
+        (val: any) => {
+          const num = Number(val)
+          if (/.*\..*/.test(num.toString())) {
+            const [integerPart, fractionPart] = split(num.toString(), '.')
+            const validInteger = integerPart && integerPart.length <= attrs.integer
+            const validFraction = fractionPart && fractionPart.length <= attrs.fraction
+            return validInteger && validFraction
+          }
+          return num.toString().length <= attrs.integer
+        },
+        { message: getMessage(attrs) },
+      ).nullish(),
+  },
+  {
+    match: type => ['Negative'].includes(type),
+    callback: ({ rules, attrs }) =>
+      rules.negative({ message: getMessage(attrs) }).nullish(),
+  },
+  {
+    match: type => ['NegativeOrZero'].includes(type),
+    callback: ({ rules, attrs }) =>
+      rules.nonpositive({ message: getMessage(attrs) }).nullish(),
+  },
+  {
+    match: type => ['Positive'].includes(type),
+    callback: ({ rules, attrs }) =>
+      rules.positive({ message: getMessage(attrs) }).nullish(),
+  },
+  {
+    match: type => ['PositiveOrZero'].includes(type),
+    callback: ({ rules, attrs }) =>
+      rules.nonnegative({ message: getMessage(attrs) }).nullish(),
+  },
+  {
+    match: type => ['Future', 'FutureOrPresent', 'Past', 'PastOrPresent'].includes(type),
+    callback: ({ rules, attrs, fieldType, type }) =>
+      rules.refine((val: any) => compareDate2Now(val, fieldType, type), { message: getMessage(attrs) }).nullish(),
+  },
+
+]
 
 /**
  * 解析所有字段名
  *
  * @param data 后端返回的值
  */
-function transformationRules(data: FieldValidatorDesc[]): Partial<any>[] {
+function transformationRules(data: FieldValidatorDesc[]): FormSchemaExt[] {
   const validateRules: any[] = []
   data.forEach(({ field, fieldType, constraints }) => {
-    const rules: any[] = []
-    if (fieldType === 'Float') {
-      rules.push({
-        type: 'number',
-        message: `${field}必须是数字`,
-      })
+    if (!constraints) {
+      return
     }
-    else if (fieldType === 'Array') {
-      rules.push({
-        type: 'array',
-        message: `${field}必须是数组`,
-      })
+    let rules: ZodTypeAny
+    const constraint = findNotNullConstraint(constraints)
+    if (numberType.includes(fieldType)) {
+      rules = constraint == null
+        ? z.number({
+            required_error: '此项必填',
+            invalid_type_error: '数据类型错误',
+          })
+        : z.number({
+            required_error: getMessage(constraint?.attrs),
+            invalid_type_error: '数据类型错误',
+          })
     }
     else if (fieldType === 'Boolean') {
-      rules.push({
-        type: 'boolean',
-        message: `${field}必须是布尔类型`,
-      })
+      rules = constraint == null
+        ? z.boolean({
+            required_error: '此项必填',
+            invalid_type_error: '数据类型错误',
+          })
+        : z.boolean({
+            required_error: getMessage(constraint?.attrs),
+            invalid_type_error: '数据类型错误',
+          })
     }
-    else if (fieldType === 'Date') {
-      // rules.push({
-      //   type: 'date',
-      //   message: `${field}必须是日期类型`,
-      // });
+    else {
+      rules = constraint == null
+        ? z.string({
+            required_error: '此项必填',
+          })
+        : z.string({
+            required_error: getMessage(constraint?.attrs),
+          }).nonempty(getMessage(constraint?.attrs))
     }
-    decodeRules(rules, constraints, fieldType)
 
-    validateRules.push({ field, rules } as any)
+    constraints.forEach(({ type, attrs }) => {
+      fieldTypeList.some(({ match, callback }) => {
+        if (match(type)) {
+          rules = callback({
+            rules,
+            attrs,
+            fieldType,
+            type,
+          })
+          return true
+        }
+        return false
+      })
+    })
+    if (constraint === null) {
+      rules = rules.nullish()
+    }
+    validateRules.push({
+      fieldName: field,
+      rules,
+    })
   })
   return validateRules
 }
 
 function enhanceCustomRules(
-  formSchemaRules = [] as Partial<any>[],
-  customFormSchemaRules = [] as Partial<FormSchemaExt>[],
-): Map<string, any[]> {
-  if (!formSchemaRules && !customFormSchemaRules) {
-    return {} as Map<string, any[]>
+  formSchemaRules = [] as FormSchemaExt[],
+  customFormSchemaRules = [] as FormSchemaExt[],
+): FormSchemaExt[] {
+  if (!customFormSchemaRules) {
+    return formSchemaRules
   }
-  const map = new Map<string, any[]>()
-  formSchemaRules.forEach(({ field = '', rules = [] }) => {
-    map.set(field, rules)
+  const map = new Map<string, any>()
+  customFormSchemaRules.forEach((rules) => {
+    map.set(rules.fieldName, rules)
   })
 
-  customFormSchemaRules.forEach(({ field = '', rules = [], type = RuleType.cover }) => {
-    if (map.has(field)) {
-      if (type === RuleType.cover) {
-        map.set(field, rules)
+  formSchemaRules.forEach((data) => {
+    const newR = map.get(data.fieldName)
+    if (newR) {
+      switch (newR.ruleType) {
+        case RuleType.and: {
+          data.rules = data.rules ? z.intersection(data.rules, newR.rules) : (newR as ZodTypeAny)
+          break
+        }
+        case RuleType.or: {
+          data.rules = data.rules ? z.union([data.rules, newR.rules]) : (newR as ZodTypeAny)
+          break
+        }
+        default: {
+          data.rules = newR.rules
+          break
+        }
       }
-      else {
-        const oldRules = map.get(field) || []
-        const newRules = [...oldRules[Symbol.iterator](), ...rules[Symbol.iterator]()]
-        map.set(field, newRules)
-      }
-    }
-    else {
-      map.set(field, rules)
     }
   })
-
-  return map
-  // const newRules: any[] = [];
-  // for (const [field, rules] of map) {
-  //   newRules.push({ field, rules } as any);
-  // }
-  // return newRules;
+  return formSchemaRules
 }
 
-const ruleMap = new Map()
+// const ruleMap = new Map()
 const ruleObjMap = new Map()
 
 /**
  * 从后端获取某个接口基于 Hibernate Validator 注解生成的参数校验规则
- * @param Api url和method
- * @param customRules 自定义规则
  */
-export async function getValidateRules(Api: AxiosRequestConfig, customRules?: Partial<FormSchemaExt>[]): Promise<unknown> {
+export async function getValidateRuleObj(params: {
+  Api: AxiosRequestConfig
+  customRules?: FormSchemaExt[]
+}): Promise<any> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, _reject) => {
-    const formValidateApi = { url: '', method: Api.method }
-    // for (const sp in ServicePrefixEnum) {
-    //   if (Api.url?.startsWith(ServicePrefixEnum[sp])) {
-    //     formValidateApi.url = Api.url.replace(
-    //       ServicePrefixEnum[sp],
-    //       `${ServicePrefixEnum[sp]}/form/validator`,
-    //     )
-    //   }
-    // }
-    formValidateApi.url = `/form/validator${formValidateApi.url}`
-    try {
-      if (!formValidateApi.url) {
-        toast.error('ServicePrefixEnum枚举类未正确配置！', { position: 'top-center' })
-        return resolve([])
-      }
-
-      const key = formValidateApi.url + formValidateApi.method
-      if (ruleMap.has(key)) {
-        return resolve(ruleMap.get(key))
-      }
-
-      const res = await requestClient.request<FieldValidatorDesc[]>(formValidateApi.url, { method: formValidateApi.method })
-      if (res) {
-        const formSchemaRules = transformationRules(res)
-        const map = enhanceCustomRules(formSchemaRules, customRules)
-
-        const newRules: any[] = []
-        for (const [field, rules] of map) {
-          newRules.push({ field, rules } as any)
-        }
-
-        ruleMap.set(key, newRules)
-        return resolve(newRules)
-      }
-    }
-    catch {}
-    return resolve([])
-  })
-}
-
-export async function getValidateRuleObj(Api: AxiosRequestConfig, customRules?: Partial<FormSchemaExt>[]): Promise<any> {
-  // eslint-disable-next-line no-async-promise-executor
-  return new Promise(async (resolve, _reject) => {
-    const formValidateApi = { url: '', method: Api.method }
+    const { Api, customRules } = params
+    const formValidateApi = { url: '', method: Api.method == null ? undefined : Api.method.toLowerCase() }
     // for (const sp in ServicePrefixEnum) {
     //   if (Api.url?.startsWith(ServicePrefixEnum[sp])) {
     //     formValidateApi.url = Api.url.replace(
@@ -429,21 +324,17 @@ export async function getValidateRuleObj(Api: AxiosRequestConfig, customRules?: 
         return resolve(ruleObjMap.get(key))
       }
 
-      const res = await requestClient.request<FieldValidatorDesc[]>(formValidateApi.url, { method: formValidateApi.method })
+      const res = await requestClient.request2<FieldValidatorDesc[]>(formValidateApi)
       if (res) {
         const formSchemaRules = transformationRules(res)
-        const map = enhanceCustomRules(formSchemaRules, customRules)
-
-        const newRules: any = {}
-        for (const [field, rules] of map) {
-          newRules[field] = rules as any[]
-        }
+        const newRules = enhanceCustomRules(formSchemaRules, customRules)
 
         ruleObjMap.set(key, newRules)
         return resolve(newRules)
       }
     }
-    catch {}
+    catch {
+    }
     return resolve({})
   })
 }

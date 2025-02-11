@@ -32,7 +32,7 @@ class RequestClient {
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
       },
-      responseReturn: 'raw',
+      responseReturn: 'data',
       // 默认超时时间
       timeout: 10_000,
     }
@@ -108,6 +108,21 @@ class RequestClient {
         url,
         ...config,
       })
+      return response as T
+    }
+    catch (error: any) {
+      throw error.response ? error.response.data : error
+    }
+  }
+
+  /**
+   * 通用的请求方法
+   */
+  public async request2<T>(
+    config: RequestClientConfig,
+  ): Promise<T> {
+    try {
+      const response: AxiosResponse<T> = await this.instance(config)
       return response as T
     }
     catch (error: any) {

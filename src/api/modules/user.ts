@@ -4,7 +4,7 @@ export function login(data: {
   account: string
   password: string
 }) {
-  return requestClient.post('/login', data, { baseURL: '/mock/' })
+  return requestClient.post('/login', data)
 }
 
 // 获取收藏夹
@@ -22,7 +22,6 @@ export async function refreshTokenApi() {
     status: number
   }>('/auth/refresh', {}, {
     withCredentials: true,
-    baseURL: '/mock/',
   })
 }
 

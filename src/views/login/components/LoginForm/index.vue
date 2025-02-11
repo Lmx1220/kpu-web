@@ -130,8 +130,8 @@ function testAccount(account: string) {
       <div class="mt-4 text-center -mb-4">
         <KpuDivider>{{ $t('loginFrom.testLogin') }}</KpuDivider>
         <div class="space-x-2">
-          <KpuButton variant="default" size="sm" plain @click="testAccount('kpu')">
-            kpu
+          <KpuButton variant="default" size="sm" plain @click="testAccount('admin')">
+            admin
           </KpuButton>
           <KpuButton variant="outline" size="sm" plain @click="testAccount('test')">
             test

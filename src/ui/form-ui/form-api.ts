@@ -369,24 +369,29 @@ export class FormApi {
 
         const [startTime, endTime] = values[field]
         if (format === null) {
-          values[startTimeKey] = startTime
-          values[endTimeKey] = endTime
+         this.setValueByPath(values, startTimeKey, startTime)
+          this.setValueByPath(values, endTimeKey, endTime)
+          // values[startTimeKey] = startTime
+          // values[endTimeKey] = endTime
         }
         else if (isFunction(format)) {
-          values[startTimeKey] = format(startTime, startTimeKey)
-          values[endTimeKey] = format(endTime, endTimeKey)
+          this.setValueByPath(values,startTimeKey, format(startTime, startTimeKey))
+          this.setValueByPath(values,endTimeKey, format(endTime, endTimeKey))
+          // values[startTimeKey] = format(startTime, startTimeKey)
+          // values[endTimeKey] = format(endTime, endTimeKey)
         }
         else {
           const [startTimeFormat, endTimeFormat] = Array.isArray(format)
             ? format
             : [format, format]
-
-          values[startTimeKey] = startTime
-            ? formatDate(startTime, startTimeFormat)
-            : undefined
-          values[endTimeKey] = endTime
-            ? formatDate(endTime, endTimeFormat)
-            : undefined
+          this.setValueByPath(values,startTimeKey, startTime ? formatDate(startTime, startTimeFormat) : undefined)
+          this.setValueByPath(values,endTimeKey, endTime ? formatDate(endTime, endTimeFormat) : undefined)
+          // values[startTimeKey] = startTime
+          //   ? formatDate(startTime, startTimeFormat)
+          //   : undefined
+          // values[endTimeKey] = endTime
+          //   ? formatDate(endTime, endTimeFormat)
+          //   : undefined
         }
         // delete values[field];
         Reflect.deleteProperty(values, field)
@@ -394,7 +399,16 @@ export class FormApi {
     )
     return values
   }
-
+  private setValueByPath(obj: Record<string, any>, path:string, value:any) {
+    const keys = path.split('.');
+    let current = obj;
+    for (let i = 0; i < keys.length - 1; i++) {
+      const key = keys[i];
+      if (!current[key]) current[key] = {}; // 如果不存在，则初始化为空对象
+      current = current[key];
+    }
+    current[keys[keys.length - 1]] = value; // 设置最终值
+  }
   private updateState() {
     const currentSchema = this.state?.schema ?? []
     const prevSchema = this.prevState?.schema ?? []

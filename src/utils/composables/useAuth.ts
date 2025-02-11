@@ -13,7 +13,10 @@ export default function useAuth() {
     }
   }
 
-  function auth(value: string | string[]) {
+  function auth(value?: string | string[]) {
+    if (!value) {
+      return true
+    }
     let auth
     if (typeof value === 'string') {
       auth = value !== '' ? hasPermission(value) : true

@@ -4,6 +4,7 @@ import type { ElSelect } from 'element-plus'
 export interface ApiSelectProps {
   api: AnyFunction
   params?: any
+  modelValue?: string | number | boolean
   defaultValue?: string | number | boolean | undefined
   resultField?: string
   labelField?: string

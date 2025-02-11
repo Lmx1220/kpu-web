@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import type { UploadProps } from 'element-plus'
+import { asyncFindUrlById } from '@/api/modules/file/upload.ts'
 import { ElMessage } from 'element-plus'
+import { httpUpload } from './utils.ts'
 
 defineOptions({
   name: 'ImageUpload',
 })
-
 const props = withDefaults(
   defineProps<{
-    action: UploadProps['action']
+    action?: UploadProps['action']
     headers?: UploadProps['headers']
     data?: UploadProps['data']
     name?: UploadProps['name']
@@ -16,11 +17,15 @@ const props = withDefaults(
     width?: number
     height?: number
     placeholder?: string
+    disabled?: boolean
     notip?: boolean
     ext?: string[]
     httpRequest?: UploadProps['httpRequest']
+    defaultValue?: string
+    modelValue?: string
   }>(),
   {
+    modelValue: '',
     name: 'file',
     size: 2,
     width: 150,
@@ -28,15 +33,20 @@ const props = withDefaults(
     placeholder: '',
     notip: false,
     ext: () => ['jpg', 'png', 'gif', 'bmp'],
+    httpRequest: () => httpUpload,
   },
 )
-
 const emits = defineEmits<{
-  onSuccess: [
+  'onSuccess': [
     res: any,
   ]
+  'update:modelValue': [payload: string]
 }>()
 
+// const url = useVModel(props, 'modelValue', emits, {
+//   defaultValue: props.defaultValue,
+//   passive: true,
+// })
 const url = defineModel<string>({
   default: '',
 })
@@ -85,6 +95,29 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
   uploadData.value.progress.percent = 0
   emits('onSuccess', res)
 }
+const realSrc = ref<string>('')
+watch(
+  () => url.value,
+  () => {
+    realSrc.value = ''
+    if (url.value) {
+      loadSrc()
+    }
+  },
+  { immediate: true },
+)
+
+function loadSrc() {
+  if (!url.value) {
+    return
+  }
+  const api = asyncFindUrlById
+  api(url.value).then((res) => {
+    if (res.code === 0) {
+      realSrc.value = res.data as string
+    }
+  })
+}
 </script>
 
 <template>
@@ -99,10 +132,15 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
       :on-progress="onProgress"
       :on-success="onSuccess"
       :http-request="httpRequest"
+      :on-error="() => {
+        uploadData.progress.preview = ''
+        uploadData.progress.percent = 0
+      }"
+      :disabled
       drag
       class="image-upload"
     >
-      <ElImage v-if="url === ''" :src="url === '' ? placeholder : url" :style="`width:${width}px;height:${height}px;`" fit="fill">
+      <ElImage v-if="url === ''" :src="realSrc === '' ? placeholder : realSrc" :style="`width:${width}px;height:${height}px;`" fit="fill">
         <template #error>
           <div class="image-slot" :style="`width:${width}px;height:${height}px;`">
             <KpuIcon name="i-ep:plus" class="icon" />
@@ -110,13 +148,13 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
         </template>
       </ElImage>
       <div v-else class="image">
-        <ElImage :src="url" :style="`width:${width}px;height:${height}px;`" fit="fill" />
+        <ElImage :src="realSrc" :style="`width:${width}px;height:${height}px;`" fit="fill" />
         <div class="mask">
           <div class="actions">
             <span @click.stop="preview">
               <KpuIcon name="i-ep:zoom-in" class="icon" />
             </span>
-            <span @click.stop="remove">
+            <span v-if="!disabled" @click.stop="remove">
               <KpuIcon name="i-ep:delete" class="icon" />
             </span>
           </div>
@@ -132,7 +170,7 @@ const onSuccess: UploadProps['onSuccess'] = (res) => {
         <ElAlert :title="`上传图片支持 ${ext.join(' / ')} 格式，且图片大小不超过 ${size}MB，建议图片尺寸为 ${width}*${height}`" type="info" show-icon :closable="false" />
       </div>
     </div>
-    <ElImageViewer v-if="uploadData.imageViewerVisible" :url-list="[url]" teleported @close="previewClose" />
+    <ElImageViewer v-if="uploadData.imageViewerVisible" :url-list="[realSrc]" teleported @close="previewClose" />
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { FileResultVO } from '@/api/modules/system/model/fileModel'
-import { downloadIds } from '@/api/modules/system/upload'
+import type { FileResultVO } from '@/api/modules/file/model/fileModel'
+import { downloadIds } from '@/api/modules/file/upload'
 import { $t } from '@/locales'
 import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'
 import { isArray } from '@/utils/is'

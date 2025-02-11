@@ -1,4 +1,4 @@
-import type { FileResultVO } from '@/api/modules/system/model/fileModel'
+import type { FileResultVO } from '@/api/modules/file/model/fileModel'
 
 export enum UploadResultStatus {
   SUCCESS = 'success',

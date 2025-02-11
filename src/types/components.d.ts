@@ -13,6 +13,7 @@ declare module 'vue' {
     BasicTree: typeof import('./../components/BasicTree/index.vue')['default']
     BlocksTree: typeof import('./../components/BlocksTree/index.vue')['default']
     CodeEdite: typeof import('./../components/CodeEdite/index.vue')['default']
+    Description: typeof import('./../components/Description/index.vue')['default']
     FileUpload: typeof import('./../components/FileUpload/index.vue')['default']
     I18nSelector: typeof import('./../components/I18nSelector/index.vue')['default']
     ImagePreview: typeof import('./../components/ImagePreview/index.vue')['default']
@@ -64,6 +65,7 @@ declare module 'vue' {
     PcasCascader: typeof import('./../components/PcasCascader/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TableAction: typeof import('./../components/TableAction/index.vue')['default']
     Vue3Cron: typeof import('./../components/vue3Cron/index.vue')['default']
   }
 }

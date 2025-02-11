@@ -1,5 +1,5 @@
 import type { AsyncResult, DelayResult } from '@/api/helper/timeDelayReq.ts'
-import type { CodeQueryVO, OptionsGetResultModel, SystemApiVO } from '@/api/modules/common/model/optionsModel.ts'
+import type { CodeQueryVO, OptionsGetResultModel, OptionsItem, SystemApiVO } from '@/api/modules/common/model/optionsModel.ts'
 import { requestClient } from '@/api'
 import { TimeDelayReq } from '@/api/helper/timeDelayReq.ts'
 import { RequestEnum } from '@/enums/httpEnum'
@@ -43,7 +43,7 @@ export function findEnumListByType(params: CodeQueryVO[] = []) {
  * @description: Get 字典
  */
 export function findCodeListByType(params: CodeQueryVO[] = []) {
-  return requestClient.post<OptionsGetResultModel>(Api.FindCodeListByType.url, params)
+  return requestClient.post<Recordable<OptionsItem[]>>(Api.FindCodeListByType.url, params)
 }
 export function findParams(params: string[] | string = []) {
   if (isString(params)) {

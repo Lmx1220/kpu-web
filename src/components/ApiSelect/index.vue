@@ -2,6 +2,7 @@
 import type { OptionsItem } from '@/api/modules/common/model/optionsModel.ts'
 import type { ApiSelectProps } from './typing'
 import { isFunction } from '@/utils/is.ts'
+import { useVModel } from '@vueuse/core'
 import { get, omit } from 'lodash-es'
 
 defineOptions({
@@ -23,8 +24,12 @@ const attrs = useAttrs()
 const getProps = computed(() => {
   return { ...props.componentProps, ...attrs }
 })
-const modelValue = defineModel<string | number | boolean | undefined>({
-  required: true,
+// const modelValue = defineModel<string | number | boolean | undefined>({
+//   required: true,
+// })
+const modelValue = useVModel(props, 'modelValue', emit, {
+  defaultValue: props.modelValue,
+  passive: true,
 })
 const dicts = ref<any>([])
 let data: any = []

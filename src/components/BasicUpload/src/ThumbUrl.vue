@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
-import { timeDelayReqFindUrlById } from '@/api/modules/system/upload'
+import { asyncFindUrlById } from '@/api/modules/file/upload'
 import { defaultBase64Img } from '@/utils/file/base64Conver'
 import { encode } from 'js-base64'
 
@@ -61,7 +61,7 @@ function findRealSrc() {
     })
   }
   else {
-    timeDelayReqFindUrlById(props.fileId).then((res) => {
+    asyncFindUrlById(props.fileId).then((res) => {
       if (res && res.code === 0) {
         realSrc.value = res.data as string
       }

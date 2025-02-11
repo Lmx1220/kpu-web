@@ -1,5 +1,6 @@
 import type { RequestClient } from './request-client'
 import type { MakeErrorMessageFn, ResponseInterceptorConfig } from './types'
+import { ResultEnum } from '@/enums/httpEnum.ts'
 import { $t } from '@/locales'
 import { isFunction } from '@/utils'
 import axios from 'axios'
@@ -57,9 +58,10 @@ export function authenticateResponseInterceptor({
 }): ResponseInterceptorConfig {
   return {
     rejected: async (error) => {
-      const { config, response } = error
+      const { config, data } = error
       // 如果不是 401 错误，直接抛出异常
-      if (response?.status !== 401) {
+      // response?.status !== 401
+      if (![ResultEnum.BE_REPLACED, ResultEnum.INVALID_TOKEN, ResultEnum.KICK_OUT, ResultEnum.NOT_TOKEN, ResultEnum.NOT_VALUE_EXPIRE, ResultEnum.TOKEN_TIMEOUT].includes(data?.code)) {
         throw error
       }
       // 判断是否启用了 refreshToken 功能

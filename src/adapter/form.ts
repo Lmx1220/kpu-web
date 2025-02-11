@@ -2,17 +2,17 @@ import type {
   KpuFormSchema as FormSchema,
   KpuFormProps,
 } from '@/ui/form-ui/index'
-
 import type { ComponentType } from './component'
-
 import { $t } from '@/locales'
+
 import { setupKpuForm, useKpuForm as useForm, z } from '@/ui/form-ui/index'
 
 setupKpuForm<ComponentType>({
   config: {
     modelPropNameMap: {
       Upload: 'fileList',
-      CheckboxGroup: 'model-value',
+      CheckboxGroup: 'value',
+      // CheckboxGroup: 'model-value',
     },
   },
   defineRules: {

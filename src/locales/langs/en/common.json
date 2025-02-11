@@ -91,5 +91,16 @@
   "refresh": "Refresh",
   "loadingMenu": "Loading Menu",
   "query": "Search",
-  "search": "Search"
+  "search": "Search",
+  "createdTime": "createdTime",
+  "updatedTime": "updatedTime",
+  "updateBy": "updateBy",
+  "createeBy": "createeBy",
+  "yes": "yes",
+  "no": "no",
+  "enable": "Enable",
+  "disable": "Disable",
+  "read": "read",
+  "unread": "unread",
+  "seq": "seq"
 }

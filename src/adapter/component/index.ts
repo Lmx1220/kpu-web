@@ -59,6 +59,37 @@ export type ComponentType =
   | 'Upload'
   | BaseFormComponentType
 
+function normalizeName(filePath: string) {
+  const matchResult = filePath.match(/[^/]+(?=\.[^./]+$|$)/)
+  return matchResult ? matchResult[0].replace(/\.[^/.]+$/, '') : null
+}
+function toPascalCase(input: string | null) {
+  if (input === null) {
+    return null
+  }
+  return input
+    .replaceAll(/[-_]/g, ' ') // 替换所有 "-" 和 "_" 为空格
+    .split(' ') // 将字符串分割为单词数组
+    .map(word =>
+      word && word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(), // 每个单词首字母大写，其余小写
+    )
+    .join('') // 将单词数组重新拼接成字符串
+}
+
+const componentMap = new Map()
+const componentRegistry: Record<string, any> = import.meta.glob('./components/*.vue', { eager: true })
+Object.keys(componentRegistry).forEach((filePath) => {
+  if (!filePath.includes('-ignore')) {
+    const componentDefinition = componentRegistry[filePath]?.default || {}
+    const normalizedName = normalizeName(filePath)
+    componentMap.set(toPascalCase(normalizedName), componentDefinition)
+  }
+})
+function lqe(components: Partial<Record<ComponentType, Component>>) {
+  componentMap.forEach((component, componentName) => {
+    components[componentName] = component
+  })
+}
 async function initComponentAdapter() {
   const components: Partial<Record<ComponentType, Component>> = {
     // 如果你的组件体积比较大，可以使用异步加载
@@ -210,6 +241,7 @@ async function initComponentAdapter() {
     TreeSelect: withDefaultPlaceholder(ElTreeSelect, 'select'),
     Upload: ElUpload,
   }
+  lqe(components)
   // 将组件注册到全局共享状态中
   globalShareState.setComponents(components)
 

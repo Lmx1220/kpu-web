@@ -38,7 +38,7 @@ export default defineFakeRoute([
     method: 'get',
     response: (option: any) => {
       let permissions: string[] = []
-      if (option.query.account === 'kpu') {
+      if (option.query.account === 'admin') {
         permissions = [
           'permission.browse',
           'permission.create',

@@ -10,6 +10,22 @@ export const VALIDATE_API: Record<string, any> = {
   [ActionEnum.EDIT]: 'Update',
   [ActionEnum.COPY]: 'Copy',
 }
+/**
+ * 文件的业务 类型
+ */
+export enum FileBizTypeEnum {
+  // 默认库 租户logo
+  DEF_TENANT_LOGO = 'DEF__TENANT__LOGO',
+  // 默认库 应用logo
+  DEF_APPLICATION_LOGO = 'DEF__APPLICATION__LOGO',
+  // 基础库 用户头像
+  BASE_USER_AVATAR = 'DEF__USER__AVATAR',
+  // 基础库 文件中心
+  BASE_FILE = 'BASE__FILE',
+  // 扩展库 消息内容附件
+  EXTEND_MSG_CONTENT = 'EXTEND__MSG__CONTENT',
+}
+
 export enum EnumEnum {
   // msg
   TaskStatus = 'TaskStatus',

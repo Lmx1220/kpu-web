@@ -14,27 +14,27 @@ export default {
             value: undefined,
           },
           {
-            label: $t('kpu.common.enable'),
+            label: $t('common.enable'),
             value: true,
           },
           {
-            label: $t('kpu.common.disable'),
+            label: $t('common.disable'),
             value: false,
           },
         ]
       : [
           {
-            label: $t('kpu.common.enable'),
+            label: $t('common.enable'),
             value: true,
           },
           {
-            label: $t('kpu.common.disable'),
+            label: $t('common.disable'),
             value: false,
           },
         ]
   },
   formatter: (value: boolean) => {
-    return value ? $t('kpu.common.enable') : $t('kpu.common.disable')
+    return value ? $t('common.enable') : $t('common.disable')
   },
   false: '启用',
   true: '禁用',

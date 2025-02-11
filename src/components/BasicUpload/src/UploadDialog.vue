@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { FileResultVO } from '@/api/modules/system/model/fileModel'
+import type { FileResultVO } from '@/api/modules/file/model/fileModel'
 import type { BasicProps } from '@/components/BasicUpload/src/BasicUpload.vue'
 import type { FileItem } from '@/components/BasicUpload/src/types'
 

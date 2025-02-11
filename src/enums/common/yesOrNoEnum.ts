@@ -8,31 +8,33 @@ export enum YesOrNoEnum {
 export default {
   enum: (all = false) => {
     return all
-      ? [
+      ? {
+          options: [
 
+            {
+              label: '所有',
+              value: undefined,
+            },
+            {
+              label: $t('common.yes'),
+              value: true,
+            },
+            {
+              label: $t('common.no'),
+              value: false,
+            },
+          ],
+        }
+      : { options: [
           {
-            label: '所有',
-            value: undefined,
-          },
-          {
-            label: $t('kpu.common.yes'),
+            label: $t('common.yes'),
             value: true,
           },
           {
-            label: $t('kpu.common.no'),
+            label: $t('common.no'),
             value: false,
           },
-        ]
-      : [
-          {
-            label: $t('kpu.common.yes'),
-            value: true,
-          },
-          {
-            label: $t('kpu.common.no'),
-            value: false,
-          },
-        ]
+        ] }
   },
   false: '否',
   true: '是',

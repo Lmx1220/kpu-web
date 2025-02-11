@@ -204,12 +204,18 @@ const useRouteStore = defineStore(
     function formatBackRoutes(routes: any, views = import.meta.glob('../../views/**/*.vue')): Route.recordMainRaw[] {
       return routes.map((route: any) => {
         switch (route.component) {
+          case 'LAYOUT':
           case 'Layout':
             route.component = () => import('@/layouts/index.vue')
             break
           default:
             if (route.component) {
-              route.component = views[`../../views/${route.component}`]
+              if (route.component.includes('.vue')) {
+                route.component = views[`../../views/${route.component}`]
+              }
+              else {
+                route.component = views[`../../views${route.component}.vue`]
+              }
             }
             else {
               delete route.component
@@ -224,11 +230,13 @@ const useRouteStore = defineStore(
     // 生成路由（后端获取）
     async function generateRoutesAtBack() {
       try {
-        const res = await requestClient.get<any>('/anyone/visible/allRouter', {
-          baseURL: '/mock/',
+        const res = await requestClient.get<any>('/anyone/visible/resource', {
+          params: {
+            type: 'KPU_WEB_PRO_KPU',
+          },
         })
         // 设置 routes 数据
-        routesRaw.value = converDeprecatedAttribute(convertSingleRoutes(formatBackRoutes(res.data) as any))
+        routesRaw.value = converDeprecatedAttribute(convertSingleRoutes(formatBackRoutes(res.routerList) as any))
         isGenerate.value = true
         // 初始化常驻标签页
         if (settingsStore.settings.tabbar.enable) {

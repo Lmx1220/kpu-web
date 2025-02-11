@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { AnyFunction } from '#/index'
-import type { FileResultVO } from '@/api/modules/system/model/fileModel'
+import type { FileResultVO } from '@/api/modules/file/model/fileModel'
 import { $t } from '@/locales'
 
 import { useKpuModal } from '@/ui/components/KpuModal/use-modal.ts'

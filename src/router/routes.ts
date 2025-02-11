@@ -2,28 +2,8 @@ import type { Route } from '@/types/global'
 import type { RouteRecordRaw } from 'vue-router'
 import pinia from '@/store'
 import useSettingsStore from '@/store/modules/settings.ts'
-import AlwaysOpenedExample from './modules/always.opened.example.ts'
-import BreadcrumbExample from './modules/breadcrumb.example.ts'
-import ComponentExample from './modules/component.example.ts'
-
-import ExternalLinkExample from './modules/external.link.example.ts'
-import FeatureExample from './modules/feature.example.ts'
-import IconExample from './modules/icon.example.ts'
-import JsxExample from './modules/jsx.example.ts'
-import KeepAliveExample from './modules/keep.alive.example'
-import LayoutContainerExample from './modules/layout.container.example.ts'
-
-import MenuBadgeExample from './modules/menu.badge.example.ts'
-import MenuIconExample from './modules/menu.icon.example.ts'
-import MenuQueryExample from './modules/menu.query.example.ts'
-import MockExample from './modules/mock.example.ts'
-// import LinkExample from './modules/link.example'
-// import SystemExample from './modules/system.example'
-import MultilevelMenuExample from './modules/multilevel.menu.example.ts'
-import PermissionExample from './modules/permission.example.ts'
-import PluginExample from './modules/plugin.example.ts'
-import StandardModuleExample from './modules/standard.module.example.ts'
-import TabExample from './modules/tab.example.ts'
+// import generatedRoutes from 'virtual:generated-pages'
+// import { setupLayouts } from 'virtual:meta-layouts'
 // 固定路由
 const constantRoutes: RouteRecordRaw[] = [
   {
@@ -82,24 +62,6 @@ const asyncRoutes: Route.recordMainRaw[] = [
       icon: 'sidebar-default',
     },
     children: [
-      MultilevelMenuExample,
-      BreadcrumbExample,
-      KeepAliveExample,
-      AlwaysOpenedExample,
-      MenuIconExample,
-      MenuQueryExample,
-      MenuBadgeExample,
-      TabExample,
-      ComponentExample,
-      IconExample,
-      FeatureExample,
-      LayoutContainerExample,
-      PluginExample,
-      PermissionExample,
-      MockExample,
-      JsxExample,
-      ExternalLinkExample,
-      StandardModuleExample,
     ],
   },
   {

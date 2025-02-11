@@ -24,7 +24,7 @@ const useUserStore = defineStore(
     const avatar = ref(storage.local.get('avatar') ?? '')
     const token = ref(storage.local.get('token') ?? '')
     const permissions = ref<string[]>([])
-    const roles = ref<string[]>([])
+    // const roles = ref<string[]>([])
     const isLogin = computed(() => {
       if (token.value) {
         return true
@@ -42,11 +42,11 @@ const useUserStore = defineStore(
         username: data.username,
         password: data.password,
         grantType: 'PASSWORD',
-      }, { baseURL: '/mock/' })
-      storage.local.set('account', res.username)
+      })
+      storage.local.set('account', data.username)
       storage.local.set('token', res.token)
       storage.local.set('avatar', res.avatar)
-      account.value = res.username
+      account.value = data.username
       token.value = res.token
       avatar.value = res.avatar
     }
@@ -92,19 +92,10 @@ const useUserStore = defineStore(
     // 获取我的权限
     async function getPermissions() {
       // 通过 mock 获取权限
-      const data = await requestClient.get<{
-        caseSensitive: boolean
-        enabled: boolean
-        resourceList: string[]
-        roleList: string[]
-      }>('/anyone/visible/resource', {
-        baseURL: '/mock/',
-        params: {
-          account: account.value,
-        },
+      const data = await requestClient.get<string[]>('/anyone/findVisibleResource', {
       })
-      permissions.value = data.resourceList
-      roles.value = data.roleList
+      permissions.value = data
+      // roles.value = data.roleList
       return permissions.value
     }
     // 修改密码
@@ -230,9 +221,7 @@ const useUserStore = defineStore(
         else if (
           settingsStore.settings.userPreferences.storageTo === 'server'
         ) {
-          const res = await requestClient.post<any>('/anyTenant/user/preferences', {}, {
-            baseURL: '/mock/',
-          })
+          const res = await requestClient.post<any>('/anyTenant/user/preferences')
           data = JSON.parse(res.data.preferences || '{}') as Settings.all
         }
       }
@@ -262,8 +251,6 @@ const useUserStore = defineStore(
       ) {
         await requestClient.post<any>('/anyTenant/user/preferences/edit', {
           preferences: JSON.stringify(data),
-        }, {
-          baseURL: '/mock/',
         })
       }
     }

@@ -257,6 +257,10 @@ export interface FormSchema<
   rules?: FormSchemaRuleType
   /** 后缀 */
   suffix?: CustomRenderType
+  /** 详情span */
+  detailSpan?: number
+  /** 是否在详情页展示 */
+  ifDetail?: boolean | ((value: any) => boolean)
 }
 
 export interface FormFieldProps extends FormSchema {
@@ -381,6 +385,16 @@ export interface KpuFormProps<
    * @default false
    */
   submitOnEnter?: boolean
+  /**
+   * 确认加载中
+   * @default false
+   */
+  confirmLoading?: boolean,
+  /**
+   * 加载中
+   * @default false
+   */
+  loading?: boolean,
 }
 
 export type ExtendedFormApi = FormApi & {

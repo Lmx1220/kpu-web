@@ -3,6 +3,7 @@ export interface ValidateRules {
   field: string
   // Validation rules
   rules?: any[]
+  // attrs?: any
 }
 
 export interface FieldValidatorDesc {

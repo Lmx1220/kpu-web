@@ -335,7 +335,7 @@ onUnmounted(() => {
 
       <!-- 继承默认的slot -->
       <template
-        v-for="slotName in delegatedSlots"
+        v-for="(slotName) in delegatedSlots"
         :key="slotName"
         #[slotName]="slotProps"
       >
