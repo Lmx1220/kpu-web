@@ -42,6 +42,11 @@ export function findEnumListByType(params: CodeQueryVO[] = []) {
 /**
  * @description: Get 字典
  */
+export function findCodeByType(params: CodeQueryVO) {
+  return requestClient.post<Recordable<OptionsItem>>(`${ServicePrefix}/anyUser/dict/findDictByType`, params)
+}/**
+  * @description: Get 字典
+  */
 export function findCodeListByType(params: CodeQueryVO[] = []) {
   return requestClient.post<Recordable<OptionsItem[]>>(Api.FindCodeListByType.url, params)
 }

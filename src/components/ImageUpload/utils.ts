@@ -5,12 +5,17 @@ export async function httpUpload(options: any) {
     const response = await uploadFile({
       file: options.file,
       ...options.data,
-    }, (progressEvent) => {
-      // 计算上传进度百分比
-      const percentageCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 100))
+    }, {
 
-      // 触发 Element UI 的上传进度钩子
-      options.onProgress({ percent: percentageCompleted })
+      onUploadProgress: (progressEvent) => {
+      // 计算上传进度百分比
+        const percentageCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 100))
+
+        // 触发 Element UI 的上传进度钩子
+        options.onProgress({ percent: percentageCompleted })
+      },
+      timeout: 60 * 1000,
+
     })
     // 文件上传成功后的操作
     // options.onSuccess(response, options.file)

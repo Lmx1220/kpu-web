@@ -13,14 +13,12 @@ export enum RuleType {
   or,
   cover,
 }
-
-export interface FormSchemaExt {
-  // Field name
+export interface FormSchema {
   fieldName: string
-  // field: string
   rules: ZodTypeAny
+}
+export interface FormSchemaExt extends FormSchema {
   // 类型 append：追加  cover：覆盖
-  type?: RuleType
   ruleType?: RuleType
 }
 
@@ -188,8 +186,8 @@ const fieldTypeList: {
  *
  * @param data 后端返回的值
  */
-function transformationRules(data: FieldValidatorDesc[]): FormSchemaExt[] {
-  const validateRules: any[] = []
+function transformationRules(data: FieldValidatorDesc[]): FormSchema[] {
+  const validateRules: FormSchema[] = []
   data.forEach(({ field, fieldType, constraints }) => {
     if (!constraints) {
       return
@@ -254,9 +252,9 @@ function transformationRules(data: FieldValidatorDesc[]): FormSchemaExt[] {
 }
 
 function enhanceCustomRules(
-  formSchemaRules = [] as FormSchemaExt[],
-  customFormSchemaRules = [] as FormSchemaExt[],
-): FormSchemaExt[] {
+  formSchemaRules: FormSchema[],
+  customFormSchemaRules: FormSchemaExt[],
+): FormSchema[] {
   if (!customFormSchemaRules) {
     return formSchemaRules
   }
@@ -287,7 +285,6 @@ function enhanceCustomRules(
   return formSchemaRules
 }
 
-// const ruleMap = new Map()
 const ruleObjMap = new Map()
 
 /**
@@ -295,7 +292,7 @@ const ruleObjMap = new Map()
  */
 export async function getValidateRuleObj(params: {
   Api: AxiosRequestConfig
-  customRules?: FormSchemaExt[]
+  customRules: FormSchemaExt[]
 }): Promise<any> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, _reject) => {

@@ -1,0 +1,11 @@
+{
+  "table": {
+    "title": "DefDict list"
+  },
+  "id": "ID",
+  "classify": "classify",
+  "key": "key",
+  "name": "name",
+  "state": "state",
+  "remark": "remark"
+}

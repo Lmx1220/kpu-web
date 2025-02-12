@@ -167,7 +167,7 @@ textarea {
   margin: 0;
 }
 
-.el-card {
+/* .el-card {
   box-shadow: 0 0 12px rgb(0 0 0 / 7%) !important;
 }
 
@@ -176,7 +176,12 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   height: 70px;
+
+  > div {
+    width: 100%;
+  }
 
   p.fx-b {
     flex-shrink: 0;
@@ -194,7 +199,7 @@ textarea {
   background: linear-gradient(to bottom, #0081ff, #22cce2);
   border-radius: 0 3px 3px 0;
   transform: translateY(-50%);
-}
+} */
 
 .el-overlay-dialog {
   margin: 0 16px;

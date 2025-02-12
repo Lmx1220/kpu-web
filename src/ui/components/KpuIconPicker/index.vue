@@ -97,7 +97,7 @@ function handleTabChange(prefix: string) {
 </script>
 
 <template>
-  <KpuPopover :collision-padding="5" class="p-0">
+  <KpuPopover :collision-padding="5" class="z-3000 p-0">
     <slot :icon="value">
       <KpuButton
         variant="outline"

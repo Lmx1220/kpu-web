@@ -1,0 +1,18 @@
+{
+  "table": {
+    "title": "DefDict list"
+  },
+  "id": "ID",
+  "parentId": "parentId",
+  "parentKey": "parentKey",
+  "parentName": "parentName",
+  "key": "key",
+  "classify": "classify",
+  "name": "name",
+  "state": "state",
+  "remark": "remark",
+  "sortValue": "sortValue",
+  "icon": "icon",
+  "cssStyle": "cssStyle",
+  "cssClass": "cssClass"
+}

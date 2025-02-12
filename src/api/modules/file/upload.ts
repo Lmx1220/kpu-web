@@ -1,6 +1,7 @@
 import type { UploadFileParams } from '#/axios'
 import type { AsyncResult, CacheKeyFunc, DelayResult } from '@/api/helper/timeDelayReq'
-import type { AxiosProgressEvent, AxiosResponse } from 'axios'
+import type { RequestClientConfig } from '@/utils/request-client'
+import type { AxiosResponse } from 'axios'
 import type { AppendixQuery, AppendixResultVO, FileResultVO } from './model/fileModel'
 import { requestClient } from '@/api'
 import { TimeDelayReq } from '@/api/helper/timeDelayReq'
@@ -16,15 +17,12 @@ const ServicePrefix = ''
  */
 export function uploadFile(
   params: UploadFileParams,
-  onUploadProgress: (progressEvent: AxiosProgressEvent) => void,
+  config: RequestClientConfig,
 ) {
   return requestClient.upload<FileResultVO>(
     `${ServicePrefix}/anyone/file/upload`,
     params,
-    {
-      onUploadProgress,
-      timeout: 60 * 1000,
-    },
+    config,
   )
 }
 export function downloadIds(ids: string[] | number[]) {

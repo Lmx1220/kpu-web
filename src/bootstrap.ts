@@ -13,8 +13,9 @@ import FloatingVue from 'floating-vue'
 import VWave from 'v-wave'
 
 import App from './App.vue'
-import router from './router'
+import plugin from './plugins/fast-crud'
 
+import router from './router'
 import pinia from './store'
 
 import uiProvider from './ui/provider'
@@ -39,7 +40,7 @@ async function bootstrap() {
   await initComponentAdapter()
   const app = createApp(App)
   await setupI18n(app)
-
+  app.use(plugin)
   app.use(VWave, {})
 
   app.use(pinia)
