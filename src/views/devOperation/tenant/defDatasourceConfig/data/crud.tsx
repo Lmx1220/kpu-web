@@ -13,7 +13,6 @@ import { $t } from '@/locales'
 // import { usePermission } from '@/hooks/web/usePermission'
 import {
   backendDict,
-  checkedColumn,
   createdTimeColumn,
   deleteButton,
   indexColumn,
@@ -24,11 +23,8 @@ import { ref } from 'vue'
 // const { hasPermission } = usePermission()
 
 export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOptionsRet {
+  // const loading = ref(false)
   const selectedIds = ref([] as string[])
-
-  const onSelectionChange = (changed: string[]) => {
-    selectedIds.value = changed
-  }
 
   return {
     crudOptions: {
@@ -52,10 +48,15 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
         },
       },
       table: {
-        'striped': true,
-        'rowKey': (row: any) => row.id,
-        'checkedRowKeys': selectedIds,
-        'onUpdate:checkedRowKeys': onSelectionChange,
+        striped: true,
+        rowKey: 'id',
+        rowSelection: {
+          type: 'checkbox',
+          selectedRowKeys: selectedIds,
+          onChange: (ids: any) => {
+            selectedIds.value = ids
+          },
+        },
       },
       rowHandle: {
         width: '200px',
@@ -69,20 +70,30 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
           copy: {
             // show: hasPermission(RoleEnum.TENANT_USER_ADD),
           },
-          debug: {
-            // show: hasPermission(RoleEnum.TENANT_DATASOURCE_CONFIG_DEBUG),
-            text: '测试链接',
-            dropdown: true,
-            click: () => {
-              // props?.context.openModal(!0, {
-              //   record: data.row,
-              // })
-            },
-          },
+          // debug: {
+          //   // show: hasPermission(RoleEnum.TENANT_DATASOURCE_CONFIG_DEBUG),
+          //   text: '测试链接',
+          //   dropdown: true,
+          //   click: (data) => {
+          //     // if (unref(loading)) {
+          //     //   s.warning('正在测试连接，请稍后!')
+          //     //   return
+          //     // }
+          //     // const params = { ...data.row }
+          //     // params.poolName = 'test'
+          //     // loading.value = true
+          //     // o()
+          //     // testConnect(params.id).then((a) => {
+          //     //   a ? s.success('测试连接成功') : s.error('测试连接失败,请检查配置是否正确!')
+          //     // }).finally(() => {
+          //     //   loading.value = false
+          //     //   n()
+          //     // })
+          //   },
+          // },
         },
       },
       columns: {
-        ...checkedColumn(),
         ...indexColumn(props.crudExpose),
         name: {
           title: $t('devOperation.tenant.defDatasourceConfig.name'),
@@ -91,7 +102,7 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
             show: true,
           },
           column: {
-            sortable: 'custom',
+            sorter: 'custom',
             width: 180,
           },
         },
@@ -100,9 +111,6 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
           type: 'text',
           search: {
             show: true,
-          },
-          column: {
-            sortable: 'custom',
           },
         },
         password: {
@@ -122,8 +130,7 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
             show: true,
           },
           column: {
-            'show-overflow-tooltip': true,
-            'ellipsis': {
+            ellipsis: {
               tooltip: true,
             },
           },
@@ -133,19 +140,12 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
           type: 'dict-select',
           dict: backendDict(DictEnum.DATASOURCE_CONFIG_DRIVER),
           column: {
-            'show-overflow-tooltip': true,
-            'ellipsis': {
+            ellipsis: {
               tooltip: true,
             },
           },
         },
         ...createdTimeColumn({}),
-      },
-      addForm: {
-
-      },
-      editForm: {
-
       },
     },
   }

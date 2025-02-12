@@ -6,22 +6,21 @@ defineOptions({
 })
 const props
   = defineProps<{
-    defaultValue?: string
-    modelValue?: string
+    value?: string
   }>()
 
 const emits = defineEmits<{
-  'update:modelValue': [payload: string]
+  'update:value': [payload: string]
 }>()
-const url = useVModel(props, 'modelValue', emits, {
-  defaultValue: props.defaultValue,
+const url = useVModel(props, 'value', emits, {
+  defaultValue: props.value,
   passive: true,
 })
-function handleSuccess(res: any) {
-  url.value = res.id
-}
 </script>
 
 <template>
-  <ImageUpload v-model="url" @on-success="handleSuccess" />
+  <div>
+    avatar
+    {{ url }}
+  </div>
 </template>

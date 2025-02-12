@@ -16,7 +16,7 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from '../../shadcn/ui/form'
+} from './form'
 import { injectRenderFormProps, useFormContext } from './context'
 import useDependencies from './dependencies'
 import FormLabel from './form-label.vue'

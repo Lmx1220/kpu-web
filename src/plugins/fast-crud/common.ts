@@ -2,25 +2,8 @@ import type { CodeQueryVO } from '@/api/modules/common/model/optionsModel.ts'
 import { $t } from '@/locales'
 import { isString } from '@/utils/is'
 import { dict } from '@fast-crud/fast-crud'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { message, Modal } from 'ant-design-vue'
 import { h } from 'vue'
-
-export function checkedColumn(column?: any) {
-  return {
-    _checked: {
-      form: {
-        show: false,
-      },
-      column: {
-        type: 'selection',
-        align: 'center',
-        width: '55px',
-        columnSetDisabled: true,
-        ...column,
-      },
-    },
-  }
-}
 
 export function indexColumn(crudExpose?: any) {
   return {
@@ -29,7 +12,7 @@ export function indexColumn(crudExpose?: any) {
       type: 'number',
       column: {
         align: 'center',
-        width: '55px',
+        width: '50px',
         columnSetDisabled: true,
         formatter: (row: any) => {
           if (crudExpose) {
@@ -50,13 +33,13 @@ export function createdTimeColumn({ searchShow = true, addShow = false, editShow
   return {
     createdTime: {
       title: $t('common.createdTime'),
-      type: ['daterange'],
+      type: 'daterange',
       viewForm: {
         render: ({ value }: any) => h('span', null, [value]),
       },
       search: {
         show: searchShow,
-        col: { span: 6 },
+        col: { span: 5 },
         component: {
           format: 'YYYY-MM-DD',
           valueFormat: 'YYYY-MM-DD',
@@ -79,8 +62,9 @@ export function createdTimeColumn({ searchShow = true, addShow = false, editShow
         show: editShow,
       },
       column: {
-        sortable: 'custom',
+        sorter: 'custom',
         width: 180,
+        cellRender: ({ value }: any) => h('span', null, [value, '1111']),
       },
     },
   }
@@ -93,32 +77,25 @@ export function deleteButton(data: any) {
       // TODO 权限
       // show: role ? y8t(role) : true,
       text: $t('common.title.delete'),
-      async click() {
+      click() {
         if (selectedIds.value?.length > 0) {
-          await ElMessageBox.confirm(
-            `确定要批量删除这 ${selectedIds.value.length} 条记录吗`,
-            '确认',
+          Modal.confirm(
             {
-              confirmButtonText: 'OK',
-              cancelButtonText: 'Cancel',
-              type: 'warning',
+              title: '确认',
+              iconType: 'warning',
+              content: `确定要批量删除这${selectedIds.value.length}条记录吗`,
+              onOk: async () => {
+                if (await removeFn(selectedIds.value)) {
+                  message.info('删除成功')
+                  selectedIds.value = []
+                  await crudExpose?.doRefresh()
+                }
+              },
             },
           )
-
-          if (await removeFn(selectedIds.value)) {
-            ElMessage({
-              type: 'success',
-              message: '删除成功',
-            })
-            selectedIds.value = []
-            await crudExpose?.doRefresh()
-          }
         }
         else {
-          ElMessage({
-            type: 'warning',
-            message: '请先勾选您要删除的数据',
-          })
+          message.warning('请先勾选您要删除的数据')
         }
       },
     },

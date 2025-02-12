@@ -9,10 +9,13 @@ import { setupKpuForm, useKpuForm as useForm, z } from '@/ui/form-ui/index'
 
 setupKpuForm<ComponentType>({
   config: {
+    baseModelPropName: 'value',
+
+    // 一些组件是 v-model:checked 或者 v-model:fileList
     modelPropNameMap: {
-      Upload: 'fileList',
-      CheckboxGroup: 'value',
-      // CheckboxGroup: 'model-value',
+      Checkbox: 'checked',
+      Radio: 'checked',
+      Switch: 'checked',
     },
   },
   defineRules: {

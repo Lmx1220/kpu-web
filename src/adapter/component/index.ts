@@ -10,26 +10,31 @@ import { $t } from '@/locales'
 import KIconPicker from '@/ui/components/KpuIconPicker/index.vue'
 import { ApiComponent } from '@/ui/form-ui/api-component'
 import { globalShareState } from '@/utils/global-state.ts'
+
 import {
-  ElButton,
-  ElCheckbox,
-  ElCheckboxButton,
-  ElCheckboxGroup,
-  ElDatePicker,
-  ElDivider,
-  ElInput,
-  ElInputNumber,
-  ElNotification,
-  ElRadio,
-  ElRadioButton,
-  ElRadioGroup,
-  ElSelectV2,
-  ElSpace,
-  ElSwitch,
-  ElTimePicker,
-  ElTreeSelect,
-  ElUpload,
-} from 'element-plus'
+  AutoComplete,
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  DatePicker,
+  Divider,
+  Input,
+  InputNumber,
+  InputPassword,
+  Mentions,
+  notification,
+  Radio,
+  RadioGroup,
+  RangePicker,
+  Rate,
+  Select,
+  Space,
+  Switch,
+  Textarea,
+  TimePicker,
+  TreeSelect,
+  Upload,
+} from 'ant-design-vue'
 import { h } from 'vue'
 
 function withDefaultPlaceholder<T extends Component>(component: T, type: 'input' | 'select') {
@@ -43,17 +48,26 @@ function withDefaultPlaceholder<T extends Component>(component: T, type: 'input'
 export type ComponentType =
   | 'ApiSelect'
   | 'ApiTreeSelect'
+  | 'AutoComplete'
   | 'Checkbox'
   | 'CheckboxGroup'
   | 'DatePicker'
+  | 'DefaultButton'
   | 'Divider'
   | 'IconPicker'
   | 'Input'
   | 'InputNumber'
+  | 'InputPassword'
+  | 'Mentions'
+  | 'PrimaryButton'
+  | 'Radio'
   | 'RadioGroup'
+  | 'RangePicker'
+  | 'Rate'
   | 'Select'
   | 'Space'
   | 'Switch'
+  | 'Textarea'
   | 'TimePicker'
   | 'TreeSelect'
   | 'Upload'
@@ -102,9 +116,10 @@ async function initComponentAdapter() {
           placeholder: $t('ui.placeholder.select'),
           ...props,
           ...attrs,
-          component: ElSelectV2,
-          loadingSlot: 'loading',
-          visibleEvent: 'onVisibleChange',
+          component: Select,
+          loadingSlot: 'suffixIcon',
+          visibleEvent: 'onDropdownVisibleChange',
+          modelPropName: 'value',
         },
         slots,
       )
@@ -116,130 +131,56 @@ async function initComponentAdapter() {
           placeholder: $t('ui.placeholder.select'),
           ...props,
           ...attrs,
-          component: ElTreeSelect,
-          props: { label: 'label', children: 'children' },
-          nodeKey: 'value',
-          loadingSlot: 'loading',
-          optionsPropName: 'data',
+          component: TreeSelect,
+          fieldNames: { label: 'label', value: 'value', children: 'children' },
+          loadingSlot: 'suffixIcon',
+          modelPropName: 'value',
+          optionsPropName: 'treeData',
           visibleEvent: 'onVisibleChange',
         },
         slots,
       )
     },
-    Checkbox: ElCheckbox,
-    CheckboxGroup: (props, { attrs, slots }) => {
-      let defaultSlot
-      if (Reflect.has(slots, 'default')) {
-        defaultSlot = slots.default
-      }
-      else {
-        const { options, isButton } = attrs
-        if (Array.isArray(options)) {
-          defaultSlot = () =>
-            options.map(option =>
-              h(isButton ? ElCheckboxButton : ElCheckbox, option),
-            )
-        }
-      }
-      return h(
-        ElCheckboxGroup,
-        { ...props, ...attrs },
-        { ...slots, default: defaultSlot },
-      )
-    },
+    AutoComplete,
+    Checkbox,
+    CheckboxGroup,
+    DatePicker,
     // 自定义默认按钮
     DefaultButton: (props, { attrs, slots }) => {
-      return h(ElButton, { ...props, attrs, type: 'info' }, slots)
+      return h(Button, { ...props, attrs, type: 'default' }, slots)
     },
-    // 自定义主要按钮
-    PrimaryButton: (props, { attrs, slots }) => {
-      return h(ElButton, { ...props, attrs, type: 'primary' }, slots)
-    },
-    Divider: ElDivider,
+    Divider,
     IconPicker: (props, { attrs, slots }) => {
       return h(
         KIconPicker,
         {
-          // iconSlot: 'append',
-          // modelValueProp: 'model-value',
-          // inputComponent: ElInput,
+          // iconSlot: 'addonAfter',
+          // inputComponent: Input,
           ...props,
           ...attrs,
         },
         slots,
       )
     },
-    Input: withDefaultPlaceholder(ElInput, 'input'),
-    InputNumber: withDefaultPlaceholder(ElInputNumber, 'input'),
-    RadioGroup: (props, { attrs, slots }) => {
-      let defaultSlot
-      if (Reflect.has(slots, 'default')) {
-        defaultSlot = slots.default
-      }
-      else {
-        const { options } = attrs
-        if (Array.isArray(options)) {
-          defaultSlot = () =>
-            options.map(option =>
-              h(attrs.isButton ? ElRadioButton : ElRadio, option),
-            )
-        }
-      }
-      return h(
-        ElRadioGroup,
-        { ...props, ...attrs },
-        { ...slots, default: defaultSlot },
-      )
+    Input: withDefaultPlaceholder(Input, 'input'),
+    InputNumber: withDefaultPlaceholder(InputNumber, 'input'),
+    InputPassword: withDefaultPlaceholder(InputPassword, 'input'),
+    Mentions: withDefaultPlaceholder(Mentions, 'input'),
+    // 自定义主要按钮
+    PrimaryButton: (props, { attrs, slots }) => {
+      return h(Button, { ...props, attrs, type: 'primary' }, slots)
     },
-    Select: (props, { attrs, slots }) => {
-      return h(ElSelectV2, { ...props, attrs }, slots)
-    },
-    Space: ElSpace,
-    Switch: ElSwitch,
-    TimePicker: (props, { attrs, slots }) => {
-      const { name, id, isRange } = props
-      const extraProps: Recordable = {}
-      if (isRange) {
-        if (name && !Array.isArray(name)) {
-          extraProps.name = [name, `${name}_end`]
-        }
-        if (id && !Array.isArray(id)) {
-          extraProps.id = [id, `${id}_end`]
-        }
-      }
-      return h(
-        ElTimePicker,
-        {
-          ...props,
-          ...attrs,
-          ...extraProps,
-        },
-        slots,
-      )
-    },
-    DatePicker: (props, { attrs, slots }) => {
-      const { name, id, type } = props
-      const extraProps: Recordable = {}
-      if (type && type.includes('range')) {
-        if (name && !Array.isArray(name)) {
-          extraProps.name = [name, `${name}_end`]
-        }
-        if (id && !Array.isArray(id)) {
-          extraProps.id = [id, `${id}_end`]
-        }
-      }
-      return h(
-        ElDatePicker,
-        {
-          ...props,
-          ...attrs,
-          ...extraProps,
-        },
-        slots,
-      )
-    },
-    TreeSelect: withDefaultPlaceholder(ElTreeSelect, 'select'),
-    Upload: ElUpload,
+    Radio,
+    RadioGroup,
+    RangePicker,
+    Rate,
+    Select: withDefaultPlaceholder(Select, 'select'),
+    Space,
+    Switch,
+    Textarea: withDefaultPlaceholder(Textarea, 'input'),
+    TimePicker,
+    TreeSelect: withDefaultPlaceholder(TreeSelect, 'select'),
+    Upload,
   }
   lqe(components)
   // 将组件注册到全局共享状态中
@@ -249,12 +190,10 @@ async function initComponentAdapter() {
   globalShareState.defineMessage({
     // 复制成功消息提示
     copyPreferencesSuccess: (title, content) => {
-      ElNotification({
-        title,
-        message: content,
-        position: 'bottom-right',
-        duration: 0,
-        type: 'success',
+      notification.success({
+        description: content,
+        message: title,
+        placement: 'bottomRight',
       })
     },
   })

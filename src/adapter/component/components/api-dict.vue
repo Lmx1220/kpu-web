@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { asyncFindDictList } from '@/api/modules/common/general'
-import ApiRadioGroup from '@/components/ApiRadioGroup/index.vue'
-import ApiSelect from '@/components/ApiSelect/index.vue'
+import ApiCheckboxGroup from './api-checkbox-group.vue'
+import ApiRadioGroup from './api-radio-group.vue'
+import ApiSelect from './api-select.vue'
 
 const props = withDefaults(defineProps<{
   renderType?: 'RadioGroup' | 'Select' | 'CheckboxGroup'
@@ -15,14 +16,14 @@ const props = withDefaults(defineProps<{
   params: () => ({}),
   extendFirst: true,
   excludes: () => ([]),
-
 })
+
 const render = computed(() => {
   if (props.renderType === 'RadioGroup') {
     return ApiRadioGroup
   }
   else if (props.renderType === 'CheckboxGroup') {
-    return ApiSelect
+    return ApiCheckboxGroup
   }
   else {
     return ApiSelect

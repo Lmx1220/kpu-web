@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import KpuHelpTooltip from '@/ui/components/KpuTooltip/help-tooltip.vue'
 import { cn } from '@/utils'
-import { FormLabel } from '../../shadcn/ui/form'
+import { FormLabel } from './form'
 
 interface Props {
   class?: string

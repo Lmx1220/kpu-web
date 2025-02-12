@@ -17,11 +17,14 @@ const url = useVModel(props, 'modelValue', emits, {
   defaultValue: props.defaultValue,
   passive: true,
 })
-function handleSuccess(res: any) {
-  url.value = res.id
-}
+// function handleSuccess(res: any) {
+//   url.value = res.id
+// }
 </script>
 
 <template>
-  <ImageUpload v-model="url" disabled notip @on-success="handleSuccess" />
+  <div>
+    avatar: {{ url }}
+  </div>
+<!--  <ImageUpload v-model="url" disabled notip @on-success="handleSuccess" /> -->
 </template>

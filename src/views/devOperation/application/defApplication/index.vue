@@ -145,13 +145,12 @@ function handleAdd() {
           :actions=" [{
             label: '新增',
             type: 'primary',
-            link: false,
             icon: 'i-ant-design:plus-outlined',
             onClick: handleAdd.bind(null),
           }]"
           :drop-down-actions="[{
             label: '删除',
-            icon: 'ant-design:delete-outlined',
+            icon: 'i-ant-design:delete-outlined',
             ifShow: f,
             popConfirm: {
               title: '确定删除吗？',
@@ -160,10 +159,10 @@ function handleAdd() {
           }]"
         >
           <template #more>
-            <ElButton class="ml-2">
+            <AButton class="ml-2">
               批量操作
               <kpu-icon name="i-ant-design:down-outlined" />
-            </ElButton>
+            </AButton>
           </template>
         </TableAction>
       </template>
@@ -171,10 +170,12 @@ function handleAdd() {
         <TableAction
           :actions="[{
             label: '查看',
+            type: 'link',
             size: 'small',
             onClick: handleView.bind(null, row),
           }, {
             label: '编辑',
+            type: 'link',
             size: 'small',
             onClick: handleEdit.bind(null, row),
           }]"

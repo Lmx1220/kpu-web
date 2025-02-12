@@ -4,7 +4,7 @@ import type { VxeTableGridOptions } from '@/ui/vxe-table'
 import YesOrNoEnum from '@/enums/common/yesOrNoEnum.ts'
 import { DictEnum, FileBizTypeEnum } from '@/enums/commonEnum.ts'
 import { $t } from '@/locales'
-import { ElTag } from 'element-plus'
+import { Tag } from 'ant-design-vue'
 
 // 列表页字段
 export const formItems: KpuFormProps = {
@@ -105,7 +105,7 @@ export const columns: VxeTableGridOptions<DefApplicationResultVO> = {
       slots: {
         default: ({ row }) => {
           return (
-            <ElTag type={row.type === '10' ? 'success' : 'primary'}>{row.echoMap?.type}</ElTag>
+            <Tag color={row.type === '10' ? 'success' : 'processing'}>{row.echoMap?.type}</Tag>
           )
         },
       },
@@ -118,7 +118,7 @@ export const columns: VxeTableGridOptions<DefApplicationResultVO> = {
       slots: {
         default: ({ row }) => {
           return (
-            <ElTag type={row?.isGeneral ? 'success' : 'danger'}>{row?.isGeneral ? $t('common.yes') : $t('common.no')}</ElTag>)
+            <Tag type={row?.isGeneral ? 'success' : 'error'}>{row?.isGeneral ? $t('common.yes') : $t('common.no')}</Tag>)
         },
       },
     },
@@ -165,7 +165,7 @@ export const formEdit: KpuFormProps = {
     {
       fieldName: 'appendixIcon',
       label: $t('devOperation.application.defApplication.logo'),
-      component: 'Avatar',
+      component: 'Upload',
       componentProps: {
         placeholder: '请选择logo',
         showBtn: false,

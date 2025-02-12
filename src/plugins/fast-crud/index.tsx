@@ -8,9 +8,11 @@ import type {
 
 import { findCodeByType, findEnumListByType } from '@/api/modules/common/general.ts'
 import { uploadFile } from '@/api/modules/file/upload.ts'
+import { $t } from '@/locales'
+
+import KpuIcon from '@/ui/components/KpuIcon/index.vue'
 import { isString } from '@/utils'
 import dateUtil from '@/utils/dayjs'
-
 import { FastCrud, FsButton, useColumns, useTypes } from '@fast-crud/fast-crud'
 import {
   FsExtendsCopyable,
@@ -20,11 +22,11 @@ import {
   FsExtendsTime,
   FsExtendsUploader,
 } from '@fast-crud/fast-extends'
-import UiElement from '@fast-crud/ui-element'
-import { ElNotification, ElPopconfirm } from 'element-plus'
+import UiAntdv from '@fast-crud/ui-antdv4'
+import { notification, Popconfirm } from 'ant-design-vue'
 import '@fast-crud/fast-crud/dist/style.css'
 import '@fast-crud/fast-extends/dist/style.css'
-import '@fast-crud/ui-element/dist/style.css'
+import '@fast-crud/ui-antdv4/dist/style.css'
 
 export function transformQuery(query: PageQuery) {
   const { page, form, sort } = query
@@ -56,7 +58,7 @@ export function transformRes(originPageRes: TransformResProps) {
 }
 
 function install(app: any, options: any = {}) {
-  app.use(UiElement)
+  app.use(UiAntdv)
   // setLogger({ level: 'debug' })
   app.use(FastCrud, {
     logger: {
@@ -115,21 +117,21 @@ function install(app: any, options: any = {}) {
           buttons: {
             view: {
               order: 1,
-              // size: 'small',
-              link: true,
-              // icon: undefined,
+              size: 'small',
+              type: 'link',
+              // icon: null,
             },
             edit: {
               order: 2,
-              // size: 'small',
-              link: true,
-              // icon: undefined,
+              size: 'small',
+              type: 'link',
+              // icon: null,
             },
             remove: {
               order: 3,
-              // size: 'small',
-              link: true,
-              // icon: '',
+              size: 'small',
+              type: 'link',
+              icon: '',
               render(context: any) {
                 function del() {
                   const { row, index } = context
@@ -141,45 +143,64 @@ function install(app: any, options: any = {}) {
                   })
                 }
                 return (
-                  <ElPopconfirm iconColor="red" onConfirm={del} title="确认删除吗？">
+                  <Popconfirm onConfirm={del} placement="bottom" cancel-text="取消" ok-text="确认删除" title="确定要删除这条记录吗？">
                     {{
                       reference: () => (
                         <FsButton
                           className="ant-btn-sm"
                           danger={false}
-                          link
+                          type="link"
                         >
                           删除
                         </FsButton>
                       ),
+                      icon: () => (
+                        <KpuIcon name="i-ant-design:question-circle-outlined" className="c-red"></KpuIcon>
+                      ),
+
                     }}
-                  </ElPopconfirm>
+                  </Popconfirm>
                 )
               },
             },
-            // copy: {
-            //   show: true,
-            //   text: Yn('common.title.copy'),
-            //   dropdown: true,
-            // },
+            copy: {
+              show: true,
+              text: $t('common.title.copy'),
+              dropdown: true,
+            },
           },
           dropdown: {
             more: {
-              // type: 'link',
-              link: true,
+              type: 'link',
             },
           },
         },
         table: {
-          // size: 'small',
+          size: 'small',
           scroll: {
-            fixed: false,
+            fixed: true,
           },
           pagination: false,
           onResizeColumn: (w: number, col: any) => {
             if (crudBinding.value?.table?.columnsMap && crudBinding.value?.table?.columnsMap[col.key]) {
               crudBinding.value.table.columnsMap[col.key].width = w
             }
+          },
+          columns: {
+            // 最后一列空白，用于自动伸缩列宽
+            __blank__: {
+              title: '',
+              type: 'text',
+              form: {
+                show: false,
+              },
+              column: {
+                order: 99999,
+                width: -1,
+                columnSetShow: false,
+                resizable: false,
+              },
+            },
           },
         },
         request: {
@@ -190,17 +211,16 @@ function install(app: any, options: any = {}) {
           display: 'flex',
           labelWidth: '120px',
           wrapper: {
-            is: 'el-drawer',
+            is: 'a-drawer',
             maskClosable: false,
             saveRemind: true,
-            size: '960px',
           },
           async afterSubmit({ mode }) {
             if (mode === 'add') {
-              ElNotification.success({ message: '添加成功' })
+              notification.success({ message: '添加成功' })
             }
             else if (mode === 'edit') {
-              ElNotification.success({ message: '保存成功' })
+              notification.success({ message: '保存成功' })
             }
           },
           wrapperCol: {
@@ -291,24 +311,16 @@ function install(app: any, options: any = {}) {
   registerMergeColumnPlugin({
     name: 'resize-column-plugin',
     order: 2,
-    handle: (columnProps: ColumnCompositionProps, crudOptions: any) => {
-      function fillWidth(columnProps: ColumnCompositionProps) {
-        if (!columnProps.column) {
-          columnProps.column = {}
-        }
-        if (crudOptions.table.tableVersion === 'v2') {
-          if (!columnProps.column.width) {
-            columnProps.column.width = 150
-          }
-        }
-        if (columnProps.children && Object.keys(columnProps.children).length > 0) {
-          for (const key in columnProps.children) {
-            fillWidth(columnProps.children[key])
-          }
+    handle: (columnProps: ColumnCompositionProps) => {
+      if (!columnProps.column) {
+        columnProps.column = {}
+      }
+      if (columnProps.column.resizable === null) {
+        columnProps.column.resizable = true
+        if (!columnProps.column.width) {
+          columnProps.column.width = 100
         }
       }
-
-      fillWidth(columnProps)
 
       return columnProps
     },

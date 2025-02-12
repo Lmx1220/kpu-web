@@ -2,9 +2,9 @@ import type { VxeGlobalInterceptorHandles } from 'vxe-table'
 import { setupKpuVxeTable, useKpuVxeGrid } from '@/ui/vxe-table'
 import { get } from '@/utils'
 import { globalShareState } from '@/utils/global-state.ts'
-import domZIndex from 'dom-zindex'
+import { Image as AImage, Button } from 'ant-design-vue'
 
-import { ElButton, ElImage } from 'element-plus'
+import domZIndex from 'dom-zindex'
 import { h } from 'vue'
 import { useKpuForm } from './form'
 
@@ -167,7 +167,7 @@ setupKpuVxeTable({
       renderTableDefault(_renderOpts, params) {
         const { column, row } = params
         const src = row[column.field]
-        return h(ElImage, { src, previewSrcList: [src] })
+        return h(AImage, { src })
       },
     })
 
@@ -176,8 +176,8 @@ setupKpuVxeTable({
       renderTableDefault(renderOpts) {
         const { props } = renderOpts
         return h(
-          ElButton,
-          { size: 'small', link: true },
+          Button,
+          { size: 'small', type: 'link' },
 
           { default: () => props?.text },
         )

@@ -12,17 +12,14 @@ import {
 import { RuleType } from '@/api/modules/common/formValidateServiceKpu.ts'
 import { $t } from '@/locales'
 import { transformQuery, transformRes } from '@/plugins/fast-crud'
-import { checkedColumn, deleteButton, indexColumn, YES_NO_CONSTANT_DICT } from '@/plugins/fast-crud/common'
+import { deleteButton, indexColumn, YES_NO_CONSTANT_DICT } from '@/plugins/fast-crud/common'
 import { ref } from 'vue'
 
 export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const selectedIds = ref([] as string[])
   const selectedId = ref()
   const { itemTableRef } = props.context
-  const onSelectionChange = (changed: any[]) => {
-    selectedIds.value = changed.map(item => item.id)
-    // console.log('selection', selectedIds.value)
-  }
+
   const onRowChange = (changed: string) => {
     selectedId.value = changed
     itemTableRef.value.setData({
@@ -33,16 +30,6 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
 
   return {
     crudOptions: {
-      container: {
-        // is: '',
-      },
-      //   form: {
-      //     wrapper: {
-      //       is: 'el-drawer',
-      //       draggable: false,
-      //       size: '50%',
-      //     },
-      //   },
       request: {
         pageRequest,
         addRequest,
@@ -58,13 +45,13 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
         transformRes: (data) => {
           const { res } = data
           if (res.records && res.records.length > 0) {
-            // selectedId.value = res.records[0].id
+            selectedId.value = res.records[0].id
             //   setCurrentRow
-            props.crudExpose.getTableRef().tableRef.setCurrentRow(res.records[0])
-            // itemTableRef.value.setData({
-            //   parentId: res.records[0].id,
-            // })
-            // itemTableRef.value.doRefresh()
+            // props.crudExpose.getTableRef().tableRef.setCurrentRow(res.records[0])
+            itemTableRef.value.setData({
+              parentId: res.records[0].id,
+            })
+            itemTableRef.value.doRefresh()
           }
 
           return transformRes(data)
@@ -83,24 +70,24 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
         },
       },
       table: {
-        'highlight-current-row': true,
-        // 监听 el-table的单行选中事件
-        onCurrentChange(row: any, _oldRow: any) {
-          // console.log('选中行', row)
-          // if (row != null && row.id === selectedId.value) {
-          //   return
-          // }
-          if (row != null) {
-            onRowChange(row.id)
-          }
-          // if (asideTableRef.value) {
-          //   asideTableRef.value.setSearchFormData({ form: { gradeId: currentRow.id } })
-          //   asideTableRef.value.doRefresh()
-          // }
+        striped: true,
+        rowKey: 'id',
+        rowSelection: {
+          type: 'checkbox',
+          selectedRowKeys: selectedIds,
+          onChange: (ids: any) => {
+            selectedIds.value = ids
+          },
         },
-        onSelectionChange,
-        'striped': true,
-        'rowKey': (row: any) => row.id,
+        customRow(record: any, _index: number) {
+          const clazz = record.id === selectedId.value ? 'fs-current-row' : ''
+          return {
+            onClick() {
+              onRowChange(record.id)
+            },
+            class: clazz,
+          }
+        },
       },
       rowHandle: {
         width: 80,
@@ -120,7 +107,6 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
         },
       },
       columns: {
-        ...checkedColumn(),
         ...indexColumn(props.crudExpose),
         key: {
           title: $t('devOperation.system.defDict.key'),
@@ -146,7 +132,7 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
           search: {
             show: true,
             component: {
-              multiple: true,
+              mode: 'multiple',
             },
           },
           addForm: {

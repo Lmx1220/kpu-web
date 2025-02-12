@@ -19,7 +19,7 @@ export const Api = {
     method: RequestEnum.POST,
   },
   FindCodeListByType: {
-    url: `${ServicePrefix}/anyUser/dict/findDictMapItemListByKey`,
+    url: `${ServicePrefix}/anyUser/dict/findDictMapByType`,
     method: RequestEnum.POST,
   },
   Params: {

@@ -12,15 +12,13 @@ import {
 import { RuleType } from '@/api/modules/common/formValidateServiceKpu.ts'
 import { $t } from '@/locales'
 import { transformQuery } from '@/plugins/fast-crud'
-import { checkedColumn, deleteButton, indexColumn, YES_NO_CONSTANT_DICT } from '@/plugins/fast-crud/common'
+import { deleteButton, indexColumn, YES_NO_CONSTANT_DICT } from '@/plugins/fast-crud/common'
 import KIconPicker from '@/ui/components/KpuIconPicker/index.vue'
 import { ref } from 'vue'
 
 export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const selectedIds = ref([] as string[])
-  const onSelectionChange = (changed: string[]) => {
-    selectedIds.value = changed
-  }
+  const selectedId = ref()
 
   return {
     crudOptions: {
@@ -68,10 +66,24 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
         },
       },
       table: {
-        'striped': true,
-        'rowKey': (row: any) => row.id,
-        'checkedRowKeys': selectedIds,
-        'onUpdate:checkedRowKeys': onSelectionChange,
+        striped: true,
+        rowKey: 'id',
+        rowSelection: {
+          type: 'checkbox',
+          selectedRowKeys: selectedIds,
+          onChange: (ids: any) => {
+            selectedIds.value = ids
+          },
+        },
+        customRow(record: any, _index: number) {
+          const clazz = record.id === selectedId.value ? 'fs-current-row' : ''
+          return {
+            onClick() {
+              selectedId.value = record.id
+            },
+            class: clazz,
+          }
+        },
       },
       rowHandle: {
         watch: 150,
@@ -92,7 +104,6 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
         },
       },
       columns: {
-        ...checkedColumn(),
         ...indexColumn(props.crudExpose),
         parentId: {
           title: $t('devOperation.system.defDictItem.parentId'),
@@ -149,7 +160,7 @@ export function createCrudOptions(props: CreateCrudOptionsProps): CreateCrudOpti
           search: {
             show: true,
             component: {
-              multiple: true,
+              mode: 'multiple',
             },
           },
           addForm: {

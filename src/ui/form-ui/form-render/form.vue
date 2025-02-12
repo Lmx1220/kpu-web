@@ -12,7 +12,7 @@ import type {
 import { cn, isString, mergeWithArrayOverride } from '@/utils'
 
 import { computed } from 'vue'
-import { Form } from '../../shadcn/ui/form'
+import { Form } from './form'
 
 import { provideFormRenderProps } from './context'
 import { useExpandable } from './expandable'

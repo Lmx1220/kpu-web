@@ -40,16 +40,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ElRow class="absolute h-full w-full" :gutter="0">
-    <el-col :span="12">
+  <ARow class="absolute h-full w-full" :gutter="0">
+    <a-col :span="12">
       <!--      <FsPage> -->
       <FsCrud ref="crudRef" class="p-0" v-bind="crudBinding" />
       <!--      </FsPage> -->
-    </el-col>
-    <el-col :span="12">
+    </a-col>
+    <a-col :span="12">
       <Item ref="itemTableRef" class="p-0" />
-    </el-col>
-  </ElRow>
+    </a-col>
+  </ARow>
 </template>
 
 <style scoped>

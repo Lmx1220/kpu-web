@@ -1,7 +1,6 @@
+import type { Rule } from 'ant-design-vue/es/form'
 import type { AxiosRequestConfig } from 'axios'
 import type { LogType } from 'consola'
-import type { FormItemRule } from 'element-plus'
-
 import { requestClient } from '@/api'
 import dateUtil from '@/utils/dayjs'
 // import { ServicePrefixEnum } from '@/enum/common'
@@ -24,22 +23,15 @@ const logger = createConsola()
 const moduleName = 'lamp-web-pro-soybean'
 
 //
-function logMessage(level: LogType, message: any, shouldLog: boolean = true) {
+export function logMessage(level: LogType, message: any, shouldLog: boolean = true) {
   if (shouldLog) {
     logger[level](`${formatPrefix(`[${moduleName}]:`)} `, message)
   }
 }
-logMessage('warn', 'formValidateService.ts')
-logMessage('error', 'formValidateService.ts')
-logMessage('info', 'formValidateService.ts')
 
-//
-function logWithArgs(level: LogType, message: any, ...args: any[]) {
+export function logWithArgs(level: LogType, message: any, ...args: any[]) {
   logger[level](message, ...args)
 }
-logWithArgs('warn', 'formValidateService.ts', 'args')
-logWithArgs('error', 'formValidateService.ts', 'args')
-logWithArgs('info', 'formValidateService.ts', 'args')
 
 export interface FieldValidatorDesc {
   name: string
@@ -59,17 +51,17 @@ export enum RuleType {
 }
 // interface RuleItemExt extends RuleItem {}
 export interface FormSchema {
-  [field: string]: FormItemRule[]
+  [field: string]: Rule[]
   // type?: RuleType;
 }
 export interface FormRulesExt {
   type: RuleType
-  rules: FormItemRule[]
+  rules: Rule[]
 }
 
 export interface FormSchemaExt {
   // 类型 append：追加  cover：覆盖
-  [field: string]: FormRulesExt | FormItemRule[]
+  [field: string]: FormRulesExt | Rule[]
 }
 
 const ruleTypeMap = new Map()
@@ -128,10 +120,10 @@ function getMessage(attrs: Recordable) {
 interface FieldTypeList {
   match: (type: string) => boolean
   callback: (params: {
-    fieldRules: FormItemRule[]
+    fieldRules: Rule[]
     attrs: any
     fieldType: string
-    trigger?: string | string[]
+    trigger?: 'blur' | 'change' | ('blur' | 'change')[]
   }) => void
 }
 const fieldTypeList: FieldTypeList[] = [
@@ -141,7 +133,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           if (!value) {
             return Promise.resolve()
           }
@@ -157,7 +149,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           return Number.parseInt(value, 10) > attrs.value ? Promise.reject(getMessage(attrs)) : Promise.resolve()
         },
         message: getMessage(attrs),
@@ -170,7 +162,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           return Number.parseInt(value, 10) < attrs.value ? Promise.reject(getMessage(attrs)) : Promise.resolve()
         },
       })
@@ -182,7 +174,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           return Number.parseFloat(value) > attrs.value ? Promise.reject(getMessage(attrs)) : Promise.resolve()
         },
       })
@@ -194,7 +186,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           return Number.parseFloat(value) < attrs.value ? Promise.reject(getMessage(attrs)) : Promise.resolve()
         },
       })
@@ -206,7 +198,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           return value && value.length !== 0 ? Promise.reject(getMessage(attrs)) : Promise.resolve()
         },
         message: getMessage(attrs),
@@ -251,7 +243,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           return value === 'true' || value === true ? Promise.resolve() : Promise.reject(getMessage(attrs))
         },
         message: getMessage(attrs),
@@ -264,7 +256,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           return value === 'false' || value === false ? Promise.resolve() : Promise.reject(getMessage(attrs))
         },
         message: getMessage(attrs),
@@ -277,7 +269,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           if (value) {
             if (Number(value) < 0) {
               return Promise.resolve()
@@ -296,7 +288,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           if (value) {
             if (Number(value) <= 0) {
               return Promise.resolve()
@@ -315,7 +307,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           if (value) {
             if (Number(value) > 0) {
               return Promise.resolve()
@@ -334,7 +326,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           if (value) {
             if (Number(value) >= 0) {
               return Promise.resolve()
@@ -353,7 +345,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           return compareDate2Now(value, fieldType, 'Past') ? Promise.resolve() : Promise.reject(getMessage(attrs))
         },
         message: getMessage(attrs),
@@ -366,7 +358,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           return compareDate2Now(value, fieldType, 'PastOrPresent')
             ? Promise.resolve()
             : Promise.reject(getMessage(attrs))
@@ -381,7 +373,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           const val = Number(value)
           if (/.*\..*/.test(val.toString())) {
             const l = val.toString().split('.')[0]
@@ -401,7 +393,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           return compareDate2Now(value, fieldType, 'Future') ? Promise.resolve() : Promise.reject(getMessage(attrs))
         },
         message: getMessage(attrs),
@@ -414,7 +406,7 @@ const fieldTypeList: FieldTypeList[] = [
       fieldRules.push({
         type: 'method',
         trigger,
-        asyncValidator(_rule, value) {
+        validator(_rule, value) {
           return compareDate2Now(value, fieldType, 'FutureOrPresent')
             ? Promise.resolve()
             : Promise.reject(getMessage(attrs))
@@ -434,10 +426,10 @@ const fieldTypeList: FieldTypeList[] = [
  */
 
 function decodeRules(
-  fieldRules: FormItemRule[],
+  fieldRules: Rule[],
   constraints: ConstraintInfo[],
   fieldType: string,
-  trigger?: string | string[],
+  trigger?: 'blur' | 'change' | ('blur' | 'change')[],
 ) {
   constraints
   && constraints.forEach(({ type, attrs }) => {
@@ -463,10 +455,10 @@ function decodeRules(
  * @param data 后端返回的值
  */
 const numberType = ['BigDecimal', 'BigInteger', 'Integer', 'Long', 'Float', 'Double', 'Short']
-function transformationRules(data: FieldValidatorDesc[], trigger?: string | string[]): FormSchema {
+function transformationRules(data: FieldValidatorDesc[], trigger?: 'blur' | 'change' | ('blur' | 'change')[]): FormSchema {
   const validateRules: FormSchema = {}
   data.forEach(({ name, field, fieldType, constraints }) => {
-    const rules: FormItemRule[] = []
+    const rules: Rule[] = []
 
     if (numberType.includes(fieldType)) {
       rules.push({

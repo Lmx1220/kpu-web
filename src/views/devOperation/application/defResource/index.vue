@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useKpuForm } from '@/adapter/form.ts'
-import { ElCheckbox, ElMessage } from 'element-plus'
+// import { ElCheckbox, ElMessage } from 'element-plus'
 
 const [Form] = useKpuForm({
   commonConfig: {
@@ -12,8 +12,8 @@ const [Form] = useKpuForm({
   layout: 'horizontal',
   // 大屏一行显示3个，中屏一行显示2个，小屏一行显示1个
   wrapperClass: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-  handleSubmit: (values) => {
-    ElMessage.success(`表单数据：${JSON.stringify(values)}`)
+  handleSubmit: (_values) => {
+    // ElMessage.success(`表单数据：${JSON.stringify(values)}`)
   },
   schema: [
     // {
@@ -100,15 +100,15 @@ const [Form] = useKpuForm({
       component: 'CheckboxGroup',
       fieldName: 'checkbox1',
       label: 'Checkbox1',
-      renderComponentContent: () => {
-        return {
-          default: () => {
-            return ['A', 'B', 'C', 'D'].map(v =>
-              h(ElCheckbox, { label: v, value: v }),
-            )
-          },
-        }
-      },
+      // renderComponentContent: () => {
+      //   return {
+      //     default: () => {
+      //       return ['A', 'B', 'C', 'D'].map(v =>
+      //         // h(Checkbox, { label: v, value: v }),
+      //       )
+      //     },
+      //   }
+      // },
     },
     {
       component: 'CheckboxGroup',
@@ -147,9 +147,9 @@ const [Form] = useKpuForm({
 
 <template>
   <div>
-    <KPageHeader title="表单示例" />
-    <KPageMain>
+    <KpuPageHeader title="表单示例" />
+    <KpuPageMain>
       <Form />
-    </KPageMain>
+    </KpuPageMain>
   </div>
 </template>

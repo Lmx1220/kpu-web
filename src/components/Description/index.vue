@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CSSProperties } from 'vue'
 import type { DescItem } from './typing.ts'
 import { componentMap } from '@/adapter/vxe-table.ts'
 
@@ -8,8 +9,8 @@ withDefaults(
     bordered?: boolean
     size?: '' | 'large' | 'default' | 'small'
     column?: number
-    labelClass?: string
-    contentClass?: string
+    labelStyle?: CSSProperties
+    contentStyle?: CSSProperties
     schema?: DescItem[]
     data?: Recordable
   }>(),
@@ -17,21 +18,27 @@ withDefaults(
     title: '',
     bordered: true,
     column: 12,
-    labelClass: 'w-36',
-    contentClass: 'w-0',
+    labelStyle: () => ({
+      width: '120px',
+    }),
+    contentStyle: () => ({
+      width: '0px',
+    }),
     schema: () => [],
   },
 )
 </script>
 
 <template>
-  <ElDescriptions
+  <ADescriptions
     :column="column"
     :size="size"
-    :border="bordered"
+    :bordered="bordered"
+    :label-style="labelStyle"
+    :content-style="contentStyle"
     :title
   >
-    <ElDescriptionsItem v-for="item in schema" :key="item.field" :label-class-name="labelClass" :class-name="contentClass" :label="item.label" :span="item.span">
+    <ADescriptionsItem v-for="item in schema" :key="item.field" :label="item.label" :span="item.span">
       <template v-if="componentMap.has(item.component)">
         <Component :is="componentMap.get(item.component)" :model-value="data ? data[item.field] : undefined" v-bind="item.componentProps" />
       </template>
@@ -41,6 +48,6 @@ withDefaults(
       <template v-else>
         {{ data ? data[item.field] : undefined }}
       </template>
-    </ElDescriptionsItem>
-  </ElDescriptions>
+    </ADescriptionsItem>
+  </ADescriptions>
 </template>

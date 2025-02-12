@@ -8,8 +8,8 @@ import router from '@/router'
 import useSettingsStore from '@/store/modules/settings.ts'
 import useUserStore from '@/store/modules/user.ts'
 import { authenticateResponseInterceptor, defaultResponseInterceptor, errorMessageResponseInterceptor, RequestClient } from '@/utils/request-client'
-import { ElMessage } from 'element-plus'
 import { Base64 } from 'js-base64'
+import { toast } from 'vue-sonner'
 
 const apiURL = (import.meta.env.DEV && import.meta.env.VITE_OPEN_PROXY) ? '/proxy/' : import.meta.env.VITE_APP_API_BASEURL
 
@@ -104,7 +104,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       const responseData = error?.response?.data ?? {}
       const errorMessage = responseData?.error ?? responseData?.msg ?? ''
       // 如果没有错误信息，则会根据状态码进行提示
-      ElMessage.error(errorMessage || msg)
+      toast.error(errorMessage || msg)
     }),
   )
 
